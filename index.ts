@@ -30,11 +30,10 @@ class SpardaBank {
 			var amount = record.amount;
 			amount = amount.replace('.', '');
 			amount = amount.replace(',', '.');
-			amount = parseFloat(amount);
-			record.amount = amount;
+			var iAmount = parseFloat(amount);
+			record.amount = iAmount.toString();
 			//record.amount3 = parseFloat(amount);
 			//callback(null, JSON.stringify(record)+'\n');
-			callback(null, record);
 			if (!storeColumns) {
 				storeColumns = {};
 				//var columns = Object.keys(record);
@@ -45,6 +44,8 @@ class SpardaBank {
 				console.log(storeColumns);
 			}
 			rows++;
+
+			callback(null, record);
 		}, {parallel: 1});
 
 		var stringify = require('csv-stringify');
@@ -131,7 +132,9 @@ class SpardaBank {
 		var input = fs.createReadStream(this.sourceFile);
 		input
 			.pipe(this.getParser())
-			.pipe(transformer);
+			.pipe(transformer)
+			//.pipe(process.stdout)
+		;
 	}
 
 	/**
