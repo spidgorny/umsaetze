@@ -24,9 +24,24 @@ class SpardaBank {
 		var fs = require('fs');
 		var transform = require('stream-transform');
 
+		var totalRows = 1690;	// line-by-line counting will not work
+/*		var counter = transform(function (record: Record, callback) {
+			totalRows++;
+			callback(null, record);
+		}).on('finish', function() {
+			console.log('Counted rows: ', totalRows);
+		});
+*/
+		var ProgressBar = require('progress');
+		var pb = new ProgressBar(':bar', {
+			total: totalRows,
+			width: 100
+		});
+
 		var storeColumns = null;
 		var rows = 0;
 		var transformer = transform(function (record: Record, callback) {
+			pb.tick();
 			var amount = record.amount;
 			amount = amount.replace('.', '');
 			amount = amount.replace(',', '.');
@@ -65,6 +80,7 @@ class SpardaBank {
 		var streamToPromise = require('stream-to-promise');
 		streamToPromise(input
 		.pipe(this.getParser())
+//		.pipe(counter)
 		.pipe(transformer)
 		.pipe(stringifier)
 		// .pipe(process.stdout)
