@@ -1,5 +1,20 @@
 /// <reference path="typings/index.d.ts" />
 
+var util = require('util');
+var stream = require('stream');
+function StringifyStream(){
+	stream.Transform.call(this);
+
+	this._readableState.objectMode = false;
+	this._writableState.objectMode = true;
+}
+util.inherits(StringifyStream, stream.Transform);
+
+StringifyStream.prototype._transform = function(obj, encoding, cb){
+	this.push(JSON.stringify(obj));
+	cb();
+};
+
 declare class Record {
 
 	account: string;
@@ -133,20 +148,27 @@ class SpardaBank {
 	}
 
 	categorize() {
+		var chalk = require( "chalk" );
 		var fs = require('fs');
 		var transform = require('stream-transform');
 
 		var transformer = transform((record: Record, callback) => {
-			var shortNote = record.note.substr(0, 100);
+			var shortNote = record.note.substr(0, 120);
 			console.log(
 				SpardaBank.twoTabs(record.amount), '\t',
 				record.category, '\t',
 				shortNote);
-			callback(null, record);
+			callback(null, "record");
 		}, {parallel: 1});
 
 		var input = fs.createReadStream(this.sourceFile);
-		input
+		input.on(
+			"error",
+			function handleDataStreamError( error ) {
+				console.log( chalk.bgRed.white( "Error event:", error.message ) );
+			}
+		);
+		return input
 			.pipe(this.getParser())
 			.pipe(transformer)
 			//.pipe(process.stdout)
@@ -168,9 +190,11 @@ class SpardaBank {
 }
 
 var sb = new SpardaBank();
-sb.convertMoneyFormat();
+//sb.convertMoneyFormat();
 sb.readExcelFile().then((x) => {
+	console.log(x);
 	sb.categorize();
+	return true;
 }).catch((e) => {
 	console.log('Promise error: ' + e);
 });

@@ -1,4 +1,16 @@
 /// <reference path="typings/index.d.ts" />
+var util = require('util');
+var stream = require('stream');
+function StringifyStream() {
+    stream.Transform.call(this);
+    this._readableState.objectMode = false;
+    this._writableState.objectMode = true;
+}
+util.inherits(StringifyStream, stream.Transform);
+StringifyStream.prototype._transform = function (obj, encoding, cb) {
+    this.push(JSON.stringify(obj));
+    cb();
+};
 var SpardaBank = (function () {
     function SpardaBank() {
         this.sourceFile = 'umsaetze-1090729-2016-07-27-00-11-29.csv';
@@ -107,15 +119,19 @@ var SpardaBank = (function () {
         });
     };
     SpardaBank.prototype.categorize = function () {
+        var chalk = require("chalk");
         var fs = require('fs');
         var transform = require('stream-transform');
         var transformer = transform(function (record, callback) {
-            var shortNote = record.note.substr(0, 100);
+            var shortNote = record.note.substr(0, 120);
             console.log(SpardaBank.twoTabs(record.amount), '\t', record.category, '\t', shortNote);
-            callback(null, record);
+            callback(null, "record");
         }, { parallel: 1 });
         var input = fs.createReadStream(this.sourceFile);
-        input
+        input.on("error", function handleDataStreamError(error) {
+            console.log(chalk.bgRed.white("Error event:", error.message));
+        });
+        return input
             .pipe(this.getParser())
             .pipe(transformer);
     };
@@ -133,9 +149,11 @@ var SpardaBank = (function () {
     return SpardaBank;
 }());
 var sb = new SpardaBank();
-sb.convertMoneyFormat();
+//sb.convertMoneyFormat();
 sb.readExcelFile().then(function (x) {
+    console.log(x);
     sb.categorize();
+    return true;
 }).catch(function (e) {
     console.log('Promise error: ' + e);
 });
