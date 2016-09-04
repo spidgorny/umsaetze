@@ -171,7 +171,8 @@ class SpardaBank {
 		return input
 			.pipe(this.getParser())
 			.pipe(transformer)
-			//.pipe(process.stdout)
+			.pipe(new StringifyStream())
+			.pipe(process.stdout)
 		;
 	}
 

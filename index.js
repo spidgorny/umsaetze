@@ -133,7 +133,9 @@ var SpardaBank = (function () {
         });
         return input
             .pipe(this.getParser())
-            .pipe(transformer);
+            .pipe(transformer)
+            .pipe(new StringifyStream())
+            .pipe(process.stdout);
     };
     /**
      * Makes sure text is shown on two tabs
