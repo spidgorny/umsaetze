@@ -1,0 +1,133 @@
+/// <reference path="../typings/index.d.ts" />
+/// <reference path="../node_modules/backbone-typings/backbone.d.ts" />
+/// <reference path="Expenses.ts" />
+
+import CollectionFetchOptions = Backbone.CollectionFetchOptions;
+
+export function asyncLoop(arr: Array<any>, callback: Function, done?: Function) {
+	(function loop(i) {
+
+		callback(arr[i], i, arr.length);                            //callback when the loop goes on
+
+		if (i < arr.length) {                      //the condition
+			setTimeout(function() {loop(++i)}, 1); //rerun when condition is true
+		} else {
+			if (done) {
+				done(arr.length);                            //callback when the loop ends
+			}
+		}
+	}(0));                                         //start with 0
+}
+
+import Expenses from './Expenses';
+import Transaction from './Transaction';
+
+require('datejs');
+
+class ExpenseTable extends Backbone.View<Expenses> {
+
+	model: Expenses;
+
+	/**
+	 * Too early, wait until initialize()
+	 * @type {JQuery}
+	 */
+	//el = $('#expenseTable');
+
+	template = _.template($('#rowTemplate').html());
+
+	constructor(options?) {
+		super(options);
+		this.setElement($('#expenseTable'));
+		this.listenTo(this.model, 'change', this.render);
+	}
+
+	render() {
+		console.log('ExpenseTable.render()', this.model.size());
+		console.log(this.model);
+		var rows = [];
+		this.model.each((transaction: Transaction) => {
+			//console.log(transaction);
+			var attributes = transaction.toJSON();
+			if (attributes.hasOwnProperty('date')) {
+				rows.push(this.template(attributes));
+			} else {
+				console.log('no date', attributes);
+			}
+		});
+		console.log('rendering', rows.length, 'rows');
+		this.$el.append(rows.join('\n'));
+		//console.log(this.$el);
+
+		$('#dateFrom').html(this.model.getDateFrom().toString('yyyy-MM-dd'));
+		$('#dateTill').html(this.model.getDateTill().toString('yyyy-MM-dd'));
+
+		return this;
+	}
+
+}
+
+import CategoryView from './CategoryView';
+
+class AppView extends Backbone.View<Expenses> {
+
+	model: Expenses;
+
+	table: ExpenseTable;
+
+	categories: CategoryView;
+
+	constructor(options) {
+		super(options);
+		console.log('construct AppView');
+		this.setElement($('#app'));
+		this.model = new Expenses();
+		this.table = new ExpenseTable({
+			model: this.model,
+			el: $('#expenseTable')
+		});
+		this.categories = new CategoryView({
+			model: this.model,
+		});
+
+		this.startLoading();
+		this.model.fetch({
+			success: () => {
+				this.stopLoading();
+			}
+		});
+
+		this.listenTo(this.model, "change", this.render.bind(this));
+		this.listenTo(this.model, "change", this.categories.change.bind(this.categories));
+	}
+
+	startLoading() {
+		console.log('startLoading');
+		var template = _.template($('#loadingBar').html());
+		this.$el.html(template());
+	}
+
+	stopLoading() {
+		console.log('stopLoading');
+		this.$el.html('Done');
+	}
+
+	render() {
+		console.log('AppView.render()', this.model);
+		if (this.model && this.model.size()) {
+			this.table.render();
+			this.$el.html('Table shown');
+			//this.categories.render();
+		} else {
+			this.startLoading();
+		}
+		return this;
+	}
+
+}
+
+$(function() {
+	var app = new AppView();
+	app.render();
+});
+
