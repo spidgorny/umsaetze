@@ -22,44 +22,8 @@ function asyncLoop(arr, callback, done) {
 }
 exports.asyncLoop = asyncLoop;
 var Expenses_1 = require('./Expenses');
+var ExpenseTable_1 = require('./ExpenseTable');
 require('datejs');
-var ExpenseTable = (function (_super) {
-    __extends(ExpenseTable, _super);
-    function ExpenseTable(options) {
-        _super.call(this, options);
-        /**
-         * Too early, wait until initialize()
-         * @type {JQuery}
-         */
-        //el = $('#expenseTable');
-        this.template = _.template($('#rowTemplate').html());
-        this.setElement($('#expenseTable'));
-        this.listenTo(this.model, 'change', this.render);
-    }
-    ExpenseTable.prototype.render = function () {
-        var _this = this;
-        console.log('ExpenseTable.render()', this.model.size());
-        console.log(this.model);
-        var rows = [];
-        this.model.each(function (transaction) {
-            //console.log(transaction);
-            var attributes = transaction.toJSON();
-            if (attributes.hasOwnProperty('date')) {
-                rows.push(_this.template(attributes));
-            }
-            else {
-                console.log('no date', attributes);
-            }
-        });
-        console.log('rendering', rows.length, 'rows');
-        this.$el.append(rows.join('\n'));
-        //console.log(this.$el);
-        $('#dateFrom').html(this.model.getDateFrom().toString('yyyy-MM-dd'));
-        $('#dateTill').html(this.model.getDateTill().toString('yyyy-MM-dd'));
-        return this;
-    };
-    return ExpenseTable;
-}(Backbone.View));
 var CategoryView_1 = require('./CategoryView');
 var AppView = (function (_super) {
     __extends(AppView, _super);
@@ -69,7 +33,7 @@ var AppView = (function (_super) {
         console.log('construct AppView');
         this.setElement($('#app'));
         this.model = new Expenses_1["default"]();
-        this.table = new ExpenseTable({
+        this.table = new ExpenseTable_1["default"]({
             model: this.model,
             el: $('#expenseTable')
         });
