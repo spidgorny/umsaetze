@@ -2,6 +2,8 @@
   "globalDependencies": {
     "node": "registry:dt/node#6.0.0+20160720070758",
     "require": "registry:dt/require#2.1.20+20160316155526",
-    "promise": "registry:dt/promise"
+    "promise": "registry:dt/promise",
+    "backbone": "registry:dt/backbone",
+    "jquery": "registry:dt/jquery"
   }
 }

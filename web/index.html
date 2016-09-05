@@ -305,9 +305,25 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div class="flot-chart">
-                                <div class="flot-chart-content" id="flot-line-chart"></div>
+                            <div id="app">
+								<p>App</p>
                             </div>
+							<table class="table">
+								<thead>
+								<tr>
+									<td>Date</td>
+									<td>Amount</td>
+									<td>Category</td>
+									<td>Note</td>
+								</tr>
+								</thead>
+								<tbody id="expenseTable">
+
+								</tbody>
+								<tfoot>
+
+								</tfoot>
+							</table>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -323,7 +339,7 @@
     <!-- /#wrapper -->
 
     <!-- jQuery -->
-    <script src="../startbootstrap-sb-admin-2/vendor/jquery/jquery.min.js"></script>
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../startbootstrap-sb-admin-2/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -332,19 +348,46 @@
     <script src="../startbootstrap-sb-admin-2/vendor/metisMenu/metisMenu.min.js"></script>
 
     <!-- Flot Charts JavaScript -->
-    <script src="../startbootstrap-sb-admin-2/vendor/flot/excanvas.min.js"></script>
-    <script src="../startbootstrap-sb-admin-2/vendor/flot/jquery.flot.js"></script>
-    <script src="../startbootstrap-sb-admin-2/vendor/flot/jquery.flot.pie.js"></script>
-    <script src="../startbootstrap-sb-admin-2/vendor/flot/jquery.flot.resize.js"></script>
-    <script src="../startbootstrap-sb-admin-2/vendor/flot/jquery.flot.time.js"></script>
-    <script src="../startbootstrap-sb-admin-2/vendor/flot-tooltip/jquery.flot.tooltip.min.js"></script>
-    <script src="../startbootstrap-sb-admin-2/data/flot-data.js"></script>
+    <!--<script src="../startbootstrap-sb-admin-2/vendor/flot/excanvas.min.js"></script>-->
+    <!--<script src="../startbootstrap-sb-admin-2/vendor/flot/jquery.flot.js"></script>-->
+    <!--<script src="../startbootstrap-sb-admin-2/vendor/flot/jquery.flot.pie.js"></script>-->
+    <!--<script src="../startbootstrap-sb-admin-2/vendor/flot/jquery.flot.resize.js"></script>-->
+    <!--<script src="../startbootstrap-sb-admin-2/vendor/flot/jquery.flot.time.js"></script>-->
+    <!--<script src="../startbootstrap-sb-admin-2/vendor/flot-tooltip/jquery.flot.tooltip.min.js"></script>-->
+    <!--<script src="../startbootstrap-sb-admin-2/data/flot-data.js"></script>-->
 
     <!-- Custom Theme JavaScript -->
     <script src="../startbootstrap-sb-admin-2/dist/js/sb-admin-2.js"></script>
 
-	<script src="../node_modules/backbone/backbone-min.js"></script>
+	<script src="../node_modules/underscore/underscore.js"></script>
+	<script src="../node_modules/backbone/backbone.js"></script>
+	<script src="../node_modules/papaparse/papaparse.min.js"></script>
 	<script src="umsaetze.js"></script>
+
+<script type="text/template" id="loadingBar">
+	<div class="progress">
+		<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+			<span class="sr-only">45% Complete</span>
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="rowTemplate">
+	<tr>
+		<td>
+			<%- date %>
+		</td>
+		<td>
+			<%- amount %>
+		</td>
+		<td>
+			<%- category %>
+		</td>
+		<td>
+			<%- note %>
+		</td>
+	</tr>
+</script>
 
 </body>
 
