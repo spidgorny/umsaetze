@@ -10,15 +10,13 @@ var Transaction = (function (_super) {
     function Transaction() {
         _super.apply(this, arguments);
     }
-    Transaction.prototype.initialize = function (row) {
-        //console.log('Transaction.initialize', row);
-    };
     return Transaction;
 }(Backbone.Model));
 var Expenses = (function (_super) {
     __extends(Expenses, _super);
     function Expenses() {
         _super.apply(this, arguments);
+        this.attributes = null;
         this.model = Transaction;
         this.csvUrl = '../umsaetze-1090729-2016-07-27-00-11-29.import.csv';
     }
@@ -31,7 +29,7 @@ var Expenses = (function (_super) {
                 dynamicTyping: true,
                 skipEmptyLines: true
             });
-            console.log(csv);
+            //console.log(csv);
             _.map(csv.data, function (row) {
                 //console.log(row);
                 _this.add(new Transaction(row));
@@ -46,19 +44,17 @@ var Expenses = (function (_super) {
 }(Backbone.Collection));
 var ExpenseTable = (function (_super) {
     __extends(ExpenseTable, _super);
-    function ExpenseTable() {
-        _super.apply(this, arguments);
+    function ExpenseTable(options) {
+        _super.call(this, options);
         /**
          * Too early, wait until initialize()
          * @type {JQuery}
          */
-        this.el = $('#expenseTable');
+        //el = $('#expenseTable');
         this.template = _.template($('#rowTemplate').html());
-    }
-    ExpenseTable.prototype.initialize = function () {
         this.setElement($('#expenseTable'));
         this.listenTo(this.model, 'change', this.render);
-    };
+    }
     ExpenseTable.prototype.render = function () {
         var _this = this;
         console.log('ExpenseTable.render()', this.model.size());
@@ -76,49 +72,52 @@ var ExpenseTable = (function (_super) {
         });
         console.log('rendering', rows.length, 'rows');
         this.$el.append(rows.join('\n'));
-        console.log(this.$el);
+        //console.log(this.$el);
         return this;
     };
     return ExpenseTable;
 }(Backbone.View));
-var AppView = Backbone.View.extend({
-    el: $('#app'),
-    collection: null,
-    table: null,
-    initialize: function () {
+var AppView = (function (_super) {
+    __extends(AppView, _super);
+    function AppView() {
         var _this = this;
+        this.table = null;
         console.log('construct AppView');
-        this.listenTo(this.model, "change", this.render);
-        this.collection = new Expenses();
+        this.setElement($('#app'));
+        this.model = new Expenses();
         this.table = new ExpenseTable({
-            model: this.collection
+            model: this.model,
+            el: $('#expenseTable')
         });
         this.startLoading();
-        this.collection.fetch({
+        this.model.fetch({
             success: function () {
                 _this.stopLoading();
             }
         });
-    },
-    startLoading: function () {
+        this.listenTo(this.model, "change", this.render);
+    }
+    AppView.prototype.startLoading = function () {
         console.log('startLoading');
         var template = _.template($('#loadingBar').html());
         this.$el.html(template());
-    },
-    stopLoading: function () {
+    };
+    AppView.prototype.stopLoading = function () {
         console.log('stopLoading');
         this.$el.html('Done');
-    },
-    render: function () {
-        console.log('AppView.render()');
-        if (this.collection.size()) {
-            this.$el.html(this.table);
+    };
+    AppView.prototype.render = function () {
+        console.log('AppView.render()', this.model);
+        if (this.model && this.model.size()) {
+            this.table.render();
+            this.$el.html('Table shown');
         }
         else {
             this.startLoading();
         }
-    }
-});
+    };
+    return AppView;
+}(Backbone.View));
 $(function () {
     var app = new AppView();
     app.render();

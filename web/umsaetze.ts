@@ -5,13 +5,15 @@ import CollectionFetchOptions = Backbone.CollectionFetchOptions;
 
 class Transaction extends Backbone.Model {
 
-	initialize(row) {
+	// constructor(row) {
 		//console.log('Transaction.initialize', row);
-	}
+	// }
 
 }
 
 class Expenses extends Backbone.Collection<Transaction> {
+
+	attributes = null;
 
 	model = Transaction;
 
@@ -25,7 +27,7 @@ class Expenses extends Backbone.Collection<Transaction> {
 				dynamicTyping: true,
 				skipEmptyLines: true
 			});
-			console.log(csv);
+			//console.log(csv);
 			_.map(csv.data, (row) => {
 				//console.log(row);
 				this.add(new Transaction(row));
@@ -41,15 +43,18 @@ class Expenses extends Backbone.Collection<Transaction> {
 
 class ExpenseTable extends Backbone.View<Expenses> {
 
+	model: Expenses;
+
 	/**
 	 * Too early, wait until initialize()
 	 * @type {JQuery}
 	 */
-	el = $('#expenseTable');
+	//el = $('#expenseTable');
 
 	template = _.template($('#rowTemplate').html());
 
-	initialize() {
+	constructor(options?) {
+		super(options);
 		this.setElement($('#expenseTable'));
 		this.listenTo(this.model, 'change', this.render);
 	}
@@ -69,59 +74,59 @@ class ExpenseTable extends Backbone.View<Expenses> {
 		});
 		console.log('rendering', rows.length, 'rows');
 		this.$el.append(rows.join('\n'));
-		console.log(this.$el);
+		//console.log(this.$el);
 		return this;
 	}
 
 }
 
-var AppView = Backbone.View.extend({
+class AppView extends Backbone.View<Expenses> {
 
-	el: $('#app'),
+	model: Expenses;
 
-	collection: null,
+	table = null;
 
-	table: null,
-
-	initialize: function() {
+	constructor() {
 		console.log('construct AppView');
-		this.listenTo(this.model, "change", this.render);
-		this.collection = new Expenses();
+		this.setElement($('#app'));
+		this.model = new Expenses();
 		this.table = new ExpenseTable({
-			model: this.collection,
+			model: this.model,
+			el: $('#expenseTable')
 		});
 
 		this.startLoading();
-		this.collection.fetch({
+		this.model.fetch({
 			success: () => {
 				this.stopLoading();
 			}
 		});
-	},
 
-	startLoading: function () {
+		this.listenTo(this.model, "change", this.render);
+	}
+
+	startLoading() {
 		console.log('startLoading');
 		var template = _.template($('#loadingBar').html());
 		this.$el.html(template());
-	},
+	}
 
-	stopLoading: function () {
+	stopLoading() {
 		console.log('stopLoading');
 		this.$el.html('Done');
-	},
+	}
 
-	render: function() {
-		console.log('AppView.render()');
-		if (this.collection.size()) {
-			this.$el.html(
-				this.table
-			);
+	render() {
+		console.log('AppView.render()', this.model);
+		if (this.model && this.model.size()) {
+			this.table.render();
+			this.$el.html('Table shown');
 		} else {
 			this.startLoading();
 		}
 	}
 
-});
+}
 
 $(function() {
 	var app = new AppView();
