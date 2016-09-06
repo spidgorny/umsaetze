@@ -13,33 +13,33 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 	constructor(options?) {
 		super(options);
 		this.setElement($('#expenseTable'));
-		this.listenTo(this.model, 'change', this.render.bind(this));
+
+		// slow re-rendering of the whole table when model changes
+		//this.listenTo(this.model, 'change', this.render);
 	}
 
 	setCategoryList(list: CategoryCollection) {
 		this.categoryList = list;
 	}
 
-	render() {
+	render(options?: any) {
+		if (options && option.noRender) {
+			console.log('ExpenseTable.noRender');
+			return;
+		}
 		console.log('ExpenseTable.render()', this.model.size());
 		console.log(this.model);
 		var rows = [];
 		this.model.each((transaction: Transaction) => {
 			//console.log(transaction);
 			var attributes = transaction.toJSON();
-
-			//if (attributes.amount == -15.53) {
-				//console.log(attributes, transaction);
-			//}
-
-			if (attributes.hasOwnProperty('date')) {
+			if (attributes.visible) {
+				attributes.sDate = attributes.date.toString('yyyy-MM-dd');
 				rows.push(this.template(attributes));
-			} else {
-				console.log('no date', attributes);
 			}
 		});
 		console.log('rendering', rows.length, 'rows');
-		this.$el.append(rows.join('\n'));
+		this.$el.html(rows.join('\n'));
 		//console.log(this.$el);
 
 		$('#dateFrom').html(this.model.getDateFrom().toString('yyyy-MM-dd'));
@@ -56,7 +56,7 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 		if ($select.find('option').length == 1) {
 			let defVal = $select.find('option').html();
 			let options = this.categoryList.getOptions();
-			console.log(options);
+			//console.log(options);
 			$.each(options, (key, value) => {
 				if (value != defVal) {
 					$select

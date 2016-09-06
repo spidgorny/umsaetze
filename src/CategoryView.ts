@@ -22,7 +22,7 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 		var sum: number = <number>_.reduce(categoryCount,
 			(memo, item: CategoryCount) => {
 				// only expenses
-				if (item.catName != 'Default' && item.amount < 0) {
+				if (item.catName != 'Default') {
 					return memo + item.amount;
 				} else {
 					return memo;
@@ -31,12 +31,14 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 		//console.log('sum', sum);
 
 		categoryCount = _.sortBy(categoryCount, (el: CategoryCount) => {
-			return -el.amount;
+			return Math.abs(el.amount);
 		}).reverse();
 
 		_.each(categoryCount, (catCount: CategoryCount) => {
-			if (catCount.catName != 'Default' && catCount.amount < 0) {
-				var width = Math.round(100 * (-catCount.amount) / -sum) + '%';
+			if (catCount.catName != 'Default') {
+				var width = Math.round(
+					100 * Math.abs(catCount.amount) / Math.abs(sum)
+					) + '%';
 				//console.log(catCount.catName, width, catCount.count, catCount.amount);
 				content.push(this.template(
 					_.extend(catCount, {
@@ -51,9 +53,10 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 	}
 
 	change() {
-		console.log('model changed', this.model);
+		console.log('CategoryView changed', this.model);
 		if (this.model) {
-			this.model.change();
+			//console.log('Calling CategoryCollection.change()');
+			//this.model.change();	// called automagically
 			this.render();
 		} else {
 			console.error('Not rendering since this.model is undefined');

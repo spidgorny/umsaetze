@@ -11,10 +11,17 @@ var Transaction = (function (_super) {
     __extends(Transaction, _super);
     function Transaction(attributes, options) {
         _super.call(this, attributes, options);
+        this.defaults = {
+            visible: true
+        };
         this.set('id', md5(this.get('date') + this.get('amount')));
+        // number
+        this.set('amount', parseFloat(this.get('amount')));
+        this.set('date', new Date(Date.parse(this.get('date'))));
+        this.set('visible', true);
     }
     Transaction.prototype.sign = function () {
-        return this.amount >= 0 ? 'positive' : 'negative';
+        return this.get('amount') >= 0 ? 'positive' : 'negative';
     };
     Transaction.prototype.toJSON = function () {
         var json = _super.prototype.toJSON.call(this);

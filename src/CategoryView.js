@@ -18,7 +18,7 @@ var CategoryView = (function (_super) {
         var categoryCount = this.model.getCategoryCount();
         var sum = _.reduce(categoryCount, function (memo, item) {
             // only expenses
-            if (item.catName != 'Default' && item.amount < 0) {
+            if (item.catName != 'Default') {
                 return memo + item.amount;
             }
             else {
@@ -27,11 +27,11 @@ var CategoryView = (function (_super) {
         }, 0);
         //console.log('sum', sum);
         categoryCount = _.sortBy(categoryCount, function (el) {
-            return -el.amount;
+            return Math.abs(el.amount);
         }).reverse();
         _.each(categoryCount, function (catCount) {
-            if (catCount.catName != 'Default' && catCount.amount < 0) {
-                var width = Math.round(100 * (-catCount.amount) / -sum) + '%';
+            if (catCount.catName != 'Default') {
+                var width = Math.round(100 * Math.abs(catCount.amount) / Math.abs(sum)) + '%';
                 //console.log(catCount.catName, width, catCount.count, catCount.amount);
                 content.push(_this.template(_.extend(catCount, {
                     width: width,
@@ -43,9 +43,10 @@ var CategoryView = (function (_super) {
         return this;
     };
     CategoryView.prototype.change = function () {
-        console.log('model changed', this.model);
+        console.log('CategoryView changed', this.model);
         if (this.model) {
-            this.model.change();
+            //console.log('Calling CategoryCollection.change()');
+            //this.model.change();	// called automagically
             this.render();
         }
         else {

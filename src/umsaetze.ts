@@ -65,6 +65,7 @@ class AppView extends Backbone.View<Expenses> {
 		this.listenTo(this.model, "change", this.render);
 		//this.listenTo(this.model, "change", this.table.render);
 		//this.listenTo(this.model, "change", this.categories.change); // wrong model inside ? wft?!
+		$('.custom-search-form input').on('keyup', this.onSearch.bind(this));
 	}
 
 	startLoading() {
@@ -80,14 +81,16 @@ class AppView extends Backbone.View<Expenses> {
 
 	render() {
 		console.log('AppView.render()', this.model.size());
-		if (this.model && this.model.size()) {
-			//this.table.render();
-			this.$el.html('Table shown');
-			this.categories.change();
-		} else {
-			this.startLoading();
-		}
+		this.table.render();
+		this.$el.html('Table shown');
+		this.categories.change();
 		return this;
+	}
+
+	onSearch(event) {
+		var q = $(event.target).val();
+		console.log(q);
+		this.model.filterVisible(q);
 	}
 
 }

@@ -49,13 +49,14 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		if (options.success) {
 			options.success.call();
 		}
+		console.log('Trigger change on Expenses');
 		this.trigger('change');
 	}
 
 	getDateFrom() {
 		let min = new Date().valueOf();
-		this.each((row) => {
-			let date: number = Date.parse(row.get('date'));
+		this.each((row: Transaction) => {
+			let date: number = row.get('date').valueOf();
 			if (date < min) {
 				min = date;
 			}
@@ -65,8 +66,8 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 
 	getDateTill() {
 		let min = new Date('1970-01-01').valueOf();
-		this.each((row) => {
-			let date: number = Date.parse(row.get('date'));
+		this.each((row: Transaction) => {
+			let date: number = row.get('date').valueOf();
 			if (date > min) {
 				min = date;
 			}
@@ -74,4 +75,13 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		return new Date(min);
 	}
 
+	filterVisible(q: string) {
+		this.each((row: Transaction) => {
+			if (row.get('note').indexOf(q) == -1) {
+				row.set('visible', false, { noRender: true});
+			} else {
+				row.set('visible', true, { noRender: true});
+			}
+		});
+	}
 }

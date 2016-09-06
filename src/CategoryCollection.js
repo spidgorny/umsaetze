@@ -32,7 +32,7 @@ var CategoryCollection = (function (_super) {
         var exists = _.findWhere(this.categoryCount, { catName: categoryName });
         if (exists) {
             exists.count++;
-            exists.amount += parseFloat(transaction.get('amount'));
+            exists.amount += transaction.get('amount');
         }
         else {
             this.categoryCount.push({

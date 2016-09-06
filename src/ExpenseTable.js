@@ -10,31 +10,31 @@ var ExpenseTable = (function (_super) {
         _super.call(this, options);
         this.template = _.template($('#rowTemplate').html());
         this.setElement($('#expenseTable'));
-        this.listenTo(this.model, 'change', this.render.bind(this));
+        // slow re-rendering of the whole table when model changes
+        //this.listenTo(this.model, 'change', this.render);
     }
     ExpenseTable.prototype.setCategoryList = function (list) {
         this.categoryList = list;
     };
-    ExpenseTable.prototype.render = function () {
+    ExpenseTable.prototype.render = function (options) {
         var _this = this;
+        if (options && option.noRender) {
+            console.log('ExpenseTable.noRender');
+            return;
+        }
         console.log('ExpenseTable.render()', this.model.size());
         console.log(this.model);
         var rows = [];
         this.model.each(function (transaction) {
             //console.log(transaction);
             var attributes = transaction.toJSON();
-            //if (attributes.amount == -15.53) {
-            //console.log(attributes, transaction);
-            //}
-            if (attributes.hasOwnProperty('date')) {
+            if (attributes.visible) {
+                attributes.sDate = attributes.date.toString('yyyy-MM-dd');
                 rows.push(_this.template(attributes));
-            }
-            else {
-                console.log('no date', attributes);
             }
         });
         console.log('rendering', rows.length, 'rows');
-        this.$el.append(rows.join('\n'));
+        this.$el.html(rows.join('\n'));
         //console.log(this.$el);
         $('#dateFrom').html(this.model.getDateFrom().toString('yyyy-MM-dd'));
         $('#dateTill').html(this.model.getDateTill().toString('yyyy-MM-dd'));
@@ -47,7 +47,7 @@ var ExpenseTable = (function (_super) {
         if ($select.find('option').length == 1) {
             var defVal_1 = $select.find('option').html();
             var options = this.categoryList.getOptions();
-            console.log(options);
+            //console.log(options);
             $.each(options, function (key, value) {
                 if (value != defVal_1) {
                     $select

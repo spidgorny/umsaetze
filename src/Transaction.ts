@@ -11,11 +11,19 @@ export default class Transaction extends Backbone.Model {
 
 	constructor(attributes: any, options?: any) {
 		super(attributes, options);
+		this.defaults = <any>{
+			visible: true,
+		};
+
 		this.set('id', md5(this.get('date')+this.get('amount')));
+		// number
+		this.set('amount', parseFloat(this.get('amount')));
+		this.set('date', new Date(Date.parse(this.get('date'))));
+		this.set('visible', true);
 	}
 
 	sign() {
-		return this.amount >= 0 ? 'positive' : 'negative';
+		return this.get('amount') >= 0 ? 'positive' : 'negative';
 	}
 
 	toJSON() {

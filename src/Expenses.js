@@ -52,12 +52,13 @@ var Expenses = (function (_super) {
         if (options.success) {
             options.success.call();
         }
+        console.log('Trigger change on Expenses');
         this.trigger('change');
     };
     Expenses.prototype.getDateFrom = function () {
         var min = new Date().valueOf();
         this.each(function (row) {
-            var date = Date.parse(row.get('date'));
+            var date = row.get('date').valueOf();
             if (date < min) {
                 min = date;
             }
@@ -67,12 +68,22 @@ var Expenses = (function (_super) {
     Expenses.prototype.getDateTill = function () {
         var min = new Date('1970-01-01').valueOf();
         this.each(function (row) {
-            var date = Date.parse(row.get('date'));
+            var date = row.get('date').valueOf();
             if (date > min) {
                 min = date;
             }
         });
         return new Date(min);
+    };
+    Expenses.prototype.filterVisible = function (q) {
+        this.each(function (row) {
+            if (row.get('note').indexOf(q) == -1) {
+                row.set('visible', false, { noRender: true });
+            }
+            else {
+                row.set('visible', true, { noRender: true });
+            }
+        });
     };
     return Expenses;
 }(Backbone.Collection));
