@@ -1,22 +1,23 @@
 import Expenses from "./Expenses";
 import Transaction from "./Transaction";
+import CategoryCollection from "./CategoryCollection";
 
 export default class ExpenseTable extends Backbone.View<Expenses> {
 
 	model: Expenses;
 
-	/**
-	 * Too early, wait until initialize()
-	 * @type {JQuery}
-	 */
-		//el = $('#expenseTable');
+	categoryList: CategoryCollection;
 
 	template = _.template($('#rowTemplate').html());
 
 	constructor(options?) {
 		super(options);
 		this.setElement($('#expenseTable'));
-		this.listenTo(this.model, 'change', this.render);
+		this.listenTo(this.model, 'change', this.render.bind(this));
+	}
+
+	setCategoryList(list: CategoryCollection) {
+		this.categoryList = list;
 	}
 
 	render() {
@@ -26,6 +27,11 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 		this.model.each((transaction: Transaction) => {
 			//console.log(transaction);
 			var attributes = transaction.toJSON();
+
+			if (attributes.amount == -15.53) {
+				console.log(attributes, transaction);
+			}
+
 			if (attributes.hasOwnProperty('date')) {
 				rows.push(this.template(attributes));
 			} else {
@@ -45,11 +51,31 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 	}
 
 	openSelect(event) {
-		console.log('openSelect', this, event);
+		//console.log('openSelect', this, event);
 		var $select = $(event.target);
 		if ($select.find('option').length == 1) {
-			this.
+			let defVal = $select.find('option').html();
+			let options = this.categoryList.getOptions();
+			console.log(options);
+			$.each(options, (key, value) => {
+				if (value != defVal) {
+					$select
+						.append($("<option></option>")
+							.attr("value", value)
+							.text(value));
+				}
+			});
+			$select.on('change', this.newCategory.bind(this));
 		}
+	}
+
+	newCategory(event) {
+		//console.log(event);
+		let $select = $(event.target);
+		var id = $select.closest('tr').attr('data-id');
+		console.log(id);
+		let transaction = this.model.get(id);
+		console.log(transaction);
 	}
 
 }

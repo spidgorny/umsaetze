@@ -7,6 +7,11 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var Expenses_1 = require('./Expenses');
+var ExpenseTable_1 = require('./ExpenseTable');
+var CategoryView_1 = require('./CategoryView');
+var CategoryCollection_1 = require("./CategoryCollection");
+require('datejs');
 function asyncLoop(arr, callback, done) {
     (function loop(i) {
         callback(arr[i], i, arr.length); //callback when the loop goes on
@@ -21,10 +26,6 @@ function asyncLoop(arr, callback, done) {
     }(0)); //start with 0
 }
 exports.asyncLoop = asyncLoop;
-var Expenses_1 = require('./Expenses');
-var ExpenseTable_1 = require('./ExpenseTable');
-require('datejs');
-var CategoryView_1 = require('./CategoryView');
 var AppView = (function (_super) {
     __extends(AppView, _super);
     function AppView(options) {
@@ -33,12 +34,15 @@ var AppView = (function (_super) {
         console.log('construct AppView');
         this.setElement($('#app'));
         this.model = new Expenses_1["default"]();
+        this.categoryList = new CategoryCollection_1["default"]();
+        this.categoryList.setExpenses(this.model);
         this.table = new ExpenseTable_1["default"]({
             model: this.model,
             el: $('#expenseTable')
         });
+        this.table.setCategoryList(this.categoryList);
         this.categories = new CategoryView_1["default"]({
-            model: this.model
+            model: this.categoryList
         });
         this.startLoading();
         this.model.fetch({

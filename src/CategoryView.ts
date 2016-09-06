@@ -2,30 +2,24 @@
 
 import Expenses from "./Expenses";
 import Transaction from "./Transaction";
-
-class CategoryCount {
-	catName: String;
-	count: number;
-	amount: number;
-}
+import CategoryCollection from "./CategoryCollection";
+import CategoryCount from "./CategoryCount";
 
 export default class CategoryView extends Backbone.View<Expenses> {
 
-	model: Expenses;
-
-	categoryCount = [];
+	model: CategoryCollection;
 
 	template = _.template($('#categoryTemplate').html());
 
 	constructor(options) {
 		super(options);
 		this.setElement($('#categories'));
-		this.categoryCount = [];
 	}
 
 	render() {
 		var content = [];
-		var sum: number = <number>_.reduce(this.categoryCount,
+		var categoryCount = this.model.getCategoryCount();
+		var sum: number = <number>_.reduce(categoryCount,
 			(memo, item: CategoryCount) => {
 				// only expenses
 				if (item.catName != 'Default' && item.amount < 0) {
@@ -36,11 +30,11 @@ export default class CategoryView extends Backbone.View<Expenses> {
 			}, 0);
 		console.log('sum', sum);
 
-		this.categoryCount = _.sortBy(this.categoryCount, (el: CategoryCount) => {
+		categoryCount = _.sortBy(categoryCount, (el: CategoryCount) => {
 			return -el.amount;
 		}).reverse();
 
-		_.each(this.categoryCount, (catCount: CategoryCount) => {
+		_.each(categoryCount, (catCount: CategoryCount) => {
 			if (catCount.catName != 'Default' && catCount.amount < 0) {
 				var width = Math.round(100 * (-catCount.amount) / -sum) + '%';
 				console.log(catCount.catName, width, catCount.count, catCount.amount);
@@ -58,21 +52,7 @@ export default class CategoryView extends Backbone.View<Expenses> {
 
 	change() {
 		console.log('model changed', this.model.size());
-		this.model.each((transaction: Transaction) => {
-			var categoryName = transaction.get('category');
-			var exists = _.findWhere(this.categoryCount, {catName: categoryName});
-			if (exists) {
-				exists.count++;
-				exists.amount += parseFloat(transaction.get('amount'));
-			} else {
-				this.categoryCount.push({
-					catName: categoryName,
-					count: 0,
-					amount: 0,
-				});
-			}
-		});
-		console.log(this.categoryCount);
+		this.model.change();
 		this.render();
 	}
 

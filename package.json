@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "clone-theme": "git clone https://github.com/BlackrockDigital/startbootstrap-sb-admin-2.git"
+    "clone-theme": "git clone https://github.com/BlackrockDigital/startbootstrap-sb-admin-2.git",
+    "compile": "node_modules/.bin/browserify src/umsaetze.js -o web/bundle.js",
+    "watch": "node_modules/.bin/watchify src/umsaetze.js -o web/bundle.js -d -v"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +23,7 @@
     "exceljs": "^0.2.11",
     "iconv-lite": "^0.4.13",
     "jquery": "^3.1.0",
+    "md5": "^2.2.1",
     "papaparse": "^4.1.2",
     "progress": "^1.1.8",
     "promise": "^7.1.1",

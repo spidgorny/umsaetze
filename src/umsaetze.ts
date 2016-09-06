@@ -3,6 +3,12 @@
 /// <reference path="Expenses.ts" />
 
 import CollectionFetchOptions = Backbone.CollectionFetchOptions;
+import Expenses from './Expenses';
+import Transaction from './Transaction';
+import ExpenseTable from './ExpenseTable';
+import CategoryView from './CategoryView';
+import CategoryCollection from "./CategoryCollection";
+require('datejs');
 
 export function asyncLoop(arr: Array<any>, callback: Function, done?: Function) {
 	(function loop(i) {
@@ -19,19 +25,13 @@ export function asyncLoop(arr: Array<any>, callback: Function, done?: Function) 
 	}(0));                                         //start with 0
 }
 
-import Expenses from './Expenses';
-import Transaction from './Transaction';
-import ExpenseTable from './ExpenseTable';
-require('datejs');
-
-
-import CategoryView from './CategoryView';
-
 class AppView extends Backbone.View<Expenses> {
 
 	model: Expenses;
 
 	table: ExpenseTable;
+
+	categoryList: CategoryCollection;
 
 	categories: CategoryView;
 
@@ -39,13 +39,20 @@ class AppView extends Backbone.View<Expenses> {
 		super(options);
 		console.log('construct AppView');
 		this.setElement($('#app'));
+
 		this.model = new Expenses();
+
+		this.categoryList = new CategoryCollection();
+		this.categoryList.setExpenses(this.model);
+
 		this.table = new ExpenseTable({
 			model: this.model,
 			el: $('#expenseTable')
 		});
+		this.table.setCategoryList(this.categoryList);
+
 		this.categories = new CategoryView({
-			model: this.model,
+			model: this.categoryList,
 		});
 
 		this.startLoading();

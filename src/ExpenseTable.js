@@ -8,15 +8,13 @@ var ExpenseTable = (function (_super) {
     __extends(ExpenseTable, _super);
     function ExpenseTable(options) {
         _super.call(this, options);
-        /**
-         * Too early, wait until initialize()
-         * @type {JQuery}
-         */
-        //el = $('#expenseTable');
         this.template = _.template($('#rowTemplate').html());
         this.setElement($('#expenseTable'));
-        this.listenTo(this.model, 'change', this.render);
+        this.listenTo(this.model, 'change', this.render.bind(this));
     }
+    ExpenseTable.prototype.setCategoryList = function (list) {
+        this.categoryList = list;
+    };
     ExpenseTable.prototype.render = function () {
         var _this = this;
         console.log('ExpenseTable.render()', this.model.size());
@@ -25,6 +23,9 @@ var ExpenseTable = (function (_super) {
         this.model.each(function (transaction) {
             //console.log(transaction);
             var attributes = transaction.toJSON();
+            if (attributes.amount == -15.53) {
+                console.log(attributes, transaction);
+            }
             if (attributes.hasOwnProperty('date')) {
                 rows.push(_this.template(attributes));
             }
@@ -41,12 +42,30 @@ var ExpenseTable = (function (_super) {
         return this;
     };
     ExpenseTable.prototype.openSelect = function (event) {
-        console.log('openSelect', this, event);
+        //console.log('openSelect', this, event);
         var $select = $(event.target);
         if ($select.find('option').length == 1) {
-            this.
-            ;
+            var defVal_1 = $select.find('option').html();
+            var options = this.categoryList.getOptions();
+            console.log(options);
+            $.each(options, function (key, value) {
+                if (value != defVal_1) {
+                    $select
+                        .append($("<option></option>")
+                        .attr("value", value)
+                        .text(value));
+                }
+            });
+            $select.on('change', this.newCategory.bind(this));
         }
+    };
+    ExpenseTable.prototype.newCategory = function (event) {
+        //console.log(event);
+        var $select = $(event.target);
+        var id = $select.closest('tr').attr('data-id');
+        console.log(id);
+        var transaction = this.model.get(id);
+        console.log(transaction);
     };
     return ExpenseTable;
 }(Backbone.View));

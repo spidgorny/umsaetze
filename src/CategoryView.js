@@ -5,24 +5,18 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var CategoryCount = (function () {
-    function CategoryCount() {
-    }
-    return CategoryCount;
-}());
 var CategoryView = (function (_super) {
     __extends(CategoryView, _super);
     function CategoryView(options) {
         _super.call(this, options);
-        this.categoryCount = [];
         this.template = _.template($('#categoryTemplate').html());
         this.setElement($('#categories'));
-        this.categoryCount = [];
     }
     CategoryView.prototype.render = function () {
         var _this = this;
         var content = [];
-        var sum = _.reduce(this.categoryCount, function (memo, item) {
+        var categoryCount = this.model.getCategoryCount();
+        var sum = _.reduce(categoryCount, function (memo, item) {
             // only expenses
             if (item.catName != 'Default' && item.amount < 0) {
                 return memo + item.amount;
@@ -32,10 +26,10 @@ var CategoryView = (function (_super) {
             }
         }, 0);
         console.log('sum', sum);
-        this.categoryCount = _.sortBy(this.categoryCount, function (el) {
+        categoryCount = _.sortBy(categoryCount, function (el) {
             return -el.amount;
         }).reverse();
-        _.each(this.categoryCount, function (catCount) {
+        _.each(categoryCount, function (catCount) {
             if (catCount.catName != 'Default' && catCount.amount < 0) {
                 var width = Math.round(100 * (-catCount.amount) / -sum) + '%';
                 console.log(catCount.catName, width, catCount.count, catCount.amount);
@@ -49,24 +43,8 @@ var CategoryView = (function (_super) {
         return this;
     };
     CategoryView.prototype.change = function () {
-        var _this = this;
         console.log('model changed', this.model.size());
-        this.model.each(function (transaction) {
-            var categoryName = transaction.get('category');
-            var exists = _.findWhere(_this.categoryCount, { catName: categoryName });
-            if (exists) {
-                exists.count++;
-                exists.amount += parseFloat(transaction.get('amount'));
-            }
-            else {
-                _this.categoryCount.push({
-                    catName: categoryName,
-                    count: 0,
-                    amount: 0
-                });
-            }
-        });
-        console.log(this.categoryCount);
+        this.model.change();
         this.render();
     };
     return CategoryView;

@@ -375,11 +375,11 @@
 </script>
 
 <script type="text/template" id="rowTemplate">
-	<tr>
+	<tr data-id="<%- id %>">
 		<td>
 			<%- date %>
 		</td>
-		<td class="money <% sign %>">
+		<td class="money <%- sign %>">
 			<%- amount %>
 		</td>
 		<td>
@@ -397,9 +397,8 @@
 	<div class="category row">
 		<div class="col-md-12">
 			<div><%- catName %>: <%- amount %> (<%- count %>)</div>
-			<div class="progress" style="margin-bottom: 0">
+			<div class="progress" style="margin-bottom: 0; height: 8px">
 				<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: <%- width %>">
-					<span><%- width %></span>
 				</div>
 			</div>
 		</div>

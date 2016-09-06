@@ -1,4 +1,6 @@
+///<reference path="../typings/index.d.ts"/>
 ///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
+var md5 = require('md5');
 
 export default class Transaction extends Backbone.Model {
 
@@ -7,6 +9,11 @@ export default class Transaction extends Backbone.Model {
 	amount: Number;
 	note: String;
 
+	constructor(attributes: any, options?: any) {
+		super(attributes, options);
+		this.id = md5(this.get('date')+this.get('amount'));
+	}
+
 	sign() {
 		return this.amount >= 0 ? 'positive' : 'negative';
 	}
@@ -14,6 +21,7 @@ export default class Transaction extends Backbone.Model {
 	toJSON() {
 		var json = super.toJSON();
 		json.sign = this.sign();
+		json.id = this.id;
 		return json;
 	}
 
