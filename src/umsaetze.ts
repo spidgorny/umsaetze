@@ -8,7 +8,6 @@ import Transaction from './Transaction';
 import ExpenseTable from './ExpenseTable';
 import CategoryView from './CategoryView';
 import CategoryCollection from "./CategoryCollection";
-require('datejs');
 
 export function asyncLoop(arr: Array<any>, callback: Function, done?: Function) {
 	(function loop(i) {
@@ -54,6 +53,7 @@ class AppView extends Backbone.View<Expenses> {
 		this.categories = new CategoryView({
 			model: this.categoryList,
 		});
+		console.log('category view model', this.categories.model);
 
 		this.startLoading();
 		this.model.fetch({
@@ -62,8 +62,9 @@ class AppView extends Backbone.View<Expenses> {
 			}
 		});
 
-		this.listenTo(this.model, "change", this.render.bind(this));
-		this.listenTo(this.model, "change", this.categories.change.bind(this.categories));
+		this.listenTo(this.model, "change", this.render);
+		//this.listenTo(this.model, "change", this.table.render);
+		//this.listenTo(this.model, "change", this.categories.change); // wrong model inside ? wft?!
 	}
 
 	startLoading() {
@@ -78,11 +79,11 @@ class AppView extends Backbone.View<Expenses> {
 	}
 
 	render() {
-		console.log('AppView.render()', this.model);
+		console.log('AppView.render()', this.model.size());
 		if (this.model && this.model.size()) {
-			this.table.render();
+			//this.table.render();
 			this.$el.html('Table shown');
-			//this.categories.render();
+			this.categories.change();
 		} else {
 			this.startLoading();
 		}

@@ -23,9 +23,9 @@ var ExpenseTable = (function (_super) {
         this.model.each(function (transaction) {
             //console.log(transaction);
             var attributes = transaction.toJSON();
-            if (attributes.amount == -15.53) {
-                console.log(attributes, transaction);
-            }
+            //if (attributes.amount == -15.53) {
+            //console.log(attributes, transaction);
+            //}
             if (attributes.hasOwnProperty('date')) {
                 rows.push(_this.template(attributes));
             }
@@ -62,10 +62,14 @@ var ExpenseTable = (function (_super) {
     ExpenseTable.prototype.newCategory = function (event) {
         //console.log(event);
         var $select = $(event.target);
+        //console.log('selected', $select.val());
         var id = $select.closest('tr').attr('data-id');
-        console.log(id);
+        //console.log(id);
         var transaction = this.model.get(id);
-        console.log(transaction);
+        //console.log(transaction);
+        if (transaction) {
+            transaction.setCategory($select.val());
+        }
     };
     return ExpenseTable;
 }(Backbone.View));

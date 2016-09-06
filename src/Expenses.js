@@ -10,6 +10,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var umsaetze_1 = require('./umsaetze');
 var Transaction_1 = require('./Transaction');
+require('datejs');
 var Expenses = (function (_super) {
     __extends(Expenses, _super);
     function Expenses() {
@@ -41,7 +42,9 @@ var Expenses = (function (_super) {
         var percent = Math.round(100 * i / length);
         //console.log(row);
         $('.progress .progress-bar').width(percent + '%');
-        this.add(new Transaction_1["default"](row));
+        if (row && row.amount) {
+            this.add(new Transaction_1["default"](row));
+        }
         //this.trigger('change');
     };
     Expenses.prototype.processDone = function (count, options) {

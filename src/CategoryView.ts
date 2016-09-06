@@ -5,7 +5,7 @@ import Transaction from "./Transaction";
 import CategoryCollection from "./CategoryCollection";
 import CategoryCount from "./CategoryCount";
 
-export default class CategoryView extends Backbone.View<Expenses> {
+export default class CategoryView extends Backbone.View<CategoryCollection> {
 
 	model: CategoryCollection;
 
@@ -28,7 +28,7 @@ export default class CategoryView extends Backbone.View<Expenses> {
 					return memo;
 				}
 			}, 0);
-		console.log('sum', sum);
+		//console.log('sum', sum);
 
 		categoryCount = _.sortBy(categoryCount, (el: CategoryCount) => {
 			return -el.amount;
@@ -37,7 +37,7 @@ export default class CategoryView extends Backbone.View<Expenses> {
 		_.each(categoryCount, (catCount: CategoryCount) => {
 			if (catCount.catName != 'Default' && catCount.amount < 0) {
 				var width = Math.round(100 * (-catCount.amount) / -sum) + '%';
-				console.log(catCount.catName, width, catCount.count, catCount.amount);
+				//console.log(catCount.catName, width, catCount.count, catCount.amount);
 				content.push(this.template(
 					_.extend(catCount, {
 						width: width,
@@ -51,9 +51,13 @@ export default class CategoryView extends Backbone.View<Expenses> {
 	}
 
 	change() {
-		console.log('model changed', this.model.size());
-		this.model.change();
-		this.render();
+		console.log('model changed', this.model);
+		if (this.model) {
+			this.model.change();
+			this.render();
+		} else {
+			console.error('Not rendering since this.model is undefined');
+		}
 	}
 
 }

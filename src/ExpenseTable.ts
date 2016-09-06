@@ -28,9 +28,9 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 			//console.log(transaction);
 			var attributes = transaction.toJSON();
 
-			if (attributes.amount == -15.53) {
-				console.log(attributes, transaction);
-			}
+			//if (attributes.amount == -15.53) {
+				//console.log(attributes, transaction);
+			//}
 
 			if (attributes.hasOwnProperty('date')) {
 				rows.push(this.template(attributes));
@@ -72,10 +72,14 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 	newCategory(event) {
 		//console.log(event);
 		let $select = $(event.target);
+		//console.log('selected', $select.val());
 		var id = $select.closest('tr').attr('data-id');
-		console.log(id);
+		//console.log(id);
 		let transaction = this.model.get(id);
-		console.log(transaction);
+		//console.log(transaction);
+		if (transaction) {
+			transaction.setCategory($select.val());
+		}
 	}
 
 }

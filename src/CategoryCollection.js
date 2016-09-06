@@ -16,26 +16,31 @@ var CategoryCollection = (function (_super) {
     }
     CategoryCollection.prototype.setExpenses = function (ex) {
         this.expenses = ex;
-        this.listenTo(this.expenses, "change", this.change.bind(this));
+        this.listenTo(this.expenses, "change", this.change);
     };
     CategoryCollection.prototype.getCategoriesFromExpenses = function () {
         var _this = this;
         this.expenses.each(function (transaction) {
             var categoryName = transaction.get('category');
-            var exists = _.findWhere(_this.categoryCount, { catName: categoryName });
-            if (exists) {
-                exists.count++;
-                exists.amount += parseFloat(transaction.get('amount'));
-            }
-            else {
-                _this.categoryCount.push({
-                    catName: categoryName,
-                    count: 0,
-                    amount: 0
-                });
+            if (categoryName) {
+                _this.incrementCategoryData(categoryName, transaction);
             }
         });
-        console.log(this.categoryCount);
+        //console.log(this.categoryCount);
+    };
+    CategoryCollection.prototype.incrementCategoryData = function (categoryName, transaction) {
+        var exists = _.findWhere(this.categoryCount, { catName: categoryName });
+        if (exists) {
+            exists.count++;
+            exists.amount += parseFloat(transaction.get('amount'));
+        }
+        else {
+            this.categoryCount.push({
+                catName: categoryName,
+                count: 0,
+                amount: 0
+            });
+        }
     };
     CategoryCollection.prototype.change = function () {
         console.log('CategoryCollection.change');

@@ -25,14 +25,14 @@ var CategoryView = (function (_super) {
                 return memo;
             }
         }, 0);
-        console.log('sum', sum);
+        //console.log('sum', sum);
         categoryCount = _.sortBy(categoryCount, function (el) {
             return -el.amount;
         }).reverse();
         _.each(categoryCount, function (catCount) {
             if (catCount.catName != 'Default' && catCount.amount < 0) {
                 var width = Math.round(100 * (-catCount.amount) / -sum) + '%';
-                console.log(catCount.catName, width, catCount.count, catCount.amount);
+                //console.log(catCount.catName, width, catCount.count, catCount.amount);
                 content.push(_this.template(_.extend(catCount, {
                     width: width,
                     amount: Math.round(catCount.amount)
@@ -43,9 +43,14 @@ var CategoryView = (function (_super) {
         return this;
     };
     CategoryView.prototype.change = function () {
-        console.log('model changed', this.model.size());
-        this.model.change();
-        this.render();
+        console.log('model changed', this.model);
+        if (this.model) {
+            this.model.change();
+            this.render();
+        }
+        else {
+            console.error('Not rendering since this.model is undefined');
+        }
     };
     return CategoryView;
 }(Backbone.View));

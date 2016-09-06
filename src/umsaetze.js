@@ -11,7 +11,6 @@ var Expenses_1 = require('./Expenses');
 var ExpenseTable_1 = require('./ExpenseTable');
 var CategoryView_1 = require('./CategoryView');
 var CategoryCollection_1 = require("./CategoryCollection");
-require('datejs');
 function asyncLoop(arr, callback, done) {
     (function loop(i) {
         callback(arr[i], i, arr.length); //callback when the loop goes on
@@ -44,14 +43,16 @@ var AppView = (function (_super) {
         this.categories = new CategoryView_1["default"]({
             model: this.categoryList
         });
+        console.log('category view model', this.categories.model);
         this.startLoading();
         this.model.fetch({
             success: function () {
                 _this.stopLoading();
             }
         });
-        this.listenTo(this.model, "change", this.render.bind(this));
-        this.listenTo(this.model, "change", this.categories.change.bind(this.categories));
+        this.listenTo(this.model, "change", this.render);
+        //this.listenTo(this.model, "change", this.table.render);
+        //this.listenTo(this.model, "change", this.categories.change); // wrong model inside ? wft?!
     }
     AppView.prototype.startLoading = function () {
         console.log('startLoading');
@@ -63,10 +64,11 @@ var AppView = (function (_super) {
         this.$el.html('Done');
     };
     AppView.prototype.render = function () {
-        console.log('AppView.render()', this.model);
+        console.log('AppView.render()', this.model.size());
         if (this.model && this.model.size()) {
-            this.table.render();
+            //this.table.render();
             this.$el.html('Table shown');
+            this.categories.change();
         }
         else {
             this.startLoading();

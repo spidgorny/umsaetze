@@ -6,6 +6,7 @@
 import {asyncLoop} from './umsaetze';
 import Transaction from './Transaction';
 import CollectionFetchOptions = Backbone.CollectionFetchOptions;
+require('datejs');
 
 export default class Expenses extends Backbone.Collection<Transaction> {
 
@@ -37,7 +38,9 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		var percent = Math.round(100 * i / length);
 		//console.log(row);
 		$('.progress .progress-bar').width(percent+'%');
-		this.add(new Transaction(row));
+		if (row && row.amount) {
+			this.add(new Transaction(row));
+		}
 		//this.trigger('change');
 	}
 

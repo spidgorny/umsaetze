@@ -20,25 +20,31 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 
 	setExpenses(ex: Expenses) {
 		this.expenses = ex;
-		this.listenTo(this.expenses, "change", this.change.bind(this));
+		this.listenTo(this.expenses, "change", this.change);
 	}
 
 	getCategoriesFromExpenses() {
 		this.expenses.each((transaction: Transaction) => {
 			var categoryName = transaction.get('category');
-			var exists = _.findWhere(this.categoryCount, {catName: categoryName});
-			if (exists) {
-				exists.count++;
-				exists.amount += parseFloat(transaction.get('amount'));
-			} else {
-				this.categoryCount.push({
-					catName: categoryName,
-					count: 0,
-					amount: 0,
-				});
+			if (categoryName) {
+				this.incrementCategoryData(categoryName, transaction);
 			}
 		});
-		console.log(this.categoryCount);
+		//console.log(this.categoryCount);
+	}
+
+	private incrementCategoryData(categoryName: any, transaction: Transaction) {
+		var exists = _.findWhere(this.categoryCount, {catName: categoryName});
+		if (exists) {
+			exists.count++;
+			exists.amount += parseFloat(transaction.get('amount'));
+		} else {
+			this.categoryCount.push({
+				catName: categoryName,
+				count: 0,
+				amount: 0,
+			});
+		}
 	}
 
 	change() {

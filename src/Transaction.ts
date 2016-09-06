@@ -11,7 +11,7 @@ export default class Transaction extends Backbone.Model {
 
 	constructor(attributes: any, options?: any) {
 		super(attributes, options);
-		this.id = md5(this.get('date')+this.get('amount'));
+		this.set('id', md5(this.get('date')+this.get('amount')));
 	}
 
 	sign() {
@@ -23,6 +23,10 @@ export default class Transaction extends Backbone.Model {
 		json.sign = this.sign();
 		json.id = this.id;
 		return json;
+	}
+
+	setCategory(category) {
+		this.set('category', category);
 	}
 
 }

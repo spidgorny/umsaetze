@@ -11,7 +11,7 @@ var Transaction = (function (_super) {
     __extends(Transaction, _super);
     function Transaction(attributes, options) {
         _super.call(this, attributes, options);
-        this.id = md5(this.get('date') + this.get('amount'));
+        this.set('id', md5(this.get('date') + this.get('amount')));
     }
     Transaction.prototype.sign = function () {
         return this.amount >= 0 ? 'positive' : 'negative';
@@ -21,6 +21,9 @@ var Transaction = (function (_super) {
         json.sign = this.sign();
         json.id = this.id;
         return json;
+    };
+    Transaction.prototype.setCategory = function (category) {
+        this.set('category', category);
     };
     return Transaction;
 }(Backbone.Model));
