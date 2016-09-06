@@ -24,6 +24,7 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 	}
 
 	getCategoriesFromExpenses() {
+		this.categoryCount = [];
 		this.expenses.each((transaction: Transaction) => {
 			var categoryName = transaction.get('category');
 			if (categoryName) {

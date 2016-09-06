@@ -6,6 +6,7 @@
 import {asyncLoop} from './umsaetze';
 import Transaction from './Transaction';
 import CollectionFetchOptions = Backbone.CollectionFetchOptions;
+import PersistenceOptions = Backbone.PersistenceOptions;
 require('datejs');
 
 export default class Expenses extends Backbone.Collection<Transaction> {
@@ -16,8 +17,18 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 
 	csvUrl = '../umsaetze-1090729-2016-07-27-00-11-29.cat.csv';
 
-	fetch(options: CollectionFetchOptions) {
+	prevPercent: number;
+
+	slowUpdateLoadingBar: Function;
+
+	constructor() {
+		super();
+		this.slowUpdateLoadingBar = _.throttle(this.updateLoadingBar, 128);
+	}
+
+	fetch(options?: CollectionFetchOptions) {
 		console.log('csvUrl', this.csvUrl);
+		this.startLoading();
 		return $.get(this.csvUrl, (response, xhr) => {
 			var csv = Papa.parse(response, {
 				header: true,
@@ -29,28 +40,49 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 				_.each(csv.data, this.processRow.bind(this));
 				this.processDone(csv.data.length, options);
 			} else {
+				this.prevPercent = 0;
 				asyncLoop(csv.data, this.processRow.bind(this), this.processDone.bind(this, options));
 			}
 		});
 	}
 
 	processRow(row: Object, i: number, length: number) {
-		var percent = Math.round(100 * i / length);
-		//console.log(row);
-		$('.progress .progress-bar').width(percent+'%');
+		this.slowUpdateLoadingBar(i, length);
 		if (row && row.amount) {
 			this.add(new Transaction(row));
 		}
 		//this.trigger('change');
 	}
 
-	processDone(count, options?: CollectionFetchOptions) {
+	updateLoadingBar(i: number, length: number) {
+		var percent = Math.round(100 * i / length);
+		//console.log('updateLoadingBar', i, percent);
+		if (percent != this.prevPercent) {
+			//console.log(percent);
+			$('.progress#loadingBar .progress-bar').width(percent + '%');
+			this.prevPercent = percent;
+		}
+	}
+
+	processDone(count, options?: PersistenceOptions) {
 		console.log('asyncLoop finished', count);
 		if (options.success) {
 			options.success.call();
 		}
 		console.log('Trigger change on Expenses');
+		this.stopLoading();
 		this.trigger('change');
+	}
+
+	startLoading() {
+		console.log('startLoading');
+		var template = _.template($('#loadingBarTemplate').html());
+		$('#app').html(template());
+	}
+
+	stopLoading() {
+		console.log('stopLoading');
+		$('#app').html('Done');
 	}
 
 	getDateFrom() {
@@ -78,9 +110,9 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	filterVisible(q: string) {
 		this.each((row: Transaction) => {
 			if (row.get('note').indexOf(q) == -1) {
-				row.set('visible', false, { noRender: true});
+				row.set('visible', false, { noRender: true, silent: true });
 			} else {
-				row.set('visible', true, { noRender: true});
+				row.set('visible', true, { noRender: true, silent: true });
 			}
 		});
 	}

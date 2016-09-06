@@ -55,12 +55,7 @@ class AppView extends Backbone.View<Expenses> {
 		});
 		console.log('category view model', this.categories.model);
 
-		this.startLoading();
-		this.model.fetch({
-			success: () => {
-				this.stopLoading();
-			}
-		});
+		this.model.fetch();
 
 		this.listenTo(this.model, "change", this.render);
 		//this.listenTo(this.model, "change", this.table.render);
@@ -68,21 +63,10 @@ class AppView extends Backbone.View<Expenses> {
 		$('.custom-search-form input').on('keyup', this.onSearch.bind(this));
 	}
 
-	startLoading() {
-		console.log('startLoading');
-		var template = _.template($('#loadingBar').html());
-		this.$el.html(template());
-	}
-
-	stopLoading() {
-		console.log('stopLoading');
-		this.$el.html('Done');
-	}
-
 	render() {
 		console.log('AppView.render()', this.model.size());
 		this.table.render();
-		this.$el.html('Table shown');
+		//this.$el.html('Table shown');
 		this.categories.change();
 		return this;
 	}

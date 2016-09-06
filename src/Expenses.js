@@ -14,14 +14,16 @@ require('datejs');
 var Expenses = (function (_super) {
     __extends(Expenses, _super);
     function Expenses() {
-        _super.apply(this, arguments);
+        _super.call(this);
         this.attributes = null;
         this.model = Transaction_1["default"];
         this.csvUrl = '../umsaetze-1090729-2016-07-27-00-11-29.cat.csv';
+        this.slowUpdateLoadingBar = _.throttle(this.updateLoadingBar, 128);
     }
     Expenses.prototype.fetch = function (options) {
         var _this = this;
         console.log('csvUrl', this.csvUrl);
+        this.startLoading();
         return $.get(this.csvUrl, function (response, xhr) {
             var csv = Papa.parse(response, {
                 header: true,
@@ -34,18 +36,26 @@ var Expenses = (function (_super) {
                 _this.processDone(csv.data.length, options);
             }
             else {
+                _this.prevPercent = 0;
                 umsaetze_1.asyncLoop(csv.data, _this.processRow.bind(_this), _this.processDone.bind(_this, options));
             }
         });
     };
     Expenses.prototype.processRow = function (row, i, length) {
-        var percent = Math.round(100 * i / length);
-        //console.log(row);
-        $('.progress .progress-bar').width(percent + '%');
+        this.slowUpdateLoadingBar(i, length);
         if (row && row.amount) {
             this.add(new Transaction_1["default"](row));
         }
         //this.trigger('change');
+    };
+    Expenses.prototype.updateLoadingBar = function (i, length) {
+        var percent = Math.round(100 * i / length);
+        //console.log('updateLoadingBar', i, percent);
+        if (percent != this.prevPercent) {
+            //console.log(percent);
+            $('.progress#loadingBar .progress-bar').width(percent + '%');
+            this.prevPercent = percent;
+        }
     };
     Expenses.prototype.processDone = function (count, options) {
         console.log('asyncLoop finished', count);
@@ -53,7 +63,17 @@ var Expenses = (function (_super) {
             options.success.call();
         }
         console.log('Trigger change on Expenses');
+        this.stopLoading();
         this.trigger('change');
+    };
+    Expenses.prototype.startLoading = function () {
+        console.log('startLoading');
+        var template = _.template($('#loadingBarTemplate').html());
+        $('#app').html(template());
+    };
+    Expenses.prototype.stopLoading = function () {
+        console.log('stopLoading');
+        $('#app').html('Done');
     };
     Expenses.prototype.getDateFrom = function () {
         var min = new Date().valueOf();
@@ -78,10 +98,10 @@ var Expenses = (function (_super) {
     Expenses.prototype.filterVisible = function (q) {
         this.each(function (row) {
             if (row.get('note').indexOf(q) == -1) {
-                row.set('visible', false, { noRender: true });
+                row.set('visible', false, { noRender: true, silent: true });
             }
             else {
-                row.set('visible', true, { noRender: true });
+                row.set('visible', true, { noRender: true, silent: true });
             }
         });
     };

@@ -23,7 +23,7 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 	}
 
 	render(options?: any) {
-		if (options && option.noRender) {
+		if (options && options.noRender) {
 			console.log('ExpenseTable.noRender');
 			return;
 		}

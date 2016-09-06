@@ -20,6 +20,7 @@ var CategoryCollection = (function (_super) {
     };
     CategoryCollection.prototype.getCategoriesFromExpenses = function () {
         var _this = this;
+        this.categoryCount = [];
         this.expenses.each(function (transaction) {
             var categoryName = transaction.get('category');
             if (categoryName) {

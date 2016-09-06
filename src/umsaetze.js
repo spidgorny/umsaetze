@@ -28,7 +28,6 @@ exports.asyncLoop = asyncLoop;
 var AppView = (function (_super) {
     __extends(AppView, _super);
     function AppView(options) {
-        var _this = this;
         _super.call(this, options);
         console.log('construct AppView');
         this.setElement($('#app'));
@@ -44,30 +43,16 @@ var AppView = (function (_super) {
             model: this.categoryList
         });
         console.log('category view model', this.categories.model);
-        this.startLoading();
-        this.model.fetch({
-            success: function () {
-                _this.stopLoading();
-            }
-        });
+        this.model.fetch();
         this.listenTo(this.model, "change", this.render);
         //this.listenTo(this.model, "change", this.table.render);
         //this.listenTo(this.model, "change", this.categories.change); // wrong model inside ? wft?!
         $('.custom-search-form input').on('keyup', this.onSearch.bind(this));
     }
-    AppView.prototype.startLoading = function () {
-        console.log('startLoading');
-        var template = _.template($('#loadingBar').html());
-        this.$el.html(template());
-    };
-    AppView.prototype.stopLoading = function () {
-        console.log('stopLoading');
-        this.$el.html('Done');
-    };
     AppView.prototype.render = function () {
         console.log('AppView.render()', this.model.size());
         this.table.render();
-        this.$el.html('Table shown');
+        //this.$el.html('Table shown');
         this.categories.change();
         return this;
     };

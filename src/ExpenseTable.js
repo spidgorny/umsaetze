@@ -18,7 +18,7 @@ var ExpenseTable = (function (_super) {
     };
     ExpenseTable.prototype.render = function (options) {
         var _this = this;
-        if (options && option.noRender) {
+        if (options && options.noRender) {
             console.log('ExpenseTable.noRender');
             return;
         }
