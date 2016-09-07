@@ -16,16 +16,19 @@ var CategoryCollection = (function (_super) {
     __extends(CategoryCollection, _super);
     function CategoryCollection(options) {
         _super.call(this, options);
+        this.allOptions = [];
     }
     CategoryCollection.prototype.setExpenses = function (ex) {
         this.expenses = ex;
+        this.getOptions();
         this.listenTo(this.expenses, "change", this.change);
     };
     CategoryCollection.prototype.getCategoriesFromExpenses = function () {
         var _this = this;
         elapse.time('getCategoriesFromExpenses');
         this.reset();
-        this.expenses.each(function (transaction) {
+        var visible = this.expenses.getVisible();
+        _.each(visible, function (transaction) {
             var categoryName = transaction.get('category');
             if (categoryName) {
                 _this.incrementCategoryData(categoryName, transaction);
@@ -57,13 +60,25 @@ var CategoryCollection = (function (_super) {
         console.log('CategoryCollection.change');
         this.getCategoriesFromExpenses();
     };
+    /**
+     * Run once and cache forever.
+     * Not using this.models because they are filtered only visible
+     * but we need all categories
+     * @returns {Array}
+     */
     CategoryCollection.prototype.getOptions = function () {
-        var options = [];
-        this.forEach(function (value) {
-            options.push(value.get('catName'));
-        });
-        options = _.sortBy(options);
-        return options;
+        if (!this.allOptions.length) {
+            var options = [];
+            var categories = this.expenses.groupBy('category');
+            //console.log('categories', categories);
+            _.each(categories, function (value, index) {
+                options.push(index);
+            });
+            options = _.unique(options);
+            options = _.sortBy(options);
+            this.allOptions = options;
+        }
+        return this.allOptions;
     };
     return CategoryCollection;
 }(Backbone.Collection));

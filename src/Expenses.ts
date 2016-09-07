@@ -9,6 +9,10 @@ import CollectionFetchOptions = Backbone.CollectionFetchOptions;
 import PersistenceOptions = Backbone.PersistenceOptions;
 Backbone.LocalStorage = require("backbone.localstorage");
 require('datejs');
+var elapse = require('elapse');
+elapse.configure({
+	debug: true
+});
 
 export default class Expenses extends Backbone.Collection<Transaction> {
 
@@ -22,14 +26,40 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 
 	slowUpdateLoadingBar: Function;
 
+	localStorage: Backbone.LocalStorage;
+
+	//url = 'expenses/';
+
 	constructor() {
 		super();
 		this.slowUpdateLoadingBar = _.throttle(this.updateLoadingBar, 128);
 		this.localStorage = new Backbone.LocalStorage("Expenses");
 	}
 
-	fetch(options?: CollectionFetchOptions) {
+	fetch(options?: CollectionFetchOptions = {}) {
+		let models = this.localStorage.findAll();
+		console.log('models from LS', models);
+		if (models.length) {
+			this.add(models);
+			//this.unserializeDate();
+			this.trigger('change');
+		} else {
+			this.fetchCSV(_.extend(options || {}, {
+				success: () => {
+					elapse.time('Expense.saveModels2LS');
+					console.log('models loaded, saving to LS');
+					this.each((model: Transaction) => {
+						this.localStorage.create(model);
+					});
+					elapse.timeEnd('Expense.saveModels2LS');
+				}
+			});
+		}
+	}
+
+	fetchCSV(options?: CollectionFetchOptions) {
 		console.log('csvUrl', this.csvUrl);
+		console.log('options', options);
 		this.startLoading();
 		return $.get(this.csvUrl, (response, xhr) => {
 			var csv = Papa.parse(response, {
@@ -42,8 +72,9 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 				_.each(csv.data, this.processRow.bind(this));
 				this.processDone(csv.data.length, options);
 			} else {
-				this.prevPercent = 0;
-				asyncLoop(csv.data, this.processRow.bind(this), this.processDone.bind(this, options));
+				asyncLoop(csv.data,
+					this.processRow.bind(this),
+					this.processDone.bind(this, csv.data.length, options));
 			}
 		});
 	}
@@ -51,7 +82,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	processRow(row: Object, i: number, length: number) {
 		this.slowUpdateLoadingBar(i, length);
 		if (row && row.amount) {
-			this.add(new Transaction(row));
+			this.add(new Transaction(row), { silent: true });
 		}
 	}
 
@@ -66,8 +97,8 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	}
 
 	processDone(count, options?: PersistenceOptions) {
-		console.log('asyncLoop finished', count);
-		if (options.success) {
+		console.log('asyncLoop finished', count, options);
+		if (options && options.success) {
 			options.success.call();
 		}
 		console.log('Trigger change on Expenses');
@@ -77,6 +108,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 
 	startLoading() {
 		console.log('startLoading');
+		this.prevPercent = 0;
 		var template = _.template($('#loadingBarTemplate').html());
 		$('#app').html(template());
 	}
@@ -87,8 +119,9 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	}
 
 	getDateFrom() {
+		let visible = this.getVisible();
 		let min = new Date().valueOf();
-		this.each((row: Transaction) => {
+		_.each(visible, (row: Transaction) => {
 			let date: number = row.get('date').valueOf();
 			if (date < min) {
 				min = date;
@@ -98,8 +131,9 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	}
 
 	getDateTill() {
+		let visible = this.getVisible();
 		let min = new Date('1970-01-01').valueOf();
-		this.each((row: Transaction) => {
+		_.each(visible, (row: Transaction) => {
 			let date: number = row.get('date').valueOf();
 			if (date > min) {
 				min = date;
@@ -109,12 +143,46 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	}
 
 	filterVisible(q: string) {
+		elapse.time('Expense.filterVisible');
+		let lowQ = q.toLowerCase();
 		this.each((row: Transaction) => {
-			if (row.get('note').indexOf(q) == -1) {
+			if (row.get('note').toLowerCase().indexOf(lowQ) == -1) {
 				row.set('visible', false, { noRender: true, silent: true });
 			} else {
 				row.set('visible', true, { noRender: true, silent: true });
 			}
 		});
+		elapse.timeEnd('Expense.filterVisible');
+		this.saveAll();
+	}
+
+	saveAll() {
+		elapse.time('Expense.saveAll');
+		this.each((model: Transaction) => {
+			this.localStorage.update(model);
+		});
+		elapse.timeEnd('Expense.saveAll');
+	}
+
+	getVisibleCount() {
+		return this.getVisible().length;
+	}
+
+	/**
+	 * @deprecated
+	 */
+	unserializeDate() {
+		elapse.time('Expense.unserializeDate');
+		this.each((model: Transaction) => {
+			var sDate = model.get('date');
+			var dateObject = new Date(sDate);
+			console.log(sDate, dateObject);
+			model.set('date', dateObject);
+		});
+		elapse.timeEnd('Expense.unserializeDate');
+	}
+
+	getVisible() {
+		return this.where({visible: true});
 	}
 }

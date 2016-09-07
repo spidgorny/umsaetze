@@ -14,11 +14,18 @@ var Transaction = (function (_super) {
         this.defaults = {
             visible: true
         };
-        this.set('id', md5(this.get('date') + this.get('amount')));
+        var sDate = this.get('date');
+        if (!this.get('id')) {
+            this.set('id', md5(sDate + this.get('amount')));
+        }
         // number
         this.set('amount', parseFloat(this.get('amount')));
-        this.set('date', new Date(Date.parse(this.get('date'))));
-        this.set('visible', true);
+        if (!(sDate instanceof Date)) {
+            this.set('date', new Date(sDate));
+        }
+        if (!this.has('visible')) {
+            this.set('visible', true);
+        }
     }
     Transaction.prototype.sign = function () {
         return this.get('amount') >= 0 ? 'positive' : 'negative';
@@ -31,6 +38,7 @@ var Transaction = (function (_super) {
     };
     Transaction.prototype.setCategory = function (category) {
         this.set('category', category);
+        this.collection.localStorage.update(this);
     };
     return Transaction;
 }(Backbone.Model));

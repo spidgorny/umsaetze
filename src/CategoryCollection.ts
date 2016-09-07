@@ -16,19 +16,23 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 
 	expenses: Expenses;
 
+	allOptions = [];
+
 	constructor(options?) {
 		super(options);
 	}
 
 	setExpenses(ex: Expenses) {
 		this.expenses = ex;
+		this.getOptions();
 		this.listenTo(this.expenses, "change", this.change);
 	}
 
 	getCategoriesFromExpenses() {
 		elapse.time('getCategoriesFromExpenses');
 		this.reset();
-		this.expenses.each((transaction: Transaction) => {
+		let visible = this.expenses.getVisible();
+		_.each(visible, (transaction: Transaction) => {
 			var categoryName = transaction.get('category');
 			if (categoryName) {
 				this.incrementCategoryData(categoryName, transaction);
@@ -63,13 +67,25 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 		this.getCategoriesFromExpenses();
 	}
 
+	/**
+	 * Run once and cache forever.
+	 * Not using this.models because they are filtered only visible
+	 * but we need all categories
+	 * @returns {Array}
+	 */
 	getOptions() {
-		var options = [];
-		this.forEach((value: CategoryCount) => {
-			options.push(value.get('catName'));
-		});
-		options = _.sortBy(options);
-		return options;
+		if (!this.allOptions.length) {
+			var options = [];
+			var categories = this.expenses.groupBy('category');
+			//console.log('categories', categories);
+			_.each(categories, (value, index) => {
+				options.push(index);
+			});
+			options = _.unique(options);
+			options = _.sortBy(options);
+			this.allOptions = options;
+		}
+		return this.allOptions;
 	}
 
 }

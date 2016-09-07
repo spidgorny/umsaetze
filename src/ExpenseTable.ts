@@ -1,6 +1,10 @@
 import Expenses from "./Expenses";
 import Transaction from "./Transaction";
 import CategoryCollection from "./CategoryCollection";
+var elapse = require('elapse');
+elapse.configure({
+	debug: true
+});
 
 export default class ExpenseTable extends Backbone.View<Expenses> {
 
@@ -27,15 +31,18 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 			console.log('ExpenseTable.noRender');
 			return;
 		}
+		elapse.time('ExpenseTable.render');
 		console.log('ExpenseTable.render()', this.model.size());
+
 		var rows = [];
-		this.model.each((transaction: Transaction) => {
+		let visible = this.model.getVisible();
+		_.each(visible, (transaction: Transaction) => {
 			//console.log(transaction);
 			var attributes = transaction.toJSON();
-			if (attributes.visible) {
-				attributes.sDate = attributes.date.toString('yyyy-MM-dd');
-				rows.push(this.template(attributes));
-			}
+			attributes.sDate = attributes.date.toString('yyyy-MM-dd');
+			attributes.cssClass = attributes.category == 'Default'
+				? 'bg-warning' : '';
+			rows.push(this.template(attributes));
 		});
 		console.log('rendering', rows.length, 'rows');
 		this.$el.html(rows.join('\n'));
@@ -43,9 +50,11 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 
 		$('#dateFrom').html(this.model.getDateFrom().toString('yyyy-MM-dd'));
 		$('#dateTill').html(this.model.getDateTill().toString('yyyy-MM-dd'));
+		$('#numRows').html(this.model.getVisibleCount().toString());
 
 		this.$el.on('click', 'select', this.openSelect.bind(this));
 
+		elapse.timeEnd('ExpenseTable.render');
 		return this;
 	}
 

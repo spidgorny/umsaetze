@@ -4,6 +4,10 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var elapse = require('elapse');
+elapse.configure({
+    debug: true
+});
 var ExpenseTable = (function (_super) {
     __extends(ExpenseTable, _super);
     function ExpenseTable(options) {
@@ -22,22 +26,26 @@ var ExpenseTable = (function (_super) {
             console.log('ExpenseTable.noRender');
             return;
         }
+        elapse.time('ExpenseTable.render');
         console.log('ExpenseTable.render()', this.model.size());
         var rows = [];
-        this.model.each(function (transaction) {
+        var visible = this.model.getVisible();
+        _.each(visible, function (transaction) {
             //console.log(transaction);
             var attributes = transaction.toJSON();
-            if (attributes.visible) {
-                attributes.sDate = attributes.date.toString('yyyy-MM-dd');
-                rows.push(_this.template(attributes));
-            }
+            attributes.sDate = attributes.date.toString('yyyy-MM-dd');
+            attributes.cssClass = attributes.category == 'Default'
+                ? 'bg-warning' : '';
+            rows.push(_this.template(attributes));
         });
         console.log('rendering', rows.length, 'rows');
         this.$el.html(rows.join('\n'));
         //console.log(this.$el);
         $('#dateFrom').html(this.model.getDateFrom().toString('yyyy-MM-dd'));
         $('#dateTill').html(this.model.getDateTill().toString('yyyy-MM-dd'));
+        $('#numRows').html(this.model.getVisibleCount().toString());
         this.$el.on('click', 'select', this.openSelect.bind(this));
+        elapse.timeEnd('ExpenseTable.render');
         return this;
     };
     ExpenseTable.prototype.openSelect = function (event) {

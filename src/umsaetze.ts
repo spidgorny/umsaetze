@@ -11,14 +11,18 @@ import CategoryCollection from "./CategoryCollection";
 
 export function asyncLoop(arr: Array<any>, callback: Function, done?: Function) {
 	(function loop(i) {
+		//callback when the loop goes on
+		callback(arr[i], i, arr.length);
 
-		callback(arr[i], i, arr.length);                            //callback when the loop goes on
-
-		if (i < arr.length) {                      //the condition
-			setTimeout(function() {loop(++i)}, 1); //rerun when condition is true
+		//the condition
+		if (i < arr.length) {
+			setTimeout(function() {
+				loop(++i)
+			}, 0); //rerun when condition is true
 		} else {
 			if (done) {
-				done(arr.length);                            //callback when the loop ends
+				//callback when the loop ends
+				done();
 			}
 		}
 	}(0));                                         //start with 0
@@ -60,7 +64,8 @@ class AppView extends Backbone.View<Expenses> {
 		this.listenTo(this.model, "change", this.render);
 		//this.listenTo(this.model, "change", this.table.render);
 		//this.listenTo(this.model, "change", this.categories.change); // wrong model inside ? wft?!
-		$('.custom-search-form input').on('keyup', this.onSearch.bind(this));
+		$('.custom-search-form input').on('keyup',
+			_.debounce(this.onSearch.bind(this), 300));
 	}
 
 	render() {
@@ -75,6 +80,8 @@ class AppView extends Backbone.View<Expenses> {
 		var q = $(event.target).val();
 		console.log(q);
 		this.model.filterVisible(q);
+		// trigger manually since filterVisible is silent
+		this.model.trigger('change');
 	}
 
 }

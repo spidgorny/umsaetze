@@ -13,13 +13,18 @@ var CategoryView_1 = require('./CategoryView');
 var CategoryCollection_1 = require("./CategoryCollection");
 function asyncLoop(arr, callback, done) {
     (function loop(i) {
-        callback(arr[i], i, arr.length); //callback when the loop goes on
+        //callback when the loop goes on
+        callback(arr[i], i, arr.length);
+        //the condition
         if (i < arr.length) {
-            setTimeout(function () { loop(++i); }, 1); //rerun when condition is true
+            setTimeout(function () {
+                loop(++i);
+            }, 0); //rerun when condition is true
         }
         else {
             if (done) {
-                done(arr.length); //callback when the loop ends
+                //callback when the loop ends
+                done();
             }
         }
     }(0)); //start with 0
@@ -47,7 +52,7 @@ var AppView = (function (_super) {
         this.listenTo(this.model, "change", this.render);
         //this.listenTo(this.model, "change", this.table.render);
         //this.listenTo(this.model, "change", this.categories.change); // wrong model inside ? wft?!
-        $('.custom-search-form input').on('keyup', this.onSearch.bind(this));
+        $('.custom-search-form input').on('keyup', _.debounce(this.onSearch.bind(this), 300));
     }
     AppView.prototype.render = function () {
         console.log('AppView.render()', this.model.size());
@@ -60,6 +65,8 @@ var AppView = (function (_super) {
         var q = $(event.target).val();
         console.log(q);
         this.model.filterVisible(q);
+        // trigger manually since filterVisible is silent
+        this.model.trigger('change');
     };
     return AppView;
 }(Backbone.View));

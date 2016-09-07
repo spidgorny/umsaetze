@@ -304,6 +304,7 @@
                         <div class="panel-heading">
                             Raw Data
                             (<span id="dateFrom"></span> - <span id="dateTill"></span>)
+							<span class="badge" id="numRows"></span>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -375,7 +376,7 @@
 </script>
 
 <script type="text/template" id="rowTemplate">
-	<tr data-id="<%- id %>" title="id=<%- id %>">
+	<tr data-id="<%- id %>" title="id=<%- id %>" class="<%- cssClass %>">
 		<td>
 			<%- sDate %>
 		</td>

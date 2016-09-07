@@ -15,11 +15,18 @@ export default class Transaction extends Backbone.Model {
 			visible: true,
 		};
 
-		this.set('id', md5(this.get('date')+this.get('amount')));
+		var sDate = this.get('date');
+		if (!this.get('id')) {
+			this.set('id', md5(sDate + this.get('amount')));
+		}
 		// number
 		this.set('amount', parseFloat(this.get('amount')));
-		this.set('date', new Date(Date.parse(this.get('date'))));
-		this.set('visible', true);
+		if (!(sDate instanceof Date)) {
+			this.set('date', new Date(sDate));
+		}
+		if (!this.has('visible')) {
+			this.set('visible', true);
+		}
 	}
 
 	sign() {
@@ -35,6 +42,7 @@ export default class Transaction extends Backbone.Model {
 
 	setCategory(category) {
 		this.set('category', category);
+		this.collection.localStorage.update(this);
 	}
 
 }
