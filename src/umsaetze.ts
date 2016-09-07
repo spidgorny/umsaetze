@@ -3,11 +3,7 @@
 /// <reference path="Expenses.ts" />
 
 import CollectionFetchOptions = Backbone.CollectionFetchOptions;
-import Expenses from './Expenses';
-import Transaction from './Transaction';
-import ExpenseTable from './ExpenseTable';
-import CategoryView from './CategoryView';
-import CategoryCollection from "./CategoryCollection";
+import Workspace from "./Workspace";
 
 export function asyncLoop(arr: Array<any>, callback: Function, done?: Function) {
 	(function loop(i) {
@@ -28,66 +24,12 @@ export function asyncLoop(arr: Array<any>, callback: Function, done?: Function) 
 	}(0));                                         //start with 0
 }
 
-class AppView extends Backbone.View<Expenses> {
-
-	model: Expenses;
-
-	table: ExpenseTable;
-
-	categoryList: CategoryCollection;
-
-	categories: CategoryView;
-
-	constructor(options) {
-		super(options);
-		console.log('construct AppView');
-		this.setElement($('#app'));
-
-		this.model = new Expenses();
-
-		this.categoryList = new CategoryCollection();
-		this.categoryList.setExpenses(this.model);
-
-		this.table = new ExpenseTable({
-			model: this.model,
-			el: $('#expenseTable')
-		});
-		this.table.setCategoryList(this.categoryList);
-
-		this.categories = new CategoryView({
-			model: this.categoryList,
-		});
-		console.log('category view model', this.categories.model);
-
-		this.model.fetch();
-
-		this.listenTo(this.model, "change", this.render);
-		//this.listenTo(this.model, "change", this.table.render);
-		//this.listenTo(this.model, "change", this.categories.change); // wrong model inside ? wft?!
-		$('.custom-search-form input').on('keyup',
-			_.debounce(this.onSearch.bind(this), 300));
-	}
-
-	render() {
-		console.log('AppView.render()', this.model.size());
-		this.table.render();
-		//this.$el.html('Table shown');
-		this.categories.change();
-		return this;
-	}
-
-	onSearch(event) {
-		var q = $(event.target).val();
-		console.log(q);
-		this.model.filterVisible(q);
-		// trigger manually since filterVisible is silent
-		this.model.trigger('change');
-	}
-
-}
-
 $(function() {
-	var app = new AppView();
-	app.render();
+	var ws = new Workspace({
+		root: 'umsaetze/web/'
+	});
+	console.log(ws);
+	var start = Backbone.history.start();
+	console.log(start);
 });
 

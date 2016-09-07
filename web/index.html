@@ -54,6 +54,56 @@
             </div>
             <!-- /.navbar-header -->
 
+			<div class="MonthSelect" id="MonthSelect">
+				<form class="navbar-form navbar-left" style="madrgin: 0;">
+					<div class="form-group" style="display: inline-block">
+						<select id="year" class="form-control">
+							<option>2014</option>
+							<option>2015</option>
+							<option>2016</option>
+						</select>
+					</div>
+					<ul id="month" class="nav navbar-top-links" style="display: inline-block">
+						<li>
+							<button class="btn btn-default" disabled>Jan</button>
+						</li>
+						<li>
+							<button class="btn btn-default" disabled>Feb</button>
+						</li>
+						<li>
+							<button class="btn btn-default" disabled>Mar</button>
+						</li>
+						<li>
+							<button class="btn btn-default" disabled>Apr</button>
+						</li>
+						<li>
+							<button class="btn btn-default" disabled>May</button>
+						</li>
+						<li>
+							<button class="btn btn-default" disabled>Jun</button>
+						</li>
+						<li>
+							<button class="btn btn-default" disabled>Jul</button>
+						</li>
+						<li>
+							<button class="btn btn-default" disabled>Aug</button>
+						</li>
+						<li>
+							<button class="btn btn-default" disabled>Sep</button>
+						</li>
+						<li>
+							<button class="btn btn-default" disabled>Oct</button>
+						</li>
+						<li>
+							<button class="btn btn-default" disabled>Nov</button>
+						</li>
+						<li>
+							<button class="btn btn-default" disabled>Dev</button>
+						</li>
+					</ul>
+				</form>
+			</div>
+
             <ul class="nav navbar-top-links navbar-right">
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -279,9 +329,15 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="index.html">
+                            <a href=".">
                                 <i class="fa fa-dashboard fa-fw"></i>
                                 Dashboard
+                            </a>
+						</li>
+						<li>
+                            <a href="#sync">
+                                <i class="fa fa-dashboard fa-fw"></i>
+                                Sync
                             </a>
                         </li>
                     </ul>
@@ -300,37 +356,10 @@
             <!-- /.row -->
             <div class="row" style="padding-top: 1em;">
                 <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Raw Data
-                            (<span id="dateFrom"></span> - <span id="dateTill"></span>)
-							<span class="badge" id="numRows"></span>
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div id="app">
-								<p>App</p>
-                            </div>
-							<table class="table">
-								<thead>
-								<tr>
-									<td>Date</td>
-									<td>Amount</td>
-									<td>Category</td>
-									<td>Note</td>
-								</tr>
-								</thead>
-								<tbody id="expenseTable">
 
-								</tbody>
-								<tfoot>
-
-								</tfoot>
-							</table>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
+					<div id="app">
+						<p>App</p>
+					</div>
                 </div>
                 <!-- /.col-lg-6 -->
             </div>
@@ -367,50 +396,85 @@
 	<script src="../node_modules/papaparse/papaparse.min.js"></script>
 	<script src="bundle.js"></script>
 
-<script type="text/template" id="loadingBarTemplate">
-	<div class="progress" id="loadingBar">
-		<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">
-			<span class="sr-only">0% Complete</span>
+	<script type="text/template" id="AppView">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Raw Data
+				(<span id="dateFrom"></span> - <span id="dateTill"></span>)
+				<span class="badge" id="numRows"></span>
+			</div>
+			<!-- /.panel-heading -->
+			<div class="panel-body">
+				<table class="table">
+					<thead>
+					<tr>
+						<td>Date</td>
+						<td>Amount</td>
+						<td>Category</td>
+						<td>Note</td>
+					</tr>
+					</thead>
+					<tbody id="expenseTable">
+
+					</tbody>
+					<tfoot>
+
+					</tfoot>
+				</table>
+			</div>
+			<!-- /.panel-body -->
 		</div>
-	</div>
-</script>
+		<!-- /.panel -->
+	</script>
 
-<script type="text/template" id="rowTemplate">
-	<tr data-id="<%- id %>" title="id=<%- id %>" class="<%- cssClass %>">
-		<td>
-			<%- sDate %>
-		</td>
-		<td class="money <%- sign %>">
-			<%- amount %> &euro;
-		</td>
-		<td>
-			<select>
-				<option><%- category %></option>
-			</select>
-		</td>
-		<td>
-			<%- note %>
-		</td>
-	</tr>
-</script>
+	<script type="text/template" id="loadingBarTemplate">
+		<div class="progress" id="loadingBar">
+			<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">
+				<span class="sr-only">0% Complete</span>
+			</div>
+		</div>
+	</script>
 
-<script type="text/template" id="categoryTemplate">
-	<div class="category">
-        <div class="row">
-            <div class="col-md-8">
-                <%- catName %>
-                <span class="badge"><%- count %></span>
-            </div>
-            <div class="col-md-4 money <%- sign %>">
-                <%- amount %> &euro;
-            </div>
-        </div>
-        <div class="progress" style="margin-bottom: 0; height: 8px">
-            <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: <%- width %>">
-            </div>
-        </div>
-	</div>
-</script>
+	<script type="text/template" id="rowTemplate">
+		<tr data-id="<%- id %>" title="id=<%- id %>" class="<%- cssClass %>">
+			<td>
+				<%- sDate %>
+			</td>
+			<td class="money <%- sign %>">
+				<%- amount %> &euro;
+			</td>
+			<td>
+				<select>
+					<option><%- category %></option>
+				</select>
+			</td>
+			<td>
+				<%- note %>
+			</td>
+		</tr>
+	</script>
+
+	<script type="text/template" id="categoryTemplate">
+		<div class="category">
+			<div class="row">
+				<div class="col-md-8">
+					<%- catName %>
+					<span class="badge"><%- count %></span>
+				</div>
+				<div class="col-md-4 money <%- sign %>">
+					<%- amount %> &euro;
+				</div>
+			</div>
+			<div class="progress" style="margin-bottom: 0; height: 8px">
+				<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: <%- width %>">
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<script type="text/template" id="SyncPage">
+	Sync
+	</script>
 
 </body>
 
