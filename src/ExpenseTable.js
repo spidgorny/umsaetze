@@ -67,8 +67,12 @@ var ExpenseTable = (function (_super) {
         var transaction = this.model.get(id);
         // console.log(transaction);
         if (transaction) {
+            console.log('Transaction id=', id);
             transaction.setCategory($select.val());
-            this.categoryList.trigger('change');
+            console.log(transaction.toJSON());
+        }
+        else {
+            console.error('Transaction with id=', id, 'not found');
         }
     };
     return ExpenseTable;

@@ -77,8 +77,12 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 		let transaction = <Transaction>this.model.get(id);
 		// console.log(transaction);
 		if (transaction) {
+			console.log('Transaction id=', id);
 			transaction.setCategory($select.val());
-			this.categoryList.trigger('change');
+			console.log(transaction.toJSON());
+			//this.categoryList.trigger('change');
+		} else {
+			console.error('Transaction with id=', id, 'not found');
 		}
 	}
 

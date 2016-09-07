@@ -39,13 +39,17 @@ var CategoryCollection = (function (_super) {
         var exists = this.findWhere({ catName: categoryName });
         if (exists) {
             exists.set('count', exists.get('count') + 1, { silent: true });
-            exists.set('amount', exists.get('amount') + transaction.get('amount'), { silent: true });
+            var amountBefore = exists.get('amount');
+            var amountAfter = transaction.get('amount');
+            if (categoryName == 'Income') {
+            }
+            exists.set('amount', amountBefore + amountAfter, { silent: true });
         }
         else {
             this.add({
                 catName: categoryName,
-                count: 0,
-                amount: 0
+                count: 1,
+                amount: transaction.get('amount')
             }, { silent: true });
         }
     };
