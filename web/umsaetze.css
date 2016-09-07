@@ -9,5 +9,8 @@
   color: red;
 }
 .category {
-  margin-bottom: 0.25em;
+  padding: 15px;
+}
+.category .progress {
+  margin-top: 2px;
 }

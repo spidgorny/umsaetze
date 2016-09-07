@@ -7,6 +7,7 @@ import {asyncLoop} from './umsaetze';
 import Transaction from './Transaction';
 import CollectionFetchOptions = Backbone.CollectionFetchOptions;
 import PersistenceOptions = Backbone.PersistenceOptions;
+Backbone.LocalStorage = require("backbone.localstorage");
 require('datejs');
 
 export default class Expenses extends Backbone.Collection<Transaction> {
@@ -24,6 +25,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	constructor() {
 		super();
 		this.slowUpdateLoadingBar = _.throttle(this.updateLoadingBar, 128);
+		this.localStorage = new Backbone.LocalStorage("Expenses");
 	}
 
 	fetch(options?: CollectionFetchOptions) {
@@ -51,7 +53,6 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		if (row && row.amount) {
 			this.add(new Transaction(row));
 		}
-		//this.trigger('change');
 	}
 
 	updateLoadingBar(i: number, length: number) {

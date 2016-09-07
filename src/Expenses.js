@@ -10,6 +10,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var umsaetze_1 = require('./umsaetze');
 var Transaction_1 = require('./Transaction');
+Backbone.LocalStorage = require("backbone.localstorage");
 require('datejs');
 var Expenses = (function (_super) {
     __extends(Expenses, _super);
@@ -19,6 +20,7 @@ var Expenses = (function (_super) {
         this.model = Transaction_1["default"];
         this.csvUrl = '../umsaetze-1090729-2016-07-27-00-11-29.cat.csv';
         this.slowUpdateLoadingBar = _.throttle(this.updateLoadingBar, 128);
+        this.localStorage = new Backbone.LocalStorage("Expenses");
     }
     Expenses.prototype.fetch = function (options) {
         var _this = this;
@@ -46,7 +48,6 @@ var Expenses = (function (_super) {
         if (row && row.amount) {
             this.add(new Transaction_1["default"](row));
         }
-        //this.trigger('change');
     };
     Expenses.prototype.updateLoadingBar = function (i, length) {
         var percent = Math.round(100 * i / length);

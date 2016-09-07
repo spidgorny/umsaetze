@@ -23,7 +23,6 @@ var ExpenseTable = (function (_super) {
             return;
         }
         console.log('ExpenseTable.render()', this.model.size());
-        console.log(this.model);
         var rows = [];
         this.model.each(function (transaction) {
             //console.log(transaction);
@@ -66,9 +65,10 @@ var ExpenseTable = (function (_super) {
         var id = $select.closest('tr').attr('data-id');
         //console.log(id);
         var transaction = this.model.get(id);
-        //console.log(transaction);
+        // console.log(transaction);
         if (transaction) {
             transaction.setCategory($select.val());
+            this.categoryList.trigger('change');
         }
     };
     return ExpenseTable;

@@ -5,17 +5,24 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var elapse = require('elapse');
+elapse.configure({
+    debug: true
+});
 var CategoryView = (function (_super) {
     __extends(CategoryView, _super);
     function CategoryView(options) {
         _super.call(this, options);
         this.template = _.template($('#categoryTemplate').html());
         this.setElement($('#categories'));
+        this.listenTo(this.model, 'change', this.render);
+        window.categoryView = this;
     }
     CategoryView.prototype.render = function () {
         var _this = this;
+        elapse.time('CategoryView.render');
         var content = [];
-        var categoryCount = this.model.getCategoryCount();
+        var categoryCount = this.model.toJSON();
         var sum = _.reduce(categoryCount, function (memo, item) {
             // only expenses
             if (item.catName != 'Default') {
@@ -35,11 +42,13 @@ var CategoryView = (function (_super) {
                 //console.log(catCount.catName, width, catCount.count, catCount.amount);
                 content.push(_this.template(_.extend(catCount, {
                     width: width,
-                    amount: Math.round(catCount.amount)
+                    amount: Math.round(catCount.amount),
+                    sign: catCount.amount >= 0 ? 'positive' : 'negative'
                 })));
             }
         });
         this.$el.html(content.join('\n'));
+        elapse.timeEnd('CategoryView.render');
         return this;
     };
     CategoryView.prototype.change = function () {

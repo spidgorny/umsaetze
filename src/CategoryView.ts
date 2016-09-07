@@ -4,6 +4,10 @@ import Expenses from "./Expenses";
 import Transaction from "./Transaction";
 import CategoryCollection from "./CategoryCollection";
 import CategoryCount from "./CategoryCount";
+var elapse = require('elapse');
+elapse.configure({
+	debug: true
+});
 
 export default class CategoryView extends Backbone.View<CategoryCollection> {
 
@@ -14,11 +18,14 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 	constructor(options) {
 		super(options);
 		this.setElement($('#categories'));
+		this.listenTo(this.model, 'change', this.render);
+		window.categoryView = this;
 	}
 
 	render() {
+		elapse.time('CategoryView.render');
 		var content = [];
-		var categoryCount = this.model.getCategoryCount();
+		var categoryCount = this.model.toJSON();
 		var sum: number = <number>_.reduce(categoryCount,
 			(memo, item: CategoryCount) => {
 				// only expenses
@@ -44,11 +51,13 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 					_.extend(catCount, {
 						width: width,
 						amount: Math.round(catCount.amount),
+						sign: catCount.amount >= 0 ? 'positive' : 'negative',
 					})
 				));
 			}
 		});
 		this.$el.html(content.join('\n'));
+		elapse.timeEnd('CategoryView.render');
 		return this;
 	}
 

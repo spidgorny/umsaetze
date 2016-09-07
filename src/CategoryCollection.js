@@ -4,6 +4,10 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var elapse = require('elapse');
+elapse.configure({
+    debug: true
+});
 /**
  * Depends on Expenses to parse them
  * and retrieve the total values for each category
@@ -12,7 +16,6 @@ var CategoryCollection = (function (_super) {
     __extends(CategoryCollection, _super);
     function CategoryCollection(options) {
         _super.call(this, options);
-        this.categoryCount = [];
     }
     CategoryCollection.prototype.setExpenses = function (ex) {
         this.expenses = ex;
@@ -20,7 +23,8 @@ var CategoryCollection = (function (_super) {
     };
     CategoryCollection.prototype.getCategoriesFromExpenses = function () {
         var _this = this;
-        this.categoryCount = [];
+        elapse.time('getCategoriesFromExpenses');
+        this.reset();
         this.expenses.each(function (transaction) {
             var categoryName = transaction.get('category');
             if (categoryName) {
@@ -28,39 +32,33 @@ var CategoryCollection = (function (_super) {
             }
         });
         //console.log(this.categoryCount);
+        elapse.timeEnd('getCategoriesFromExpenses');
+        this.trigger('update');
     };
     CategoryCollection.prototype.incrementCategoryData = function (categoryName, transaction) {
-        var exists = _.findWhere(this.categoryCount, { catName: categoryName });
+        var exists = this.findWhere({ catName: categoryName });
         if (exists) {
-            exists.count++;
-            exists.amount += transaction.get('amount');
+            exists.set('count', exists.get('count') + 1, { silent: true });
+            exists.set('amount', exists.get('amount') + transaction.get('amount'), { silent: true });
         }
         else {
-            this.categoryCount.push({
+            this.add({
                 catName: categoryName,
                 count: 0,
                 amount: 0
-            });
+            }, { silent: true });
         }
     };
     CategoryCollection.prototype.change = function () {
         console.log('CategoryCollection.change');
         this.getCategoriesFromExpenses();
     };
-    CategoryCollection.prototype.getCategoryCount = function () {
-        if (!this.categoryCount) {
-            this.getCategoriesFromExpenses();
-        }
-        return this.categoryCount;
-    };
     CategoryCollection.prototype.getOptions = function () {
-        if (!this.categoryCount) {
-            this.getCategoriesFromExpenses();
-        }
         var options = [];
-        this.categoryCount.forEach(function (value) {
-            options.push(value.catName);
+        this.forEach(function (value) {
+            options.push(value.get('catName'));
         });
+        options = _.sortBy(options);
         return options;
     };
     return CategoryCollection;
