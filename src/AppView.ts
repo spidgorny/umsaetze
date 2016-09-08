@@ -2,6 +2,11 @@ import Expenses from "./Expenses";
 import ExpenseTable from "./ExpenseTable";
 import CategoryCollection from "./CategoryCollection";
 import CategoryView from "./CategoryView";
+import MonthSelect from "./MonthSelect";
+var elapse = require('elapse');
+elapse.configure({
+	debug: true
+});
 
 export default class AppView extends Backbone.View<Expenses> {
 
@@ -12,6 +17,10 @@ export default class AppView extends Backbone.View<Expenses> {
 	categoryList: CategoryCollection;
 
 	categories: CategoryView;
+
+	ms: MonthSelect;
+
+	cache: JQuery;
 
 	constructor(options?: any) {
 		super(options);
@@ -38,6 +47,8 @@ export default class AppView extends Backbone.View<Expenses> {
 
 		this.model.fetch();
 
+		this.ms = new MonthSelect();
+
 		this.listenTo(this.model, "change", this.render);
 		//this.listenTo(this.model, "change", this.table.render);
 		//this.listenTo(this.model, "change", this.categories.change); // wrong model inside ? wft?!
@@ -59,6 +70,20 @@ export default class AppView extends Backbone.View<Expenses> {
 		this.model.filterVisible(q);
 		// trigger manually since filterVisible is silent
 		this.model.trigger('change');
+	}
+
+	show() {
+		elapse.time('AppView.show');
+		this.ms.show();
+		this.$el.html(this.cache);
+		elapse.timeEnd('AppView.show');
+	}
+
+	hide() {
+		elapse.time('AppView.hide');
+		this.ms.hide();
+		this.cache = this.$el.children().detach();
+		elapse.timeEnd('AppView.hide');
 	}
 
 }

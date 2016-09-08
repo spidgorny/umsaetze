@@ -103,7 +103,6 @@ var Expenses = (function (_super) {
     };
     Expenses.prototype.stopLoading = function () {
         console.log('stopLoading');
-        $('#app').html('Done');
     };
     Expenses.prototype.getDateFrom = function () {
         var visible = this.getVisible();

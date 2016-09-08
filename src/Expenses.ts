@@ -115,7 +115,6 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 
 	stopLoading() {
 		console.log('stopLoading');
-		$('#app').html('Done');
 	}
 
 	getDateFrom() {

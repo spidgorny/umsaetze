@@ -3,10 +3,25 @@
 
 export default class Sync extends Backbone.View<> {
 
+	$el = $('#app');
+
 	template = _.template($('#SyncPage').html());
 
+	constructor() {
+		super();
+	}
+
 	render() {
-		$('#app').html(this.template());
+		this.$el.html(this.template());
+		let clearButton = this.$('#Clear');
+		console.log(clearButton);
+		clearButton.on('click', this.clear);
+	}
+
+	clear() {
+		console.log('clear');
+		let localStorage = new Backbone.LocalStorage("Expenses");
+		localStorage._clear();
 	}
 
 }

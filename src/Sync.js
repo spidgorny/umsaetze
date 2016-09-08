@@ -9,11 +9,20 @@ var __extends = (this && this.__extends) || function (d, b) {
 var Sync = (function (_super) {
     __extends(Sync, _super);
     function Sync() {
-        _super.apply(this, arguments);
+        _super.call(this);
+        this.$el = $('#app');
         this.template = _.template($('#SyncPage').html());
     }
     Sync.prototype.render = function () {
-        $('#app').html(this.template());
+        this.$el.html(this.template());
+        var clearButton = this.$('#Clear');
+        console.log(clearButton);
+        clearButton.on('click', this.clear);
+    };
+    Sync.prototype.clear = function () {
+        console.log('clear');
+        var localStorage = new Backbone.LocalStorage("Expenses");
+        localStorage._clear();
     };
     return Sync;
 }(Backbone.View));

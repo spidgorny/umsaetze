@@ -10,6 +10,9 @@ export default class Workspace extends Backbone.Router {
 		"sync":        "sync",
 	};
 
+	app: AppView;
+	syncPage: Sync;
+
 	constructor(options?: any) {
 		super(options);
 		this._bindRoutes();
@@ -17,8 +20,12 @@ export default class Workspace extends Backbone.Router {
 
 	AppView() {
 		console.log('AppView');
-		var app = new AppView();
-		app.render();
+		if (!this.app) {
+			this.app = new AppView();
+			this.app.render();
+		} else {
+			this.app.show();
+		}
 	}
 
 	help() {
@@ -26,8 +33,13 @@ export default class Workspace extends Backbone.Router {
 	}
 
 	sync() {
-		var sync = new Sync();
-		sync.render();
+		if (this.app) {
+			this.app.hide();
+		}
+		if (!this.syncPage) {
+			this.syncPage = new Sync();
+		}
+		this.syncPage.render();
 	}
 
 }

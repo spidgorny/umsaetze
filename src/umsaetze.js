@@ -26,8 +26,8 @@ $(function () {
     var ws = new Workspace_1["default"]({
         root: 'umsaetze/web/'
     });
-    console.log(ws);
+    // console.log(ws);
     var start = Backbone.history.start();
-    console.log(start);
+    // console.log(start);
 });
 //# sourceMappingURL=umsaetze.js.map

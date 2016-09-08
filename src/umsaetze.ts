@@ -4,6 +4,7 @@
 
 import CollectionFetchOptions = Backbone.CollectionFetchOptions;
 import Workspace from "./Workspace";
+import MonthSelect from "./MonthSelect";
 
 export function asyncLoop(arr: Array<any>, callback: Function, done?: Function) {
 	(function loop(i) {
@@ -28,8 +29,9 @@ $(function() {
 	var ws = new Workspace({
 		root: 'umsaetze/web/'
 	});
-	console.log(ws);
+	// console.log(ws);
+
 	var start = Backbone.history.start();
-	console.log(start);
+	// console.log(start);
 });
 

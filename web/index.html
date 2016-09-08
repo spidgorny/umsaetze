@@ -329,14 +329,14 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href=".">
+                            <a href="#">
                                 <i class="fa fa-dashboard fa-fw"></i>
                                 Dashboard
                             </a>
 						</li>
 						<li>
                             <a href="#sync">
-                                <i class="fa fa-dashboard fa-fw"></i>
+                                <i class="fa fa-save fa-fw"></i>
                                 Sync
                             </a>
                         </li>
@@ -473,7 +473,17 @@
 	</script>
 
 	<script type="text/template" id="SyncPage">
-	Sync
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Sync
+			</div>
+			<!-- /.panel-heading -->
+			<div class="panel-body">
+				<button id="Load" class="btn btn-default">Load</button>
+				<button id="Save" class="btn btn-default">Save</button>
+				<button id="Clear" class="btn btn-danger">Clear</button>
+			</div>
+		</div>
 	</script>
 
 </body>

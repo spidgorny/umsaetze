@@ -20,15 +20,25 @@ var Workspace = (function (_super) {
     }
     Workspace.prototype.AppView = function () {
         console.log('AppView');
-        var app = new AppView_1["default"]();
-        app.render();
+        if (!this.app) {
+            this.app = new AppView_1["default"]();
+            this.app.render();
+        }
+        else {
+            this.app.show();
+        }
     };
     Workspace.prototype.help = function () {
         console.log('help()');
     };
     Workspace.prototype.sync = function () {
-        var sync = new Sync_1["default"]();
-        sync.render();
+        if (this.app) {
+            this.app.hide();
+        }
+        if (!this.syncPage) {
+            this.syncPage = new Sync_1["default"]();
+        }
+        this.syncPage.render();
     };
     return Workspace;
 }(Backbone.Router));

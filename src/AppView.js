@@ -8,6 +8,11 @@ var Expenses_1 = require("./Expenses");
 var ExpenseTable_1 = require("./ExpenseTable");
 var CategoryCollection_1 = require("./CategoryCollection");
 var CategoryView_1 = require("./CategoryView");
+var MonthSelect_1 = require("./MonthSelect");
+var elapse = require('elapse');
+elapse.configure({
+    debug: true
+});
 var AppView = (function (_super) {
     __extends(AppView, _super);
     function AppView(options) {
@@ -29,6 +34,7 @@ var AppView = (function (_super) {
         });
         console.log('category view model', this.categories.model);
         this.model.fetch();
+        this.ms = new MonthSelect_1["default"]();
         this.listenTo(this.model, "change", this.render);
         //this.listenTo(this.model, "change", this.table.render);
         //this.listenTo(this.model, "change", this.categories.change); // wrong model inside ? wft?!
@@ -47,6 +53,18 @@ var AppView = (function (_super) {
         this.model.filterVisible(q);
         // trigger manually since filterVisible is silent
         this.model.trigger('change');
+    };
+    AppView.prototype.show = function () {
+        elapse.time('AppView.show');
+        this.ms.show();
+        this.$el.html(this.cache);
+        elapse.timeEnd('AppView.show');
+    };
+    AppView.prototype.hide = function () {
+        elapse.time('AppView.hide');
+        this.ms.hide();
+        this.cache = this.$el.children().detach();
+        elapse.timeEnd('AppView.hide');
     };
     return AppView;
 }(Backbone.View));
