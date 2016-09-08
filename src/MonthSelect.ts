@@ -1,7 +1,9 @@
 ///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
 ///<reference path="../typings/index.d.ts"/>
 
-export default class MonthSelect extends Backbone.View {
+import Backbone = require('backbone');
+
+export default class MonthSelect extends Backbone.View<any> {
 
 	$el = $('#MonthSelect');
 
@@ -25,6 +27,7 @@ export default class MonthSelect extends Backbone.View {
 				.addClass('btn-danger')
 				.removeClass('btn-default');
 		});
+		return this;
 	}
 
 	show() {

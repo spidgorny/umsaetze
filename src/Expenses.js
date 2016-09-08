@@ -36,9 +36,10 @@ var Expenses = (function (_super) {
             this.add(models);
             //this.unserializeDate();
             this.trigger('change');
+            return;
         }
         else {
-            this.fetchCSV(_.extend(options || {}, {
+            return this.fetchCSV(_.extend(options || {}, {
                 success: function () {
                     elapse.time('Expense.saveModels2LS');
                     console.log('models loaded, saving to LS');
@@ -62,7 +63,8 @@ var Expenses = (function (_super) {
                 skipEmptyLines: true
             });
             //console.log(csv);
-            if (false) {
+            var processWithoutVisualFeedback = false;
+            if (processWithoutVisualFeedback) {
                 _.each(csv.data, _this.processRow.bind(_this));
                 _this.processDone(csv.data.length, options);
             }
@@ -89,7 +91,7 @@ var Expenses = (function (_super) {
     Expenses.prototype.processDone = function (count, options) {
         console.log('asyncLoop finished', count, options);
         if (options && options.success) {
-            options.success.call();
+            options.success();
         }
         console.log('Trigger change on Expenses');
         this.stopLoading();
@@ -131,10 +133,10 @@ var Expenses = (function (_super) {
         var lowQ = q.toLowerCase();
         this.each(function (row) {
             if (row.get('note').toLowerCase().indexOf(lowQ) == -1) {
-                row.set('visible', false, { noRender: true, silent: true });
+                row.set('visible', false, { silent: true });
             }
             else {
-                row.set('visible', true, { noRender: true, silent: true });
+                row.set('visible', true, { silent: true });
             }
         });
         elapse.timeEnd('Expense.filterVisible');

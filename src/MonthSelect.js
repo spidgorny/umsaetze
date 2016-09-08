@@ -6,6 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var Backbone = require('backbone');
 var MonthSelect = (function (_super) {
     __extends(MonthSelect, _super);
     function MonthSelect() {
@@ -24,6 +25,7 @@ var MonthSelect = (function (_super) {
                 .addClass('btn-danger')
                 .removeClass('btn-default');
         });
+        return this;
     };
     MonthSelect.prototype.show = function () {
         this.$el.show();

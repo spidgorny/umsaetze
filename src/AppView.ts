@@ -3,12 +3,13 @@ import ExpenseTable from "./ExpenseTable";
 import CategoryCollection from "./CategoryCollection";
 import CategoryView from "./CategoryView";
 import MonthSelect from "./MonthSelect";
+import Transaction from "./Transaction";
 var elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
 
-export default class AppView extends Backbone.View<Expenses> {
+export default class AppView extends Backbone.View<Transaction> {
 
 	model: Expenses;
 

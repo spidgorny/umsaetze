@@ -36,15 +36,16 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		this.localStorage = new Backbone.LocalStorage("Expenses");
 	}
 
-	fetch(options?: CollectionFetchOptions = {}) {
+	fetch(options: CollectionFetchOptions = {}) {
 		let models = this.localStorage.findAll();
 		console.log('models from LS', models);
 		if (models.length) {
 			this.add(models);
 			//this.unserializeDate();
 			this.trigger('change');
+			return;
 		} else {
-			this.fetchCSV(_.extend(options || {}, {
+			return this.fetchCSV(_.extend(options || {}, {
 				success: () => {
 					elapse.time('Expense.saveModels2LS');
 					console.log('models loaded, saving to LS');
@@ -53,7 +54,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 					});
 					elapse.timeEnd('Expense.saveModels2LS');
 				}
-			});
+			}));
 		}
 	}
 
@@ -68,7 +69,8 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 				skipEmptyLines: true
 			});
 			//console.log(csv);
-			if (false) {
+			var processWithoutVisualFeedback = false;
+			if (processWithoutVisualFeedback) {
 				_.each(csv.data, this.processRow.bind(this));
 				this.processDone(csv.data.length, options);
 			} else {
@@ -79,7 +81,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		});
 	}
 
-	processRow(row: Object, i: number, length: number) {
+	processRow(row: any, i: number, length: number) {
 		this.slowUpdateLoadingBar(i, length);
 		if (row && row.amount) {
 			this.add(new Transaction(row), { silent: true });
@@ -99,7 +101,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	processDone(count, options?: PersistenceOptions) {
 		console.log('asyncLoop finished', count, options);
 		if (options && options.success) {
-			options.success.call();
+			options.success();
 		}
 		console.log('Trigger change on Expenses');
 		this.stopLoading();
@@ -146,9 +148,9 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		let lowQ = q.toLowerCase();
 		this.each((row: Transaction) => {
 			if (row.get('note').toLowerCase().indexOf(lowQ) == -1) {
-				row.set('visible', false, { noRender: true, silent: true });
+				row.set('visible', false, { silent: true });
 			} else {
-				row.set('visible', true, { noRender: true, silent: true });
+				row.set('visible', true, { silent: true });
 			}
 		});
 		elapse.timeEnd('Expense.filterVisible');
