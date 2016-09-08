@@ -11,6 +11,14 @@ export default class MonthSelect extends Backbone.View<any> {
 
 	monthOptions: JQuery;
 
+	selectedYear = 2014;
+
+	selectedMonth = 'Feb';
+
+	earliest = new Date('2014-08-01');
+
+	latest = new Date('2016-05-15');
+
 	constructor() {
 		super();
 		this.yearSelect = this.$('select');
@@ -22,6 +30,8 @@ export default class MonthSelect extends Backbone.View<any> {
 	render() {
 		this.monthOptions.each((i, button) => {
 			//console.log(button);
+			let firstOfMonth = new Date(this.selectedYear+'-'+this.selectedMonth+'-01');
+			console.log(firstOfMonth);
 			$(button)
 				.removeAttr('disabled')
 				.addClass('btn-danger')

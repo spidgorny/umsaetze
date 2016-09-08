@@ -1,9 +1,11 @@
 {
   "globalDependencies": {
+    "assert": "registry:dt/assert#0.0.0+20160317120654",
     "backbone": "registry:dt/backbone",
     "backbone.localstorage": "registry:dt/backbone.localstorage#1.0.0+20160317120654",
     "jasmine": "registry:dt/jasmine#2.2.0+20160621224255",
     "jquery": "registry:dt/jquery",
+    "mocha": "registry:dt/mocha#2.2.5+20160720003353",
     "node": "registry:dt/node#6.0.0+20160720070758",
     "promise": "registry:dt/promise",
     "require": "registry:dt/require#2.1.20+20160316155526",

@@ -12,14 +12,21 @@ var MonthSelect = (function (_super) {
     function MonthSelect() {
         _super.call(this);
         this.$el = $('#MonthSelect');
+        this.selectedYear = 2014;
+        this.selectedMonth = 'Feb';
+        this.earliest = new Date('2014-08-01');
+        this.latest = new Date('2016-05-15');
         this.yearSelect = this.$('select');
         this.monthOptions = this.$('button');
         console.log(this.yearSelect);
         console.log(this.monthOptions);
     }
     MonthSelect.prototype.render = function () {
+        var _this = this;
         this.monthOptions.each(function (i, button) {
             //console.log(button);
+            var firstOfMonth = new Date(_this.selectedYear + '-' + _this.selectedMonth + '-01');
+            console.log(firstOfMonth);
             $(button)
                 .removeAttr('disabled')
                 .addClass('btn-danger')
