@@ -6,28 +6,108 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var Transaction_1 = require("./Transaction");
+var umsaetze_1 = require("./umsaetze");
 require('file-saver');
+var elapse = require('elapse');
+elapse.configure({
+    debug: true
+});
 var Sync = (function (_super) {
     __extends(Sync, _super);
     function Sync(expenses) {
         _super.call(this);
         this.$el = $('#app');
         this.template = _.template($('#SyncPage').html());
+        this.csvUrl = '../umsaetze-1090729-2016-07-27-00-11-29.cat.csv';
+        this.localStorage = new Backbone.LocalStorage("Expenses");
         this.model = expenses;
         this.listenTo(this.model, 'change', this.render);
+        this.slowUpdateLoadingBar = _.throttle(this.updateLoadingBar, 128);
     }
     Sync.prototype.render = function () {
         this.$el.html(this.template({
             memoryRows: this.model.size(),
-            lsRows: this.model.localStorage.records.length
+            lsRows: this.localStorage.records.length
         }));
-        this.$('#Load').on('click', Sync.load);
+        this.$('#Refresh').on('click', this.refresh.bind(this));
+        this.$('#Load').on('click', this.load.bind(this));
         this.$('#Save').on('click', this.save.bind(this));
-        this.$('#Clear').on('click', Sync.clear);
+        this.$('#Clear').on('click', this.clear.bind(this));
         return this;
     };
-    Sync.load = function () {
-        console.log('Not implemented');
+    Sync.prototype.refresh = function () {
+        this.render();
+    };
+    Sync.prototype.load = function () {
+        var _this = this;
+        //var file = prompt('file');
+        var file = this.csvUrl;
+        if (file) {
+            var options = {};
+            return this.fetchCSV(_.extend(options || {}, {
+                success: function () {
+                    elapse.time('Expense.saveModels2LS');
+                    console.log('models loaded, saving to LS');
+                    _this.model.each(function (model) {
+                        _this.localStorage.create(model);
+                    });
+                    elapse.timeEnd('Expense.saveModels2LS');
+                }
+            }));
+        }
+    };
+    Sync.prototype.fetchCSV = function (options) {
+        var _this = this;
+        console.log('csvUrl', this.csvUrl);
+        console.log('options', options);
+        this.startLoading();
+        return $.get(this.csvUrl, function (response, xhr) {
+            var csv = Papa.parse(response, {
+                header: true,
+                dynamicTyping: true,
+                skipEmptyLines: true
+            });
+            //console.log(csv);
+            var processWithoutVisualFeedback = false;
+            if (processWithoutVisualFeedback) {
+                _.each(csv.data, _this.processRow.bind(_this));
+                _this.processDone(csv.data.length, options);
+            }
+            else {
+                umsaetze_1.asyncLoop(csv.data, _this.processRow.bind(_this), _this.processDone.bind(_this, csv.data.length, options));
+            }
+        });
+    };
+    Sync.prototype.startLoading = function () {
+        console.log('startLoading');
+        this.prevPercent = 0;
+        var template = _.template($('#loadingBarTemplate').html());
+        this.$('.panel-footer').html(template());
+    };
+    Sync.prototype.processRow = function (row, i, length) {
+        this.slowUpdateLoadingBar(i, length);
+        if (row && row.amount) {
+            this.model.add(new Transaction_1["default"](row), { silent: true });
+        }
+    };
+    Sync.prototype.updateLoadingBar = function (i, length) {
+        var percent = Math.round(100 * i / length);
+        //console.log('updateLoadingBar', i, percent);
+        if (percent != this.prevPercent) {
+            //console.log(percent);
+            $('.progress#loadingBar .progress-bar').width(percent + '%');
+            this.prevPercent = percent;
+        }
+    };
+    Sync.prototype.processDone = function (count, options) {
+        console.log('asyncLoop finished', count, options);
+        if (options && options.success) {
+            options.success();
+        }
+        this.model.setAllVisible();
+        console.log('Trigger change on Expenses');
+        this.model.trigger('change');
     };
     Sync.prototype.save = function () {
         var data = this.model.localStorage.findAll();
@@ -40,10 +120,13 @@ var Sync = (function (_super) {
         console.log(filename);
         saveAs(blob, filename);
     };
-    Sync.clear = function () {
+    Sync.prototype.clear = function () {
         console.log('clear');
-        var localStorage = new Backbone.LocalStorage("Expenses");
-        localStorage._clear();
+        if (confirm('Delete *ALL* entries from Local Storage? Make sure you have exported data first.')) {
+            var localStorage_1 = new Backbone.LocalStorage("Expenses");
+            localStorage_1._clear();
+            this.render();
+        }
     };
     return Sync;
 }(Backbone.View));

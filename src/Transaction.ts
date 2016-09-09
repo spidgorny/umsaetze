@@ -15,15 +15,21 @@ export default class Transaction extends Backbone.Model {
 			visible: true,
 		};
 
+		var dDate;
 		var sDate = this.get('date');
+		if (sDate instanceof Date) {	// convert back
+			dDate = sDate.clone();
+			sDate = dDate.toString('d.M.yyyy');
+		} else {
+			dDate = Date.parseExact(sDate, "d.M.yyyy");
+			this.set('date', dDate);
+		}
+		//console.log(sDate, dDate);
 		if (!this.get('id')) {
 			this.set('id', md5(sDate + this.get('amount')));
 		}
 		// number
 		this.set('amount', parseFloat(this.get('amount')));
-		if (!(sDate instanceof Date)) {
-			this.set('date', new Date(sDate));
-		}
 		if (!this.has('visible')) {
 			this.set('visible', true);
 		}

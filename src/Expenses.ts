@@ -20,19 +20,12 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 
 	model = Transaction;
 
-	csvUrl = '../umsaetze-1090729-2016-07-27-00-11-29.cat.csv';
-
-	prevPercent: number;
-
-	slowUpdateLoadingBar: Function;
-
 	localStorage: Backbone.LocalStorage;
 
 	//url = 'expenses/';
 
 	constructor() {
 		super();
-		this.slowUpdateLoadingBar = _.throttle(this.updateLoadingBar, 128);
 		this.localStorage = new Backbone.LocalStorage("Expenses");
 	}
 
@@ -49,75 +42,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 			//this.unserializeDate();
 			this.trigger('change');
 			return;
-		} else {
-			return this.fetchCSV(_.extend(options || {}, {
-				success: () => {
-					elapse.time('Expense.saveModels2LS');
-					console.log('models loaded, saving to LS');
-					this.each((model: Transaction) => {
-						this.localStorage.create(model);
-					});
-					elapse.timeEnd('Expense.saveModels2LS');
-				}
-			}));
 		}
-	}
-
-	fetchCSV(options?: CollectionFetchOptions) {
-		console.log('csvUrl', this.csvUrl);
-		console.log('options', options);
-		this.startLoading();
-		return $.get(this.csvUrl, (response, xhr) => {
-			var csv = Papa.parse(response, {
-				header: true,
-				dynamicTyping: true,
-				skipEmptyLines: true
-			});
-			//console.log(csv);
-			var processWithoutVisualFeedback = false;
-			if (processWithoutVisualFeedback) {
-				_.each(csv.data, this.processRow.bind(this));
-				this.processDone(csv.data.length, options);
-			} else {
-				asyncLoop(csv.data,
-					this.processRow.bind(this),
-					this.processDone.bind(this, csv.data.length, options));
-			}
-		});
-	}
-
-	startLoading() {
-		console.log('startLoading');
-		this.prevPercent = 0;
-		var template = _.template($('#loadingBarTemplate').html());
-		$('#app').html(template());
-	}
-
-	processRow(row: any, i: number, length: number) {
-		this.slowUpdateLoadingBar(i, length);
-		if (row && row.amount) {
-			this.add(new Transaction(row), { silent: true });
-		}
-	}
-
-	updateLoadingBar(i: number, length: number) {
-		var percent = Math.round(100 * i / length);
-		//console.log('updateLoadingBar', i, percent);
-		if (percent != this.prevPercent) {
-			//console.log(percent);
-			$('.progress#loadingBar .progress-bar').width(percent + '%');
-			this.prevPercent = percent;
-		}
-	}
-
-	processDone(count, options?: PersistenceOptions) {
-		console.log('asyncLoop finished', count, options);
-		if (options && options.success) {
-			options.success();
-		}
-		this.setAllVisible();
-		console.log('Trigger change on Expenses');
-		this.trigger('change');
 	}
 
 	/**
