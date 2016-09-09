@@ -36,12 +36,17 @@ var AppView = (function (_super) {
         });
         console.log('category view model', this.categories.model);
         this.ms = new MonthSelect_1["default"]();
+        this.ms.earliest = this.model.getEarliest();
+        this.ms.latest = this.model.getLatest();
+        this.ms.render();
+        this.listenTo(this.ms, 'MonthSelect:change', this.render);
         this.listenTo(this.model, "change", this.render);
         //this.listenTo(this.model, "change", this.table.render);
         //this.listenTo(this.model, "change", this.categories.change); // wrong model inside ? wft?!
         $('.custom-search-form input').on('keyup', _.debounce(this.onSearch.bind(this), 300));
     }
     AppView.prototype.render = function () {
+        this.model.filterByMonth(this.ms.getSelected());
         console.log('AppView.render()', this.model.size());
         this.table.render();
         //this.$el.html('Table shown');
@@ -50,7 +55,7 @@ var AppView = (function (_super) {
     };
     AppView.prototype.onSearch = function (event) {
         var q = $(event.target).val();
-        console.log(q);
+        console.log('Searching: ', q);
         this.model.filterVisible(q);
         // trigger manually since filterVisible is silent
         this.model.trigger('change');

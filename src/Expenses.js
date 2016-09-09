@@ -113,7 +113,7 @@ var Expenses = (function (_super) {
     };
     Expenses.prototype.getDateFrom = function () {
         var visible = this.getVisible();
-        var min = new Date().valueOf();
+        var min = new Date().addYears(10).valueOf();
         _.each(visible, function (row) {
             var date = row.get('date').valueOf();
             if (date < min) {
@@ -133,6 +133,26 @@ var Expenses = (function (_super) {
         });
         return new Date(min);
     };
+    Expenses.prototype.getEarliest = function () {
+        var min = new Date().addYears(10).valueOf();
+        this.each(function (row) {
+            var date = row.get('date').valueOf();
+            if (date < min) {
+                min = date;
+            }
+        });
+        return new Date(min);
+    };
+    Expenses.prototype.getLatest = function () {
+        var min = new Date('1970-01-01').valueOf();
+        this.each(function (row) {
+            var date = row.get('date').valueOf();
+            if (date > min) {
+                min = date;
+            }
+        });
+        return new Date(min);
+    };
     Expenses.prototype.filterVisible = function (q) {
         elapse.time('Expense.filterVisible');
         var lowQ = q.toLowerCase();
@@ -145,6 +165,22 @@ var Expenses = (function (_super) {
             }
         });
         elapse.timeEnd('Expense.filterVisible');
+        this.saveAll();
+    };
+    Expenses.prototype.filterByMonth = function (selectedMonth) {
+        elapse.time('Expense.filterByMonth');
+        this.each(function (row) {
+            var tDate = row.get('date');
+            var sameYear = tDate.getFullYear() == selectedMonth.getFullYear();
+            var sameMonth = tDate.getMonth() == selectedMonth.getMonth();
+            if (sameYear && sameMonth) {
+                row.set('visible', true, { silent: true });
+            }
+            else {
+                row.set('visible', false, { silent: true });
+            }
+        });
+        elapse.timeEnd('Expense.filterByMonth');
         this.saveAll();
     };
     Expenses.prototype.saveAll = function () {

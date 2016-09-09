@@ -27,15 +27,18 @@ export default class MonthSelect extends Backbone.View<any> {
 		// console.log(this.yearSelect);
 		// console.log(this.monthOptions);
 		this.monthOptions.on('click', this.clickOnMonth.bind(this));
-		this.yearSelect.on('change', this.changedMonth.bind(this));
+		this.yearSelect.on('change', this.changeYear.bind(this));
 		this.localStorage = new Backbone.LocalStorage('MonthSelect');
 		//this.localStorage.localStorage().
 	}
 
 	render() {
-		let sSelectedDate = this.selectedYear+'-'+(1+Date.getMonthNumberFromName(this.selectedMonth))+'-01';
-		let selectedDate = new Date(sSelectedDate);
-		console.log('selectedDate', sSelectedDate, selectedDate);
+		console.log('earliest', this.earliest);
+		this.earliest.moveToFirstDayOfMonth();
+		console.log('earliest', this.earliest);
+
+		let selectedDate = this.getSelected();
+
 		this.monthOptions.each((i, button) => {
 			let monthNumber = i+1;
 			//console.log(button);
@@ -76,12 +79,21 @@ export default class MonthSelect extends Backbone.View<any> {
 		$button.removeClass('btn-default');
 		$button.addClass('btn-success');
 		this.selectedMonth = $button.text();
+		this.trigger('MonthSelect:change');
 	}
 
-	changedMonth(event) {
+	changeYear(event) {
 		this.selectedYear = this.yearSelect.val();
 		console.log(this.selectedYear);
 		this.render();
+		this.trigger('MonthSelect:change');
+	}
+
+	getSelected() {
+		let sSelectedDate = this.selectedYear+'-'+(1+Date.getMonthNumberFromName(this.selectedMonth))+'-01';
+		let selectedDate = new Date(sSelectedDate);
+		console.log('selectedDate', sSelectedDate, selectedDate);
+		return selectedDate;
 	}
 
 }

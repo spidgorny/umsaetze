@@ -22,15 +22,16 @@ var MonthSelect = (function (_super) {
         // console.log(this.yearSelect);
         // console.log(this.monthOptions);
         this.monthOptions.on('click', this.clickOnMonth.bind(this));
-        this.yearSelect.on('change', this.changedMonth.bind(this));
+        this.yearSelect.on('change', this.changeYear.bind(this));
         this.localStorage = new Backbone.LocalStorage('MonthSelect');
         //this.localStorage.localStorage().
     }
     MonthSelect.prototype.render = function () {
         var _this = this;
-        var sSelectedDate = this.selectedYear + '-' + (1 + Date.getMonthNumberFromName(this.selectedMonth)) + '-01';
-        var selectedDate = new Date(sSelectedDate);
-        console.log('selectedDate', sSelectedDate, selectedDate);
+        console.log('earliest', this.earliest);
+        this.earliest.moveToFirstDayOfMonth();
+        console.log('earliest', this.earliest);
+        var selectedDate = this.getSelected();
         this.monthOptions.each(function (i, button) {
             var monthNumber = i + 1;
             //console.log(button);
@@ -70,11 +71,19 @@ var MonthSelect = (function (_super) {
         $button.removeClass('btn-default');
         $button.addClass('btn-success');
         this.selectedMonth = $button.text();
+        this.trigger('MonthSelect:change');
     };
-    MonthSelect.prototype.changedMonth = function (event) {
+    MonthSelect.prototype.changeYear = function (event) {
         this.selectedYear = this.yearSelect.val();
         console.log(this.selectedYear);
         this.render();
+        this.trigger('MonthSelect:change');
+    };
+    MonthSelect.prototype.getSelected = function () {
+        var sSelectedDate = this.selectedYear + '-' + (1 + Date.getMonthNumberFromName(this.selectedMonth)) + '-01';
+        var selectedDate = new Date(sSelectedDate);
+        console.log('selectedDate', sSelectedDate, selectedDate);
+        return selectedDate;
     };
     return MonthSelect;
 }(Backbone.View));

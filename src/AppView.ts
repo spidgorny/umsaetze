@@ -49,6 +49,10 @@ export default class AppView extends Backbone.View<Transaction> {
 		console.log('category view model', this.categories.model);
 
 		this.ms = new MonthSelect();
+		this.ms.earliest = this.model.getEarliest();
+		this.ms.latest = this.model.getLatest();
+		this.ms.render();
+		this.listenTo(this.ms, 'MonthSelect:change', this.render);
 
 		this.listenTo(this.model, "change", this.render);
 		//this.listenTo(this.model, "change", this.table.render);
@@ -58,6 +62,7 @@ export default class AppView extends Backbone.View<Transaction> {
 	}
 
 	render() {
+		this.model.filterByMonth(this.ms.getSelected());
 		console.log('AppView.render()', this.model.size());
 		this.table.render();
 		//this.$el.html('Table shown');
@@ -67,7 +72,7 @@ export default class AppView extends Backbone.View<Transaction> {
 
 	onSearch(event) {
 		var q = $(event.target).val();
-		console.log(q);
+		console.log('Searching: ', q);
 		this.model.filterVisible(q);
 		// trigger manually since filterVisible is silent
 		this.model.trigger('change');

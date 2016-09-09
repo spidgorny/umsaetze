@@ -126,7 +126,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 
 	getDateFrom() {
 		let visible = this.getVisible();
-		let min = new Date().valueOf();
+		let min = new Date().addYears(10).valueOf();
 		_.each(visible, (row: Transaction) => {
 			let date: number = row.get('date').valueOf();
 			if (date < min) {
@@ -148,6 +148,28 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		return new Date(min);
 	}
 
+	getEarliest() {
+		let min = new Date().addYears(10).valueOf();
+		this.each((row: Transaction) => {
+			let date: number = row.get('date').valueOf();
+			if (date < min) {
+				min = date;
+			}
+		});
+		return new Date(min);
+	}
+
+	getLatest() {
+		let min = new Date('1970-01-01').valueOf();
+		this.each((row: Transaction) => {
+			let date: number = row.get('date').valueOf();
+			if (date > min) {
+				min = date;
+			}
+		});
+		return new Date(min);
+	}
+
 	filterVisible(q: string) {
 		elapse.time('Expense.filterVisible');
 		let lowQ = q.toLowerCase();
@@ -159,6 +181,22 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 			}
 		});
 		elapse.timeEnd('Expense.filterVisible');
+		this.saveAll();
+	}
+
+	filterByMonth(selectedMonth: Date) {
+		elapse.time('Expense.filterByMonth');
+		this.each((row: Transaction) => {
+			var tDate: Date = row.get('date');
+			var sameYear = tDate.getFullYear() == selectedMonth.getFullYear();
+			var sameMonth = tDate.getMonth() == selectedMonth.getMonth();
+			if (sameYear && sameMonth) {
+				row.set('visible', true, { silent: true });
+			} else {
+				row.set('visible', false, { silent: true });
+			}
+		});
+		elapse.timeEnd('Expense.filterByMonth');
 		this.saveAll();
 	}
 
