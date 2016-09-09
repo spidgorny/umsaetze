@@ -20,6 +20,7 @@ var AppView = (function (_super) {
      */
     function AppView(options) {
         _super.call(this, options);
+        this.q = '';
         console.log('construct AppView');
         this.setElement($('#app'));
         var template = _.template($('#AppView').html());
@@ -39,26 +40,36 @@ var AppView = (function (_super) {
         this.ms.earliest = this.model.getEarliest();
         this.ms.latest = this.model.getLatest();
         this.ms.render();
-        this.listenTo(this.ms, 'MonthSelect:change', this.render);
+        this.listenTo(this.ms, 'MonthSelect:change', this.monthChange);
         this.listenTo(this.model, "change", this.render);
         //this.listenTo(this.model, "change", this.table.render);
         //this.listenTo(this.model, "change", this.categories.change); // wrong model inside ? wft?!
         $('.custom-search-form input').on('keyup', _.debounce(this.onSearch.bind(this), 300));
     }
     AppView.prototype.render = function () {
-        this.model.filterByMonth(this.ms.getSelected());
         console.log('AppView.render()', this.model.size());
         this.table.render();
-        //this.$el.html('Table shown');
-        this.categories.change();
+        this.categoryList.triggerChange();
         return this;
     };
+    AppView.prototype.monthChange = function () {
+        elapse.time('AppView.monthChange');
+        this.model.setAllVisible(); // silent
+        this.model.filterByMonth(this.ms.getSelected()); // silent
+        this.model.filterVisible(this.q); // silent
+        this.render();
+        // not needed due to the line in the constructor
+        // @see this.categoryList.setExpenses()
+        // wrong. this is called by this.render()
+        //this.categoryList.triggerChange();
+        elapse.timeEnd('AppView.monthChange');
+    };
     AppView.prototype.onSearch = function (event) {
-        var q = $(event.target).val();
-        console.log('Searching: ', q);
-        this.model.filterVisible(q);
+        this.q = $(event.target).val();
+        console.log('Searching: ', this.q);
+        this.monthChange(); // reuse
         // trigger manually since filterVisible is silent
-        this.model.trigger('change');
+        //this.model.trigger('change');
     };
     AppView.prototype.show = function () {
         elapse.time('AppView.show');

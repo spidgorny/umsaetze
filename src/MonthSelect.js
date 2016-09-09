@@ -24,13 +24,18 @@ var MonthSelect = (function (_super) {
         this.monthOptions.on('click', this.clickOnMonth.bind(this));
         this.yearSelect.on('change', this.changeYear.bind(this));
         this.localStorage = new Backbone.LocalStorage('MonthSelect');
-        //this.localStorage.localStorage().
+        var year = window.localStorage.getItem('MonthSelect.year');
+        if (year) {
+            this.selectedYear = year;
+        }
+        var month = window.localStorage.getItem('MonthSelect.month');
+        if (month) {
+            this.selectedMonth = month;
+        }
     }
     MonthSelect.prototype.render = function () {
         var _this = this;
-        console.log('earliest', this.earliest);
         this.earliest.moveToFirstDayOfMonth();
-        console.log('earliest', this.earliest);
         var selectedDate = this.getSelected();
         this.monthOptions.each(function (i, button) {
             var monthNumber = i + 1;
@@ -71,11 +76,13 @@ var MonthSelect = (function (_super) {
         $button.removeClass('btn-default');
         $button.addClass('btn-success');
         this.selectedMonth = $button.text();
+        window.localStorage.setItem('MonthSelect.month', this.selectedMonth);
         this.trigger('MonthSelect:change');
     };
     MonthSelect.prototype.changeYear = function (event) {
         this.selectedYear = this.yearSelect.val();
         console.log(this.selectedYear);
+        window.localStorage.setItem('MonthSelect.year', this.selectedYear);
         this.render();
         this.trigger('MonthSelect:change');
     };

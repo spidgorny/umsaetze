@@ -78,6 +78,12 @@ var Expenses = (function (_super) {
             }
         });
     };
+    Expenses.prototype.startLoading = function () {
+        console.log('startLoading');
+        this.prevPercent = 0;
+        var template = _.template($('#loadingBarTemplate').html());
+        $('#app').html(template());
+    };
     Expenses.prototype.processRow = function (row, i, length) {
         this.slowUpdateLoadingBar(i, length);
         if (row && row.amount) {
@@ -98,18 +104,17 @@ var Expenses = (function (_super) {
         if (options && options.success) {
             options.success();
         }
+        this.setAllVisible();
         console.log('Trigger change on Expenses');
-        this.stopLoading();
         this.trigger('change');
     };
-    Expenses.prototype.startLoading = function () {
-        console.log('startLoading');
-        this.prevPercent = 0;
-        var template = _.template($('#loadingBarTemplate').html());
-        $('#app').html(template());
-    };
-    Expenses.prototype.stopLoading = function () {
-        console.log('stopLoading');
+    /**
+     * show everything by default, then filters will hide
+     */
+    Expenses.prototype.setAllVisible = function () {
+        this.each(function (model) {
+            model.set('visible', true, { silent: true });
+        });
     };
     Expenses.prototype.getDateFrom = function () {
         var visible = this.getVisible();
@@ -153,7 +158,13 @@ var Expenses = (function (_super) {
         });
         return new Date(min);
     };
+    /**
+     * Will hide some visible
+     * @param q
+     */
     Expenses.prototype.filterVisible = function (q) {
+        if (!q.length)
+            return;
         elapse.time('Expense.filterVisible');
         var lowQ = q.toLowerCase();
         this.each(function (row) {
@@ -161,12 +172,15 @@ var Expenses = (function (_super) {
                 row.set('visible', false, { silent: true });
             }
             else {
-                row.set('visible', true, { silent: true });
             }
         });
         elapse.timeEnd('Expense.filterVisible');
         this.saveAll();
     };
+    /**
+     * Will hide some visible
+     * @param selectedMonth
+     */
     Expenses.prototype.filterByMonth = function (selectedMonth) {
         elapse.time('Expense.filterByMonth');
         this.each(function (row) {
@@ -174,7 +188,6 @@ var Expenses = (function (_super) {
             var sameYear = tDate.getFullYear() == selectedMonth.getFullYear();
             var sameMonth = tDate.getMonth() == selectedMonth.getMonth();
             if (sameYear && sameMonth) {
-                row.set('visible', true, { silent: true });
             }
             else {
                 row.set('visible', false, { silent: true });

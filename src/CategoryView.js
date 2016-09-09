@@ -16,7 +16,6 @@ var CategoryView = (function (_super) {
         this.template = _.template($('#categoryTemplate').html());
         this.setElement($('#categories'));
         this.listenTo(this.model, 'change', this.render);
-        window.categoryView = this;
     }
     CategoryView.prototype.render = function () {
         var _this = this;
@@ -44,8 +43,12 @@ var CategoryView = (function (_super) {
         elapse.timeEnd('CategoryView.render');
         return this;
     };
-    CategoryView.prototype.change = function () {
-        console.log('CategoryView changed', this.model);
+    /**
+     * @deprecated
+     * @private
+     */
+    CategoryView.prototype._change = function () {
+        console.log('CategoryView changed', this.model.size());
         if (this.model) {
             //console.log('Calling CategoryCollection.change()');
             //this.model.change();	// called automagically

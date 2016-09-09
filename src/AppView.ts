@@ -23,6 +23,8 @@ export default class AppView extends Backbone.View<Transaction> {
 
 	cache: JQuery;
 
+	q: string = '';
+
 	/**
 	 * Make sure to provide model: Expenses in options
 	 * @param options
@@ -52,7 +54,7 @@ export default class AppView extends Backbone.View<Transaction> {
 		this.ms.earliest = this.model.getEarliest();
 		this.ms.latest = this.model.getLatest();
 		this.ms.render();
-		this.listenTo(this.ms, 'MonthSelect:change', this.render);
+		this.listenTo(this.ms, 'MonthSelect:change', this.monthChange);
 
 		this.listenTo(this.model, "change", this.render);
 		//this.listenTo(this.model, "change", this.table.render);
@@ -62,20 +64,32 @@ export default class AppView extends Backbone.View<Transaction> {
 	}
 
 	render() {
-		this.model.filterByMonth(this.ms.getSelected());
 		console.log('AppView.render()', this.model.size());
 		this.table.render();
-		//this.$el.html('Table shown');
-		this.categories.change();
+		this.categoryList.triggerChange();
 		return this;
 	}
 
+	monthChange() {
+		elapse.time('AppView.monthChange');
+		this.model.setAllVisible();							// silent
+		this.model.filterByMonth(this.ms.getSelected());	// silent
+		this.model.filterVisible(this.q);					// silent
+		this.render();
+
+		// not needed due to the line in the constructor
+		// @see this.categoryList.setExpenses()
+		// wrong. this is called by this.render()
+		//this.categoryList.triggerChange();
+		elapse.timeEnd('AppView.monthChange');
+	}
+
 	onSearch(event) {
-		var q = $(event.target).val();
-		console.log('Searching: ', q);
-		this.model.filterVisible(q);
+		this.q = $(event.target).val();
+		console.log('Searching: ', this.q);
+		this.monthChange();	// reuse
 		// trigger manually since filterVisible is silent
-		this.model.trigger('change');
+		//this.model.trigger('change');
 	}
 
 	show() {

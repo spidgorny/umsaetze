@@ -25,7 +25,13 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 	setExpenses(ex: Expenses) {
 		this.expenses = ex;
 		this.getOptions();
-		this.listenTo(this.expenses, "change", this.change);
+
+		// when expenses change, we recalculate our data
+		this.listenTo(this.expenses, "change", this.getCategoriesFromExpenses);
+
+		// this is how AppView triggers recalculation
+		// this makes an infinite loop of triggers
+		// this.listenTo(this, "change", this.getCategoriesFromExpenses);
 	}
 
 	getCategoriesFromExpenses() {
@@ -40,7 +46,9 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 		});
 		//console.log(this.categoryCount);
 		elapse.timeEnd('getCategoriesFromExpenses');
-		this.trigger('update');
+
+		// when we recalculated the data we trigger the view render
+		this.trigger('change');
 	}
 
 	private incrementCategoryData(categoryName: any, transaction: Transaction) {
@@ -62,8 +70,8 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 		}
 	}
 
-	change() {
-		console.log('CategoryCollection.change');
+	triggerChange() {
+		console.log('CategoryCollection.triggerChange');
 		this.getCategoriesFromExpenses();
 	}
 

@@ -86,6 +86,13 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		});
 	}
 
+	startLoading() {
+		console.log('startLoading');
+		this.prevPercent = 0;
+		var template = _.template($('#loadingBarTemplate').html());
+		$('#app').html(template());
+	}
+
 	processRow(row: any, i: number, length: number) {
 		this.slowUpdateLoadingBar(i, length);
 		if (row && row.amount) {
@@ -108,20 +115,18 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		if (options && options.success) {
 			options.success();
 		}
+		this.setAllVisible();
 		console.log('Trigger change on Expenses');
-		this.stopLoading();
 		this.trigger('change');
 	}
 
-	startLoading() {
-		console.log('startLoading');
-		this.prevPercent = 0;
-		var template = _.template($('#loadingBarTemplate').html());
-		$('#app').html(template());
-	}
-
-	stopLoading() {
-		console.log('stopLoading');
+	/**
+	 * show everything by default, then filters will hide
+ 	 */
+	public setAllVisible() {
+		this.each((model: Transaction) => {
+			model.set('visible', true, { silent: true });
+		});
 	}
 
 	getDateFrom() {
@@ -170,20 +175,29 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		return new Date(min);
 	}
 
+	/**
+	 * Will hide some visible
+	 * @param q
+	 */
 	filterVisible(q: string) {
+		if (!q.length) return;
 		elapse.time('Expense.filterVisible');
 		let lowQ = q.toLowerCase();
 		this.each((row: Transaction) => {
 			if (row.get('note').toLowerCase().indexOf(lowQ) == -1) {
 				row.set('visible', false, { silent: true });
 			} else {
-				row.set('visible', true, { silent: true });
+				// row.set('visible', true, { silent: true });
 			}
 		});
 		elapse.timeEnd('Expense.filterVisible');
 		this.saveAll();
 	}
 
+	/**
+	 * Will hide some visible
+	 * @param selectedMonth
+	 */
 	filterByMonth(selectedMonth: Date) {
 		elapse.time('Expense.filterByMonth');
 		this.each((row: Transaction) => {
@@ -191,7 +205,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 			var sameYear = tDate.getFullYear() == selectedMonth.getFullYear();
 			var sameMonth = tDate.getMonth() == selectedMonth.getMonth();
 			if (sameYear && sameMonth) {
-				row.set('visible', true, { silent: true });
+				// row.set('visible', true, { silent: true });
 			} else {
 				row.set('visible', false, { silent: true });
 			}

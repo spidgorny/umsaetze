@@ -17,7 +17,6 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 		super(options);
 		this.setElement($('#categories'));
 		this.listenTo(this.model, 'change', this.render);
-		window.categoryView = this;
 	}
 
 	render() {
@@ -53,8 +52,12 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 		return this;
 	}
 
-	change() {
-		console.log('CategoryView changed', this.model);
+	/**
+	 * @deprecated
+	 * @private
+	 */
+	_change() {
+		console.log('CategoryView changed', this.model.size());
 		if (this.model) {
 			//console.log('Calling CategoryCollection.change()');
 			//this.model.change();	// called automagically

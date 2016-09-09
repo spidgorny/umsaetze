@@ -29,13 +29,18 @@ export default class MonthSelect extends Backbone.View<any> {
 		this.monthOptions.on('click', this.clickOnMonth.bind(this));
 		this.yearSelect.on('change', this.changeYear.bind(this));
 		this.localStorage = new Backbone.LocalStorage('MonthSelect');
-		//this.localStorage.localStorage().
+		let year = window.localStorage.getItem('MonthSelect.year');
+		if (year) {
+			this.selectedYear = year;
+		}
+		let month = window.localStorage.getItem('MonthSelect.month');
+		if (month) {
+			this.selectedMonth = month;
+		}
 	}
 
 	render() {
-		console.log('earliest', this.earliest);
 		this.earliest.moveToFirstDayOfMonth();
-		console.log('earliest', this.earliest);
 
 		let selectedDate = this.getSelected();
 
@@ -79,12 +84,16 @@ export default class MonthSelect extends Backbone.View<any> {
 		$button.removeClass('btn-default');
 		$button.addClass('btn-success');
 		this.selectedMonth = $button.text();
+
+		window.localStorage.setItem('MonthSelect.month', this.selectedMonth);
+
 		this.trigger('MonthSelect:change');
 	}
 
 	changeYear(event) {
 		this.selectedYear = this.yearSelect.val();
 		console.log(this.selectedYear);
+		window.localStorage.setItem('MonthSelect.year', this.selectedYear);
 		this.render();
 		this.trigger('MonthSelect:change');
 	}
