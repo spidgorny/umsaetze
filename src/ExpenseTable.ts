@@ -16,6 +16,13 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 
 	constructor(options?) {
 		super(options);
+
+		// in case we started with Sync page the table is not visible
+		if (!$('#expenseTable').length) {
+			var template = _.template($('#AppView').html());
+			$('#app').html(template());
+		}
+
 		this.setElement($('#expenseTable'));
 
 		// slow re-rendering of the whole table when model changes

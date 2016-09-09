@@ -23,8 +23,7 @@ var AppView = (function (_super) {
         this.q = '';
         console.log('construct AppView');
         this.setElement($('#app'));
-        var template = _.template($('#AppView').html());
-        this.$el.html(template());
+        this.setTemplate();
         this.categoryList = new CategoryCollection_1["default"]();
         this.categoryList.setExpenses(this.model);
         this.table = new ExpenseTable_1["default"]({
@@ -48,9 +47,21 @@ var AppView = (function (_super) {
     }
     AppView.prototype.render = function () {
         console.log('AppView.render()', this.model.size());
+        this.setTemplate();
         this.table.render();
         this.categoryList.triggerChange();
         return this;
+    };
+    AppView.prototype.setTemplate = function () {
+        // if no table in DOM, reset it
+        if (!$('#expenseTable').length) {
+            var template = _.template($('#AppView').html());
+            this.$el.html(template());
+            // not created by constructor yet (already yes in render())
+            if (this.table) {
+                this.table.$el = $('#expenseTable');
+            }
+        }
     };
     AppView.prototype.monthChange = function () {
         elapse.time('AppView.monthChange');

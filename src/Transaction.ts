@@ -21,7 +21,11 @@ export default class Transaction extends Backbone.Model {
 			dDate = sDate.clone();
 			sDate = dDate.toString('d.M.yyyy');
 		} else {
-			dDate = Date.parseExact(sDate, "d.M.yyyy");
+			dDate = new Date(sDate);	// to parse from JSON
+			var dDateValid = !isNaN( dDate.getTime() );
+			if (!dDate || !dDateValid) {
+				dDate = Date.parseExact(sDate, "d.M.yyyy");
+			}
 			this.set('date', dDate);
 		}
 		//console.log(sDate, dDate);

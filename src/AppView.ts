@@ -33,8 +33,7 @@ export default class AppView extends Backbone.View<Transaction> {
 		super(options);
 		console.log('construct AppView');
 		this.setElement($('#app'));
-		var template = _.template($('#AppView').html());
-		this.$el.html(template());
+		this.setTemplate();
 
 		this.categoryList = new CategoryCollection();
 		this.categoryList.setExpenses(this.model);
@@ -65,9 +64,23 @@ export default class AppView extends Backbone.View<Transaction> {
 
 	render() {
 		console.log('AppView.render()', this.model.size());
+		this.setTemplate();
 		this.table.render();
 		this.categoryList.triggerChange();
 		return this;
+	}
+
+	setTemplate() {
+		// if no table in DOM, reset it
+		if (!$('#expenseTable').length) {
+			var template = _.template($('#AppView').html());
+			this.$el.html(template());
+
+			// not created by constructor yet (already yes in render())
+			if (this.table) {
+				this.table.$el = $('#expenseTable');
+			}
+		}
 	}
 
 	monthChange() {

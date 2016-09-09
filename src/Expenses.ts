@@ -81,7 +81,11 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	getEarliest() {
 		let min = new Date().addYears(10).valueOf();
 		this.each((row: Transaction) => {
-			let date: number = row.get('date').valueOf();
+			let dDate = row.get('date');
+			if (!dDate) {
+				console.log('getEarliest', dDate, row);
+			}
+			let date: number = dDate.valueOf();
 			if (date < min) {
 				min = date;
 			}

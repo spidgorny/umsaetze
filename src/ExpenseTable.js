@@ -13,6 +13,11 @@ var ExpenseTable = (function (_super) {
     function ExpenseTable(options) {
         _super.call(this, options);
         this.template = _.template($('#rowTemplate').html());
+        // in case we started with Sync page the table is not visible
+        if (!$('#expenseTable').length) {
+            var template = _.template($('#AppView').html());
+            $('#app').html(template());
+        }
         this.setElement($('#expenseTable'));
         // slow re-rendering of the whole table when model changes
         //this.listenTo(this.model, 'change', this.render);

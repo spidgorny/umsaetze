@@ -73,7 +73,11 @@ var Expenses = (function (_super) {
     Expenses.prototype.getEarliest = function () {
         var min = new Date().addYears(10).valueOf();
         this.each(function (row) {
-            var date = row.get('date').valueOf();
+            var dDate = row.get('date');
+            if (!dDate) {
+                console.log('getEarliest', dDate, row);
+            }
+            var date = dDate.valueOf();
             if (date < min) {
                 min = date;
             }
