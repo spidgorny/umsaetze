@@ -1,6 +1,7 @@
 ///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
 import AppView from './AppView';
 import Sync from './Sync';
+import MonthSelect from "./MonthSelect";
 
 export default class Workspace extends Backbone.Router {
 
@@ -15,7 +16,7 @@ export default class Workspace extends Backbone.Router {
 
 	constructor(options?: any) {
 		super(options);
-		this._bindRoutes();
+		(<any>this)._bindRoutes();
 	}
 
 	AppView() {
@@ -33,6 +34,7 @@ export default class Workspace extends Backbone.Router {
 	}
 
 	sync() {
+		console.log('Sync');
 		if (this.app) {
 			this.app.hide();
 		}
@@ -40,6 +42,10 @@ export default class Workspace extends Backbone.Router {
 			this.syncPage = new Sync();
 		}
 		this.syncPage.render();
+
+		// quick testing
+		let ms: MonthSelect = new MonthSelect();
+		ms.render();
 	}
 
 }

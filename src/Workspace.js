@@ -7,6 +7,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 ///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
 var AppView_1 = require('./AppView');
 var Sync_1 = require('./Sync');
+var MonthSelect_1 = require("./MonthSelect");
 var Workspace = (function (_super) {
     __extends(Workspace, _super);
     function Workspace(options) {
@@ -32,6 +33,7 @@ var Workspace = (function (_super) {
         console.log('help()');
     };
     Workspace.prototype.sync = function () {
+        console.log('Sync');
         if (this.app) {
             this.app.hide();
         }
@@ -39,6 +41,9 @@ var Workspace = (function (_super) {
             this.syncPage = new Sync_1["default"]();
         }
         this.syncPage.render();
+        // quick testing
+        var ms = new MonthSelect_1["default"]();
+        ms.render();
     };
     return Workspace;
 }(Backbone.Router));

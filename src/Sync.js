@@ -16,10 +16,11 @@ var Sync = (function (_super) {
     Sync.prototype.render = function () {
         this.$el.html(this.template());
         var clearButton = this.$('#Clear');
-        console.log(clearButton);
-        clearButton.on('click', this.clear);
+        //console.log(clearButton);
+        clearButton.on('click', Sync.clear);
+        return this;
     };
-    Sync.prototype.clear = function () {
+    Sync.clear = function () {
         console.log('clear');
         var localStorage = new Backbone.LocalStorage("Expenses");
         localStorage._clear();

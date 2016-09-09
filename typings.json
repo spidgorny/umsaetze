@@ -3,6 +3,7 @@
     "assert": "registry:dt/assert#0.0.0+20160317120654",
     "backbone": "registry:dt/backbone",
     "backbone.localstorage": "registry:dt/backbone.localstorage#1.0.0+20160317120654",
+    "datejs": "registry:dt/datejs#0.0.0+20160316155526",
     "jasmine": "registry:dt/jasmine#2.2.0+20160621224255",
     "jquery": "registry:dt/jquery",
     "mocha": "registry:dt/mocha#2.2.5+20160720003353",

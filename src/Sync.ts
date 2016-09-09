@@ -1,7 +1,7 @@
 ///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
 ///<reference path="../typings/index.d.ts"/>
 
-export default class Sync extends Backbone.View<> {
+export default class Sync extends Backbone.View<any> {
 
 	$el = $('#app');
 
@@ -14,11 +14,12 @@ export default class Sync extends Backbone.View<> {
 	render() {
 		this.$el.html(this.template());
 		let clearButton = this.$('#Clear');
-		console.log(clearButton);
-		clearButton.on('click', this.clear);
+		//console.log(clearButton);
+		clearButton.on('click', Sync.clear);
+		return this;
 	}
 
-	clear() {
+	static clear() {
 		console.log('clear');
 		let localStorage = new Backbone.LocalStorage("Expenses");
 		localStorage._clear();
