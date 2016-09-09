@@ -36,9 +36,14 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		this.localStorage = new Backbone.LocalStorage("Expenses");
 	}
 
+	/**
+	 * Should be called after constructor to read data from LS
+	 * @param options
+	 * @returns {JQueryXHR}
+	 */
 	fetch(options: CollectionFetchOptions = {}) {
 		let models = this.localStorage.findAll();
-		console.log('models from LS', models);
+		console.log('models from LS', models.length);
 		if (models.length) {
 			this.add(models);
 			//this.unserializeDate();

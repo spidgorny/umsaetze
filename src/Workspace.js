@@ -8,6 +8,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 var AppView_1 = require('./AppView');
 var Sync_1 = require('./Sync');
 var MonthSelect_1 = require("./MonthSelect");
+var Expenses_1 = require("./Expenses");
 var Workspace = (function (_super) {
     __extends(Workspace, _super);
     function Workspace(options) {
@@ -18,11 +19,15 @@ var Workspace = (function (_super) {
             "sync": "sync"
         };
         this._bindRoutes();
+        this.model = new Expenses_1["default"]();
+        this.model.fetch();
     }
     Workspace.prototype.AppView = function () {
         console.log('AppView');
         if (!this.app) {
-            this.app = new AppView_1["default"]();
+            this.app = new AppView_1["default"]({
+                model: this.model
+            });
             this.app.render();
         }
         else {
@@ -38,7 +43,7 @@ var Workspace = (function (_super) {
             this.app.hide();
         }
         if (!this.syncPage) {
-            this.syncPage = new Sync_1["default"]();
+            this.syncPage = new Sync_1["default"](this.model);
         }
         this.syncPage.render();
         // quick testing

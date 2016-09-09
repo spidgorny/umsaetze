@@ -2,6 +2,7 @@
 import AppView from './AppView';
 import Sync from './Sync';
 import MonthSelect from "./MonthSelect";
+import Expenses from "./Expenses";
 
 export default class Workspace extends Backbone.Router {
 
@@ -13,16 +14,21 @@ export default class Workspace extends Backbone.Router {
 
 	app: AppView;
 	syncPage: Sync;
+	model: Expenses;
 
 	constructor(options?: any) {
 		super(options);
 		(<any>this)._bindRoutes();
+		this.model = new Expenses();
+		this.model.fetch();
 	}
 
 	AppView() {
 		console.log('AppView');
 		if (!this.app) {
-			this.app = new AppView();
+			this.app = new AppView({
+				model: this.model
+			});
 			this.app.render();
 		} else {
 			this.app.show();
@@ -39,7 +45,7 @@ export default class Workspace extends Backbone.Router {
 			this.app.hide();
 		}
 		if (!this.syncPage) {
-			this.syncPage = new Sync();
+			this.syncPage = new Sync(this.model);
 		}
 		this.syncPage.render();
 

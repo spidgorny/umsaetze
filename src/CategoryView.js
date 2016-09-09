@@ -25,27 +25,20 @@ var CategoryView = (function (_super) {
         var categoryCount = this.model.toJSON();
         var sum = _.reduce(categoryCount, function (memo, item) {
             // only expenses
-            if (item.catName != 'Default') {
-                return memo + item.amount;
-            }
-            else {
-                return memo;
-            }
+            return memo + item.amount;
         }, 0);
         //console.log('sum', sum);
         categoryCount = _.sortBy(categoryCount, function (el) {
             return Math.abs(el.amount);
         }).reverse();
         _.each(categoryCount, function (catCount) {
-            if (catCount.catName != 'Default') {
-                var width = Math.round(100 * Math.abs(catCount.amount) / Math.abs(sum)) + '%';
-                //console.log(catCount.catName, width, catCount.count, catCount.amount);
-                content.push(_this.template(_.extend(catCount, {
-                    width: width,
-                    amount: Math.round(catCount.amount),
-                    sign: catCount.amount >= 0 ? 'positive' : 'negative'
-                })));
-            }
+            var width = Math.round(100 * Math.abs(catCount.amount) / Math.abs(sum)) + '%';
+            //console.log(catCount.catName, width, catCount.count, catCount.amount);
+            content.push(_this.template(_.extend(catCount, {
+                width: width,
+                amount: Math.round(catCount.amount),
+                sign: catCount.amount >= 0 ? 'positive' : 'negative'
+            })));
         });
         this.$el.html(content.join('\n'));
         elapse.timeEnd('CategoryView.render');

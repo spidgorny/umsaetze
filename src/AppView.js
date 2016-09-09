@@ -4,7 +4,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Expenses_1 = require("./Expenses");
 var ExpenseTable_1 = require("./ExpenseTable");
 var CategoryCollection_1 = require("./CategoryCollection");
 var CategoryView_1 = require("./CategoryView");
@@ -15,13 +14,16 @@ elapse.configure({
 });
 var AppView = (function (_super) {
     __extends(AppView, _super);
+    /**
+     * Make sure to provide model: Expenses in options
+     * @param options
+     */
     function AppView(options) {
         _super.call(this, options);
         console.log('construct AppView');
         this.setElement($('#app'));
         var template = _.template($('#AppView').html());
         this.$el.html(template());
-        this.model = new Expenses_1["default"]();
         this.categoryList = new CategoryCollection_1["default"]();
         this.categoryList.setExpenses(this.model);
         this.table = new ExpenseTable_1["default"]({
@@ -33,7 +35,6 @@ var AppView = (function (_super) {
             model: this.categoryList
         });
         console.log('category view model', this.categories.model);
-        this.model.fetch();
         this.ms = new MonthSelect_1["default"]();
         this.listenTo(this.model, "change", this.render);
         //this.listenTo(this.model, "change", this.table.render);

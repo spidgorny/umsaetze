@@ -27,11 +27,16 @@ var Expenses = (function (_super) {
         this.slowUpdateLoadingBar = _.throttle(this.updateLoadingBar, 128);
         this.localStorage = new Backbone.LocalStorage("Expenses");
     }
+    /**
+     * Should be called after constructor to read data from LS
+     * @param options
+     * @returns {JQueryXHR}
+     */
     Expenses.prototype.fetch = function (options) {
         var _this = this;
         if (options === void 0) { options = {}; }
         var models = this.localStorage.findAll();
-        console.log('models from LS', models);
+        console.log('models from LS', models.length);
         if (models.length) {
             this.add(models);
             //this.unserializeDate();

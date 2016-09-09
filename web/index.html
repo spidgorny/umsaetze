@@ -391,9 +391,10 @@
     <!-- Custom Theme JavaScript -->
     <script src="../startbootstrap-sb-admin-2/dist/js/sb-admin-2.js"></script>
 
-	<script src="../node_modules/underscore/underscore.js"></script>
-	<script src="../node_modules/backbone/backbone.js"></script>
+	<script src="../node_modules/underscore/underscore-min.js"></script>
+	<script src="../node_modules/backbone/backbone-min.js"></script>
 	<script src="../node_modules/papaparse/papaparse.min.js"></script>
+	<script src="../node_modules/file-saver/FileSaver.min.js"></script>
 	<script src="bundle.js"></script>
 
 	<script type="text/template" id="AppView">
@@ -479,6 +480,12 @@
 			</div>
 			<!-- /.panel-heading -->
 			<div class="panel-body">
+				<dl>
+					<dt>Records in memory:</dt>
+					<dd><%- memoryRows %></dd>
+					<dt>Records in local storage:</dt>
+					<dd><%- lsRows %></dd>
+				</dl>
 				<button id="Load" class="btn btn-default">Load</button>
 				<button id="Save" class="btn btn-default">Save</button>
 				<button id="Clear" class="btn btn-danger">Clear</button>

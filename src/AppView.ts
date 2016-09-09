@@ -23,14 +23,16 @@ export default class AppView extends Backbone.View<Transaction> {
 
 	cache: JQuery;
 
+	/**
+	 * Make sure to provide model: Expenses in options
+	 * @param options
+	 */
 	constructor(options?: any) {
 		super(options);
 		console.log('construct AppView');
 		this.setElement($('#app'));
 		var template = _.template($('#AppView').html());
 		this.$el.html(template());
-
-		this.model = new Expenses();
 
 		this.categoryList = new CategoryCollection();
 		this.categoryList.setExpenses(this.model);
@@ -45,8 +47,6 @@ export default class AppView extends Backbone.View<Transaction> {
 			model: this.categoryList,
 		});
 		console.log('category view model', this.categories.model);
-
-		this.model.fetch();
 
 		this.ms = new MonthSelect();
 
