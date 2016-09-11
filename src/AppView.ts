@@ -27,6 +27,7 @@ export default class AppView extends Backbone.View<Expenses> {
 
 	/**
 	 * Make sure to provide model: Expenses in options
+	 * and this.categoryList as well
 	 * @param options
 	 */
 	constructor(options?: any) {
@@ -35,8 +36,7 @@ export default class AppView extends Backbone.View<Expenses> {
 		this.setElement($('#app'));
 		this.setTemplate();
 
-		this.categoryList = new CategoryCollection();
-		this.categoryList.setExpenses(this.model);
+		this.categoryList = options.categoryList;
 
 		this.table = new ExpenseTable({
 			model: this.model,

@@ -4,6 +4,7 @@ import Sync from './Sync';
 import MonthSelect from "./MonthSelect";
 import Expenses from "./Expenses";
 import CatPage from "./CatPage";
+import CategoryCollection from "./CategoryCollection";
 
 export default class Workspace extends Backbone.Router {
 
@@ -14,6 +15,7 @@ export default class Workspace extends Backbone.Router {
 	};
 
 	model: Expenses;
+	categoryList: CategoryCollection;
 
 	app: AppView;
 	syncPage: Sync;
@@ -24,13 +26,16 @@ export default class Workspace extends Backbone.Router {
 		(<any>this)._bindRoutes();
 		this.model = new Expenses();
 		this.model.fetch();
+		this.categoryList = new CategoryCollection();
+		this.categoryList.setExpenses(this.model);
 	}
 
 	AppView() {
 		console.log('AppView');
 		if (!this.app) {
 			this.app = new AppView({
-				model: this.model
+				model: this.model,
+				categoryList: this.categoryList,
 			});
 			this.app.render();
 		} else {
@@ -55,7 +60,7 @@ export default class Workspace extends Backbone.Router {
 
 	CatPage() {
 		if (!this.catPage) {
-			this.catPage = new CatPage(this.model);
+			this.catPage = new CatPage(this.model, this.categoryList);
 		}
 		this.catPage.render();
 	}

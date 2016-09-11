@@ -5,7 +5,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var ExpenseTable_1 = require("./ExpenseTable");
-var CategoryCollection_1 = require("./CategoryCollection");
 var CategoryView_1 = require("./CategoryView");
 var MonthSelect_1 = require("./MonthSelect");
 var elapse = require('elapse');
@@ -16,6 +15,7 @@ var AppView = (function (_super) {
     __extends(AppView, _super);
     /**
      * Make sure to provide model: Expenses in options
+     * and this.categoryList as well
      * @param options
      */
     function AppView(options) {
@@ -24,8 +24,7 @@ var AppView = (function (_super) {
         console.log('construct AppView');
         this.setElement($('#app'));
         this.setTemplate();
-        this.categoryList = new CategoryCollection_1["default"]();
-        this.categoryList.setExpenses(this.model);
+        this.categoryList = options.categoryList;
         this.table = new ExpenseTable_1["default"]({
             model: this.model,
             el: $('#expenseTable')

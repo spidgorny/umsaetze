@@ -9,6 +9,7 @@ var AppView_1 = require('./AppView');
 var Sync_1 = require('./Sync');
 var Expenses_1 = require("./Expenses");
 var CatPage_1 = require("./CatPage");
+var CategoryCollection_1 = require("./CategoryCollection");
 var Workspace = (function (_super) {
     __extends(Workspace, _super);
     function Workspace(options) {
@@ -21,12 +22,15 @@ var Workspace = (function (_super) {
         this._bindRoutes();
         this.model = new Expenses_1["default"]();
         this.model.fetch();
+        this.categoryList = new CategoryCollection_1["default"]();
+        this.categoryList.setExpenses(this.model);
     }
     Workspace.prototype.AppView = function () {
         console.log('AppView');
         if (!this.app) {
             this.app = new AppView_1["default"]({
-                model: this.model
+                model: this.model,
+                categoryList: this.categoryList
             });
             this.app.render();
         }
@@ -49,7 +53,7 @@ var Workspace = (function (_super) {
     };
     Workspace.prototype.CatPage = function () {
         if (!this.catPage) {
-            this.catPage = new CatPage_1["default"](this.model);
+            this.catPage = new CatPage_1["default"](this.model, this.categoryList);
         }
         this.catPage.render();
     };

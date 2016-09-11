@@ -32,6 +32,7 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 		// this is how AppView triggers recalculation
 		// this makes an infinite loop of triggers
 		// this.listenTo(this, "change", this.getCategoriesFromExpenses);
+		this.listenTo(this, 'add', this.addToOptions);
 	}
 
 	getCategoriesFromExpenses() {
@@ -94,6 +95,13 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 			this.allOptions = options;
 		}
 		return this.allOptions;
+	}
+
+	addToOptions(model: CategoryCount) {
+		console.log('addToOptions', model);
+		this.allOptions.push(model.get('catName'));
+		this.allOptions = _.unique(this.allOptions);
+		this.allOptions = _.sortBy(this.allOptions);
 	}
 
 }

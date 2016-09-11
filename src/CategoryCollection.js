@@ -26,6 +26,7 @@ var CategoryCollection = (function (_super) {
         // this is how AppView triggers recalculation
         // this makes an infinite loop of triggers
         // this.listenTo(this, "change", this.getCategoriesFromExpenses);
+        this.listenTo(this, 'add', this.addToOptions);
     };
     CategoryCollection.prototype.getCategoriesFromExpenses = function () {
         var _this = this;
@@ -84,6 +85,12 @@ var CategoryCollection = (function (_super) {
             this.allOptions = options;
         }
         return this.allOptions;
+    };
+    CategoryCollection.prototype.addToOptions = function (model) {
+        console.log('addToOptions', model);
+        this.allOptions.push(model.get('catName'));
+        this.allOptions = _.unique(this.allOptions);
+        this.allOptions = _.sortBy(this.allOptions);
     };
     return CategoryCollection;
 }(Backbone.Collection));

@@ -1,1 +1,24 @@
-<p>asd</p>
+<form id="addCategoryForm">
+	<div class="form-group">
+		<input name="newName" />
+		<button id="" class="btn btn-success">Add</button>
+	</div>
+</form>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Category</th>
+			<th>Sparkline</th>
+			<th>Used</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each categoryList.allOptions}}
+			<tr>
+				<td>{{this}}</td>
+				<td>xxx</td>
+				<td>{{used}}</td>
+			</tr>
+		{{/each}}
+	</tbody>
+</table>
