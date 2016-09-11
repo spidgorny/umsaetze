@@ -32,6 +32,7 @@ var Sync = (function (_super) {
         }));
         this.$('#Refresh').on('click', this.refresh.bind(this));
         this.$('#Load').on('click', this.load.bind(this));
+        this.$('#LoadJSON').on('click', this.loadJSON.bind(this));
         this.$('#Save').on('click', this.save.bind(this));
         this.$('#Clear').on('click', this.clear.bind(this));
         return this;
@@ -108,6 +109,9 @@ var Sync = (function (_super) {
         this.model.setAllVisible();
         console.log('Trigger change on Expenses');
         this.model.trigger('change');
+    };
+    Sync.prototype.loadJSON = function () {
+        console.log('loadJSON');
     };
     Sync.prototype.save = function () {
         var data = this.model.localStorage.findAll();

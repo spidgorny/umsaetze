@@ -42,6 +42,7 @@ export default class Sync extends Backbone.View<any> {
 		}));
 		this.$('#Refresh').on('click', this.refresh.bind(this));
 		this.$('#Load').on('click', this.load.bind(this));
+		this.$('#LoadJSON').on('click', this.loadJSON.bind(this));
 		this.$('#Save').on('click', this.save.bind(this));
 		this.$('#Clear').on('click', this.clear.bind(this));
 		return this;
@@ -124,6 +125,10 @@ export default class Sync extends Backbone.View<any> {
 		this.model.setAllVisible();
 		console.log('Trigger change on Expenses');
 		this.model.trigger('change');
+	}
+
+	loadJSON() {
+		console.log('loadJSON');
 	}
 
 	save() {

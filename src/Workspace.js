@@ -7,16 +7,16 @@ var __extends = (this && this.__extends) || function (d, b) {
 ///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
 var AppView_1 = require('./AppView');
 var Sync_1 = require('./Sync');
-var MonthSelect_1 = require("./MonthSelect");
 var Expenses_1 = require("./Expenses");
+var CatPage_1 = require("./CatPage");
 var Workspace = (function (_super) {
     __extends(Workspace, _super);
     function Workspace(options) {
         _super.call(this, options);
         this.routes = {
             "": "AppView",
-            "help": "help",
-            "sync": "sync"
+            "CatPage": "CatPage",
+            "sync": "Sync"
         };
         this._bindRoutes();
         this.model = new Expenses_1["default"]();
@@ -34,10 +34,7 @@ var Workspace = (function (_super) {
             this.app.show();
         }
     };
-    Workspace.prototype.help = function () {
-        console.log('help()');
-    };
-    Workspace.prototype.sync = function () {
+    Workspace.prototype.Sync = function () {
         console.log('Sync');
         if (this.app) {
             this.app.hide();
@@ -47,8 +44,14 @@ var Workspace = (function (_super) {
         }
         this.syncPage.render();
         // quick testing
-        var ms = new MonthSelect_1["default"]();
-        ms.render();
+        // let ms: MonthSelect = new MonthSelect();
+        // ms.render();
+    };
+    Workspace.prototype.CatPage = function () {
+        if (!this.catPage) {
+            this.catPage = new CatPage_1["default"](this.model);
+        }
+        this.catPage.render();
     };
     return Workspace;
 }(Backbone.Router));

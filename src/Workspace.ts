@@ -3,18 +3,21 @@ import AppView from './AppView';
 import Sync from './Sync';
 import MonthSelect from "./MonthSelect";
 import Expenses from "./Expenses";
+import CatPage from "./CatPage";
 
 export default class Workspace extends Backbone.Router {
 
 	routes = {
-		"":            "AppView",
-		"help":        "help",
-		"sync":        "sync",
+		"":             "AppView",
+		"CatPage":		"CatPage",
+		"sync":         "Sync",
 	};
+
+	model: Expenses;
 
 	app: AppView;
 	syncPage: Sync;
-	model: Expenses;
+	catPage: CatPage;
 
 	constructor(options?: any) {
 		super(options);
@@ -35,11 +38,7 @@ export default class Workspace extends Backbone.Router {
 		}
 	}
 
-	help() {
-		console.log('help()');
-	}
-
-	sync() {
+	Sync() {
 		console.log('Sync');
 		if (this.app) {
 			this.app.hide();
@@ -50,8 +49,15 @@ export default class Workspace extends Backbone.Router {
 		this.syncPage.render();
 
 		// quick testing
-		let ms: MonthSelect = new MonthSelect();
-		ms.render();
+		// let ms: MonthSelect = new MonthSelect();
+		// ms.render();
+	}
+
+	CatPage() {
+		if (!this.catPage) {
+			this.catPage = new CatPage(this.model);
+		}
+		this.catPage.render();
 	}
 
 }

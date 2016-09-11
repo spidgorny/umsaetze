@@ -9,7 +9,7 @@ elapse.configure({
 	debug: true
 });
 
-export default class AppView extends Backbone.View<Transaction> {
+export default class AppView extends Backbone.View<Expenses> {
 
 	model: Expenses;
 
