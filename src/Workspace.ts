@@ -30,21 +30,44 @@ export default class Workspace extends Backbone.Router {
 		this.categoryList.setExpenses(this.model);
 	}
 
+	activateMenu() {
+		var url = window.location;
+		// var element = $('ul.nav a').filter(function() {
+		//     return this.href == url;
+		// }).addClass('active').parent().parent().addClass('in').parent();
+		var element = $('ul.nav#side-menu a')
+			.removeClass('active')
+			.filter(function() {
+				return this.href == url;
+			})
+			.addClass('active')
+			.parent()
+			.removeClass('in');
+
+		while (true) {
+			if (element.is('li')) {
+				element = element.parent().addClass('in').parent();
+			} else {
+				break;
+			}
+		}
+	}
+
 	AppView() {
 		console.log('AppView');
+		this.activateMenu();
 		if (!this.app) {
 			this.app = new AppView({
 				model: this.model,
 				categoryList: this.categoryList,
 			});
-			this.app.render();
-		} else {
-			this.app.show();
 		}
+		this.app.show();
 	}
 
 	Sync() {
 		console.log('Sync');
+		this.activateMenu();
 		if (this.app) {
 			this.app.hide();
 		}
@@ -59,6 +82,11 @@ export default class Workspace extends Backbone.Router {
 	}
 
 	CatPage() {
+		console.log('CatPage');
+		this.activateMenu();
+		if (this.app) {
+			this.app.hide();
+		}
 		if (!this.catPage) {
 			this.catPage = new CatPage(this.model, this.categoryList);
 		}

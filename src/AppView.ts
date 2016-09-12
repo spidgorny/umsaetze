@@ -63,6 +63,7 @@ export default class AppView extends Backbone.View<Expenses> {
 	}
 
 	render() {
+		if (!['', '#'].includes(window.location.hash)) return;
 		console.log('AppView.render()', this.model.size());
 		this.setTemplate();
 		this.table.render();
@@ -72,7 +73,7 @@ export default class AppView extends Backbone.View<Expenses> {
 
 	setTemplate() {
 		// if no table in DOM, reset it
-		if (!$('#expenseTable').length) {
+		if (!this.$('#expenseTable').length) {
 			var template = _.template($('#AppView').html());
 			this.$el.html(template());
 
@@ -108,14 +109,21 @@ export default class AppView extends Backbone.View<Expenses> {
 	show() {
 		elapse.time('AppView.show');
 		this.ms.show();
-		this.$el.html(this.cache);
+		if (this.cache) {
+			this.$el.html(this.cache);
+			this.cache = null;
+		} else {
+			this.render();
+		}
 		elapse.timeEnd('AppView.show');
 	}
 
 	hide() {
 		elapse.time('AppView.hide');
 		this.ms.hide();
-		this.cache = this.$el.children().detach();
+		if (this.$('#expenseTable').length) {
+			this.cache = this.$el.children().detach();
+		}
 		elapse.timeEnd('AppView.hide');
 	}
 

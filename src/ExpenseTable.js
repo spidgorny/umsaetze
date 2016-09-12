@@ -56,8 +56,10 @@ var ExpenseTable = (function (_super) {
     ExpenseTable.prototype.openSelect = function (event) {
         //console.log('openSelect', this, event);
         var $select = $(event.target);
-        if ($select.find('option').length == 1) {
+        //if ($select.find('option').length == 1) {
+        {
             var defVal_1 = $select.find('option').html();
+            $select.find('option').remove();
             var options = this.categoryList.getOptions();
             //console.log(options);
             $.each(options, function (key, value) {
