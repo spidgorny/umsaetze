@@ -1,38 +1,25 @@
 ---
-title: Hello World
+title: Umsaetze
 ---
-Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).
+This is a tool to categorize your expenses as recorded by your bank. First you download the data from the bank in CSV format. Import it here and choose the categories. This tool allows you to do all that without storing your data on any server - it's stored in your browser local storage and not transmitted over the network. So nobody can see your money business.
 
+Tool is not live yet. Download your local copy from [GitHub](https://github.com/spidgorny/umsaetze/)
+ 
 ## Quick Start
 
-### Create a new post
+* Download CSV file from your bank with the account transactions.
+* Go to [https://spidgorny.github.io/umsaetze/web/]() and switch to [Sync] menu.
+* Import your CSV file.
+* Go back to the [Dashboard] page to see your expenses shown split by month.
+* You can switch month/year.
+* Try creating categories in [Categories] menu.
+* Try using these categories in the [Dashboard] drop-downs.
+* Notice how category totals appear on the left.
+* If you categorize all of your expenses you can see their totals per month.
 
-``` bash
-$ hexo new "My New Post"
-```
+## ToDO
 
-More info: [Writing](https://hexo.io/docs/writing.html)
-
-### Run server
-
-``` bash
-$ hexo server
-```
-
-More info: [Server](https://hexo.io/docs/server.html)
-
-### Generate static files
-
-``` bash
-$ hexo generate
-```
-
-More info: [Generating](https://hexo.io/docs/generating.html)
-
-### Deploy to remote sites
-
-``` bash
-$ hexo deploy
-```
-
-More info: [Deployment](https://hexo.io/docs/deployment.html)
+* You will be able to select words and associate them with a category. This will allow automatic categorization.
+* Pie chart for categories in a sidebar.
+* See single category details with charts showing how much you spent on it per month.
+* Your ideas?
