@@ -44,6 +44,7 @@ export default class CatPage extends Backbone.View<Transaction> {
 	}
 
 	render() {
+		if (window.location.hash != '#CatPage') return;
 		console.log('CatPage.render');
 		if (this.template) {
 			let thisPlus = this;

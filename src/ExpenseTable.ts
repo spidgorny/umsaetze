@@ -68,8 +68,11 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 	openSelect(event) {
 		//console.log('openSelect', this, event);
 		var $select = $(event.target);
-		if ($select.find('option').length == 1) {
+
+		//if ($select.find('option').length == 1) {
+		{
 			let defVal = $select.find('option').html();
+			$select.find('option').remove();
 			let options = this.categoryList.getOptions();
 			//console.log(options);
 			$.each(options, (key, value) => {

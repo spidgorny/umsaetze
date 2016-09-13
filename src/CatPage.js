@@ -34,6 +34,8 @@ var CatPage = (function (_super) {
         this.render();
     };
     CatPage.prototype.render = function () {
+        if (window.location.hash != '#CatPage')
+            return;
         console.log('CatPage.render');
         if (this.template) {
             var thisPlus = this;

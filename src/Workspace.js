@@ -25,21 +25,42 @@ var Workspace = (function (_super) {
         this.categoryList = new CategoryCollection_1["default"]();
         this.categoryList.setExpenses(this.model);
     }
+    Workspace.prototype.activateMenu = function () {
+        var url = window.location;
+        // var element = $('ul.nav a').filter(function() {
+        //     return this.href == url;
+        // }).addClass('active').parent().parent().addClass('in').parent();
+        var element = $('ul.nav#side-menu a')
+            .removeClass('active')
+            .filter(function () {
+            return this.href == url;
+        })
+            .addClass('active')
+            .parent()
+            .removeClass('in');
+        while (true) {
+            if (element.is('li')) {
+                element = element.parent().addClass('in').parent();
+            }
+            else {
+                break;
+            }
+        }
+    };
     Workspace.prototype.AppView = function () {
         console.log('AppView');
+        this.activateMenu();
         if (!this.app) {
             this.app = new AppView_1["default"]({
                 model: this.model,
                 categoryList: this.categoryList
             });
-            this.app.render();
         }
-        else {
-            this.app.show();
-        }
+        this.app.show();
     };
     Workspace.prototype.Sync = function () {
         console.log('Sync');
+        this.activateMenu();
         if (this.app) {
             this.app.hide();
         }
@@ -52,6 +73,11 @@ var Workspace = (function (_super) {
         // ms.render();
     };
     Workspace.prototype.CatPage = function () {
+        console.log('CatPage');
+        this.activateMenu();
+        if (this.app) {
+            this.app.hide();
+        }
         if (!this.catPage) {
             this.catPage = new CatPage_1["default"](this.model, this.categoryList);
         }
