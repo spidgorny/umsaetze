@@ -8,7 +8,7 @@ Tool is not live yet. Download your local copy from [GitHub](https://github.com/
 ## Quick Start
 
 * Download CSV file from your bank with the account transactions.
-* Go to [https://spidgorny.github.io/umsaetze/web/]() and switch to [Sync] menu.
+* Go to [https://spidgorny.github.io/umsaetze/web/](https://spidgorny.github.io/umsaetze/web/) and switch to [Sync] menu.
 * Import your CSV file.
 * Go back to the [Dashboard] page to see your expenses shown split by month.
 * You can switch month/year.
