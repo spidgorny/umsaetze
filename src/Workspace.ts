@@ -1,7 +1,6 @@
 ///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
 import AppView from './AppView';
 import Sync from './Sync';
-import MonthSelect from "./MonthSelect";
 import Expenses from "./Expenses";
 import CatPage from "./CatPage";
 import CategoryCollection from "./CategoryCollection";

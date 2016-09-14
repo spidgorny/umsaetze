@@ -4,7 +4,6 @@
 
 import CollectionFetchOptions = Backbone.CollectionFetchOptions;
 import Workspace from "./Workspace";
-import MonthSelect from "./MonthSelect";
 
 export function asyncLoop(arr: Array<any>, callback: Function, done?: Function) {
 	(function loop(i) {
