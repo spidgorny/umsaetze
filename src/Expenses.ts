@@ -27,6 +27,9 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	constructor() {
 		super();
 		this.localStorage = new Backbone.LocalStorage("Expenses");
+		this.listenTo(this, 'change', () => {
+			console.log('Expenses changed event');
+		});
 	}
 
 	/**

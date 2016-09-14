@@ -73,6 +73,7 @@ export default class Workspace extends Backbone.Router {
 		}
 		if (!this.syncPage) {
 			this.syncPage = new Sync(this.model);
+			this.syncPage.router = this;
 		}
 		this.syncPage.render();
 

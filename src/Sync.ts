@@ -6,17 +6,20 @@ import Transaction from "./Transaction";
 import CollectionFetchOptions = Backbone.CollectionFetchOptions;
 import {asyncLoop} from "./umsaetze";
 import PersistenceOptions = Backbone.PersistenceOptions;
+import Workspace from "./Workspace";
 require('file-saver');
 var elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
+let toastr = require('toastr');
+let chance = require('chance').Chance();
 
 export default class Sync extends Backbone.View<any> {
 
 	$el = $('#app');
 
-	template = _.template($('#SyncPage').html());
+	template;
 
 	model: Expenses;
 
@@ -28,27 +31,41 @@ export default class Sync extends Backbone.View<any> {
 
 	prevPercent: number;
 
+	router: Workspace;
+
 	constructor(expenses: Expenses) {
 		super();
 		this.model = expenses;
 		this.listenTo(this.model, 'change', this.render);
 		this.slowUpdateLoadingBar = _.throttle(this.updateLoadingBar, 128);
+
+		let $SyncPage = $('#SyncPage');
+		$SyncPage.load($SyncPage.attr('src'), (html) => {
+			this.template = _.template(html);
+			this.render();
+		});
 	}
 
 	render() {
-		this.$el.html(this.template({
-			memoryRows: this.model.size(),
-			lsRows: this.localStorage.records.length,
-		}));
-		this.$('#Refresh').on('click', this.refresh.bind(this));
-		this.$('#Load').on('click', this.load.bind(this));
-		this.$('#LoadJSON').on('click', this.loadJSON.bind(this));
-		this.$('#Save').on('click', this.save.bind(this));
-		this.$('#Clear').on('click', this.clear.bind(this));
+		if (this.template) {
+			this.$el.html(this.template({
+				memoryRows: this.model.size(),
+				lsRows: this.localStorage.records.length,
+			}));
+			this.$('#Refresh').on('click', this.refresh.bind(this));
+			this.$('#Generate').on('click', this.generate.bind(this));
+			this.$('#Load').on('click', this.load.bind(this));
+			this.$('#LoadJSON').on('click', this.loadJSON.bind(this));
+			this.$('#Save').on('click', this.save.bind(this));
+			this.$('#Clear').on('click', this.clear.bind(this));
+		} else {
+			this.$el.html('Loading ...');
+		}
 		return this;
 	}
 
 	refresh() {
+		toastr.success('Refreshing...');
 		this.render();
 	}
 
@@ -150,6 +167,30 @@ export default class Sync extends Backbone.View<any> {
 			localStorage._clear();
 			this.render();
 		}
+	}
+
+	generate() {
+		toastr.info('Generating...');
+		let amount = 100;
+		let account = chance.word();
+		for (var i of _.range(amount)) {
+			this.model.add(new Transaction({
+				account: account,
+				category: "Default",
+				currency: "EUR",
+				amount: chance.floating({fixed: 2, min: -1000, max: 1000}),
+				payment_type: "DEBIT_CARD",
+				date: chance.date({year: new Date().getFullYear()}),
+				note: chance.sentence(),
+			}));
+		}
+		toastr.success('Generated '+amount+' records.');
+		// this.model.setAllVisible();
+		this.model.trigger('change');
+		// this.router.AppView();
+		Backbone.history.navigate('#', {
+			trigger: true,
+		});
 	}
 
 }

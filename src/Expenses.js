@@ -23,6 +23,9 @@ var Expenses = (function (_super) {
         this.attributes = null;
         this.model = Transaction_1["default"];
         this.localStorage = new Backbone.LocalStorage("Expenses");
+        this.listenTo(this, 'change', function () {
+            console.log('Expenses changed event');
+        });
     }
     /**
      * Should be called after constructor to read data from LS

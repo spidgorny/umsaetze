@@ -2,6 +2,19 @@
 ///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
 var md5 = require('md5');
 
+/*
+ {"account":"SpardaSlawa",
+ "category":"Einkauf",
+ "currency":"EUR",
+ "amount":-23.99,
+ "payment_type":"DEBIT_CARD",
+ "date": "",
+ "note": "",
+ "id": "",
+ "visible": false,
+ "sign": ""
+ */
+
 export default class Transaction extends Backbone.Model {
 
 	date: Date;
@@ -9,7 +22,7 @@ export default class Transaction extends Backbone.Model {
 	amount: Number;
 	note: String;
 
-	constructor(attributes: any, options?: any) {
+	constructor(attributes: Object, options?: Object) {
 		super(attributes, options);
 		this.defaults = <any>{
 			visible: true,

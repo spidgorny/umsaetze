@@ -66,6 +66,7 @@ var Workspace = (function (_super) {
         }
         if (!this.syncPage) {
             this.syncPage = new Sync_1["default"](this.model);
+            this.syncPage.router = this;
         }
         this.syncPage.render();
         // quick testing

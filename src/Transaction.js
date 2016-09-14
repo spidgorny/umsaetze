@@ -7,6 +7,18 @@ var __extends = (this && this.__extends) || function (d, b) {
 ///<reference path="../typings/index.d.ts"/>
 ///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
 var md5 = require('md5');
+/*
+ {"account":"SpardaSlawa",
+ "category":"Einkauf",
+ "currency":"EUR",
+ "amount":-23.99,
+ "payment_type":"DEBIT_CARD",
+ "date": "",
+ "note": "",
+ "id": "",
+ "visible": false,
+ "sign": ""
+ */
 var Transaction = (function (_super) {
     __extends(Transaction, _super);
     function Transaction(attributes, options) {
