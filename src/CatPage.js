@@ -34,14 +34,23 @@ var CatPage = (function (_super) {
         this.render();
     };
     CatPage.prototype.render = function () {
+        var _this = this;
         if (window.location.hash != '#CatPage')
             return;
         console.log('CatPage.render');
         if (this.template) {
-            var thisPlus = this;
-            //thisPlus.categoryOptions = this.categoryList.allOptions;
-            this.$el.html(this.template(thisPlus));
+            var categoryOptions_1 = [];
+            _.each(this.categoryList.allOptions, function (value, index) {
+                categoryOptions_1.push({
+                    catName: value,
+                    background: _this.categoryList.colors[index]
+                });
+            });
+            this.$el.html(this.template({
+                categoryOptions: categoryOptions_1
+            }));
             this.$('#addCategoryForm').on('submit', this.addCategory.bind(this));
+            this.$('input').focus();
         }
         else {
             this.$el.html('Loading...');
@@ -56,7 +65,6 @@ var CatPage = (function (_super) {
         this.categoryList.add(new CategoryCount_1["default"]({
             catName: newName
         }));
-        $form.find('input').focus();
     };
     return CatPage;
 }(Backbone.View));

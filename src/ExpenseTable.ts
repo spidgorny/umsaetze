@@ -45,13 +45,13 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 		var rows = [];
 		let visible = this.model.getVisible();
 		_.each(visible, (transaction: Transaction) => {
-			//console.log(transaction);
 			var attributes = transaction.toJSON();
 			attributes.sDate = attributes.date.toString('yyyy-MM-dd');
 			attributes.cssClass = attributes.category == 'Default'
 				? 'bg-warning' : '';
-			let categoryOptions = this.getCategoryOptions(transaction);
-			attributes.categoryOptions = categoryOptions;
+			attributes.categoryOptions = this.getCategoryOptions(transaction);
+			attributes.background = this.categoryList.getColorFor(transaction.get('category'));
+
 			rows.push(this.template(attributes));
 		});
 		console.log('rendering', rows.length, 'rows');
@@ -100,7 +100,7 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 		let selected = transaction.get('category');
 		let sOptions = [];
 		let options = this.categoryList.getOptions();
-		console.log('options', options);
+		// console.log('options', options);
 		$.each(options, (key, value) => {
 			if (value == selected) {
 				sOptions.push('<option selected>' + value + '</option>');
@@ -108,7 +108,7 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 				sOptions.push('<option>' + value + '</option>');
 			}
 		});
-		console.log('sOptions', sOptions);
+		// console.log('sOptions', sOptions);
 		return sOptions.join('\n');
 	}
 

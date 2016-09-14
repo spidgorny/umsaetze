@@ -8,7 +8,11 @@ var __extends = (this && this.__extends) || function (d, b) {
 var CategoryCount = (function (_super) {
     __extends(CategoryCount, _super);
     function CategoryCount() {
-        _super.apply(this, arguments);
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i - 0] = arguments[_i];
+        }
+        _super.call(this);
     }
     return CategoryCount;
 }(Backbone.Model));

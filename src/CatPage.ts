@@ -47,10 +47,18 @@ export default class CatPage extends Backbone.View<Transaction> {
 		if (window.location.hash != '#CatPage') return;
 		console.log('CatPage.render');
 		if (this.template) {
-			let thisPlus = this;
-			//thisPlus.categoryOptions = this.categoryList.allOptions;
-			this.$el.html(this.template(thisPlus));
+			let categoryOptions = [];
+			_.each(this.categoryList.allOptions, (value, index) => {
+				categoryOptions.push({
+					catName: value,
+					background: this.categoryList.colors[index],
+				});
+			});
+			this.$el.html(this.template({
+				categoryOptions: categoryOptions,
+			}));
 			this.$('#addCategoryForm').on('submit', this.addCategory.bind(this));
+			this.$('input').focus();
 		} else {
 			this.$el.html('Loading...');
 		}
@@ -65,7 +73,6 @@ export default class CatPage extends Backbone.View<Transaction> {
 		this.categoryList.add(new CategoryCount({
 			catName: newName,
 		}));
-		$form.find('input').focus();
 	}
 
 }

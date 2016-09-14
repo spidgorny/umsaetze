@@ -20,7 +20,7 @@ export default class MonthSelect extends Backbone.View<any> {
 
 	latest = new Date('2016-05-15');
 
-	localStorage: Backbone.LocalStorage;
+	//localStorage: Backbone.LocalStorage;
 
 	constructor() {
 		super();
@@ -28,7 +28,7 @@ export default class MonthSelect extends Backbone.View<any> {
 		// console.log(this.monthOptions);
 		this.monthOptions.on('click', this.clickOnMonth.bind(this));
 		this.yearSelect.on('change', this.changeYear.bind(this));
-		this.localStorage = new Backbone.LocalStorage('MonthSelect');
+		//this.localStorage = new Backbone.LocalStorage('MonthSelect');
 		let year = window.localStorage.getItem('MonthSelect.year');
 		if (year) {
 			this.selectedYear = year;

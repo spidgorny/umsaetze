@@ -8,6 +8,7 @@ var elapse = require('elapse');
 elapse.configure({
     debug: true
 });
+var simpleStorage = require('simpleStorage.js');
 /**
  * Depends on Expenses to parse them
  * and retrieve the total values for each category
@@ -17,6 +18,9 @@ var CategoryCollection = (function (_super) {
     function CategoryCollection(options) {
         _super.call(this, options);
         this.allOptions = [];
+        this.colors = [];
+        //let ls = Backbone.LocalStorage('CategoryColors');
+        this.colors = simpleStorage.get('CategoryColors') || [];
     }
     CategoryCollection.prototype.setExpenses = function (ex) {
         this.expenses = ex;
@@ -85,6 +89,7 @@ var CategoryCollection = (function (_super) {
             options = _.unique(options);
             options = _.sortBy(options);
             this.allOptions = options;
+            this.setColors();
         }
         return this.allOptions;
     };
@@ -93,7 +98,35 @@ var CategoryCollection = (function (_super) {
         this.allOptions.push(model.get('catName'));
         this.allOptions = _.unique(this.allOptions);
         this.allOptions = _.sortBy(this.allOptions);
+        this.setColors();
         this.triggerChange();
+    };
+    CategoryCollection.prototype.setColors = function () {
+        var _this = this;
+        _.each(this.allOptions, function (value, index) {
+            if (!_this.colors[index]) {
+                _this.colors[index] = CategoryCollection.pastelColors();
+            }
+        });
+        simpleStorage.set('CategoryColors', this.colors);
+    };
+    CategoryCollection.prototype.getColorFor = function (value) {
+        // console.log('colors', this.colors);
+        // let index = _.find(this.allOptions, (catName, index) => {
+        // 	if (value == catName) {
+        // 		return index;
+        // 	}
+        // });
+        var index = this.allOptions.indexOf(value);
+        var color = this.colors[index];
+        // console.log(index, 'color for', value, 'is', color);
+        return color;
+    };
+    CategoryCollection.pastelColors = function () {
+        var r = (Math.round(Math.random() * 55) + 200).toString(16);
+        var g = (Math.round(Math.random() * 55) + 200).toString(16);
+        var b = (Math.round(Math.random() * 55) + 200).toString(16);
+        return '#' + r + g + b;
     };
     return CategoryCollection;
 }(Backbone.Collection));

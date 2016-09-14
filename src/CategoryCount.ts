@@ -8,4 +8,8 @@ export default class CategoryCount extends Backbone.Model {
 
 	amount: number;
 
+	constructor(...args: any[]) {
+		super();
+	}
+
 }

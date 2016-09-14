@@ -10,6 +10,7 @@ var Backbone = require('backbone');
 require('datejs');
 var MonthSelect = (function (_super) {
     __extends(MonthSelect, _super);
+    //localStorage: Backbone.LocalStorage;
     function MonthSelect() {
         _super.call(this);
         this.$el = $('#MonthSelect');
@@ -23,7 +24,7 @@ var MonthSelect = (function (_super) {
         // console.log(this.monthOptions);
         this.monthOptions.on('click', this.clickOnMonth.bind(this));
         this.yearSelect.on('change', this.changeYear.bind(this));
-        this.localStorage = new Backbone.LocalStorage('MonthSelect');
+        //this.localStorage = new Backbone.LocalStorage('MonthSelect');
         var year = window.localStorage.getItem('MonthSelect.year');
         if (year) {
             this.selectedYear = year;

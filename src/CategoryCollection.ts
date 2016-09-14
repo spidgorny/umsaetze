@@ -5,6 +5,7 @@ var elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
+let simpleStorage = require('simpleStorage.js');
 
 /**
  * Depends on Expenses to parse them
@@ -12,14 +13,18 @@ elapse.configure({
  */
 export default class CategoryCollection extends Backbone.Collection<CategoryCount> {
 
-	model: CategoryCount;
+	model: CategoryCount|any;
 
 	expenses: Expenses;
 
 	allOptions = [];
 
+	colors = [];
+
 	constructor(options?) {
 		super(options);
+		//let ls = Backbone.LocalStorage('CategoryColors');
+		this.colors = simpleStorage.get('CategoryColors') || [];
 	}
 
 	setExpenses(ex: Expenses) {
@@ -95,6 +100,7 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 			options = _.unique(options);
 			options = _.sortBy(options);
 			this.allOptions = options;
+			this.setColors();
 		}
 		return this.allOptions;
 	}
@@ -104,7 +110,37 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 		this.allOptions.push(model.get('catName'));
 		this.allOptions = _.unique(this.allOptions);
 		this.allOptions = _.sortBy(this.allOptions);
+		this.setColors();
 		this.triggerChange();
+	}
+
+	setColors() {
+		_.each(this.allOptions, (value, index) => {
+			if (!this.colors[index]) {
+				this.colors[index] = CategoryCollection.pastelColors();
+			}
+		});
+		simpleStorage.set('CategoryColors', this.colors);
+	}
+
+	getColorFor(value) {
+		// console.log('colors', this.colors);
+		// let index = _.find(this.allOptions, (catName, index) => {
+		// 	if (value == catName) {
+		// 		return index;
+		// 	}
+		// });
+		let index = this.allOptions.indexOf(value);
+		let color = this.colors[index];
+		// console.log(index, 'color for', value, 'is', color);
+		return color;
+	}
+
+	static pastelColors(){
+		var r = (Math.round(Math.random() * 55) + 200).toString(16);
+		var g = (Math.round(Math.random() * 55) + 200).toString(16);
+		var b = (Math.round(Math.random() * 55) + 200).toString(16);
+		return '#' + r + g + b;
 	}
 
 }

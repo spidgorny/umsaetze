@@ -37,13 +37,12 @@ var ExpenseTable = (function (_super) {
         var rows = [];
         var visible = this.model.getVisible();
         _.each(visible, function (transaction) {
-            //console.log(transaction);
             var attributes = transaction.toJSON();
             attributes.sDate = attributes.date.toString('yyyy-MM-dd');
             attributes.cssClass = attributes.category == 'Default'
                 ? 'bg-warning' : '';
-            var categoryOptions = _this.getCategoryOptions(transaction);
-            attributes.categoryOptions = categoryOptions;
+            attributes.categoryOptions = _this.getCategoryOptions(transaction);
+            attributes.background = _this.categoryList.getColorFor(transaction.get('category'));
             rows.push(_this.template(attributes));
         });
         console.log('rendering', rows.length, 'rows');
@@ -86,7 +85,7 @@ var ExpenseTable = (function (_super) {
         var selected = transaction.get('category');
         var sOptions = [];
         var options = this.categoryList.getOptions();
-        console.log('options', options);
+        // console.log('options', options);
         $.each(options, function (key, value) {
             if (value == selected) {
                 sOptions.push('<option selected>' + value + '</option>');
@@ -95,7 +94,7 @@ var ExpenseTable = (function (_super) {
                 sOptions.push('<option>' + value + '</option>');
             }
         });
-        console.log('sOptions', sOptions);
+        // console.log('sOptions', sOptions);
         return sOptions.join('\n');
     };
     ExpenseTable.prototype.newCategory = function (event) {
