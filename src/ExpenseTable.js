@@ -24,6 +24,7 @@ var ExpenseTable = (function (_super) {
     }
     ExpenseTable.prototype.setCategoryList = function (list) {
         this.categoryList = list;
+        this.listenTo(this.categoryList, 'change', this.render);
     };
     ExpenseTable.prototype.render = function (options) {
         var _this = this;
@@ -41,6 +42,8 @@ var ExpenseTable = (function (_super) {
             attributes.sDate = attributes.date.toString('yyyy-MM-dd');
             attributes.cssClass = attributes.category == 'Default'
                 ? 'bg-warning' : '';
+            var categoryOptions = _this.getCategoryOptions(transaction);
+            attributes.categoryOptions = categoryOptions;
             rows.push(_this.template(attributes));
         });
         console.log('rendering', rows.length, 'rows');
@@ -49,10 +52,16 @@ var ExpenseTable = (function (_super) {
         $('#dateFrom').html(this.model.getDateFrom().toString('yyyy-MM-dd'));
         $('#dateTill').html(this.model.getDateTill().toString('yyyy-MM-dd'));
         $('#numRows').html(this.model.getVisibleCount().toString());
-        this.$el.on('click', 'select', this.openSelect.bind(this));
+        // does not work in Chrome
+        //this.$el.on('click', 'select', this.openSelect.bind(this));
+        this.$el.on('change', 'select', this.newCategory.bind(this));
         elapse.timeEnd('ExpenseTable.render');
         return this;
     };
+    /**
+     * @deprecated - not working in Chrome
+     * @param event
+     */
     ExpenseTable.prototype.openSelect = function (event) {
         //console.log('openSelect', this, event);
         var $select = $(event.target);
@@ -72,6 +81,22 @@ var ExpenseTable = (function (_super) {
             });
             $select.on('change', this.newCategory.bind(this));
         }
+    };
+    ExpenseTable.prototype.getCategoryOptions = function (transaction) {
+        var selected = transaction.get('category');
+        var sOptions = [];
+        var options = this.categoryList.getOptions();
+        console.log('options', options);
+        $.each(options, function (key, value) {
+            if (value == selected) {
+                sOptions.push('<option selected>' + value + '</option>');
+            }
+            else {
+                sOptions.push('<option>' + value + '</option>');
+            }
+        });
+        console.log('sOptions', sOptions);
+        return sOptions.join('\n');
     };
     ExpenseTable.prototype.newCategory = function (event) {
         //console.log(event);

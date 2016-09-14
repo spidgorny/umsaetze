@@ -56,6 +56,7 @@ var CatPage = (function (_super) {
         this.categoryList.add(new CategoryCount_1["default"]({
             catName: newName
         }));
+        $form.find('input').focus();
     };
     return CatPage;
 }(Backbone.View));

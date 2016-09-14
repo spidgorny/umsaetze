@@ -31,6 +31,7 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 
 	setCategoryList(list: CategoryCollection) {
 		this.categoryList = list;
+		this.listenTo(this.categoryList, 'change', this.render);
 	}
 
 	render(options?: any) {
@@ -49,6 +50,8 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 			attributes.sDate = attributes.date.toString('yyyy-MM-dd');
 			attributes.cssClass = attributes.category == 'Default'
 				? 'bg-warning' : '';
+			let categoryOptions = this.getCategoryOptions(transaction);
+			attributes.categoryOptions = categoryOptions;
 			rows.push(this.template(attributes));
 		});
 		console.log('rendering', rows.length, 'rows');
@@ -59,12 +62,18 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 		$('#dateTill').html(this.model.getDateTill().toString('yyyy-MM-dd'));
 		$('#numRows').html(this.model.getVisibleCount().toString());
 
-		this.$el.on('click', 'select', this.openSelect.bind(this));
+		// does not work in Chrome
+		//this.$el.on('click', 'select', this.openSelect.bind(this));
+		this.$el.on('change', 'select', this.newCategory.bind(this));
 
 		elapse.timeEnd('ExpenseTable.render');
 		return this;
 	}
 
+	/**
+	 * @deprecated - not working in Chrome
+	 * @param event
+	 */
 	openSelect(event) {
 		//console.log('openSelect', this, event);
 		var $select = $(event.target);
@@ -85,6 +94,22 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 			});
 			$select.on('change', this.newCategory.bind(this));
 		}
+	}
+
+	getCategoryOptions(transaction: Transaction) {
+		let selected = transaction.get('category');
+		let sOptions = [];
+		let options = this.categoryList.getOptions();
+		console.log('options', options);
+		$.each(options, (key, value) => {
+			if (value == selected) {
+				sOptions.push('<option selected>' + value + '</option>');
+			} else {
+				sOptions.push('<option>' + value + '</option>');
+			}
+		});
+		console.log('sOptions', sOptions);
+		return sOptions.join('\n');
 	}
 
 	newCategory(event) {

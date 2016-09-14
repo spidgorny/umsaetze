@@ -65,6 +65,7 @@ export default class CatPage extends Backbone.View<Transaction> {
 		this.categoryList.add(new CategoryCount({
 			catName: newName,
 		}));
+		$form.find('input').focus();
 	}
 
 }

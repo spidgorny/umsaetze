@@ -25,7 +25,7 @@ var CategoryCollection = (function (_super) {
         this.listenTo(this.expenses, "change", this.getCategoriesFromExpenses);
         // this is how AppView triggers recalculation
         // this makes an infinite loop of triggers
-        // this.listenTo(this, "change", this.getCategoriesFromExpenses);
+        this.listenTo(this, "change", this.getCategoriesFromExpenses);
         this.listenTo(this, 'add', this.addToOptions);
     };
     CategoryCollection.prototype.getCategoriesFromExpenses = function () {
@@ -42,7 +42,7 @@ var CategoryCollection = (function (_super) {
         //console.log(this.categoryCount);
         elapse.timeEnd('getCategoriesFromExpenses');
         // when we recalculated the data we trigger the view render
-        this.trigger('change');
+        //this.trigger('change'); // commented because of infinite loop
     };
     CategoryCollection.prototype.incrementCategoryData = function (categoryName, transaction) {
         var exists = this.findWhere({ catName: categoryName });
@@ -64,7 +64,9 @@ var CategoryCollection = (function (_super) {
     };
     CategoryCollection.prototype.triggerChange = function () {
         console.log('CategoryCollection.triggerChange');
-        this.getCategoriesFromExpenses();
+        // commented as next line will call it anyway
+        //this.getCategoriesFromExpenses();
+        this.trigger('change');
     };
     /**
      * Run once and cache forever.
@@ -91,6 +93,7 @@ var CategoryCollection = (function (_super) {
         this.allOptions.push(model.get('catName'));
         this.allOptions = _.unique(this.allOptions);
         this.allOptions = _.sortBy(this.allOptions);
+        this.triggerChange();
     };
     return CategoryCollection;
 }(Backbone.Collection));

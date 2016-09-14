@@ -454,8 +454,9 @@
 				<%- amount %> &euro;
 			</td>
 			<td>
-				<select>
-					<option><%- category %></option>
+				<select name="category" title="Category">
+					<!--<option><%- category %></option>-->
+					<%= categoryOptions %>
 				</select>
 			</td>
 			<td>
