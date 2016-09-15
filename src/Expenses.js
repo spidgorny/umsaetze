@@ -9,12 +9,15 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Transaction_1 = require('./Transaction');
-Backbone.LocalStorage = require("backbone.localstorage");
+var Backbone = require('backbone');
+var BackboneLocalStorage = require("backbone.localstorage");
 require('datejs');
 var elapse = require('elapse');
 elapse.configure({
     debug: true
 });
+var $ = require('jquery');
+var _ = require('underscore');
 var Expenses = (function (_super) {
     __extends(Expenses, _super);
     //url = 'expenses/';
@@ -22,7 +25,7 @@ var Expenses = (function (_super) {
         _super.call(this);
         this.attributes = null;
         this.model = Transaction_1["default"];
-        this.localStorage = new Backbone.LocalStorage("Expenses");
+        this.localStorage = new BackboneLocalStorage("Expenses");
         this.listenTo(this, 'change', function () {
             console.log('Expenses changed event');
         });

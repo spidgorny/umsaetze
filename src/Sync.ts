@@ -1,4 +1,3 @@
-///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
 ///<reference path="../typings/index.d.ts"/>
 
 import Expenses from "./Expenses";
@@ -14,6 +13,10 @@ elapse.configure({
 });
 let toastr = require('toastr');
 let chance = require('chance').Chance();
+var Papa = require('papaparse');
+var Backbone = require('backbone');
+var $ = require('jquery');
+var _ = require('underscore');
 
 export default class Sync extends Backbone.View<any> {
 

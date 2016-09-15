@@ -6,6 +6,9 @@ elapse.configure({
 	debug: true
 });
 let simpleStorage = require('simpleStorage.js');
+var Backbone = require('backbone');
+var _ = require('underscore');
+var $ = require('jquery');
 
 /**
  * Depends on Expenses to parse them

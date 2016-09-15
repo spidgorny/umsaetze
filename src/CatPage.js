@@ -6,6 +6,9 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var CategoryCount_1 = require("./CategoryCount");
 var Handlebars = require('handlebars');
+var Backbone = require('backbone');
+var $ = require('jquery');
+var _ = require('underscore');
 var CatPage = (function (_super) {
     __extends(CatPage, _super);
     function CatPage(expenses, categoryList) {

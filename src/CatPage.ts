@@ -4,6 +4,9 @@ import Transaction from "./Transaction";
 import CategoryCollection from "./CategoryCollection";
 import CategoryCount from "./CategoryCount";
 let Handlebars = require('handlebars');
+var Backbone = require('backbone');
+var $ = require('jquery');
+var _ = require('underscore');
 
 export default class CatPage extends Backbone.View<Transaction> {
 

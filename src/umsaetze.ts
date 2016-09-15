@@ -1,9 +1,13 @@
 /// <reference path="../typings/index.d.ts" />
-/// <reference path="../node_modules/backbone-typings/backbone.d.ts" />
 /// <reference path="Expenses.ts" />
 
 import CollectionFetchOptions = Backbone.CollectionFetchOptions;
 import Workspace from "./Workspace";
+// var bootstrap = require('bootstrap');
+// var _ = require('underscore');
+var Backbone = require('backbone');
+var $ = require('jquery');
+var _ = require('underscore');
 
 export function asyncLoop(arr: Array<any>, callback: Function, done?: Function) {
 	(function loop(i) {

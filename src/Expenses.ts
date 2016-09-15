@@ -7,12 +7,15 @@ import {asyncLoop} from './umsaetze';
 import Transaction from './Transaction';
 import CollectionFetchOptions = Backbone.CollectionFetchOptions;
 import PersistenceOptions = Backbone.PersistenceOptions;
-Backbone.LocalStorage = require("backbone.localstorage");
+var Backbone = require('backbone');
+let BackboneLocalStorage = require("backbone.localstorage");
 require('datejs');
 var elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
+var $ = require('jquery');
+var _ = require('underscore');
 
 export default class Expenses extends Backbone.Collection<Transaction> {
 
@@ -26,7 +29,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 
 	constructor() {
 		super();
-		this.localStorage = new Backbone.LocalStorage("Expenses");
+		this.localStorage = new BackboneLocalStorage("Expenses");
 		this.listenTo(this, 'change', () => {
 			console.log('Expenses changed event');
 		});

@@ -10,6 +10,9 @@ var Sync_1 = require('./Sync');
 var Expenses_1 = require("./Expenses");
 var CatPage_1 = require("./CatPage");
 var CategoryCollection_1 = require("./CategoryCollection");
+var Backbone = require('backbone');
+var $ = require('jquery');
+var _ = require('underscore');
 var Workspace = (function (_super) {
     __extends(Workspace, _super);
     function Workspace(options) {

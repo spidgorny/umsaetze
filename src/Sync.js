@@ -1,4 +1,3 @@
-///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
 ///<reference path="../typings/index.d.ts"/>
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
@@ -15,6 +14,10 @@ elapse.configure({
 });
 var toastr = require('toastr');
 var chance = require('chance').Chance();
+var Papa = require('papaparse');
+var Backbone = require('backbone');
+var $ = require('jquery');
+var _ = require('underscore');
 var Sync = (function (_super) {
     __extends(Sync, _super);
     function Sync(expenses) {

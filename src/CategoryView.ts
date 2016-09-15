@@ -6,6 +6,9 @@ var elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
+var Backbone = require('backbone');
+var _ = require('underscore');
+var $ = require('jquery');
 
 export default class CategoryView extends Backbone.View<CategoryCollection> {
 

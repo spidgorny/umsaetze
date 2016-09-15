@@ -9,6 +9,9 @@ elapse.configure({
     debug: true
 });
 var simpleStorage = require('simpleStorage.js');
+var Backbone = require('backbone');
+var _ = require('underscore');
+var $ = require('jquery');
 /**
  * Depends on Expenses to parse them
  * and retrieve the total values for each category

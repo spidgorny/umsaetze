@@ -8,6 +8,9 @@ var elapse = require('elapse');
 elapse.configure({
     debug: true
 });
+var Backbone = require('backbone');
+var $ = require('jquery');
+var _ = require('underscore');
 var ExpenseTable = (function (_super) {
     __extends(ExpenseTable, _super);
     function ExpenseTable(options) {

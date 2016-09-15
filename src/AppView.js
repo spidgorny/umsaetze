@@ -11,6 +11,9 @@ var elapse = require('elapse');
 elapse.configure({
     debug: true
 });
+var Backbone = require('backbone');
+var $ = require('jquery');
+var _ = require('underscore');
 var AppView = (function (_super) {
     __extends(AppView, _super);
     /**

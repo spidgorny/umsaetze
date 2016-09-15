@@ -5,8 +5,10 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 ///<reference path="../typings/index.d.ts"/>
-///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
 var md5 = require('md5');
+var Backbone = require('backbone');
+var $ = require('jquery');
+var _ = require('underscore');
 /*
  {"account":"SpardaSlawa",
  "category":"Einkauf",

@@ -4,6 +4,9 @@ import Sync from './Sync';
 import Expenses from "./Expenses";
 import CatPage from "./CatPage";
 import CategoryCollection from "./CategoryCollection";
+var Backbone = require('backbone');
+var $ = require('jquery');
+var _ = require('underscore');
 
 export default class Workspace extends Backbone.Router {
 

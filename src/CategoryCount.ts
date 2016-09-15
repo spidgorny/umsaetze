@@ -1,4 +1,4 @@
-///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
+var Backbone = require('backbone');
 
 export default class CategoryCount extends Backbone.Model {
 

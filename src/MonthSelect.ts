@@ -2,7 +2,9 @@
 ///<reference path="../typings/index.d.ts"/>
 
 import Backbone = require('backbone');
+var $ = require('jquery');
 require('datejs');
+var _ = require('underscore');
 
 export default class MonthSelect extends Backbone.View<any> {
 

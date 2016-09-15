@@ -9,6 +9,9 @@ var elapse = require('elapse');
 elapse.configure({
     debug: true
 });
+var Backbone = require('backbone');
+var _ = require('underscore');
+var $ = require('jquery');
 var CategoryView = (function (_super) {
     __extends(CategoryView, _super);
     function CategoryView(options) {
