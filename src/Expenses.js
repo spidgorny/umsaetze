@@ -8,7 +8,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Transaction_1 = require('./Transaction');
 var Backbone = require('backbone');
 var BackboneLocalStorage = require("backbone.localstorage");
 require('datejs');
@@ -24,7 +23,6 @@ var Expenses = (function (_super) {
     function Expenses() {
         _super.call(this);
         this.attributes = null;
-        this.model = Transaction_1["default"];
         this.localStorage = new BackboneLocalStorage("Expenses");
         this.listenTo(this, 'change', function () {
             console.log('Expenses changed event');
