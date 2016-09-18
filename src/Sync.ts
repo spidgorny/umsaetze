@@ -7,16 +7,16 @@ import {asyncLoop} from "./umsaetze";
 import PersistenceOptions = Backbone.PersistenceOptions;
 import Workspace from "./Workspace";
 require('file-saver');
-var elapse = require('elapse');
+let elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
 let toastr = require('toastr');
 let chance = require('chance').Chance();
-var Papa = require('papaparse');
-var Backbone = require('backbone');
-var $ = require('jquery');
-var _ = require('underscore');
+let Papa = require('papaparse');
+let Backbone = require('backbone');
+let $ = require('jquery');
+let _ = require('underscore');
 
 export default class Sync extends Backbone.View<any> {
 
@@ -57,8 +57,23 @@ export default class Sync extends Backbone.View<any> {
 			}));
 			this.$('#Refresh').on('click', this.refresh.bind(this));
 			this.$('#Generate').on('click', this.generate.bind(this));
-			this.$('#Load').on('click', this.load.bind(this));
-			this.$('#LoadJSON').on('click', this.loadJSON.bind(this));
+
+			//this.$('#Load').on('click', this.load.bind(this));
+			FileReaderJS.setupInput(document.getElementById('file-input-csv'), {
+				readAsDefault: 'Text',
+				on: {
+					load: this.load.bind(this),
+				}
+			});
+
+			// this.$('#LoadJSON').on('click', this.loadJSON.bind(this));
+			FileReaderJS.setupInput(document.getElementById('file-input-json'), {
+				readAsDefault: 'Text',
+				on: {
+					load: this.loadJSON.bind(this),
+				}
+			});
+
 			this.$('#Save').on('click', this.save.bind(this));
 			this.$('#Clear').on('click', this.clear.bind(this));
 		} else {
@@ -72,45 +87,53 @@ export default class Sync extends Backbone.View<any> {
 		this.render();
 	}
 
-	load() {
+	load(e, file) {
+		console.log(e, file);
+		console.log(e.target.result);
+		this.loadSelectedFile(e.target.result);
+	}
+
+	loadSelectedFile(data) {
 		//var file = prompt('file');
-		let file = this.csvUrl;
-		if (file) {
-			let options = {};
-			return this.fetchCSV(_.extend(options || {}, {
-				success: () => {
-					elapse.time('Expense.saveModels2LS');
-					console.log('models loaded, saving to LS');
-					this.model.each((model: Transaction) => {
-						this.localStorage.create(model);
-					});
-					elapse.timeEnd('Expense.saveModels2LS');
-				}
-			}));
-		}
+		// let file = this.csvUrl;
+		let options = {
+			data: data,
+		};
+		return this.fetchCSV(options, {
+			success: () => {
+				elapse.time('Expense.saveModels2LS');
+				console.log('models loaded, saving to LS');
+				this.model.each((model: Transaction) => {
+					this.localStorage.create(model);
+				});
+				elapse.timeEnd('Expense.saveModels2LS');
+			}
+		}));
 	}
 
 	fetchCSV(options?: CollectionFetchOptions) {
 		console.log('csvUrl', this.csvUrl);
 		console.log('options', options);
 		this.startLoading();
-		return $.get(this.csvUrl, (response, xhr) => {
-			var csv = Papa.parse(response, {
-				header: true,
-				dynamicTyping: true,
-				skipEmptyLines: true
-			});
-			//console.log(csv);
-			var processWithoutVisualFeedback = false;
-			if (processWithoutVisualFeedback) {
-				_.each(csv.data, this.processRow.bind(this));
-				this.processDone(csv.data.length, options);
-			} else {
-				asyncLoop(csv.data,
-					this.processRow.bind(this),
-					this.processDone.bind(this, csv.data.length, options));
-			}
+		// not ajax anymore
+		//return $.get(this.csvUrl, (response, xhr) => {
+		let response = options.data;
+		let csv = Papa.parse(response, {
+			header: true,
+			dynamicTyping: true,
+			skipEmptyLines: true
 		});
+		//console.log(csv);
+		let processWithoutVisualFeedback = false;
+		if (processWithoutVisualFeedback) {
+			_.each(csv.data, this.processRow.bind(this));
+			this.processDone(csv.data.length, options);
+		} else {
+			asyncLoop(csv.data,
+				this.processRow.bind(this),
+				this.processDone.bind(this, csv.data.length, options));
+		}
+		// });
 	}
 
 	startLoading() {
@@ -147,18 +170,22 @@ export default class Sync extends Backbone.View<any> {
 		this.model.trigger('change');
 	}
 
-	loadJSON() {
-		console.log('loadJSON');
+	loadJSON(e, file)
+	{
+		// console.log('loadJSON', e);
+		// console.log(file);
+		// console.log(e.target.result);
+
 	}
 
 	save() {
-		var data = this.model.localStorage.findAll();
+		let data = this.model.localStorage.findAll();
 		console.log(data);
-		var json = JSON.stringify(data, null, '\t');
-		var blob = new Blob([json], {
+		let json = JSON.stringify(data, null, '\t');
+		let blob = new Blob([json], {
 			type: "application/json;charset=utf-8"
 		});
-		var filename = "umsaetze-"+Date.today().toString('yyyy-mm-dd')+'.json';
+		let filename = "umsaetze-"+Date.today().toString('yyyy-MM-dd')+'.json';
 		console.log(filename);
 		saveAs(blob, filename);
 	}
@@ -176,7 +203,7 @@ export default class Sync extends Backbone.View<any> {
 		toastr.info('Generating...');
 		let amount = 100;
 		let account = chance.word();
-		for (var i of _.range(amount)) {
+		for (let i of _.range(amount)) {
 			this.model.add(new Transaction({
 				account: account,
 				category: "Default",

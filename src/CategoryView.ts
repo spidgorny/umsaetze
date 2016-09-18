@@ -2,13 +2,13 @@
 
 import CategoryCollection from "./CategoryCollection";
 import CategoryCount from "./CategoryCount";
-var elapse = require('elapse');
+let elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
-var Backbone = require('backbone');
-var _ = require('underscore');
-var $ = require('jquery');
+let Backbone = require('backbone');
+let _ = require('underscore');
+let $ = require('jquery');
 
 export default class CategoryView extends Backbone.View<CategoryCollection> {
 

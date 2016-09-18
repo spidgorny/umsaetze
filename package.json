@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clone-theme": "git clone https://github.com/BlackrockDigital/startbootstrap-sb-admin-2.git",
+    "get-filereader": "git clone https://github.com/bgrins/filereader.js docs/filereader.js",
     "compile": "node_modules/.bin/browserify src/umsaetze.js -o docs/web/bundle.js",
     "watch": "node_modules/.bin/watchify src/umsaetze.js -o docs/web/bundle.js -d -v"
   },
@@ -37,6 +38,7 @@
     "simplestorage.js": "^0.2.1",
     "stream-to-promise": "^2.2.0",
     "toastr": "^2.1.2",
+    "typescript": "^1.8.10",
     "underscore": "^1.8.3",
     "utf8": "^2.1.1",
     "watchify": "^3.7.0"

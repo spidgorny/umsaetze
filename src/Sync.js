@@ -43,8 +43,20 @@ var Sync = (function (_super) {
             }));
             this.$('#Refresh').on('click', this.refresh.bind(this));
             this.$('#Generate').on('click', this.generate.bind(this));
-            this.$('#Load').on('click', this.load.bind(this));
-            this.$('#LoadJSON').on('click', this.loadJSON.bind(this));
+            //this.$('#Load').on('click', this.load.bind(this));
+            FileReaderJS.setupInput(document.getElementById('file-input-csv'), {
+                readAsDefault: 'Text',
+                on: {
+                    load: this.load.bind(this)
+                }
+            });
+            // this.$('#LoadJSON').on('click', this.loadJSON.bind(this));
+            FileReaderJS.setupInput(document.getElementById('file-input-json'), {
+                readAsDefault: 'Text',
+                on: {
+                    load: this.loadJSON.bind(this)
+                }
+            });
             this.$('#Save').on('click', this.save.bind(this));
             this.$('#Clear').on('click', this.clear.bind(this));
         }
@@ -57,45 +69,52 @@ var Sync = (function (_super) {
         toastr.success('Refreshing...');
         this.render();
     };
-    Sync.prototype.load = function () {
+    Sync.prototype.load = function (e, file) {
+        console.log(e, file);
+        console.log(e.target.result);
+        this.loadSelectedFile(e.target.result);
+    };
+    Sync.prototype.loadSelectedFile = function (data) {
         var _this = this;
         //var file = prompt('file');
-        var file = this.csvUrl;
-        if (file) {
-            var options = {};
-            return this.fetchCSV(_.extend(options || {}, {
-                success: function () {
-                    elapse.time('Expense.saveModels2LS');
-                    console.log('models loaded, saving to LS');
-                    _this.model.each(function (model) {
-                        _this.localStorage.create(model);
-                    });
-                    elapse.timeEnd('Expense.saveModels2LS');
-                }
-            }));
-        }
+        // let file = this.csvUrl;
+        var options = {
+            data: data
+        };
+        return this.fetchCSV(options, {
+            success: function () {
+                elapse.time('Expense.saveModels2LS');
+                console.log('models loaded, saving to LS');
+                _this.model.each(function (model) {
+                    _this.localStorage.create(model);
+                });
+                elapse.timeEnd('Expense.saveModels2LS');
+            }
+        });
+        ;
     };
     Sync.prototype.fetchCSV = function (options) {
-        var _this = this;
         console.log('csvUrl', this.csvUrl);
         console.log('options', options);
         this.startLoading();
-        return $.get(this.csvUrl, function (response, xhr) {
-            var csv = Papa.parse(response, {
-                header: true,
-                dynamicTyping: true,
-                skipEmptyLines: true
-            });
-            //console.log(csv);
-            var processWithoutVisualFeedback = false;
-            if (processWithoutVisualFeedback) {
-                _.each(csv.data, _this.processRow.bind(_this));
-                _this.processDone(csv.data.length, options);
-            }
-            else {
-                umsaetze_1.asyncLoop(csv.data, _this.processRow.bind(_this), _this.processDone.bind(_this, csv.data.length, options));
-            }
+        // not ajax anymore
+        //return $.get(this.csvUrl, (response, xhr) => {
+        var response = options.data;
+        var csv = Papa.parse(response, {
+            header: true,
+            dynamicTyping: true,
+            skipEmptyLines: true
         });
+        //console.log(csv);
+        var processWithoutVisualFeedback = false;
+        if (processWithoutVisualFeedback) {
+            _.each(csv.data, this.processRow.bind(this));
+            this.processDone(csv.data.length, options);
+        }
+        else {
+            umsaetze_1.asyncLoop(csv.data, this.processRow.bind(this), this.processDone.bind(this, csv.data.length, options));
+        }
+        // });
     };
     Sync.prototype.startLoading = function () {
         console.log('startLoading');
@@ -127,8 +146,10 @@ var Sync = (function (_super) {
         console.log('Trigger change on Expenses');
         this.model.trigger('change');
     };
-    Sync.prototype.loadJSON = function () {
-        console.log('loadJSON');
+    Sync.prototype.loadJSON = function (e, file) {
+        // console.log('loadJSON', e);
+        // console.log(file);
+        // console.log(e.target.result);
     };
     Sync.prototype.save = function () {
         var data = this.model.localStorage.findAll();
@@ -137,7 +158,7 @@ var Sync = (function (_super) {
         var blob = new Blob([json], {
             type: "application/json;charset=utf-8"
         });
-        var filename = "umsaetze-" + Date.today().toString('yyyy-mm-dd') + '.json';
+        var filename = "umsaetze-" + Date.today().toString('yyyy-MM-dd') + '.json';
         console.log(filename);
         saveAs(blob, filename);
     };

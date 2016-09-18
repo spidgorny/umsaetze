@@ -14,8 +14,24 @@
 			<span class="fa fa-refresh"></span>
 		</button>
 		<button id="Generate" class="btn btn-default">Generate random data (100 at a time)</button>
-		<button id="Load" class="btn btn-default">Load CSV</button>
-		<button id="LoadJSON" class="btn btn-default">Load JSON</button>
+
+		<!--<button id="Load" class="btn btn-default">Load CSV</button>-->
+		<form id="file-form" method="post" enctype="multipart/form-data">
+			<div class="form-group">
+				Import CSV:
+				<input type="file" id="file-input-csv" name="file-input" class="form-control">
+			</div>
+		</form>
+
+
+		<!--<button id="LoadJSON" class="btn btn-default">Load JSON</button>-->
+		<form id="file-form" method="post" enctype="multipart/form-data">
+			<div class="form-group">
+				Import CSV:
+				<input type="file" id="file-input-json" name="file-input" class="form-control">
+			</div>
+		</form>
+
 		<button id="Save" class="btn btn-default">Save JSON</button>
 		<button id="Clear" class="btn btn-danger">Clear</button>
 	</div>
