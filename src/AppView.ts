@@ -13,7 +13,7 @@ var _ = require('underscore');
 
 export default class AppView extends Backbone.View<Expenses> {
 
-	model: Expenses;
+	model: { new(): Expenses };
 
 	table: ExpenseTable;
 

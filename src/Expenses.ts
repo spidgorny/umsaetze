@@ -3,7 +3,6 @@
 /// <reference path="umsaetze.ts" />
 /// <reference path="Papa.d.ts" />
 
-import {asyncLoop} from './umsaetze';
 import Transaction from './Transaction';
 import CollectionFetchOptions = Backbone.CollectionFetchOptions;
 import PersistenceOptions = Backbone.PersistenceOptions;
@@ -21,7 +20,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 
 	attributes = null;
 
-	model = Transaction;
+	model: { new(): Transaction; };
 
 	localStorage: Backbone.LocalStorage;
 
