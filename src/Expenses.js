@@ -8,6 +8,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var Transaction_1 = require('./Transaction');
 var bb = require('backbone');
 var BackboneLocalStorage = require("backbone.localstorage");
 require('datejs');
@@ -21,7 +22,7 @@ var Expenses = (function (_super) {
     //url = 'expenses/';
     function Expenses(models, options) {
         _super.call(this, models, options);
-        this.attributes = null;
+        this.model = Transaction_1["default"];
         this.localStorage = new BackboneLocalStorage("Expenses");
         this.listenTo(this, 'change', function () {
             console.log('Expenses changed event');
@@ -33,11 +34,14 @@ var Expenses = (function (_super) {
      * @returns {JQueryXHR}
      */
     Expenses.prototype.fetch = function (options) {
+        var _this = this;
         if (options === void 0) { options = {}; }
         var models = this.localStorage.findAll();
         console.log('models from LS', models.length);
         if (models.length) {
-            this.add(models);
+            _.each(models, function (el) {
+                _this.add(new Transaction_1["default"](el));
+            });
             //this.unserializeDate();
             this.trigger('change');
             return;
@@ -74,23 +78,28 @@ var Expenses = (function (_super) {
         return new Date(min);
     };
     Expenses.prototype.getEarliest = function () {
-        var min = new Date().addYears(10).valueOf();
+        if (!this.size()) {
+            return new Date();
+        }
+        var max = new Date().addYears(10).valueOf();
         this.each(function (row) {
-            var dDate = row.get('date');
-            if (!dDate) {
-                console.log('getEarliest', dDate, row);
-            }
+            console.log(row);
+            var dDate = row.getDate();
+            console.log('getEarliest', dDate.valueOf(), max);
             var date = dDate.valueOf();
-            if (date < min) {
-                min = date;
+            if (date < max) {
+                max = date;
             }
         });
-        return new Date(min);
+        return new Date(max);
     };
     Expenses.prototype.getLatest = function () {
+        if (!this.size()) {
+            return new Date();
+        }
         var min = new Date('1970-01-01').valueOf();
         this.each(function (row) {
-            var date = row.get('date').valueOf();
+            var date = row.getDate().valueOf();
             if (date > min) {
                 min = date;
             }

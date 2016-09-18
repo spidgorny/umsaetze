@@ -63,6 +63,16 @@ var Transaction = (function (_super) {
         this.set('category', category);
         this.collection.localStorage.update(this);
     };
+    /**
+     * This will return Date object any time
+     */
+    Transaction.prototype.getDate = function () {
+        var date = this.get('date');
+        if (!(date instanceof Date)) {
+            date = new Date(date);
+        }
+        return date;
+    };
     return Transaction;
 }(bb.Model));
 exports.__esModule = true;

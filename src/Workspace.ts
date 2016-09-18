@@ -38,7 +38,7 @@ export default class Workspace extends bb.Router {
 		// var element = $('ul.nav a').filter(function() {
 		//     return this.href == url;
 		// }).addClass('active').parent().parent().addClass('in').parent();
-		var element = $('ul.nav#side-menu a')
+		let element = $('ul.nav#side-menu a')
 			.removeClass('active')
 			.filter(function() {
 				return this.href == url;
@@ -61,7 +61,7 @@ export default class Workspace extends bb.Router {
 		this.activateMenu();
 		if (!this.app) {
 			this.app = new AppView({
-				model: this.model,
+				collection: this.model,
 				categoryList: this.categoryList,
 			});
 		}

@@ -15,6 +15,7 @@ let toastr = require('toastr');
 let chance = require('chance').Chance();
 let Papa = require('papaparse');
 let bb = require('backbone');
+let bbls = require('backbone.localstorage');
 let $ = require('jquery');
 let _ = require('underscore');
 
@@ -30,7 +31,7 @@ export default class Sync extends bb.View<any> {
 
 	slowUpdateLoadingBar: Function;
 
-	localStorage = new Backbone.LocalStorage("Expenses");
+	localStorage = new bbls("Expenses");
 
 	prevPercent: number;
 
@@ -234,7 +235,7 @@ export default class Sync extends bb.View<any> {
 			}));
 		}
 		toastr.success('Generated '+amount+' records.');
-		// this.model.setAllVisible();
+		// this.collection.setAllVisible();
 		this.model.trigger('change');
 		// this.router.AppView();
 		Backbone.history.navigate('#', {

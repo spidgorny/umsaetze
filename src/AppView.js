@@ -18,7 +18,7 @@ var _ = require('underscore');
 var AppView = (function (_super) {
     __extends(AppView, _super);
     /**
-     * Make sure to provide model: Expenses in options
+     * Make sure to provide collection: Expenses in options
      * and this.categoryList as well
      * @param options
      */
@@ -26,32 +26,33 @@ var AppView = (function (_super) {
         _super.call(this, options);
         this.q = '';
         console.log('construct AppView');
+        this.collection = options.collection;
         this.setElement($('#app'));
         this.setTemplate();
         this.categoryList = options.categoryList;
         this.table = new ExpenseTable_1["default"]({
-            model: this.model,
+            model: this.collection,
             el: $('#expenseTable')
         });
         this.table.setCategoryList(this.categoryList);
         this.categories = new CategoryView_1["default"]({
             model: this.categoryList
         });
-        console.log('category view model', this.categories.model);
+        console.log('category view collection', this.categories.model);
         this.ms = new MonthSelect_1["default"]();
-        this.ms.earliest = this.model.getEarliest();
-        this.ms.latest = this.model.getLatest();
+        this.ms.earliest = this.collection.getEarliest();
+        this.ms.latest = this.collection.getLatest();
         this.ms.render();
         this.listenTo(this.ms, 'MonthSelect:change', this.monthChange);
-        this.listenTo(this.model, "change", this.render);
-        //this.listenTo(this.model, "change", this.table.render);
-        //this.listenTo(this.model, "change", this.categories.change); // wrong model inside ? wft?!
+        this.listenTo(this.collection, "change", this.render);
+        //this.listenTo(this.collection, "change", this.table.render);
+        //this.listenTo(this.collection, "change", this.categories.change); // wrong collection inside ? wft?!
         $('.custom-search-form input').on('keyup', _.debounce(this.onSearch.bind(this), 300));
     }
     AppView.prototype.render = function () {
         if (!['', '#'].includes(window.location.hash))
             return;
-        console.log('AppView.render()', this.model.size());
+        console.log('AppView.render()', this.collection.size());
         this.setTemplate();
         this.table.render();
         this.categoryList.triggerChange();
@@ -70,9 +71,9 @@ var AppView = (function (_super) {
     };
     AppView.prototype.monthChange = function () {
         elapse.time('AppView.monthChange');
-        this.model.setAllVisible(); // silent
-        this.model.filterByMonth(this.ms.getSelected()); // silent
-        this.model.filterVisible(this.q); // silent
+        this.collection.setAllVisible(); // silent
+        this.collection.filterByMonth(this.ms.getSelected()); // silent
+        this.collection.filterVisible(this.q); // silent
         this.render();
         // not needed due to the line in the constructor
         // @see this.categoryList.setExpenses()
@@ -85,10 +86,13 @@ var AppView = (function (_super) {
         console.log('Searching: ', this.q);
         this.monthChange(); // reuse
         // trigger manually since filterVisible is silent
-        //this.model.trigger('change');
+        //this.collection.trigger('change');
     };
     AppView.prototype.show = function () {
         elapse.time('AppView.show');
+        this.ms.earliest = this.collection.getEarliest();
+        this.ms.latest = this.collection.getLatest();
+        console.log('MonthSelect range', this.ms.earliest.toString('yyyy-MM-dd'), this.ms.latest.toString('yyyy-MM-dd'), this.collection.size());
         this.ms.show();
         if (this.cache) {
             this.$el.html(this.cache);

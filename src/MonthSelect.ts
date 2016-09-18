@@ -42,6 +42,7 @@ export default class MonthSelect extends Backbone.View<any> {
 	}
 
 	render() {
+		console.time('MonthSelect.render');
 		this.earliest.moveToFirstDayOfMonth();
 
 		let selectedDate = this.getSelected();
@@ -67,12 +68,14 @@ export default class MonthSelect extends Backbone.View<any> {
 			}
 			//console.log(sDate, firstOfMonth, isAfter, isBefore, equals);
 		});
+		console.timeEnd('MonthSelect.render');
 		return this;
 	}
 
 	show() {
 		console.log('MonthSelect.show');
 		this.$el.show();
+		this.render();	// required as data may have changed (all disabled bug)
 	}
 
 	hide() {

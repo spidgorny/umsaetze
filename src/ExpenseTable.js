@@ -22,8 +22,8 @@ var ExpenseTable = (function (_super) {
             $('#app').html(template());
         }
         this.setElement($('#expenseTable'));
-        // slow re-rendering of the whole table when model changes
-        //this.listenTo(this.model, 'change', this.render);
+        // slow re-rendering of the whole table when collection changes
+        //this.listenTo(this.collection, 'change', this.render);
     }
     ExpenseTable.prototype.setCategoryList = function (list) {
         this.categoryList = list;
@@ -41,7 +41,7 @@ var ExpenseTable = (function (_super) {
         var visible = this.model.getVisible();
         _.each(visible, function (transaction) {
             var attributes = transaction.toJSON();
-            attributes.sDate = attributes.date.toString('yyyy-MM-dd');
+            attributes.sDate = transaction.getDate().toString('yyyy-MM-dd');
             attributes.cssClass = attributes.category == 'Default'
                 ? 'bg-warning' : '';
             attributes.categoryOptions = _this.getCategoryOptions(transaction);

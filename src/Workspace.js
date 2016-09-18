@@ -55,7 +55,7 @@ var Workspace = (function (_super) {
         this.activateMenu();
         if (!this.app) {
             this.app = new AppView_1["default"]({
-                model: this.model,
+                collection: this.model,
                 categoryList: this.categoryList
             });
         }

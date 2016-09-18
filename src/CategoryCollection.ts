@@ -148,7 +148,7 @@ export default class CategoryCollection extends bb.Collection<CategoryCount> {
 		let category = this.findWhere({catName: value});
 		if (category) {
 			color = category.get('color');
-			console.log('color for', value, 'is', color);
+			//console.log('color for', value, 'is', color);
 		} else {
 			color = '#AAAAAA';
 		}

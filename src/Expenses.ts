@@ -17,9 +17,7 @@ let _ = require('underscore');
 
 export default class Expenses extends bb.Collection<Transaction> {
 
-	attributes = null;
-
-	model: { new(): Transaction; };
+	model: Transaction;
 
 	localStorage: Backbone.LocalStorage;
 
@@ -27,6 +25,7 @@ export default class Expenses extends bb.Collection<Transaction> {
 
 	constructor(models?: Transaction[] | Object[], options?: any) {
 		super(models, options);
+		this.model = Transaction;
 		this.localStorage = new BackboneLocalStorage("Expenses");
 		this.listenTo(this, 'change', () => {
 			console.log('Expenses changed event');
@@ -42,7 +41,9 @@ export default class Expenses extends bb.Collection<Transaction> {
 		let models = this.localStorage.findAll();
 		console.log('models from LS', models.length);
 		if (models.length) {
-			this.add(models);
+			_.each(models, (el) => {
+				this.add(new Transaction(el));
+			});
 			//this.unserializeDate();
 			this.trigger('change');
 			return;
@@ -83,24 +84,29 @@ export default class Expenses extends bb.Collection<Transaction> {
 	}
 
 	getEarliest() {
-		let min = new Date().addYears(10).valueOf();
+		if (!this.size()) {
+			return new Date();
+		}
+		let max = new Date().addYears(10).valueOf();
 		this.each((row: Transaction) => {
-			let dDate = row.get('date');
-			if (!dDate) {
-				console.log('getEarliest', dDate, row);
-			}
+			console.log(row);
+			let dDate = row.getDate();
+			console.log('getEarliest', dDate.valueOf(), max);
 			let date: number = dDate.valueOf();
-			if (date < min) {
-				min = date;
+			if (date < max) {
+				max = date;
 			}
 		});
-		return new Date(min);
+		return new Date(max);
 	}
 
 	getLatest() {
+		if (!this.size()) {
+			return new Date();
+		}
 		let min = new Date('1970-01-01').valueOf();
 		this.each((row: Transaction) => {
-			let date: number = row.get('date').valueOf();
+			let date: number = row.getDate().valueOf();
 			if (date > min) {
 				min = date;
 			}

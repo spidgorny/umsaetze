@@ -131,7 +131,6 @@ var CategoryCollection = (function (_super) {
         var category = this.findWhere({ catName: value });
         if (category) {
             color = category.get('color');
-            console.log('color for', value, 'is', color);
         }
         else {
             color = '#AAAAAA';

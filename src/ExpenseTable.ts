@@ -28,8 +28,8 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 
 		this.setElement($('#expenseTable'));
 
-		// slow re-rendering of the whole table when model changes
-		//this.listenTo(this.model, 'change', this.render);
+		// slow re-rendering of the whole table when collection changes
+		//this.listenTo(this.collection, 'change', this.render);
 	}
 
 	setCategoryList(list: CategoryCollection) {
@@ -45,11 +45,11 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 		elapse.time('ExpenseTable.render');
 		console.log('ExpenseTable.render()', this.model.size());
 
-		var rows = [];
+		let rows = [];
 		let visible = this.model.getVisible();
 		_.each(visible, (transaction: Transaction) => {
-			var attributes = transaction.toJSON();
-			attributes.sDate = attributes.date.toString('yyyy-MM-dd');
+			let attributes = transaction.toJSON();
+			attributes.sDate = transaction.getDate().toString('yyyy-MM-dd');
 			attributes.cssClass = attributes.category == 'Default'
 				? 'bg-warning' : '';
 			attributes.categoryOptions = this.getCategoryOptions(transaction);
@@ -79,7 +79,7 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 	 */
 	openSelect(event) {
 		//console.log('openSelect', this, event);
-		var $select = $(event.target);
+		let $select = $(event.target);
 
 		//if ($select.find('option').length == 1) {
 		{

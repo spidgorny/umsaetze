@@ -16,6 +16,7 @@ var toastr = require('toastr');
 var chance = require('chance').Chance();
 var Papa = require('papaparse');
 var bb = require('backbone');
+var bbls = require('backbone.localstorage');
 var $ = require('jquery');
 var _ = require('underscore');
 var Sync = (function (_super) {
@@ -25,7 +26,7 @@ var Sync = (function (_super) {
         _super.call(this);
         this.$el = $('#app');
         this.csvUrl = '../umsaetze-1090729-2016-07-27-00-11-29.cat.csv';
-        this.localStorage = new Backbone.LocalStorage("Expenses");
+        this.localStorage = new bbls("Expenses");
         this.model = expenses;
         this.listenTo(this.model, 'change', this.render);
         this.slowUpdateLoadingBar = _.throttle(this.updateLoadingBar, 128);
@@ -209,7 +210,7 @@ var Sync = (function (_super) {
             }));
         }
         toastr.success('Generated ' + amount + ' records.');
-        // this.model.setAllVisible();
+        // this.collection.setAllVisible();
         this.model.trigger('change');
         // this.router.AppView();
         Backbone.history.navigate('#', {

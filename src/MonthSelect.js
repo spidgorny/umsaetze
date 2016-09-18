@@ -38,6 +38,7 @@ var MonthSelect = (function (_super) {
     }
     MonthSelect.prototype.render = function () {
         var _this = this;
+        console.time('MonthSelect.render');
         this.earliest.moveToFirstDayOfMonth();
         var selectedDate = this.getSelected();
         this.monthOptions.each(function (i, button) {
@@ -63,11 +64,13 @@ var MonthSelect = (function (_super) {
             }
             //console.log(sDate, firstOfMonth, isAfter, isBefore, equals);
         });
+        console.timeEnd('MonthSelect.render');
         return this;
     };
     MonthSelect.prototype.show = function () {
         console.log('MonthSelect.show');
         this.$el.show();
+        this.render(); // required as data may have changed (all disabled bug)
     };
     MonthSelect.prototype.hide = function () {
         console.log('MonthSelect.hide');

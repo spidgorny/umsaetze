@@ -57,7 +57,7 @@ export default class Transaction extends bb.Model {
 	}
 
 	toJSON() {
-		var json = super.toJSON();
+		let json = super.toJSON();
 		json.sign = this.sign();
 		json.id = this.id;
 		return json;
@@ -66,6 +66,17 @@ export default class Transaction extends bb.Model {
 	setCategory(category) {
 		this.set('category', category);
 		this.collection.localStorage.update(this);
+	}
+
+	/**
+	 * This will return Date object any time
+	 */
+	getDate() {
+		let date = this.get('date');
+		if (!(date instanceof Date)) {
+			date = new Date(date);
+		}
+		return date;
 	}
 
 }
