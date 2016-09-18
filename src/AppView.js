@@ -38,7 +38,7 @@ var AppView = (function (_super) {
         this.categories = new CategoryView_1["default"]({
             model: this.categoryList
         });
-        console.log('category view collection', this.categories.model);
+        //console.log('category view collection', this.categories.model);
         this.ms = new MonthSelect_1["default"]();
         this.ms.earliest = this.collection.getEarliest();
         this.ms.latest = this.collection.getLatest();
@@ -55,7 +55,7 @@ var AppView = (function (_super) {
         console.log('AppView.render()', this.collection.size());
         this.setTemplate();
         this.table.render();
-        this.categoryList.triggerChange();
+        this.categories.render();
         return this;
     };
     AppView.prototype.setTemplate = function () {
@@ -78,7 +78,7 @@ var AppView = (function (_super) {
         // not needed due to the line in the constructor
         // @see this.categoryList.setExpenses()
         // wrong. this is called by this.render()
-        //this.categoryList.triggerChange();
+        this.categoryList.getCategoriesFromExpenses();
         elapse.timeEnd('AppView.monthChange');
     };
     AppView.prototype.onSearch = function (event) {

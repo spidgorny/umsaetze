@@ -45,7 +45,7 @@ export default class CategoryCollection extends bb.Collection<CategoryCount> {
 
 		// this is how AppView triggers recalculation
 		// this makes an infinite loop of triggers
-		// this.listenTo(this, "change", this.getCategoriesFromExpenses);
+		//this.listenTo(this, "change", this.getCategoriesFromExpenses);
 		this.listenTo(this, 'add', this.addToOptions);
 	}
 
@@ -60,10 +60,19 @@ export default class CategoryCollection extends bb.Collection<CategoryCount> {
 		});
 	}
 
+	resetCounters() {
+		this.each((row: CategoryCount) => {
+			row.set('amount', 0);
+			row.set('count', 0);
+		});
+	}
+
 	getCategoriesFromExpenses() {
 		elapse.time('getCategoriesFromExpenses');
 		// this.reset();	// don't reset - loosing colors
+		this.resetCounters();
 		let visible = this.expenses.getVisible();
+		//console.log(visible.length);
 		_.each(visible, (transaction: Transaction) => {
 			let categoryName = transaction.get('category');
 			if (categoryName) {
@@ -71,6 +80,7 @@ export default class CategoryCollection extends bb.Collection<CategoryCount> {
 			}
 		});
 		//console.log(this.categoryCount);
+		this.sortBy('amount');
 		elapse.timeEnd('getCategoriesFromExpenses');
 
 		// when we recalculated the data we trigger the view render
@@ -95,13 +105,6 @@ export default class CategoryCollection extends bb.Collection<CategoryCount> {
 				color: CategoryCollection.pastelColor(),
 			}, { silent: true });
 		}
-	}
-
-	triggerChange() {
-		console.log('CategoryCollection.triggerChange');
-		// commented as next line will call it anyway
-		//this.getCategoriesFromExpenses();
-		this.trigger('change');
 	}
 
 	getCategoriesFromExpenses2() {

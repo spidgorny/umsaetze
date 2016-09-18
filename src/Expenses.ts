@@ -6,6 +6,8 @@
 import Transaction from './Transaction';
 import CollectionFetchOptions = Backbone.CollectionFetchOptions;
 import PersistenceOptions = Backbone.PersistenceOptions;
+import KeywordCollection from "./KeywordCollection";
+import Keyword from "./Keyword";
 const bb = require('backbone');
 let BackboneLocalStorage = require("backbone.localstorage");
 require('datejs');
@@ -20,8 +22,6 @@ export default class Expenses extends bb.Collection<Transaction> {
 	model: Transaction;
 
 	localStorage: Backbone.LocalStorage;
-
-	//url = 'expenses/';
 
 	constructor(models?: Transaction[] | Object[], options?: any) {
 		super(models, options);
@@ -63,7 +63,7 @@ export default class Expenses extends bb.Collection<Transaction> {
 		let visible = this.getVisible();
 		let min = new Date().addYears(10).valueOf();
 		_.each(visible, (row: Transaction) => {
-			let date: number = row.get('date').valueOf();
+			let date: number = row.getDate().valueOf();
 			if (date < min) {
 				min = date;
 			}
@@ -75,7 +75,7 @@ export default class Expenses extends bb.Collection<Transaction> {
 		let visible = this.getVisible();
 		let min = new Date('1970-01-01').valueOf();
 		_.each(visible, (row: Transaction) => {
-			let date: number = row.get('date').valueOf();
+			let date: number = row.getDate().valueOf();
 			if (date > min) {
 				min = date;
 			}
@@ -138,9 +138,9 @@ export default class Expenses extends bb.Collection<Transaction> {
 	filterByMonth(selectedMonth: Date) {
 		elapse.time('Expense.filterByMonth');
 		this.each((row: Transaction) => {
-			var tDate: Date = row.get('date');
-			var sameYear = tDate.getFullYear() == selectedMonth.getFullYear();
-			var sameMonth = tDate.getMonth() == selectedMonth.getMonth();
+			let tDate: Date = row.get('date');
+			let sameYear = tDate.getFullYear() == selectedMonth.getFullYear();
+			let sameMonth = tDate.getMonth() == selectedMonth.getMonth();
 			if (sameYear && sameMonth) {
 				// row.set('visible', true, { silent: true });
 			} else {
@@ -180,4 +180,20 @@ export default class Expenses extends bb.Collection<Transaction> {
 	getVisible() {
 		return this.where({visible: true});
 	}
+
+	setCategories(keywords: KeywordCollection) {
+		this.each((row: Transaction) => {
+			if (row.get('category') == 'Default') {
+				keywords.each((key: Keyword) => {
+					//console.log(key);
+					let note = row.get('note');
+					if (note.indexOf(key.word) > -1) {
+						console.log(note, 'contains', key.word, 'gets', key.category);
+						row.set('category', key.category, { silent: true });
+					}
+				});
+			}
+		});
+	}
+
 }

@@ -16,6 +16,8 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 
 	model: Expenses;
 
+	//collection: Expenses;
+
 	categoryList: CategoryCollection;
 
 	template = _.template($('#rowTemplate').html());
@@ -162,6 +164,8 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 					word: text,
 					category: categoryName,
 				}));
+				this.model.setCategories(this.keywords);
+				this.render();
 			});
 		}
 	}
@@ -204,7 +208,7 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 	}
 
 	getMenuPosition(mouse, direction, scrollDir, menuSelector) {
-		var win = $(window)[direction](),
+		let win = $(window)[direction](),
 			scroll = $(window)[scrollDir](),
 			menu = $(menuSelector)[direction](),
 			position = mouse + scroll;

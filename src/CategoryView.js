@@ -27,7 +27,7 @@ var CategoryView = (function (_super) {
         var categoryCount = this.model.toJSON();
         var sum = _.reduce(categoryCount, function (memo, item) {
             // only expenses
-            return memo + item.amount;
+            return memo + Math.abs(item.amount);
         }, 0);
         //console.log('sum', sum);
         categoryCount = _.sortBy(categoryCount, function (el) {
@@ -42,7 +42,7 @@ var CategoryView = (function (_super) {
                 sign: catCount.amount >= 0 ? 'positive' : 'negative'
             })));
         });
-        this.$el.html(content.join('\n'));
+        this.$el.html(content.join('\n') + 'sum: ' + sum.toFixed(2));
         elapse.timeEnd('CategoryView.render');
         return this;
     };

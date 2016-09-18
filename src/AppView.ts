@@ -56,7 +56,7 @@ export default class AppView extends bb.View<Expenses> {
 		this.categories = new CategoryView({
 			model: this.categoryList,
 		});
-		console.log('category view collection', this.categories.model);
+		//console.log('category view collection', this.categories.model);
 
 		this.ms = new MonthSelect();
 		this.ms.earliest = this.collection.getEarliest();
@@ -76,14 +76,14 @@ export default class AppView extends bb.View<Expenses> {
 		console.log('AppView.render()', this.collection.size());
 		this.setTemplate();
 		this.table.render();
-		this.categoryList.triggerChange();
+		this.categories.render();
 		return this;
 	}
 
 	setTemplate() {
 		// if no table in DOM, reset it
 		if (!this.$('#expenseTable').length) {
-			var template = _.template($('#AppView').html());
+			let template = _.template($('#AppView').html());
 			this.$el.html(template());
 
 			// not created by constructor yet (already yes in render())
@@ -103,7 +103,8 @@ export default class AppView extends bb.View<Expenses> {
 		// not needed due to the line in the constructor
 		// @see this.categoryList.setExpenses()
 		// wrong. this is called by this.render()
-		//this.categoryList.triggerChange();
+
+		this.categoryList.getCategoriesFromExpenses();
 		elapse.timeEnd('AppView.monthChange');
 	}
 

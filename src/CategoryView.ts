@@ -24,12 +24,12 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 
 	render() {
 		elapse.time('CategoryView.render');
-		var content = [];
-		var categoryCount = this.model.toJSON();
-		var sum: number = <number>_.reduce(categoryCount,
+		let content = [];
+		let categoryCount = this.model.toJSON();
+		let sum: number = <number>_.reduce(categoryCount,
 			(memo, item: CategoryCount) => {
 				// only expenses
-				return memo + item.amount;
+				return memo + Math.abs(item.amount);
 			}, 0);
 		//console.log('sum', sum);
 
@@ -38,7 +38,7 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 		}).reverse();
 
 		_.each(categoryCount, (catCount: CategoryCount) => {
-			var width = Math.round(
+			let width = Math.round(
 				100 * Math.abs(catCount.amount) / Math.abs(sum)
 				) + '%';
 			//console.log(catCount.catName, width, catCount.count, catCount.amount);
@@ -50,7 +50,7 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 				})
 			));
 		});
-		this.$el.html(content.join('\n'));
+		this.$el.html(content.join('\n') + 'sum: '+sum.toFixed(2));
 		elapse.timeEnd('CategoryView.render');
 		return this;
 	}

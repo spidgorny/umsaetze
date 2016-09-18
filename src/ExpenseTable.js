@@ -145,6 +145,8 @@ var ExpenseTable = (function (_super) {
                     word: text,
                     category: categoryName
                 }));
+                _this.model.setCategories(_this.keywords);
+                _this.render();
             });
         }
     };

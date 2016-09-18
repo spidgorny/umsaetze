@@ -28,8 +28,8 @@ export default class Transaction extends bb.Model {
 			visible: true,
 		};
 
-		var dDate;
-		var sDate = this.get('date');
+		let dDate;
+		let sDate = this.get('date');
 		if (sDate instanceof Date) {	// convert back
 			dDate = sDate.clone();
 			sDate = dDate.toString('d.M.yyyy');

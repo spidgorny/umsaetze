@@ -33,4 +33,11 @@ export default class Collection {
 		simpleStorage.set(this.name, this.models);
 	}
 
+	each(callback: Function) {
+		this.models.forEach((el) => {
+			//console.log('each', el);
+			callback(el);
+		});
+	}
+
 }

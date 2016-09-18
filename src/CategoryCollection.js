@@ -35,7 +35,7 @@ var CategoryCollection = (function (_super) {
         this.listenTo(this.expenses, "change", this.getCategoriesFromExpenses);
         // this is how AppView triggers recalculation
         // this makes an infinite loop of triggers
-        // this.listenTo(this, "change", this.getCategoriesFromExpenses);
+        //this.listenTo(this, "change", this.getCategoriesFromExpenses);
         this.listenTo(this, 'add', this.addToOptions);
     };
     CategoryCollection.prototype.saveToLS = function () {
@@ -49,11 +49,19 @@ var CategoryCollection = (function (_super) {
             }
         });
     };
+    CategoryCollection.prototype.resetCounters = function () {
+        this.each(function (row) {
+            row.set('amount', 0);
+            row.set('count', 0);
+        });
+    };
     CategoryCollection.prototype.getCategoriesFromExpenses = function () {
         var _this = this;
         elapse.time('getCategoriesFromExpenses');
         // this.reset();	// don't reset - loosing colors
+        this.resetCounters();
         var visible = this.expenses.getVisible();
+        //console.log(visible.length);
         _.each(visible, function (transaction) {
             var categoryName = transaction.get('category');
             if (categoryName) {
@@ -61,6 +69,7 @@ var CategoryCollection = (function (_super) {
             }
         });
         //console.log(this.categoryCount);
+        this.sortBy('amount');
         elapse.timeEnd('getCategoriesFromExpenses');
         // when we recalculated the data we trigger the view render
         this.trigger('change'); // commented because of infinite loop
@@ -83,12 +92,6 @@ var CategoryCollection = (function (_super) {
                 color: CategoryCollection.pastelColor()
             }, { silent: true });
         }
-    };
-    CategoryCollection.prototype.triggerChange = function () {
-        console.log('CategoryCollection.triggerChange');
-        // commented as next line will call it anyway
-        //this.getCategoriesFromExpenses();
-        this.trigger('change');
     };
     CategoryCollection.prototype.getCategoriesFromExpenses2 = function () {
         var options = [];

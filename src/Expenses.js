@@ -19,7 +19,6 @@ elapse.configure({
 var _ = require('underscore');
 var Expenses = (function (_super) {
     __extends(Expenses, _super);
-    //url = 'expenses/';
     function Expenses(models, options) {
         _super.call(this, models, options);
         this.model = Transaction_1["default"];
@@ -59,7 +58,7 @@ var Expenses = (function (_super) {
         var visible = this.getVisible();
         var min = new Date().addYears(10).valueOf();
         _.each(visible, function (row) {
-            var date = row.get('date').valueOf();
+            var date = row.getDate().valueOf();
             if (date < min) {
                 min = date;
             }
@@ -70,7 +69,7 @@ var Expenses = (function (_super) {
         var visible = this.getVisible();
         var min = new Date('1970-01-01').valueOf();
         _.each(visible, function (row) {
-            var date = row.get('date').valueOf();
+            var date = row.getDate().valueOf();
             if (date > min) {
                 min = date;
             }
@@ -168,6 +167,20 @@ var Expenses = (function (_super) {
     };
     Expenses.prototype.getVisible = function () {
         return this.where({ visible: true });
+    };
+    Expenses.prototype.setCategories = function (keywords) {
+        this.each(function (row) {
+            if (row.get('category') == 'Default') {
+                keywords.each(function (key) {
+                    //console.log(key);
+                    var note = row.get('note');
+                    if (note.indexOf(key.word) > -1) {
+                        console.log(note, 'contains', key.word, 'gets', key.category);
+                        row.set('category', key.category, { silent: true });
+                    }
+                });
+            }
+        });
     };
     return Expenses;
 }(bb.Collection));

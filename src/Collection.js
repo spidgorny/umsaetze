@@ -24,6 +24,12 @@ var Collection = (function () {
     Collection.prototype.save = function () {
         simpleStorage.set(this.name, this.models);
     };
+    Collection.prototype.each = function (callback) {
+        this.models.forEach(function (el) {
+            //console.log('each', el);
+            callback(el);
+        });
+    };
     return Collection;
 }());
 exports.__esModule = true;
