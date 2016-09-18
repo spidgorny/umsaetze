@@ -7,3 +7,5 @@ umsaetze*.csv
 /docs/themes/
 /docs/.deploy_git/
 /docs/filereader.js/
+/docs/startbootstrap-sb-admin-2/
+/docs/npm-debug.log

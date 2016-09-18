@@ -147,9 +147,22 @@ var Sync = (function (_super) {
         this.model.trigger('change');
     };
     Sync.prototype.loadJSON = function (e, file) {
+        var _this = this;
         // console.log('loadJSON', e);
         // console.log(file);
         // console.log(e.target.result);
+        try {
+            var data = JSON.parse(e.target.result);
+            toastr.info('Importing ' + data.length + ' entries');
+            _.each(data, function (row) {
+                _this.model.add(new Transaction_1["default"](row));
+            });
+            toastr.success('Imported');
+            this.render();
+        }
+        catch (e) {
+            alert(e);
+        }
     };
     Sync.prototype.save = function () {
         var data = this.model.localStorage.findAll();
@@ -167,6 +180,7 @@ var Sync = (function (_super) {
         if (confirm('Delete *ALL* entries from Local Storage? Make sure you have exported data first.')) {
             var localStorage_1 = new Backbone.LocalStorage("Expenses");
             localStorage_1._clear();
+            this.model.clear();
             this.render();
         }
     };
