@@ -51,17 +51,22 @@ export default class CatPage extends Backbone.View<Transaction> {
 		console.log('CatPage.render');
 		if (this.template) {
 			let categoryOptions = [];
-			_.each(this.categoryList.allOptions, (value, index) => {
+			this.categoryList.each((category) => {
+				//console.log(category);
 				categoryOptions.push({
-					catName: value,
-					background: this.categoryList.colors[index],
+					catName: category.get('catName'),
+					background: category.get('color'),
+					id: category.cid,
+					used: category.get('count'),
+					amount: category.get('amount')
 				});
 			});
 			this.$el.html(this.template({
 				categoryOptions: categoryOptions,
 			}));
 			this.$('#addCategoryForm').on('submit', this.addCategory.bind(this));
-			this.$('input').focus();
+			this.$('input[name="newName"]').focus();
+			this.$el.on('change', 'input[type="color"]', this.selectColor.bind(this));
 		} else {
 			this.$el.html('Loading...');
 		}
@@ -76,6 +81,19 @@ export default class CatPage extends Backbone.View<Transaction> {
 		this.categoryList.add(new CategoryCount({
 			catName: newName,
 		}));
+	}
+
+	selectColor(event) {
+		console.log(event);
+		let $input = $(event.target);
+		let id = $input.closest('tr').attr('data-id');
+		console.log('id', id);
+		let category = this.categoryList.get(id);
+		console.log('category by id', category);
+		if (category) {
+			//console.log('color', event.target.value);
+			category.set('color', event.target.value);
+		}
 	}
 
 }

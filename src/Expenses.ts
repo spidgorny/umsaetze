@@ -6,17 +6,16 @@
 import Transaction from './Transaction';
 import CollectionFetchOptions = Backbone.CollectionFetchOptions;
 import PersistenceOptions = Backbone.PersistenceOptions;
-var Backbone = require('backbone');
+const bb = require('backbone');
 let BackboneLocalStorage = require("backbone.localstorage");
 require('datejs');
-var elapse = require('elapse');
+let elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
-var $ = require('jquery');
-var _ = require('underscore');
+let _ = require('underscore');
 
-export default class Expenses extends Backbone.Collection<Transaction> {
+export default class Expenses extends bb.Collection<Transaction> {
 
 	attributes = null;
 
@@ -26,8 +25,8 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 
 	//url = 'expenses/';
 
-	constructor() {
-		super();
+	constructor(models?: Transaction[] | Object[], options?: any) {
+		super(models, options);
 		this.localStorage = new BackboneLocalStorage("Expenses");
 		this.listenTo(this, 'change', () => {
 			console.log('Expenses changed event');

@@ -3,17 +3,20 @@ import ExpenseTable from "./ExpenseTable";
 import CategoryCollection from "./CategoryCollection";
 import CategoryView from "./CategoryView";
 import MonthSelect from "./MonthSelect";
-var elapse = require('elapse');
+import ViewOptions = Backbone.ViewOptions;
+// import Backbone from 'backbone';
+let elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
-var Backbone = require('backbone');
-var $ = require('jquery');
-var _ = require('underscore');
+let bb = require('backbone');
+let $ = require('jquery');
+let _ = require('underscore');
 
-export default class AppView extends Backbone.View<Expenses> {
 
-	model: { new(): Expenses };
+export default class AppView extends bb.View<Expenses> {
+
+	model: Expenses;
 
 	table: ExpenseTable;
 
@@ -32,7 +35,7 @@ export default class AppView extends Backbone.View<Expenses> {
 	 * and this.categoryList as well
 	 * @param options
 	 */
-	constructor(options?: any) {
+	constructor(options?: ViewOptions<Expenses>) {
 		super(options);
 		console.log('construct AppView');
 		this.setElement($('#app'));

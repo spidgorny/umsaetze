@@ -1,13 +1,13 @@
 import Expenses from "./Expenses";
 import Transaction from "./Transaction";
 import CategoryCollection from "./CategoryCollection";
-var elapse = require('elapse');
+const elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
-var Backbone = require('backbone');
-var $ = require('jquery');
-var _ = require('underscore');
+const Backbone = require('backbone');
+const $ = require('jquery');
+const _ = require('underscore');
 
 export default class ExpenseTable extends Backbone.View<Expenses> {
 

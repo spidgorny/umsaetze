@@ -10,7 +10,7 @@ var Sync_1 = require('./Sync');
 var Expenses_1 = require("./Expenses");
 var CatPage_1 = require("./CatPage");
 var CategoryCollection_1 = require("./CategoryCollection");
-var Backbone = require('backbone');
+var bb = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
 var Workspace = (function (_super) {
@@ -88,7 +88,7 @@ var Workspace = (function (_super) {
         this.catPage.render();
     };
     return Workspace;
-}(Backbone.Router));
+}(bb.Router));
 exports.__esModule = true;
 exports["default"] = Workspace;
 //# sourceMappingURL=Workspace.js.map

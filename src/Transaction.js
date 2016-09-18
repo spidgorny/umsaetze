@@ -6,9 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 ///<reference path="../typings/index.d.ts"/>
 var md5 = require('md5');
-var Backbone = require('backbone');
-var $ = require('jquery');
-var _ = require('underscore');
+var bb = require('backbone');
 /*
  {"account":"SpardaSlawa",
  "category":"Einkauf",
@@ -66,7 +64,7 @@ var Transaction = (function (_super) {
         this.collection.localStorage.update(this);
     };
     return Transaction;
-}(Backbone.Model));
+}(bb.Model));
 exports.__esModule = true;
 exports["default"] = Transaction;
 //# sourceMappingURL=Transaction.js.map

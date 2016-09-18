@@ -8,10 +8,10 @@ var elapse = require('elapse');
 elapse.configure({
     debug: true
 });
-var simpleStorage = require('simpleStorage.js');
-var Backbone = require('backbone');
+// const simpleStorage = require('simpleStorage.js');
+var bb = require('backbone');
+var bbls = require('backbone.localstorage');
 var _ = require('underscore');
-var $ = require('jquery');
 /**
  * Depends on Expenses to parse them
  * and retrieve the total values for each category
@@ -20,25 +20,40 @@ var CategoryCollection = (function (_super) {
     __extends(CategoryCollection, _super);
     function CategoryCollection(options) {
         _super.call(this, options);
-        this.allOptions = [];
-        this.colors = [];
-        //let ls = Backbone.LocalStorage('CategoryColors');
-        this.colors = simpleStorage.get('CategoryColors') || [];
+        var ls = new bbls('Categories');
+        //this.colors = simpleStorage.get('CategoryColors');
+        var models = ls.findAll();
+        console.log('categories in LS', models);
+        this.add(models);
+        if (!this.size()) {
+        }
+        this.listenTo(this, 'change', this.saveToLS);
     }
     CategoryCollection.prototype.setExpenses = function (ex) {
         this.expenses = ex;
-        this.getOptions();
+        this.getCategoriesFromExpenses();
         // when expenses change, we recalculate our data
         this.listenTo(this.expenses, "change", this.getCategoriesFromExpenses);
         // this is how AppView triggers recalculation
         // this makes an infinite loop of triggers
-        this.listenTo(this, "change", this.getCategoriesFromExpenses);
+        // this.listenTo(this, "change", this.getCategoriesFromExpenses);
         this.listenTo(this, 'add', this.addToOptions);
+    };
+    CategoryCollection.prototype.saveToLS = function () {
+        var ls = new bbls('Categories');
+        this.each(function (model) {
+            if (model.get('id')) {
+                ls.update(model);
+            }
+            else {
+                ls.create(model);
+            }
+        });
     };
     CategoryCollection.prototype.getCategoriesFromExpenses = function () {
         var _this = this;
         elapse.time('getCategoriesFromExpenses');
-        this.reset();
+        // this.reset();	// don't reset - loosing colors
         var visible = this.expenses.getVisible();
         _.each(visible, function (transaction) {
             var categoryName = transaction.get('category');
@@ -49,7 +64,7 @@ var CategoryCollection = (function (_super) {
         //console.log(this.categoryCount);
         elapse.timeEnd('getCategoriesFromExpenses');
         // when we recalculated the data we trigger the view render
-        //this.trigger('change'); // commented because of infinite loop
+        this.trigger('change'); // commented because of infinite loop
     };
     CategoryCollection.prototype.incrementCategoryData = function (categoryName, transaction) {
         var exists = this.findWhere({ catName: categoryName });
@@ -65,7 +80,8 @@ var CategoryCollection = (function (_super) {
             this.add({
                 catName: categoryName,
                 count: 1,
-                amount: transaction.get('amount')
+                amount: transaction.get('amount'),
+                color: CategoryCollection.pastelColor()
             }, { silent: true });
         }
     };
@@ -75,6 +91,15 @@ var CategoryCollection = (function (_super) {
         //this.getCategoriesFromExpenses();
         this.trigger('change');
     };
+    CategoryCollection.prototype.getCategoriesFromExpenses2 = function () {
+        var options = [];
+        var categories = this.expenses.groupBy('category');
+        //console.log('categories', categories);
+        _.each(categories, function (value, index) {
+            options.push(index);
+        });
+        return options;
+    };
     /**
      * Run once and cache forever.
      * Not using this.models because they are filtered only visible
@@ -82,19 +107,10 @@ var CategoryCollection = (function (_super) {
      * @returns {Array}
      */
     CategoryCollection.prototype.getOptions = function () {
-        if (!this.allOptions.length) {
-            var options = [];
-            var categories = this.expenses.groupBy('category');
-            //console.log('categories', categories);
-            _.each(categories, function (value, index) {
-                options.push(index);
-            });
-            options = _.unique(options);
-            options = _.sortBy(options);
-            this.allOptions = options;
-            this.setColors();
-        }
-        return this.allOptions;
+        var options = this.pluck('catName');
+        options = _.unique(options);
+        options = _.sortBy(options);
+        return options;
     };
     CategoryCollection.prototype.addToOptions = function (model) {
         console.log('addToOptions', model);
@@ -104,15 +120,6 @@ var CategoryCollection = (function (_super) {
         this.setColors();
         this.triggerChange();
     };
-    CategoryCollection.prototype.setColors = function () {
-        var _this = this;
-        _.each(this.allOptions, function (value, index) {
-            if (!_this.colors[index]) {
-                _this.colors[index] = CategoryCollection.pastelColors();
-            }
-        });
-        simpleStorage.set('CategoryColors', this.colors);
-    };
     CategoryCollection.prototype.getColorFor = function (value) {
         // console.log('colors', this.colors);
         // let index = _.find(this.allOptions, (catName, index) => {
@@ -120,19 +127,25 @@ var CategoryCollection = (function (_super) {
         // 		return index;
         // 	}
         // });
-        var index = this.allOptions.indexOf(value);
-        var color = this.colors[index];
-        // console.log(index, 'color for', value, 'is', color);
+        var color;
+        var category = this.findWhere({ catName: value });
+        if (category) {
+            color = category.get('color');
+            console.log('color for', value, 'is', color);
+        }
+        else {
+            color = '#AAAAAA';
+        }
         return color;
     };
-    CategoryCollection.pastelColors = function () {
+    CategoryCollection.pastelColor = function () {
         var r = (Math.round(Math.random() * 55) + 200).toString(16);
         var g = (Math.round(Math.random() * 55) + 200).toString(16);
         var b = (Math.round(Math.random() * 55) + 200).toString(16);
         return '#' + r + g + b;
     };
     return CategoryCollection;
-}(Backbone.Collection));
+}(bb.Collection));
 exports.__esModule = true;
 exports["default"] = CategoryCollection;
 //# sourceMappingURL=CategoryCollection.js.map

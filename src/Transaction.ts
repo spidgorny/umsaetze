@@ -1,8 +1,6 @@
 ///<reference path="../typings/index.d.ts"/>
-var md5 = require('md5');
-var Backbone = require('backbone');
-var $ = require('jquery');
-var _ = require('underscore');
+let md5 = require('md5');
+let bb = require('backbone');
 
 /*
  {"account":"SpardaSlawa",
@@ -17,7 +15,7 @@ var _ = require('underscore');
  "sign": ""
  */
 
-export default class Transaction extends Backbone.Model {
+export default class Transaction extends bb.Model {
 
 	date: Date;
 	category: String;

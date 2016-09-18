@@ -16,14 +16,20 @@
 			<th>Category</th>
 			<th>Sparkline</th>
 			<th>Used</th>
+			<th>Amount</th>
+			<th>Color</th>
 		</tr>
 	</thead>
 	<tbody>
 		{{#each categoryOptions}}
-			<tr style="background-color: {{ background }}">
+			<tr style="background-color: {{background}}" data-id="{{id}}">
 				<td>{{catName}}</td>
 				<td>xxx</td>
 				<td>{{used}}</td>
+				<td>{{amount}}</td>
+				<td>
+					<input type="color" value="{{background}}" />
+				</td>
 			</tr>
 		{{/each}}
 	</tbody>

@@ -15,7 +15,7 @@ elapse.configure({
 var toastr = require('toastr');
 var chance = require('chance').Chance();
 var Papa = require('papaparse');
-var Backbone = require('backbone');
+var bb = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
 var Sync = (function (_super) {
@@ -217,7 +217,7 @@ var Sync = (function (_super) {
         });
     };
     return Sync;
-}(Backbone.View));
+}(bb.View));
 exports.__esModule = true;
 exports["default"] = Sync;
 //# sourceMappingURL=Sync.js.map

@@ -37,23 +37,27 @@ var CatPage = (function (_super) {
         this.render();
     };
     CatPage.prototype.render = function () {
-        var _this = this;
         if (window.location.hash != '#CatPage')
             return;
         console.log('CatPage.render');
         if (this.template) {
             var categoryOptions_1 = [];
-            _.each(this.categoryList.allOptions, function (value, index) {
+            this.categoryList.each(function (category) {
+                //console.log(category);
                 categoryOptions_1.push({
-                    catName: value,
-                    background: _this.categoryList.colors[index]
+                    catName: category.get('catName'),
+                    background: category.get('color'),
+                    id: category.cid,
+                    used: category.get('count'),
+                    amount: category.get('amount')
                 });
             });
             this.$el.html(this.template({
                 categoryOptions: categoryOptions_1
             }));
             this.$('#addCategoryForm').on('submit', this.addCategory.bind(this));
-            this.$('input').focus();
+            this.$('input[name="newName"]').focus();
+            this.$el.on('change', 'input[type="color"]', this.selectColor.bind(this));
         }
         else {
             this.$el.html('Loading...');
@@ -68,6 +72,18 @@ var CatPage = (function (_super) {
         this.categoryList.add(new CategoryCount_1["default"]({
             catName: newName
         }));
+    };
+    CatPage.prototype.selectColor = function (event) {
+        console.log(event);
+        var $input = $(event.target);
+        var id = $input.closest('tr').attr('data-id');
+        console.log('id', id);
+        var category = this.categoryList.get(id);
+        console.log('category by id', category);
+        if (category) {
+            //console.log('color', event.target.value);
+            category.set('color', event.target.value);
+        }
     };
     return CatPage;
 }(Backbone.View));

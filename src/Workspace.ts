@@ -4,11 +4,12 @@ import Sync from './Sync';
 import Expenses from "./Expenses";
 import CatPage from "./CatPage";
 import CategoryCollection from "./CategoryCollection";
-var Backbone = require('backbone');
-var $ = require('jquery');
-var _ = require('underscore');
+import RouterOptions = Backbone.RouterOptions;
+let bb = require('backbone');
+let $ = require('jquery');
+let _ = require('underscore');
 
-export default class Workspace extends Backbone.Router {
+export default class Workspace extends bb.Router {
 
 	routes = {
 		"":             "AppView",
@@ -23,7 +24,7 @@ export default class Workspace extends Backbone.Router {
 	syncPage: Sync;
 	catPage: CatPage;
 
-	constructor(options?: any) {
+	constructor(options?: RouterOptions) {
 		super(options);
 		(<any>this)._bindRoutes();
 		this.model = new Expenses();
@@ -33,7 +34,7 @@ export default class Workspace extends Backbone.Router {
 	}
 
 	activateMenu() {
-		var url = window.location;
+		let url = window.location;
 		// var element = $('ul.nav a').filter(function() {
 		//     return this.href == url;
 		// }).addClass('active').parent().parent().addClass('in').parent();

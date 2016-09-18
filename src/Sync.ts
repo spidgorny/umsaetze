@@ -14,11 +14,11 @@ elapse.configure({
 let toastr = require('toastr');
 let chance = require('chance').Chance();
 let Papa = require('papaparse');
-let Backbone = require('backbone');
+let bb = require('backbone');
 let $ = require('jquery');
 let _ = require('underscore');
 
-export default class Sync extends Backbone.View<any> {
+export default class Sync extends bb.View<any> {
 
 	$el = $('#app');
 

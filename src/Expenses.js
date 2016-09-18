@@ -8,20 +8,19 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Backbone = require('backbone');
+var bb = require('backbone');
 var BackboneLocalStorage = require("backbone.localstorage");
 require('datejs');
 var elapse = require('elapse');
 elapse.configure({
     debug: true
 });
-var $ = require('jquery');
 var _ = require('underscore');
 var Expenses = (function (_super) {
     __extends(Expenses, _super);
     //url = 'expenses/';
-    function Expenses() {
-        _super.call(this);
+    function Expenses(models, options) {
+        _super.call(this, models, options);
         this.attributes = null;
         this.localStorage = new BackboneLocalStorage("Expenses");
         this.listenTo(this, 'change', function () {
@@ -164,7 +163,7 @@ var Expenses = (function (_super) {
         return this.where({ visible: true });
     };
     return Expenses;
-}(Backbone.Collection));
+}(bb.Collection));
 exports.__esModule = true;
 exports["default"] = Expenses;
 //# sourceMappingURL=Expenses.js.map

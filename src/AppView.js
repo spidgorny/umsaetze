@@ -7,11 +7,12 @@ var __extends = (this && this.__extends) || function (d, b) {
 var ExpenseTable_1 = require("./ExpenseTable");
 var CategoryView_1 = require("./CategoryView");
 var MonthSelect_1 = require("./MonthSelect");
+// import Backbone from 'backbone';
 var elapse = require('elapse');
 elapse.configure({
     debug: true
 });
-var Backbone = require('backbone');
+var bb = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
 var AppView = (function (_super) {
@@ -107,7 +108,7 @@ var AppView = (function (_super) {
         elapse.timeEnd('AppView.hide');
     };
     return AppView;
-}(Backbone.View));
+}(bb.View));
 exports.__esModule = true;
 exports["default"] = AppView;
 //# sourceMappingURL=AppView.js.map

@@ -1,6 +1,9 @@
-var Backbone = require('backbone');
+/// <reference path="../typings/index.d.ts" />
 
-export default class CategoryCount extends Backbone.Model {
+let bb = require('backbone');
+const bbls = require('backbone.localstorage');
+
+export default class CategoryCount extends bb.Model {
 
 	catName: string;
 
@@ -8,8 +11,15 @@ export default class CategoryCount extends Backbone.Model {
 
 	amount: number;
 
+	color: string;
+
 	constructor(...args: any[]) {
-		super();
+		super(args);
+		//this.listenTo(this, 'change', this.saveToLS);
+	}
+
+	setColor(color) {
+		this.set('color', color);
 	}
 
 }
