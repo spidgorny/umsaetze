@@ -1,6 +1,8 @@
 import Expenses from "./Expenses";
 import Transaction from "./Transaction";
 import CategoryCollection from "./CategoryCollection";
+import KeywordCollection from "./KeywordCollection";
+import Keyword from "./Keyword";
 const elapse = require('elapse');
 elapse.configure({
 	debug: true
@@ -8,6 +10,7 @@ elapse.configure({
 const Backbone = require('backbone');
 const $ = require('jquery');
 const _ = require('underscore');
+const handlebars = require('handlebars');
 
 export default class ExpenseTable extends Backbone.View<Expenses> {
 
@@ -17,8 +20,11 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 
 	template = _.template($('#rowTemplate').html());
 
+	keywords = new KeywordCollection();
+
 	constructor(options?) {
 		super(options);
+		console.log(this.keywords);
 
 		// in case we started with Sync page the table is not visible
 		if (!$('#expenseTable').length) {
@@ -27,6 +33,7 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 		}
 
 		this.setElement($('#expenseTable'));
+		this.$el.on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
 
 		// slow re-rendering of the whole table when collection changes
 		//this.listenTo(this.collection, 'change', this.render);
@@ -119,18 +126,94 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 		//console.log(event);
 		let $select = $(event.target);
 		//console.log('selected', $select.val());
-		var id = $select.closest('tr').attr('data-id');
+		let id = $select.closest('tr').attr('data-id');
 		//console.log(id);
 		let transaction = <Transaction>this.model.get(id);
 		// console.log(transaction);
 		if (transaction) {
-			console.log('Transaction id=', id);
+			// console.log('Transaction id=', id);
 			transaction.setCategory($select.val());
-			console.log(transaction.toJSON());
+			// console.log(transaction.toJSON());
 			//this.categoryList.trigger('change');
 		} else {
 			console.error('Transaction with id=', id, 'not found');
 		}
+	}
+
+	textSelectedEvent(event: MouseEvent) {
+		//console.log('textSelectedEvent');
+		let text = ExpenseTable.getSelectedText().trim();
+		if (text) {
+			//console.log(text);
+			let $contextMenu = $('#contextMenu');
+			if (!$contextMenu.length) {
+				let template = handlebars.compile($('#categoryMenu').html());
+				let menuHTML = template({
+					catlist: this.categoryList.getOptions(),
+				});
+				$('body').append(menuHTML);
+				$contextMenu = $('#contextMenu');	// after append
+				console.log($contextMenu, event.clientX, event.clientY);
+			}
+			this.openMenu($contextMenu, event.clientX, event.clientY, (menu) => {
+				let categoryName = menu.text().trim();
+				console.log(text, 'to be', categoryName);
+				this.keywords.add(new Keyword({
+					word: text,
+					category: categoryName,
+				}));
+			});
+		}
+	}
+
+	static getSelectedText() {
+		if (window.getSelection) {
+			return window.getSelection().toString();
+		} else if (document.selection) {
+			return document.selection.createRange().text;
+		}
+		return '';
+	}
+
+	openMenu(menuSelector, clientX, clientY, callback) {
+		let $menu = $(menuSelector)
+			.show()
+			.css({
+				position: "absolute",
+				left: this.getMenuPosition(clientX, 'width', 'scrollLeft', menuSelector),
+				top: this.getMenuPosition(clientY, 'height', 'scrollTop', menuSelector)
+			})
+			.off('click')
+			.on('click', 'a', function (e) {
+				let $selectedMenu = $(e.target);
+				if ($selectedMenu.length) {
+					$menu.hide();
+					callback.call(this, $selectedMenu);
+				}
+			});
+		//console.log($menu);
+
+		// make sure menu closes on any click
+		// since we use onmouseup we can't immediately close the popup
+		setTimeout(function () {
+			$('body').click(function () {
+				$(menuSelector).hide();
+				$('body').off('click');	// once
+			});
+		}, 0);
+	}
+
+	getMenuPosition(mouse, direction, scrollDir, menuSelector) {
+		var win = $(window)[direction](),
+			scroll = $(window)[scrollDir](),
+			menu = $(menuSelector)[direction](),
+			position = mouse + scroll;
+
+		// opening menu would pass the side of the page
+		if (mouse + menu > win && menu < mouse)
+			position -= menu;
+
+		return position;
 	}
 
 }

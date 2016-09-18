@@ -4,6 +4,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var KeywordCollection_1 = require("./KeywordCollection");
+var Keyword_1 = require("./Keyword");
 var elapse = require('elapse');
 elapse.configure({
     debug: true
@@ -11,17 +13,21 @@ elapse.configure({
 var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
+var handlebars = require('handlebars');
 var ExpenseTable = (function (_super) {
     __extends(ExpenseTable, _super);
     function ExpenseTable(options) {
         _super.call(this, options);
         this.template = _.template($('#rowTemplate').html());
+        this.keywords = new KeywordCollection_1["default"]();
+        console.log(this.keywords);
         // in case we started with Sync page the table is not visible
         if (!$('#expenseTable').length) {
             var template = _.template($('#AppView').html());
             $('#app').html(template());
         }
         this.setElement($('#expenseTable'));
+        this.$el.on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
         // slow re-rendering of the whole table when collection changes
         //this.listenTo(this.collection, 'change', this.render);
     }
@@ -109,13 +115,80 @@ var ExpenseTable = (function (_super) {
         var transaction = this.model.get(id);
         // console.log(transaction);
         if (transaction) {
-            console.log('Transaction id=', id);
+            // console.log('Transaction id=', id);
             transaction.setCategory($select.val());
-            console.log(transaction.toJSON());
         }
         else {
             console.error('Transaction with id=', id, 'not found');
         }
+    };
+    ExpenseTable.prototype.textSelectedEvent = function (event) {
+        var _this = this;
+        //console.log('textSelectedEvent');
+        var text = ExpenseTable.getSelectedText().trim();
+        if (text) {
+            //console.log(text);
+            var $contextMenu = $('#contextMenu');
+            if (!$contextMenu.length) {
+                var template = handlebars.compile($('#categoryMenu').html());
+                var menuHTML = template({
+                    catlist: this.categoryList.getOptions()
+                });
+                $('body').append(menuHTML);
+                $contextMenu = $('#contextMenu'); // after append
+                console.log($contextMenu, event.clientX, event.clientY);
+            }
+            this.openMenu($contextMenu, event.clientX, event.clientY, function (menu) {
+                var categoryName = menu.text().trim();
+                console.log(text, 'to be', categoryName);
+                _this.keywords.add(new Keyword_1["default"]({
+                    word: text,
+                    category: categoryName
+                }));
+            });
+        }
+    };
+    ExpenseTable.getSelectedText = function () {
+        if (window.getSelection) {
+            return window.getSelection().toString();
+        }
+        else if (document.selection) {
+            return document.selection.createRange().text;
+        }
+        return '';
+    };
+    ExpenseTable.prototype.openMenu = function (menuSelector, clientX, clientY, callback) {
+        var $menu = $(menuSelector)
+            .show()
+            .css({
+            position: "absolute",
+            left: this.getMenuPosition(clientX, 'width', 'scrollLeft', menuSelector),
+            top: this.getMenuPosition(clientY, 'height', 'scrollTop', menuSelector)
+        })
+            .off('click')
+            .on('click', 'a', function (e) {
+            var $selectedMenu = $(e.target);
+            if ($selectedMenu.length) {
+                $menu.hide();
+                callback.call(this, $selectedMenu);
+            }
+        });
+        //console.log($menu);
+        // make sure menu closes on any click
+        // since we use onmouseup we can't immediately close the popup
+        setTimeout(function () {
+            $('body').click(function () {
+                $(menuSelector).hide();
+                $('body').off('click'); // once
+            });
+        }, 0);
+    };
+    ExpenseTable.prototype.getMenuPosition = function (mouse, direction, scrollDir, menuSelector) {
+        var win = $(window)[direction](), scroll = $(window)[scrollDir](), menu = $(menuSelector)[direction](), position = mouse + scroll;
+        // opening menu would pass the side of the page
+        if (mouse + menu > win && menu < mouse)
+            position -= menu;
+        return position;
     };
     return ExpenseTable;
 }(Backbone.View));

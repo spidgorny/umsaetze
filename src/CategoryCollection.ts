@@ -5,7 +5,6 @@ let elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
-// const simpleStorage = require('simpleStorage.js');
 const bb = require('backbone');
 const bbls = require('backbone.localstorage');
 const _ = require('underscore');
@@ -123,6 +122,7 @@ export default class CategoryCollection extends bb.Collection<CategoryCount> {
 	 */
 	getOptions() {
 		let options = this.pluck('catName');
+		//console.log('getOptions', options);
 		options = _.unique(options);
 		options = _.sortBy(options);
 		return options;

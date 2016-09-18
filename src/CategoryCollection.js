@@ -8,7 +8,6 @@ var elapse = require('elapse');
 elapse.configure({
     debug: true
 });
-// const simpleStorage = require('simpleStorage.js');
 var bb = require('backbone');
 var bbls = require('backbone.localstorage');
 var _ = require('underscore');
@@ -108,6 +107,7 @@ var CategoryCollection = (function (_super) {
      */
     CategoryCollection.prototype.getOptions = function () {
         var options = this.pluck('catName');
+        //console.log('getOptions', options);
         options = _.unique(options);
         options = _.sortBy(options);
         return options;

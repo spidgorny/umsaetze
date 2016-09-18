@@ -89,9 +89,7 @@ export default class Expenses extends bb.Collection<Transaction> {
 		}
 		let max = new Date().addYears(10).valueOf();
 		this.each((row: Transaction) => {
-			console.log(row);
 			let dDate = row.getDate();
-			console.log('getEarliest', dDate.valueOf(), max);
 			let date: number = dDate.valueOf();
 			if (date < max) {
 				max = date;

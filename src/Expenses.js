@@ -83,9 +83,7 @@ var Expenses = (function (_super) {
         }
         var max = new Date().addYears(10).valueOf();
         this.each(function (row) {
-            console.log(row);
             var dDate = row.getDate();
-            console.log('getEarliest', dDate.valueOf(), max);
             var date = dDate.valueOf();
             if (date < max) {
                 max = date;
