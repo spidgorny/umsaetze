@@ -145,6 +145,9 @@ var Sync = (function (_super) {
         this.model.setAllVisible();
         console.log('Trigger change on Expenses');
         this.model.trigger('change');
+        Backbone.history.navigate('#', {
+            trigger: true
+        });
     };
     Sync.prototype.loadJSON = function (e, file) {
         var _this = this;
@@ -158,7 +161,10 @@ var Sync = (function (_super) {
                 _this.model.add(new Transaction_1["default"](row));
             });
             toastr.success('Imported');
-            this.render();
+            this.model.trigger('change');
+            Backbone.history.navigate('#', {
+                trigger: true
+            });
         }
         catch (e) {
             alert(e);
@@ -180,7 +186,9 @@ var Sync = (function (_super) {
         if (confirm('Delete *ALL* entries from Local Storage? Make sure you have exported data first.')) {
             var localStorage_1 = new Backbone.LocalStorage("Expenses");
             localStorage_1._clear();
-            this.model.clear();
+            if (this.model) {
+                this.model.clear();
+            }
             this.render();
         }
     };

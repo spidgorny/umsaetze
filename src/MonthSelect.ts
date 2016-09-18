@@ -2,9 +2,9 @@
 ///<reference path="../typings/index.d.ts"/>
 
 import Backbone = require('backbone');
-var $ = require('jquery');
+const $ = require('jquery');
 require('datejs');
-var _ = require('underscore');
+const _ = require('underscore');
 
 export default class MonthSelect extends Backbone.View<any> {
 
@@ -18,9 +18,9 @@ export default class MonthSelect extends Backbone.View<any> {
 
 	selectedMonth = 'Feb';
 
-	earliest = new Date('2014-08-01');
+	earliest = new Date();
 
-	latest = new Date('2016-05-15');
+	latest = new Date();
 
 	//localStorage: Backbone.LocalStorage;
 

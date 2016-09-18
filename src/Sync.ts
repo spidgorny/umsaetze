@@ -139,7 +139,7 @@ export default class Sync extends Backbone.View<any> {
 	startLoading() {
 		console.log('startLoading');
 		this.prevPercent = 0;
-		var template = _.template($('#loadingBarTemplate').html());
+		let template = _.template($('#loadingBarTemplate').html());
 		this.$('.panel-footer').html(template());
 	}
 
@@ -168,6 +168,9 @@ export default class Sync extends Backbone.View<any> {
 		this.model.setAllVisible();
 		console.log('Trigger change on Expenses');
 		this.model.trigger('change');
+		Backbone.history.navigate('#', {
+			trigger: true,
+		});
 	}
 
 	loadJSON(e, file)
@@ -182,7 +185,10 @@ export default class Sync extends Backbone.View<any> {
 				this.model.add(new Transaction(row));
 			});
 			toastr.success('Imported');
-			this.render();
+			this.model.trigger('change');
+			Backbone.history.navigate('#', {
+				trigger: true,
+			});
 		} catch (e) {
 			alert(e);
 		}
@@ -205,7 +211,9 @@ export default class Sync extends Backbone.View<any> {
 		if (confirm('Delete *ALL* entries from Local Storage? Make sure you have exported data first.')) {
 			let localStorage = new Backbone.LocalStorage("Expenses");
 			localStorage._clear();
-			this.model.clear();
+			if (this.model) {
+				this.model.clear();
+			}
 			this.render();
 		}
 	}

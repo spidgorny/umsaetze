@@ -20,8 +20,8 @@ var MonthSelect = (function (_super) {
         this.monthOptions = this.$('button');
         this.selectedYear = this.yearSelect.val();
         this.selectedMonth = 'Feb';
-        this.earliest = new Date('2014-08-01');
-        this.latest = new Date('2016-05-15');
+        this.earliest = new Date();
+        this.latest = new Date();
         // console.log(this.yearSelect);
         // console.log(this.monthOptions);
         this.monthOptions.on('click', this.clickOnMonth.bind(this));
