@@ -20,11 +20,13 @@ var _ = require('underscore');
 var Expenses = (function (_super) {
     __extends(Expenses, _super);
     function Expenses(models, options) {
+        var _this = this;
         _super.call(this, models, options);
         this.model = Transaction_1["default"];
         this.localStorage = new BackboneLocalStorage("Expenses");
         this.listenTo(this, 'change', function () {
             console.log('Expenses changed event');
+            _this.saveAll();
         });
     }
     /**
@@ -181,6 +183,7 @@ var Expenses = (function (_super) {
                 });
             }
         });
+        this.trigger('change');
     };
     return Expenses;
 }(bb.Collection));

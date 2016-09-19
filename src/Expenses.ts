@@ -29,6 +29,7 @@ export default class Expenses extends bb.Collection<Transaction> {
 		this.localStorage = new BackboneLocalStorage("Expenses");
 		this.listenTo(this, 'change', () => {
 			console.log('Expenses changed event');
+			this.saveAll();
 		});
 	}
 
@@ -194,6 +195,7 @@ export default class Expenses extends bb.Collection<Transaction> {
 				});
 			}
 		});
+		this.trigger('change');
 	}
 
 }

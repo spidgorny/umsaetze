@@ -146,7 +146,9 @@ var ExpenseTable = (function (_super) {
                     category: categoryName
                 }));
                 _this.model.setCategories(_this.keywords);
+                var scrollTop = document.body.scrollTop;
                 _this.render();
+                $('body').scrollTop(scrollTop);
             });
         }
     };

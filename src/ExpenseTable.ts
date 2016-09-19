@@ -165,7 +165,9 @@ export default class ExpenseTable extends Backbone.View<Expenses> {
 					category: categoryName,
 				}));
 				this.model.setCategories(this.keywords);
+				let scrollTop = document.body.scrollTop;
 				this.render();
+				$('body').scrollTop(scrollTop);
 			});
 		}
 	}
