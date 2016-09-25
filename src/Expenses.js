@@ -48,14 +48,6 @@ var Expenses = (function (_super) {
             return;
         }
     };
-    /**
-     * show everything by default, then filters will hide
-     */
-    Expenses.prototype.setAllVisible = function () {
-        this.each(function (model) {
-            model.set('visible', true, { silent: true });
-        });
-    };
     Expenses.prototype.getDateFrom = function () {
         var visible = this.getVisible();
         var min = new Date().addYears(10).valueOf();
@@ -106,6 +98,14 @@ var Expenses = (function (_super) {
         return new Date(min);
     };
     /**
+     * show everything by default, then filters will hide
+     */
+    Expenses.prototype.setAllVisible = function () {
+        this.each(function (model) {
+            model.set('visible', true, { silent: true });
+        });
+    };
+    /**
      * Will hide some visible
      * @param q
      */
@@ -118,8 +118,6 @@ var Expenses = (function (_super) {
             if (row.get('note').toLowerCase().indexOf(lowQ) == -1) {
                 row.set('visible', false, { silent: true });
             }
-            else {
-            }
         });
         elapse.timeEnd('Expense.filterVisible');
         this.saveAll();
@@ -130,18 +128,37 @@ var Expenses = (function (_super) {
      */
     Expenses.prototype.filterByMonth = function (selectedMonth) {
         elapse.time('Expense.filterByMonth');
+        if (selectedMonth) {
+            this.selectedMonth = selectedMonth;
+        }
+        else if (this.selectedMonth) {
+            selectedMonth = this.selectedMonth;
+        }
+        if (selectedMonth) {
+            this.each(function (row) {
+                var tDate = row.get('date');
+                var sameYear = tDate.getFullYear() == selectedMonth.getFullYear();
+                var sameMonth = tDate.getMonth() == selectedMonth.getMonth();
+                if (!sameYear || !sameMonth) {
+                    row.set('visible', false, { silent: true });
+                }
+            });
+            this.saveAll();
+        }
+        elapse.timeEnd('Expense.filterByMonth');
+    };
+    Expenses.prototype.filterByCategory = function (category) {
+        elapse.time('Expense.filterByCategory');
         this.each(function (row) {
-            var tDate = row.get('date');
-            var sameYear = tDate.getFullYear() == selectedMonth.getFullYear();
-            var sameMonth = tDate.getMonth() == selectedMonth.getMonth();
-            if (sameYear && sameMonth) {
-            }
-            else {
-                row.set('visible', false, { silent: true });
+            if (row.isVisible()) {
+                var rowCat = row.get('category');
+                var isVisible = category.getName() == rowCat;
+                //console.log('set visible', isVisible);
+                row.set('visible', isVisible, { silent: true });
             }
         });
-        elapse.timeEnd('Expense.filterByMonth');
         this.saveAll();
+        elapse.timeEnd('Expense.filterByCategory');
     };
     Expenses.prototype.saveAll = function () {
         var _this = this;

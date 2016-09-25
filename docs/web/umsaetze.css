@@ -17,6 +17,10 @@
 .note {
   font-size: smaller;
 }
-.progress {
+.withProgress {
+  padding: 2px;
+  margin-bottom: 2px;
+}
+.withProgress .progress {
   margin-bottom: 0;
 }

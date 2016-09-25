@@ -2,6 +2,7 @@
 
 import CategoryCollection from "./CategoryCollection";
 import CategoryCount from "./CategoryCount";
+import Expenses from "../Expenses";
 let elapse = require('elapse');
 elapse.configure({
 	debug: true
@@ -15,12 +16,19 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 
 	model: CategoryCollection;
 
+	expenses: Expenses;
+
 	template = _.template($('#categoryTemplate').html());
 
 	constructor(options) {
 		super(options);
 		this.setElement($('#categories'));
 		this.listenTo(this.model, 'change', this.render);
+		this.$el.on('click', 'a.filterByCategory', this.filterByCategory.bind(this));
+	}
+
+	setExpenses(expenses) {
+		this.expenses = expenses;
 	}
 
 	render() {
@@ -51,7 +59,10 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 				})
 			));
 		});
-		this.$el.html(content.join('\n') + 'sum: '+sum.toFixed(2));
+		this.$el.html(content.join('\n'));
+		this.$el.append('<div class="category text-right">' +
+			'<a href="#" class="filterByCategory">Total</a>: '+sum.toFixed(2)+' &euro;'+
+		'</div>');
 
 		this.showPieChart();
 
@@ -102,6 +113,25 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 				}
 			}
 		});
+	}
+
+	filterByCategory(event: MouseEvent) {
+		event.preventDefault();
+		let link = $(event.target);
+		let id = link.attr('data-id');
+		console.error('filterByCategory', id);
+		let cat = this.model.get(id);
+		//console.log(cat);
+		//this.expenses.filterByMonth();
+		if (cat) {
+			this.expenses.setAllVisible();
+			this.expenses.filterByMonth();
+			this.expenses.filterByCategory(cat);
+		} else {
+			this.expenses.setAllVisible();
+			this.expenses.filterByMonth();
+		}
+		this.expenses.trigger('change');	// slow!
 	}
 
 }

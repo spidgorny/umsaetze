@@ -56,6 +56,7 @@ export default class AppView extends bb.View<Expenses> {
 		this.categories = new CategoryView({
 			model: this.categoryList,
 		});
+		this.categories.setExpenses(this.collection);
 		//console.log('category view collection', this.categories.model);
 
 		this.ms = new MonthSelect();
@@ -63,6 +64,8 @@ export default class AppView extends bb.View<Expenses> {
 		this.ms.latest = this.collection.getLatest();
 		this.ms.render();
 		this.listenTo(this.ms, 'MonthSelect:change', this.monthChange);
+
+		this.collection.selectedMonth = this.ms.getSelected();	// for filtering to know which month we're in
 
 		this.listenTo(this.collection, "change", this.render);
 		//this.listenTo(this.collection, "change", this.table.render);
@@ -98,7 +101,7 @@ export default class AppView extends bb.View<Expenses> {
 		this.collection.setAllVisible();						// silent
 		this.collection.filterByMonth(this.ms.getSelected());	// silent
 		this.collection.filterVisible(this.q);					// silent
-		this.render();
+		//this.render();	// will be called by getCategoriesFromExpenses()
 
 		// not needed due to the line in the constructor
 		// @see this.categoryList.setExpenses()

@@ -79,5 +79,9 @@ export default class Transaction extends bb.Model {
 		return date;
 	}
 
+	isVisible() {
+		return this.get('visible');
+	}
+
 }
 

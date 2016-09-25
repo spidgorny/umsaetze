@@ -8,6 +8,7 @@ import CollectionFetchOptions = Backbone.CollectionFetchOptions;
 import PersistenceOptions = Backbone.PersistenceOptions;
 import KeywordCollection from "./KeywordCollection";
 import Keyword from "./Keyword";
+import CategoryCount from "./Category/CategoryCount";
 const bb = require('backbone');
 let BackboneLocalStorage = require("backbone.localstorage");
 require('datejs');
@@ -22,6 +23,8 @@ export default class Expenses extends bb.Collection<Transaction> {
 	model: Transaction;
 
 	localStorage: Backbone.LocalStorage;
+
+	selectedMonth: Date;
 
 	constructor(models?: Transaction[] | Object[], options?: any) {
 		super(models, options);
@@ -49,15 +52,6 @@ export default class Expenses extends bb.Collection<Transaction> {
 			this.trigger('change');
 			return;
 		}
-	}
-
-	/**
-	 * show everything by default, then filters will hide
- 	 */
-	public setAllVisible() {
-		this.each((model: Transaction) => {
-			model.set('visible', true, { silent: true });
-		});
 	}
 
 	getDateFrom() {
@@ -114,6 +108,15 @@ export default class Expenses extends bb.Collection<Transaction> {
 	}
 
 	/**
+	 * show everything by default, then filters will hide
+	 */
+	public setAllVisible() {
+		this.each((model: Transaction) => {
+			model.set('visible', true, { silent: true });
+		});
+	}
+
+	/**
 	 * Will hide some visible
 	 * @param q
 	 */
@@ -124,8 +127,6 @@ export default class Expenses extends bb.Collection<Transaction> {
 		this.each((row: Transaction) => {
 			if (row.get('note').toLowerCase().indexOf(lowQ) == -1) {
 				row.set('visible', false, { silent: true });
-			} else {
-				// row.set('visible', true, { silent: true });
 			}
 		});
 		elapse.timeEnd('Expense.filterVisible');
@@ -136,20 +137,40 @@ export default class Expenses extends bb.Collection<Transaction> {
 	 * Will hide some visible
 	 * @param selectedMonth
 	 */
-	filterByMonth(selectedMonth: Date) {
+	filterByMonth(selectedMonth?: Date) {
 		elapse.time('Expense.filterByMonth');
+		if (selectedMonth) {
+			this.selectedMonth = selectedMonth;
+		} else if (this.selectedMonth) {
+			selectedMonth = this.selectedMonth;
+		}
+
+		if (selectedMonth) {
+			this.each((row: Transaction) => {
+				let tDate: Date = row.get('date');
+				let sameYear = tDate.getFullYear() == selectedMonth.getFullYear();
+				let sameMonth = tDate.getMonth() == selectedMonth.getMonth();
+				if (!sameYear || !sameMonth) {
+					row.set('visible', false, {silent: true});
+				}
+			});
+			this.saveAll();
+		}
+		elapse.timeEnd('Expense.filterByMonth');
+	}
+
+	filterByCategory(category: CategoryCount) {
+		elapse.time('Expense.filterByCategory');
 		this.each((row: Transaction) => {
-			let tDate: Date = row.get('date');
-			let sameYear = tDate.getFullYear() == selectedMonth.getFullYear();
-			let sameMonth = tDate.getMonth() == selectedMonth.getMonth();
-			if (sameYear && sameMonth) {
-				// row.set('visible', true, { silent: true });
-			} else {
-				row.set('visible', false, { silent: true });
+			if (row.isVisible()) {
+				let rowCat: string = row.get('category');
+				let isVisible = category.getName() == rowCat;
+				//console.log('set visible', isVisible);
+				row.set('visible', isVisible, {silent: true});
 			}
 		});
-		elapse.timeEnd('Expense.filterByMonth');
 		this.saveAll();
+		elapse.timeEnd('Expense.filterByCategory');
 	}
 
 	saveAll() {

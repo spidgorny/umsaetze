@@ -20,7 +20,11 @@ var CategoryView = (function (_super) {
         this.template = _.template($('#categoryTemplate').html());
         this.setElement($('#categories'));
         this.listenTo(this.model, 'change', this.render);
+        this.$el.on('click', 'a.filterByCategory', this.filterByCategory.bind(this));
     }
+    CategoryView.prototype.setExpenses = function (expenses) {
+        this.expenses = expenses;
+    };
     CategoryView.prototype.render = function () {
         var _this = this;
         elapse.time('CategoryView.render');
@@ -43,7 +47,10 @@ var CategoryView = (function (_super) {
                 sign: catCount.amount >= 0 ? 'positive' : 'negative'
             })));
         });
-        this.$el.html(content.join('\n') + 'sum: ' + sum.toFixed(2));
+        this.$el.html(content.join('\n'));
+        this.$el.append('<div class="category text-right">' +
+            '<a href="#" class="filterByCategory">Total</a>: ' + sum.toFixed(2) + ' &euro;' +
+            '</div>');
         this.showPieChart();
         elapse.timeEnd('CategoryView.render');
         return this;
@@ -91,6 +98,25 @@ var CategoryView = (function (_super) {
                 }
             }
         });
+    };
+    CategoryView.prototype.filterByCategory = function (event) {
+        event.preventDefault();
+        var link = $(event.target);
+        var id = link.attr('data-id');
+        console.error('filterByCategory', id);
+        var cat = this.model.get(id);
+        //console.log(cat);
+        //this.expenses.filterByMonth();
+        if (cat) {
+            this.expenses.setAllVisible();
+            this.expenses.filterByMonth();
+            this.expenses.filterByCategory(cat);
+        }
+        else {
+            this.expenses.setAllVisible();
+            this.expenses.filterByMonth();
+        }
+        this.expenses.trigger('change'); // slow!
     };
     return CategoryView;
 }(Backbone.View));

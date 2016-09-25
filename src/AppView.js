@@ -38,12 +38,14 @@ var AppView = (function (_super) {
         this.categories = new CategoryView_1["default"]({
             model: this.categoryList
         });
+        this.categories.setExpenses(this.collection);
         //console.log('category view collection', this.categories.model);
         this.ms = new MonthSelect_1["default"]();
         this.ms.earliest = this.collection.getEarliest();
         this.ms.latest = this.collection.getLatest();
         this.ms.render();
         this.listenTo(this.ms, 'MonthSelect:change', this.monthChange);
+        this.collection.selectedMonth = this.ms.getSelected(); // for filtering to know which month we're in
         this.listenTo(this.collection, "change", this.render);
         //this.listenTo(this.collection, "change", this.table.render);
         //this.listenTo(this.collection, "change", this.categories.change); // wrong collection inside ? wft?!
@@ -74,7 +76,7 @@ var AppView = (function (_super) {
         this.collection.setAllVisible(); // silent
         this.collection.filterByMonth(this.ms.getSelected()); // silent
         this.collection.filterVisible(this.q); // silent
-        this.render();
+        //this.render();	// will be called by getCategoriesFromExpenses()
         // not needed due to the line in the constructor
         // @see this.categoryList.setExpenses()
         // wrong. this is called by this.render()

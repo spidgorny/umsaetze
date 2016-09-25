@@ -73,6 +73,9 @@ var Transaction = (function (_super) {
         }
         return date;
     };
+    Transaction.prototype.isVisible = function () {
+        return this.get('visible');
+    };
     return Transaction;
 }(bb.Model));
 exports.__esModule = true;

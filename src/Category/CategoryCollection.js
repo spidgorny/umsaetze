@@ -42,7 +42,8 @@ var CategoryCollection = (function (_super) {
         this.expenses = ex;
         this.getCategoriesFromExpenses();
         // when expenses change, we recalculate our data
-        this.listenTo(this.expenses, "change", this.getCategoriesFromExpenses);
+        // visibility changes are too often - commented
+        //this.listenTo(this.expenses, "change", this.getCategoriesFromExpenses);
         // this is how AppView triggers recalculation
         // this makes an infinite loop of triggers
         //this.listenTo(this, "change", this.getCategoriesFromExpenses);
@@ -61,8 +62,8 @@ var CategoryCollection = (function (_super) {
     };
     CategoryCollection.prototype.resetCounters = function () {
         this.each(function (row) {
-            row.set('amount', 0);
-            row.set('count', 0);
+            row.set('amount', 0, { silent: true });
+            row.set('count', 0, { silent: true });
         });
     };
     CategoryCollection.prototype.getCategoriesFromExpenses = function () {
