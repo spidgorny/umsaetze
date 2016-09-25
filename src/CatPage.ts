@@ -59,7 +59,7 @@ export default class CatPage extends Backbone.View<Transaction> {
 					background: category.get('color'),
 					id: category.cid,
 					used: category.get('count'),
-					amount: category.get('amount')
+					amount: category.getAmount(),	 // rounded
 				});
 			});
 			this.$el.html(this.template({
@@ -69,6 +69,7 @@ export default class CatPage extends Backbone.View<Transaction> {
 			this.$('input[name="newName"]').focus();
 			this.$el.on('change', 'input[type="color"]', this.selectColor.bind(this));
 			this.$('button.close').on('click', this.deleteCategory.bind(this));
+			this.$('#categoryCount').html(this.categoryList.size());
 		} else {
 			this.$el.html('Loading...');
 		}

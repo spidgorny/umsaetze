@@ -6,9 +6,10 @@ let elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
-let Backbone = require('backbone');
-let _ = require('underscore');
-let $ = require('jquery');
+const Backbone = require('backbone');
+const _ = require('underscore');
+const $ = require('jquery');
+const Chart = require('chart.js');
 
 export default class CategoryView extends Backbone.View<CategoryCollection> {
 
@@ -51,6 +52,9 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 			));
 		});
 		this.$el.html(content.join('\n') + 'sum: '+sum.toFixed(2));
+
+		this.showPieChart();
+
 		elapse.timeEnd('CategoryView.render');
 		return this;
 	}
@@ -68,6 +72,36 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 		} else {
 			console.error('Not rendering since this.model is undefined');
 		}
+	}
+
+	showPieChart() {
+		let labels = [];
+		let data = [];
+		let colors = [];
+		this.model.each((cat: CategoryCount) => {
+			labels.push(cat.get('catName'));
+			data.push(Math.abs(cat.getAmount()));
+			colors.push(cat.get('color'));
+		});
+		let data = {
+			labels: labels,
+			datasets: [
+				{
+					data: data,
+					backgroundColor: colors,
+					hoverBackgroundColor: colors,
+				}
+			]
+		};
+		let myPieChart = new Chart(document.getElementById('pieChart'), {
+			type: 'pie',
+			data: data,
+			options: {
+				legend: {
+					display: false,
+				}
+			}
+		});
 	}
 
 }

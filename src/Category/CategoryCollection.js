@@ -4,6 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var CategoryCount_1 = require("./CategoryCount");
 var elapse = require('elapse');
 elapse.configure({
     debug: true
@@ -18,12 +19,21 @@ var _ = require('underscore');
 var CategoryCollection = (function (_super) {
     __extends(CategoryCollection, _super);
     function CategoryCollection(options) {
+        var _this = this;
         _super.call(this, options);
         var ls = new bbls('Categories');
         //this.colors = simpleStorage.get('CategoryColors');
         var models = ls.findAll();
-        console.log('categories in LS', models);
-        this.add(models);
+        //console.log('categories in LS', models);
+        //this.add(models);	// makes Backbone.Model instances
+        _.each(models, function (m) {
+            _this.add(new CategoryCount_1["default"](m));
+        });
+        // sort
+        this.models = _.uniq(this.models, function (el) {
+            return el.getName();
+        });
+        this.sortBy('catName');
         if (!this.size()) {
         }
         this.listenTo(this, 'change', this.saveToLS);
@@ -85,11 +95,11 @@ var CategoryCollection = (function (_super) {
             exists.set('amount', amountBefore + amountAfter, { silent: true });
         }
         else {
-            this.add({
+            this.add(new CategoryCount_1["default"]({
                 catName: categoryName,
                 count: 1,
                 amount: transaction.get('amount')
-            }, { silent: true });
+            }), { silent: true });
         }
     };
     CategoryCollection.prototype.getCategoriesFromExpenses2 = function () {

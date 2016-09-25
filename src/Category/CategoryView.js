@@ -12,6 +12,7 @@ elapse.configure({
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
+var Chart = require('chart.js');
 var CategoryView = (function (_super) {
     __extends(CategoryView, _super);
     function CategoryView(options) {
@@ -43,6 +44,7 @@ var CategoryView = (function (_super) {
             })));
         });
         this.$el.html(content.join('\n') + 'sum: ' + sum.toFixed(2));
+        this.showPieChart();
         elapse.timeEnd('CategoryView.render');
         return this;
     };
@@ -60,6 +62,35 @@ var CategoryView = (function (_super) {
         else {
             console.error('Not rendering since this.model is undefined');
         }
+    };
+    CategoryView.prototype.showPieChart = function () {
+        var labels = [];
+        var data = [];
+        var colors = [];
+        this.model.each(function (cat) {
+            labels.push(cat.get('catName'));
+            data.push(Math.abs(cat.getAmount()));
+            colors.push(cat.get('color'));
+        });
+        var data = {
+            labels: labels,
+            datasets: [
+                {
+                    data: data,
+                    backgroundColor: colors,
+                    hoverBackgroundColor: colors
+                }
+            ]
+        };
+        var myPieChart = new Chart(document.getElementById('pieChart'), {
+            type: 'pie',
+            data: data,
+            options: {
+                legend: {
+                    display: false
+                }
+            }
+        });
     };
     return CategoryView;
 }(Backbone.View));

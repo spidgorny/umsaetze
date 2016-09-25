@@ -39,4 +39,12 @@ export default class CategoryCount extends bb.Model {
 		return '#' + r + g + b;
 	}
 
+	getName() {
+		return this.get('catName');
+	}
+
+	getAmount() {
+		return this.get('amount').toFixed(2);
+	}
+
 }

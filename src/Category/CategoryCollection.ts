@@ -26,8 +26,19 @@ export default class CategoryCollection extends bb.Collection<CategoryCount> {
 		let ls = new bbls('Categories');
 		//this.colors = simpleStorage.get('CategoryColors');
 		let models = ls.findAll();
-		console.log('categories in LS', models);
-		this.add(models);
+		//console.log('categories in LS', models);
+
+		//this.add(models);	// makes Backbone.Model instances
+		_.each(models, m => {
+			this.add(new CategoryCount(m));
+		});
+
+		// sort
+		this.models = _.uniq(this.models, (el) => {
+			return el.getName();
+		});
+		this.sortBy('catName');
+
 		if (!this.size()) {
 			//this.getCategoriesFromExpenses();
 			// this is not available yet
@@ -98,11 +109,11 @@ export default class CategoryCollection extends bb.Collection<CategoryCount> {
 			}
 			exists.set('amount', amountBefore + amountAfter, { silent: true });
 		} else {
-			this.add({
+			this.add(new CategoryCount({
 				catName: categoryName,
 				count: 1,
 				amount: transaction.get('amount'),
-			}, { silent: true });
+			}), { silent: true });
 		}
 	}
 

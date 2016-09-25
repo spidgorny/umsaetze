@@ -35,6 +35,12 @@ var CategoryCount = (function (_super) {
         var b = (Math.round(Math.random() * 55) + 200).toString(16);
         return '#' + r + g + b;
     };
+    CategoryCount.prototype.getName = function () {
+        return this.get('catName');
+    };
+    CategoryCount.prototype.getAmount = function () {
+        return this.get('amount').toFixed(2);
+    };
     return CategoryCount;
 }(bb.Model));
 exports.__esModule = true;
