@@ -16,6 +16,9 @@ export default class CategoryCount extends bb.Model {
 	constructor(...args: any[]) {
 		super(args);
 		this.set('catName', args[0].catName);	// this should not be necessary but it is
+		this.set('color', args[0].color);	// this should not be necessary but it is
+		this.set('count', args[0].count);	// this should not be necessary but it is
+		this.set('amount', args[0].amount);	// this should not be necessary but it is
 		//this.listenTo(this, 'change', this.saveToLS);
 		let color = this.get('color');
 		if (!color) {
