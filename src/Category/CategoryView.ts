@@ -1,4 +1,4 @@
-///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
+///<reference path="../../node_modules/backbone-typings/backbone.d.ts"/>
 
 import CategoryCollection from "./CategoryCollection";
 import CategoryCount from "./CategoryCount";

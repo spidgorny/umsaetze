@@ -1,15 +1,15 @@
+///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
 var AppView_1 = require('./AppView');
 var Sync_1 = require('./Sync');
 var Expenses_1 = require("./Expenses");
 var CatPage_1 = require("./CatPage");
-var CategoryCollection_1 = require("./CategoryCollection");
+var CategoryCollection_1 = require("./Category/CategoryCollection");
 var bb = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');

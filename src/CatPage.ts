@@ -1,12 +1,13 @@
+/// <reference path="../node_modules/backbone-typings/backbone.d.ts" />
 
 import Expenses from "./Expenses";
 import Transaction from "./Transaction";
-import CategoryCollection from "./CategoryCollection";
-import CategoryCount from "./CategoryCount";
-let Handlebars = require('handlebars');
-var Backbone = require('backbone');
-var $ = require('jquery');
-var _ = require('underscore');
+import CategoryCollection from "./Category/CategoryCollection";
+import CategoryCount from "./Category/CategoryCount";
+const Handlebars = require('handlebars');
+const Backbone = require('backbone');
+const $ = require('jquery');
+const _ = require('underscore');
 
 export default class CatPage extends Backbone.View<Transaction> {
 
@@ -25,8 +26,8 @@ export default class CatPage extends Backbone.View<Transaction> {
 		console.log('CatPage.constructor');
 		this.collection = expenses;
 		this.categoryList = categoryList;
-		var importTag = $('#CatPage');
-		var href = importTag.prop('href');
+		let importTag = $('#CatPage');
+		let href = importTag.prop('href');
 		console.log(importTag, href);
 		$.get(href).then((result) => {
 			//console.log(result);
@@ -67,6 +68,7 @@ export default class CatPage extends Backbone.View<Transaction> {
 			this.$('#addCategoryForm').on('submit', this.addCategory.bind(this));
 			this.$('input[name="newName"]').focus();
 			this.$el.on('change', 'input[type="color"]', this.selectColor.bind(this));
+			this.$('button.close').on('click', this.deleteCategory.bind(this));
 		} else {
 			this.$el.html('Loading...');
 		}
@@ -78,9 +80,12 @@ export default class CatPage extends Backbone.View<Transaction> {
 		let $form = $(event.target);
 		let newName = $form.find('input').val();
 		console.log('newName', newName);
-		this.categoryList.add(new CategoryCount({
+		let categoryObject = new CategoryCount({
 			catName: newName,
-		}));
+		});
+		console.log('get', categoryObject.get('catName'));
+		console.log('get', categoryObject.get('color'));
+		this.categoryList.add(categoryObject);
 	}
 
 	selectColor(event) {
@@ -94,6 +99,14 @@ export default class CatPage extends Backbone.View<Transaction> {
 			//console.log('color', event.target.value);
 			category.set('color', event.target.value);
 		}
+	}
+
+	deleteCategory(event: MouseEvent) {
+		let button = event.target;
+		let tr = $(button).closest('tr');
+		let id = tr.attr('data-id');
+		console.log(id);
+		this.categoryList.remove(id);
 	}
 
 }

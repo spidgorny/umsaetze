@@ -36,7 +36,7 @@ var CategoryCollection = (function (_super) {
         // this is how AppView triggers recalculation
         // this makes an infinite loop of triggers
         //this.listenTo(this, "change", this.getCategoriesFromExpenses);
-        this.listenTo(this, 'add', this.addToOptions);
+        //this.listenTo(this, 'add', this.addToOptions);
     };
     CategoryCollection.prototype.saveToLS = function () {
         var ls = new bbls('Categories');
@@ -88,8 +88,7 @@ var CategoryCollection = (function (_super) {
             this.add({
                 catName: categoryName,
                 count: 1,
-                amount: transaction.get('amount'),
-                color: CategoryCollection.pastelColor()
+                amount: transaction.get('amount')
             }, { silent: true });
         }
     };
@@ -115,14 +114,6 @@ var CategoryCollection = (function (_super) {
         options = _.sortBy(options);
         return options;
     };
-    CategoryCollection.prototype.addToOptions = function (model) {
-        console.log('addToOptions', model);
-        this.allOptions.push(model.get('catName'));
-        this.allOptions = _.unique(this.allOptions);
-        this.allOptions = _.sortBy(this.allOptions);
-        this.setColors();
-        this.triggerChange();
-    };
     CategoryCollection.prototype.getColorFor = function (value) {
         // console.log('colors', this.colors);
         // let index = _.find(this.allOptions, (catName, index) => {
@@ -139,12 +130,6 @@ var CategoryCollection = (function (_super) {
             color = '#AAAAAA';
         }
         return color;
-    };
-    CategoryCollection.pastelColor = function () {
-        var r = (Math.round(Math.random() * 55) + 200).toString(16);
-        var g = (Math.round(Math.random() * 55) + 200).toString(16);
-        var b = (Math.round(Math.random() * 55) + 200).toString(16);
-        return '#' + r + g + b;
     };
     return CategoryCollection;
 }(bb.Collection));

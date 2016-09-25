@@ -1,5 +1,4 @@
 /// <reference path="../typings/index.d.ts" />
-/// <reference path="Expenses.ts" />
 "use strict";
 var Workspace_1 = require("./Workspace");
 // var bootstrap = require('bootstrap');

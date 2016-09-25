@@ -9,11 +9,14 @@
   color: red;
 }
 .category {
-  padding: 15px;
+  padding: 1px 15px;
 }
 .category .progress {
   margin-top: 2px;
 }
 .note {
   font-size: smaller;
+}
+.progress {
+  margin-bottom: 0;
 }

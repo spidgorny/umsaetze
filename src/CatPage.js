@@ -1,10 +1,11 @@
+/// <reference path="../node_modules/backbone-typings/backbone.d.ts" />
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var CategoryCount_1 = require("./CategoryCount");
+var CategoryCount_1 = require("./Category/CategoryCount");
 var Handlebars = require('handlebars');
 var Backbone = require('backbone');
 var $ = require('jquery');
@@ -58,6 +59,7 @@ var CatPage = (function (_super) {
             this.$('#addCategoryForm').on('submit', this.addCategory.bind(this));
             this.$('input[name="newName"]').focus();
             this.$el.on('change', 'input[type="color"]', this.selectColor.bind(this));
+            this.$('button.close').on('click', this.deleteCategory.bind(this));
         }
         else {
             this.$el.html('Loading...');
@@ -69,9 +71,12 @@ var CatPage = (function (_super) {
         var $form = $(event.target);
         var newName = $form.find('input').val();
         console.log('newName', newName);
-        this.categoryList.add(new CategoryCount_1["default"]({
+        var categoryObject = new CategoryCount_1["default"]({
             catName: newName
-        }));
+        });
+        console.log('get', categoryObject.get('catName'));
+        console.log('get', categoryObject.get('color'));
+        this.categoryList.add(categoryObject);
     };
     CatPage.prototype.selectColor = function (event) {
         console.log(event);
@@ -84,6 +89,13 @@ var CatPage = (function (_super) {
             //console.log('color', event.target.value);
             category.set('color', event.target.value);
         }
+    };
+    CatPage.prototype.deleteCategory = function (event) {
+        var button = event.target;
+        var tr = $(button).closest('tr');
+        var id = tr.attr('data-id');
+        console.log(id);
+        this.categoryList.remove(id);
     };
     return CatPage;
 }(Backbone.View));

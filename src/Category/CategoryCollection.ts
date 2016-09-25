@@ -1,6 +1,6 @@
-import Transaction from "./Transaction";
+import Transaction from "../Transaction";
 import CategoryCount from "./CategoryCount";
-import Expenses from "./Expenses";
+import Expenses from "../Expenses";
 let elapse = require('elapse');
 elapse.configure({
 	debug: true
@@ -46,7 +46,7 @@ export default class CategoryCollection extends bb.Collection<CategoryCount> {
 		// this is how AppView triggers recalculation
 		// this makes an infinite loop of triggers
 		//this.listenTo(this, "change", this.getCategoriesFromExpenses);
-		this.listenTo(this, 'add', this.addToOptions);
+		//this.listenTo(this, 'add', this.addToOptions);
 	}
 
 	saveToLS() {
@@ -102,7 +102,6 @@ export default class CategoryCollection extends bb.Collection<CategoryCount> {
 				catName: categoryName,
 				count: 1,
 				amount: transaction.get('amount'),
-				color: CategoryCollection.pastelColor(),
 			}, { silent: true });
 		}
 	}
@@ -131,15 +130,6 @@ export default class CategoryCollection extends bb.Collection<CategoryCount> {
 		return options;
 	}
 
-	addToOptions(model: CategoryCount) {
-		console.log('addToOptions', model);
-		this.allOptions.push(model.get('catName'));
-		this.allOptions = _.unique(this.allOptions);
-		this.allOptions = _.sortBy(this.allOptions);
-		this.setColors();
-		this.triggerChange();
-	}
-
 	getColorFor(value) {
 		// console.log('colors', this.colors);
 		// let index = _.find(this.allOptions, (catName, index) => {
@@ -156,13 +146,6 @@ export default class CategoryCollection extends bb.Collection<CategoryCount> {
 			color = '#AAAAAA';
 		}
 		return color;
-	}
-
-	static pastelColor(){
-		let r = (Math.round(Math.random() * 55) + 200).toString(16);
-		let g = (Math.round(Math.random() * 55) + 200).toString(16);
-		let b = (Math.round(Math.random() * 55) + 200).toString(16);
-		return '#' + r + g + b;
 	}
 
 }

@@ -5,7 +5,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var ExpenseTable_1 = require("./ExpenseTable");
-var CategoryView_1 = require("./CategoryView");
+var CategoryView_1 = require("./Category/CategoryView");
 var MonthSelect_1 = require("./MonthSelect");
 // import Backbone from 'backbone';
 var elapse = require('elapse');

@@ -1,6 +1,8 @@
+///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
+
 import Expenses from "./Expenses";
 import Transaction from "./Transaction";
-import CategoryCollection from "./CategoryCollection";
+import CategoryCollection from "./Category/CategoryCollection";
 import KeywordCollection from "./KeywordCollection";
 import Keyword from "./Keyword";
 const elapse = require('elapse');
@@ -12,7 +14,7 @@ const $ = require('jquery');
 const _ = require('underscore');
 const handlebars = require('handlebars');
 
-export default class ExpenseTable extends Backbone.View<Expenses> {
+export default class ExpenseTable extends Backbone.View<any> {
 
 	model: Expenses;
 

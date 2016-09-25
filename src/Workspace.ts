@@ -1,9 +1,10 @@
 ///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
+
 import AppView from './AppView';
 import Sync from './Sync';
 import Expenses from "./Expenses";
 import CatPage from "./CatPage";
-import CategoryCollection from "./CategoryCollection";
+import CategoryCollection from "./Category/CategoryCollection";
 import RouterOptions = Backbone.RouterOptions;
 let bb = require('backbone');
 let $ = require('jquery');
