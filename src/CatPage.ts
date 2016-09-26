@@ -10,6 +10,8 @@ const $ = require('jquery');
 const _ = require('underscore');
 const Chart = require('chart.js');
 
+Object.values = obj => Object.keys(obj).map(key => obj[key]);
+
 export default class CatPage extends Backbone.View<Transaction> {
 
 	$el = $('#app');
@@ -53,7 +55,7 @@ export default class CatPage extends Backbone.View<Transaction> {
 		console.log('CatPage.render');
 		if (this.template) {
 			let categoryOptions = [];
-			this.categoryList.each((category) => {
+			this.categoryList.each((category: CategoryCount) => {
 				//console.log(category);
 				categoryOptions.push({
 					catName: category.get('catName'),
@@ -61,6 +63,7 @@ export default class CatPage extends Backbone.View<Transaction> {
 					id: category.cid,
 					used: category.get('count'),
 					amount: category.getAmount(),	 // rounded
+					sparkline: JSON.stringify(this.collection.getMonthlyTotalsFor(category)),
 				});
 			});
 			this.$el.html(this.template({
@@ -116,33 +119,33 @@ export default class CatPage extends Backbone.View<Transaction> {
 	 * https://codepen.io/ojame/pen/HpKvx
 	 */
 	private renderSparkLines() {
-		$('.sparkline').each(function() {
+		let $sparkline = $('.sparkline');
+		$sparkline.each((index, self) => {
+			//console.log(self);
+			self = $(self);
 			//Get context with jQuery - using jQuery's .get() method.
-			var ctx = $(this).get(0).getContext("2d");
+			let ctx = self.get(0).getContext("2d");
 
 			// Get the chart data and convert it to an array
-			var chartData = JSON.parse($(this).attr('data-chart_values'));
+			let chartData = JSON.parse(self.attr('data-chart_values'));
 
 			// Build the data object
-			var data = {};
-			var labels = [];
-			var datasets = {};
-
-			// Create a null label for each value
-			for (var i = 0; i < chartData.length; i++) {
-				labels.push('');
-			}
+			let data = Object.values(chartData);
+			let labels = Object.keys(chartData);
+			//console.log(data, labels);
+			let datasets = {};
 
 			// Create the dataset
-			datasets['strokeColor'] = $(this).attr('data-chart_StrokeColor');
-			datasets['data'] = chartData;
+			datasets['strokeColor'] = self.attr('data-chart_StrokeColor');
+			datasets['data'] = data;
 
 			// Add to data object
-			data['labels'] = labels;
-			data['datasets'] = Array(datasets);
+			let dataDesc = {};
+			dataDesc['labels'] = labels;
+			dataDesc['datasets'] = Array(datasets);
 
 			new Chart.Line(ctx, {
-				data: data,
+				data: dataDesc,
 				options: {
 					scaleLineColor: "rgba(0,0,0,0)",
 					scaleShowLabels: false,
@@ -155,6 +158,14 @@ export default class CatPage extends Backbone.View<Transaction> {
 					scaleFontColor: "rgba(0,0,0,0)",
 					legend: {
 						display: false,
+					},
+					maintainAspectRatio: false,
+					scales: {
+						yAxes: [{
+							ticks: {
+								padding: 0,
+							}
+						}]
 					}
 				}
 			});

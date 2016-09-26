@@ -29,6 +29,11 @@ export default class CategoryCount extends bb.Model {
 		if (!count) {
 			this.set('count', 0);
 		}
+
+		let amount = this.get('amount');
+		if (!amount) {
+			this.set('amount', 0);
+		}
 	}
 
 	setColor(color) {

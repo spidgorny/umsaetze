@@ -28,6 +28,10 @@ var CategoryCount = (function (_super) {
         if (!count) {
             this.set('count', 0);
         }
+        var amount = this.get('amount');
+        if (!amount) {
+            this.set('amount', 0);
+        }
     }
     CategoryCount.prototype.setColor = function (color) {
         this.set('color', color);

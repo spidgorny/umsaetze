@@ -54,6 +54,10 @@ export default class Expenses extends bb.Collection<Transaction> {
 		}
 	}
 
+	/**
+	 * Only visible
+	 * @returns {Date}
+	 */
 	getDateFrom() {
 		let visible = this.getVisible();
 		let min = new Date().addYears(10).valueOf();
@@ -66,6 +70,10 @@ export default class Expenses extends bb.Collection<Transaction> {
 		return new Date(min);
 	}
 
+	/**
+	 * Only visible
+	 * @returns {Date}
+	 */
 	getDateTill() {
 		let visible = this.getVisible();
 		let min = new Date('1970-01-01').valueOf();
@@ -219,4 +227,24 @@ export default class Expenses extends bb.Collection<Transaction> {
 		this.trigger('change');
 	}
 
+	getMonthlyTotalsFor(category: CategoryCount) {
+		let sparks = {};
+		let from = this.getEarliest().moveToFirstDayOfMonth();
+		let till = this.getLatest().moveToLastDayOfMonth();
+		for (let month = from; month.compareTo(till) == -1; month.addMonths(1)) {
+			let month1 = month.clone();
+			month1.addMonths(1);
+			//console.log(month, month1, Date.today().between(month, month1));
+			let sum = 0;
+			this.each((transaction: Transaction) => {
+				let sameCategory = transaction.get('category') == category.getName();
+				let sameMonth = transaction.getDate().between(month, month1);
+				if (sameCategory && sameMonth) {
+					sum += transaction.get('amount');
+				}
+			});
+			sparks[month.toString('yyyy-MM')] = Math.abs(sum).toFixed(2);
+		}
+		return sparks;
+	}
 }

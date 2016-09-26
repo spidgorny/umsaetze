@@ -48,6 +48,10 @@ var Expenses = (function (_super) {
             return;
         }
     };
+    /**
+     * Only visible
+     * @returns {Date}
+     */
     Expenses.prototype.getDateFrom = function () {
         var visible = this.getVisible();
         var min = new Date().addYears(10).valueOf();
@@ -59,6 +63,10 @@ var Expenses = (function (_super) {
         });
         return new Date(min);
     };
+    /**
+     * Only visible
+     * @returns {Date}
+     */
     Expenses.prototype.getDateTill = function () {
         var visible = this.getVisible();
         var min = new Date('1970-01-01').valueOf();
@@ -201,6 +209,30 @@ var Expenses = (function (_super) {
             }
         });
         this.trigger('change');
+    };
+    Expenses.prototype.getMonthlyTotalsFor = function (category) {
+        var sparks = {};
+        var from = this.getEarliest().moveToFirstDayOfMonth();
+        var till = this.getLatest().moveToLastDayOfMonth();
+        var _loop_1 = function(month) {
+            var month1 = month.clone();
+            month1.addMonths(1);
+            //console.log(month, month1, Date.today().between(month, month1));
+            var sum = 0;
+            this_1.each(function (transaction) {
+                var sameCategory = transaction.get('category') == category.getName();
+                var sameMonth = transaction.getDate().between(month, month1);
+                if (sameCategory && sameMonth) {
+                    sum += transaction.get('amount');
+                }
+            });
+            sparks[month.toString('yyyy-MM')] = Math.abs(sum).toFixed(2);
+        };
+        var this_1 = this;
+        for (var month = from; month.compareTo(till) == -1; month.addMonths(1)) {
+            _loop_1(month);
+        }
+        return sparks;
     };
     return Expenses;
 }(bb.Collection));

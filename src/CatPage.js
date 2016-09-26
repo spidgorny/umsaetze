@@ -11,6 +11,7 @@ var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
 var Chart = require('chart.js');
+Object.values = function (obj) { return Object.keys(obj).map(function (key) { return obj[key]; }); };
 var CatPage = (function (_super) {
     __extends(CatPage, _super);
     function CatPage(expenses, categoryList) {
@@ -39,6 +40,7 @@ var CatPage = (function (_super) {
         this.render();
     };
     CatPage.prototype.render = function () {
+        var _this = this;
         if (window.location.hash != '#CatPage')
             return;
         console.log('CatPage.render');
@@ -51,7 +53,8 @@ var CatPage = (function (_super) {
                     background: category.get('color'),
                     id: category.cid,
                     used: category.get('count'),
-                    amount: category.getAmount()
+                    amount: category.getAmount(),
+                    sparkline: JSON.stringify(_this.collection.getMonthlyTotalsFor(category))
                 });
             });
             this.$el.html(this.template({
@@ -104,27 +107,28 @@ var CatPage = (function (_super) {
      * https://codepen.io/ojame/pen/HpKvx
      */
     CatPage.prototype.renderSparkLines = function () {
-        $('.sparkline').each(function () {
+        var $sparkline = $('.sparkline');
+        $sparkline.each(function (index, self) {
+            //console.log(self);
+            self = $(self);
             //Get context with jQuery - using jQuery's .get() method.
-            var ctx = $(this).get(0).getContext("2d");
+            var ctx = self.get(0).getContext("2d");
             // Get the chart data and convert it to an array
-            var chartData = JSON.parse($(this).attr('data-chart_values'));
+            var chartData = JSON.parse(self.attr('data-chart_values'));
             // Build the data object
-            var data = {};
-            var labels = [];
+            var data = Object.values(chartData);
+            var labels = Object.keys(chartData);
+            //console.log(data, labels);
             var datasets = {};
-            // Create a null label for each value
-            for (var i = 0; i < chartData.length; i++) {
-                labels.push('');
-            }
             // Create the dataset
-            datasets['strokeColor'] = $(this).attr('data-chart_StrokeColor');
-            datasets['data'] = chartData;
+            datasets['strokeColor'] = self.attr('data-chart_StrokeColor');
+            datasets['data'] = data;
             // Add to data object
-            data['labels'] = labels;
-            data['datasets'] = Array(datasets);
+            var dataDesc = {};
+            dataDesc['labels'] = labels;
+            dataDesc['datasets'] = Array(datasets);
             new Chart.Line(ctx, {
-                data: data,
+                data: dataDesc,
                 options: {
                     scaleLineColor: "rgba(0,0,0,0)",
                     scaleShowLabels: false,
@@ -137,6 +141,14 @@ var CatPage = (function (_super) {
                     scaleFontColor: "rgba(0,0,0,0)",
                     legend: {
                         display: false
+                    },
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                                ticks: {
+                                    padding: 0
+                                }
+                            }]
                     }
                 }
             });
