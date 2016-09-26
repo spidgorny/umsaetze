@@ -55,4 +55,21 @@ export default class CategoryCount extends bb.Model {
 		return this.get('amount').toFixed(2);
 	}
 
+	resetCounters() {
+		this.set('count', 0, { silent: true });
+		// this.set('amount', 0, { silent: true });
+	}
+
+	incrementCount() {
+		this.set('count', this.get('count')+1, { silent: true });
+	}
+
+	/**
+	 * @deprecated - spoils CategoryView
+	 * @param by
+	 */
+	incrementAmountBy(by: number) {
+		this.set('amount', this.get('amount') + by, { silent: true });
+	}
+
 }

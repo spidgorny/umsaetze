@@ -37,7 +37,6 @@ export default class CategoryCollection extends bb.Collection<CategoryCount> {
 		this.models = _.uniq(this.models, (el) => {
 			return el.getName();
 		});
-		this.sortBy('catName');
 
 		if (!this.size()) {
 			//this.getCategoriesFromExpenses();

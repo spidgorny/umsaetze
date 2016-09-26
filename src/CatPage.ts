@@ -57,6 +57,7 @@ export default class CatPage extends Backbone.View<Transaction> {
 			let categoryOptions = [];
 			this.categoryList.each((category: CategoryCount) => {
 				//console.log(category);
+				category.resetCounters();
 				categoryOptions.push({
 					catName: category.get('catName'),
 					background: category.get('color'),
@@ -66,6 +67,7 @@ export default class CatPage extends Backbone.View<Transaction> {
 					sparkline: JSON.stringify(this.collection.getMonthlyTotalsFor(category)),
 				});
 			});
+			categoryOptions = _.sortBy(categoryOptions, 'catName');
 			this.$el.html(this.template({
 				categoryOptions: categoryOptions,
 			}));

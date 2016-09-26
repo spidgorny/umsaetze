@@ -227,6 +227,11 @@ export default class Expenses extends bb.Collection<Transaction> {
 		this.trigger('change');
 	}
 
+	/**
+	 * TODO: generate matrix separately and then return only the value in a grid
+	 * @param category
+	 * @returns {{}}
+	 */
 	getMonthlyTotalsFor(category: CategoryCount) {
 		let sparks = {};
 		let from = this.getEarliest().moveToFirstDayOfMonth();
@@ -240,7 +245,9 @@ export default class Expenses extends bb.Collection<Transaction> {
 				let sameCategory = transaction.get('category') == category.getName();
 				let sameMonth = transaction.getDate().between(month, month1);
 				if (sameCategory && sameMonth) {
-					sum += transaction.get('amount');
+					sum += transaction.getAmount();
+					category.incrementCount();
+					//category.incrementAmountBy(transaction.getAmount());	// spoils CategoryView
 				}
 			});
 			sparks[month.toString('yyyy-MM')] = Math.abs(sum).toFixed(2);

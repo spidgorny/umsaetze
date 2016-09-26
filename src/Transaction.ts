@@ -83,5 +83,9 @@ export default class Transaction extends bb.Model {
 		return this.get('visible');
 	}
 
+	getAmount() {
+		return this.get('amount');
+	}
+
 }
 

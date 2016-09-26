@@ -33,7 +33,6 @@ var CategoryCollection = (function (_super) {
         this.models = _.uniq(this.models, function (el) {
             return el.getName();
         });
-        this.sortBy('catName');
         if (!this.size()) {
         }
         this.listenTo(this, 'change', this.saveToLS);

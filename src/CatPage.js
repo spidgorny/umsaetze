@@ -48,6 +48,7 @@ var CatPage = (function (_super) {
             var categoryOptions_1 = [];
             this.categoryList.each(function (category) {
                 //console.log(category);
+                category.resetCounters();
                 categoryOptions_1.push({
                     catName: category.get('catName'),
                     background: category.get('color'),
@@ -57,6 +58,7 @@ var CatPage = (function (_super) {
                     sparkline: JSON.stringify(_this.collection.getMonthlyTotalsFor(category))
                 });
             });
+            categoryOptions_1 = _.sortBy(categoryOptions_1, 'catName');
             this.$el.html(this.template({
                 categoryOptions: categoryOptions_1
             }));

@@ -76,6 +76,9 @@ var Transaction = (function (_super) {
     Transaction.prototype.isVisible = function () {
         return this.get('visible');
     };
+    Transaction.prototype.getAmount = function () {
+        return this.get('amount');
+    };
     return Transaction;
 }(bb.Model));
 exports.__esModule = true;

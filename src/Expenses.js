@@ -210,6 +210,11 @@ var Expenses = (function (_super) {
         });
         this.trigger('change');
     };
+    /**
+     * TODO: generate matrix separately and then return only the value in a grid
+     * @param category
+     * @returns {{}}
+     */
     Expenses.prototype.getMonthlyTotalsFor = function (category) {
         var sparks = {};
         var from = this.getEarliest().moveToFirstDayOfMonth();
@@ -223,7 +228,8 @@ var Expenses = (function (_super) {
                 var sameCategory = transaction.get('category') == category.getName();
                 var sameMonth = transaction.getDate().between(month, month1);
                 if (sameCategory && sameMonth) {
-                    sum += transaction.get('amount');
+                    sum += transaction.getAmount();
+                    category.incrementCount();
                 }
             });
             sparks[month.toString('yyyy-MM')] = Math.abs(sum).toFixed(2);

@@ -20,6 +20,8 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 
 	template = _.template($('#categoryTemplate').html());
 
+	myPieChart;
+
 	constructor(options) {
 		super(options);
 		this.setElement($('#categories'));
@@ -104,7 +106,10 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 				}
 			]
 		};
-		let myPieChart = new Chart(document.getElementById('pieChart'), {
+		if (this.myPieChart) {
+			this.myPieChart.destroy();
+		}
+		this.myPieChart = new Chart(document.getElementById('pieChart'), {
 			type: 'pie',
 			data: data,
 			options: {

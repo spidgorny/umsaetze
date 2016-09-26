@@ -48,6 +48,20 @@ var CategoryCount = (function (_super) {
     CategoryCount.prototype.getAmount = function () {
         return this.get('amount').toFixed(2);
     };
+    CategoryCount.prototype.resetCounters = function () {
+        this.set('count', 0, { silent: true });
+        // this.set('amount', 0, { silent: true });
+    };
+    CategoryCount.prototype.incrementCount = function () {
+        this.set('count', this.get('count') + 1, { silent: true });
+    };
+    /**
+     * @deprecated - spoils CategoryView
+     * @param by
+     */
+    CategoryCount.prototype.incrementAmountBy = function (by) {
+        this.set('amount', this.get('amount') + by, { silent: true });
+    };
     return CategoryCount;
 }(bb.Model));
 exports.__esModule = true;

@@ -89,7 +89,10 @@ var CategoryView = (function (_super) {
                 }
             ]
         };
-        var myPieChart = new Chart(document.getElementById('pieChart'), {
+        if (this.myPieChart) {
+            this.myPieChart.destroy();
+        }
+        this.myPieChart = new Chart(document.getElementById('pieChart'), {
             type: 'pie',
             data: data,
             options: {
