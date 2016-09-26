@@ -10,6 +10,7 @@ var Handlebars = require('handlebars');
 var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
+var Chart = require('chart.js');
 var CatPage = (function (_super) {
     __extends(CatPage, _super);
     function CatPage(expenses, categoryList) {
@@ -61,6 +62,7 @@ var CatPage = (function (_super) {
             this.$el.on('change', 'input[type="color"]', this.selectColor.bind(this));
             this.$('button.close').on('click', this.deleteCategory.bind(this));
             this.$('#categoryCount').html(this.categoryList.size());
+            this.renderSparkLines();
         }
         else {
             this.$el.html('Loading...');
@@ -97,6 +99,48 @@ var CatPage = (function (_super) {
         var id = tr.attr('data-id');
         console.log(id);
         this.categoryList.remove(id);
+    };
+    /**
+     * https://codepen.io/ojame/pen/HpKvx
+     */
+    CatPage.prototype.renderSparkLines = function () {
+        $('.sparkline').each(function () {
+            //Get context with jQuery - using jQuery's .get() method.
+            var ctx = $(this).get(0).getContext("2d");
+            // Get the chart data and convert it to an array
+            var chartData = JSON.parse($(this).attr('data-chart_values'));
+            // Build the data object
+            var data = {};
+            var labels = [];
+            var datasets = {};
+            // Create a null label for each value
+            for (var i = 0; i < chartData.length; i++) {
+                labels.push('');
+            }
+            // Create the dataset
+            datasets['strokeColor'] = $(this).attr('data-chart_StrokeColor');
+            datasets['data'] = chartData;
+            // Add to data object
+            data['labels'] = labels;
+            data['datasets'] = Array(datasets);
+            new Chart.Line(ctx, {
+                data: data,
+                options: {
+                    scaleLineColor: "rgba(0,0,0,0)",
+                    scaleShowLabels: false,
+                    scaleShowGridLines: false,
+                    pointDot: false,
+                    datasetFill: false,
+                    // Sadly if you set scaleFontSize to 0, chartjs crashes
+                    // Instead we'll set it as small as possible and make it transparent
+                    scaleFontSize: 1,
+                    scaleFontColor: "rgba(0,0,0,0)",
+                    legend: {
+                        display: false
+                    }
+                }
+            });
+        });
     };
     return CatPage;
 }(Backbone.View));

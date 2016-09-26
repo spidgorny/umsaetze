@@ -8,6 +8,7 @@ const Handlebars = require('handlebars');
 const Backbone = require('backbone');
 const $ = require('jquery');
 const _ = require('underscore');
+const Chart = require('chart.js');
 
 export default class CatPage extends Backbone.View<Transaction> {
 
@@ -70,6 +71,7 @@ export default class CatPage extends Backbone.View<Transaction> {
 			this.$el.on('change', 'input[type="color"]', this.selectColor.bind(this));
 			this.$('button.close').on('click', this.deleteCategory.bind(this));
 			this.$('#categoryCount').html(this.categoryList.size());
+			this.renderSparkLines();
 		} else {
 			this.$el.html('Loading...');
 		}
@@ -110,4 +112,52 @@ export default class CatPage extends Backbone.View<Transaction> {
 		this.categoryList.remove(id);
 	}
 
+	/**
+	 * https://codepen.io/ojame/pen/HpKvx
+	 */
+	private renderSparkLines() {
+		$('.sparkline').each(function() {
+			//Get context with jQuery - using jQuery's .get() method.
+			var ctx = $(this).get(0).getContext("2d");
+
+			// Get the chart data and convert it to an array
+			var chartData = JSON.parse($(this).attr('data-chart_values'));
+
+			// Build the data object
+			var data = {};
+			var labels = [];
+			var datasets = {};
+
+			// Create a null label for each value
+			for (var i = 0; i < chartData.length; i++) {
+				labels.push('');
+			}
+
+			// Create the dataset
+			datasets['strokeColor'] = $(this).attr('data-chart_StrokeColor');
+			datasets['data'] = chartData;
+
+			// Add to data object
+			data['labels'] = labels;
+			data['datasets'] = Array(datasets);
+
+			new Chart.Line(ctx, {
+				data: data,
+				options: {
+					scaleLineColor: "rgba(0,0,0,0)",
+					scaleShowLabels: false,
+					scaleShowGridLines: false,
+					pointDot: false,
+					datasetFill: false,
+					// Sadly if you set scaleFontSize to 0, chartjs crashes
+					// Instead we'll set it as small as possible and make it transparent
+					scaleFontSize: 1,
+					scaleFontColor: "rgba(0,0,0,0)",
+					legend: {
+						display: false,
+					}
+				}
+			});
+		});
+	}
 }
