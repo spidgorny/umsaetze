@@ -11,4 +11,7 @@ export default class KeywordCollection extends Collection {
 		this.fetch();
 	}
 
+	getJSON() {
+		return JSON.stringify(this.models, null, '\t');
+	}
 }

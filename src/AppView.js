@@ -60,6 +60,7 @@ var AppView = (function (_super) {
         this.setTemplate();
         this.table.render();
         this.categories.render();
+        this.$('#applyKeywords').on('click', this.applyKeywords.bind(this));
         return this;
     };
     AppView.prototype.setTemplate = function () {
@@ -117,6 +118,11 @@ var AppView = (function (_super) {
         }
         this.categories.hide();
         elapse.timeEnd('AppView.hide');
+    };
+    AppView.prototype.applyKeywords = function (event) {
+        event.preventDefault();
+        console.log('applyKeywords');
+        this.table.model.setCategories(this.table.keywords);
     };
     return AppView;
 }(bb.View));

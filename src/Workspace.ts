@@ -4,8 +4,10 @@ import AppView from './AppView';
 import Sync from './Sync';
 import Expenses from "./Expenses";
 import CatPage from "./CatPage";
+import KeywordsView from "./KeywordsView";
 import CategoryCollection from "./Category/CategoryCollection";
 import RouterOptions = Backbone.RouterOptions;
+import KeywordCollection from "./KeywordCollection";
 let bb = require('backbone');
 let $ = require('jquery');
 // let _ = require('underscore');
@@ -15,15 +17,18 @@ export default class Workspace extends bb.Router {
 	routes = {
 		"":             "AppView",
 		"CatPage":		"CatPage",
-		"sync":         "Sync",
+		"Sync":         "Sync",
+		"Keywords":     "Keywords",
 	};
 
 	model: Expenses;
 	categoryList: CategoryCollection;
+	keywords = new KeywordCollection();
 
-	app: AppView;
+	appPage: AppView;
 	syncPage: Sync;
 	catPage: CatPage;
+	keywordsPage: KeywordsView;
 
 	constructor(options?: RouterOptions) {
 		super(options);
@@ -60,20 +65,21 @@ export default class Workspace extends bb.Router {
 	AppView() {
 		console.log('AppView');
 		this.activateMenu();
-		if (!this.app) {
-			this.app = new AppView({
+		if (!this.appPage) {
+			this.appPage = new AppView({
 				collection: this.model,
 				categoryList: this.categoryList,
 			});
+			this.appPage.table.keywords = this.keywords;
 		}
-		this.app.show();
+		this.appPage.show();
 	}
 
 	Sync() {
 		console.log('Sync');
 		this.activateMenu();
-		if (this.app) {
-			this.app.hide();
+		if (this.appPage) {
+			this.appPage.hide();
 		} else {
 			$('#MonthSelect').hide();	// for consistency
 		}
@@ -91,13 +97,26 @@ export default class Workspace extends bb.Router {
 	CatPage() {
 		console.log('CatPage');
 		this.activateMenu();
-		if (this.app) {
-			this.app.hide();
+		if (this.appPage) {
+			this.appPage.hide();
 		}
 		if (!this.catPage) {
 			this.catPage = new CatPage(this.model, this.categoryList);
 		}
 		this.catPage.render();
+	}
+
+	Keywords() {
+		console.log('Keywords');
+		this.activateMenu();
+		if (this.appPage) {
+			this.appPage.hide();
+		}
+		if (!this.keywordsPage) {
+			this.keywordsPage = new KeywordsView();
+			this.keywordsPage.keywords = this.keywords;
+		}
+		this.keywordsPage.render();
 	}
 
 }

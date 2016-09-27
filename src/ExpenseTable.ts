@@ -25,7 +25,7 @@ export default class ExpenseTable extends Backbone.View<any> {
 
 	template = _.template($('#rowTemplate').html());
 
-	keywords = new KeywordCollection();
+	keywords: KeywordCollection;
 
 	constructor(options?) {
 		super(options);
@@ -161,18 +161,7 @@ export default class ExpenseTable extends Backbone.View<any> {
 				$contextMenu = $('#contextMenu');	// after append
 				console.log($contextMenu, event.clientX, event.clientY);
 			}
-			this.openMenu($contextMenu, event.clientX, event.clientY, (menu) => {
-				let categoryName = menu.text().trim();
-				console.log(text, 'to be', categoryName);
-				this.keywords.add(new Keyword({
-					word: text,
-					category: categoryName,
-				}));
-				this.model.setCategories(this.keywords);
-				let scrollTop = document.body.scrollTop;
-				this.render();
-				$('body').scrollTop(scrollTop);
-			});
+			this.openMenu($contextMenu, event.clientX, event.clientY, this.applyFilter.bind(this, text));
 		}
 	}
 
@@ -185,6 +174,13 @@ export default class ExpenseTable extends Backbone.View<any> {
 		return '';
 	}
 
+	/**
+	 * Opens a popup menu at the specified position
+	 * @param menuSelector
+	 * @param clientX
+	 * @param clientY
+	 * @param callback
+	 */
 	openMenu(menuSelector, clientX, clientY, callback) {
 		let $menu = $(menuSelector)
 			.show()
@@ -224,6 +220,20 @@ export default class ExpenseTable extends Backbone.View<any> {
 			position -= menu;
 
 		return position;
+	}
+
+	applyFilter(text, menu) {
+		let categoryName = menu.text().trim();
+		console.log(text, 'to be', categoryName);
+		this.keywords.add(new Keyword({
+			word: text,
+			category: categoryName,
+		}));
+		this.model.setCategories(this.keywords);
+		let scrollTop = document.body.scrollTop;
+		console.log('scrollTop', scrollTop);
+		this.render();
+		$('body').scrollTop(scrollTop);
 	}
 
 }

@@ -5,7 +5,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var KeywordCollection_1 = require("./KeywordCollection");
 var Keyword_1 = require("./Keyword");
 var umsaetze_1 = require("./umsaetze");
 var elapse = require('elapse');
@@ -21,7 +20,6 @@ var ExpenseTable = (function (_super) {
     function ExpenseTable(options) {
         _super.call(this, options);
         this.template = _.template($('#rowTemplate').html());
-        this.keywords = new KeywordCollection_1["default"]();
         console.log(this.keywords);
         // in case we started with Sync page the table is not visible
         if (!$('#expenseTable').length) {
@@ -126,7 +124,6 @@ var ExpenseTable = (function (_super) {
         }
     };
     ExpenseTable.prototype.textSelectedEvent = function (event) {
-        var _this = this;
         //console.log('textSelectedEvent');
         var text = ExpenseTable.getSelectedText().trim();
         if (text) {
@@ -141,18 +138,7 @@ var ExpenseTable = (function (_super) {
                 $contextMenu = $('#contextMenu'); // after append
                 console.log($contextMenu, event.clientX, event.clientY);
             }
-            this.openMenu($contextMenu, event.clientX, event.clientY, function (menu) {
-                var categoryName = menu.text().trim();
-                console.log(text, 'to be', categoryName);
-                _this.keywords.add(new Keyword_1["default"]({
-                    word: text,
-                    category: categoryName
-                }));
-                _this.model.setCategories(_this.keywords);
-                var scrollTop = document.body.scrollTop;
-                _this.render();
-                $('body').scrollTop(scrollTop);
-            });
+            this.openMenu($contextMenu, event.clientX, event.clientY, this.applyFilter.bind(this, text));
         }
     };
     ExpenseTable.getSelectedText = function () {
@@ -164,6 +150,13 @@ var ExpenseTable = (function (_super) {
         }
         return '';
     };
+    /**
+     * Opens a popup menu at the specified position
+     * @param menuSelector
+     * @param clientX
+     * @param clientY
+     * @param callback
+     */
     ExpenseTable.prototype.openMenu = function (menuSelector, clientX, clientY, callback) {
         var $menu = $(menuSelector)
             .show()
@@ -196,6 +189,19 @@ var ExpenseTable = (function (_super) {
         if (mouse + menu > win && menu < mouse)
             position -= menu;
         return position;
+    };
+    ExpenseTable.prototype.applyFilter = function (text, menu) {
+        var categoryName = menu.text().trim();
+        console.log(text, 'to be', categoryName);
+        this.keywords.add(new Keyword_1["default"]({
+            word: text,
+            category: categoryName
+        }));
+        this.model.setCategories(this.keywords);
+        var scrollTop = document.body.scrollTop;
+        console.log('scrollTop', scrollTop);
+        this.render();
+        $('body').scrollTop(scrollTop);
     };
     return ExpenseTable;
 }(Backbone.View));

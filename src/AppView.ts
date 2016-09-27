@@ -81,6 +81,7 @@ export default class AppView extends bb.View<Expenses> {
 		this.setTemplate();
 		this.table.render();
 		this.categories.render();
+		this.$('#applyKeywords').on('click', this.applyKeywords.bind(this));
 		return this;
 	}
 
@@ -149,6 +150,12 @@ export default class AppView extends bb.View<Expenses> {
 		}
 		this.categories.hide();
 		elapse.timeEnd('AppView.hide');
+	}
+
+	applyKeywords(event: MouseEvent) {
+		event.preventDefault();
+		console.log('applyKeywords');
+		this.table.model.setCategories(this.table.keywords);
 	}
 
 }

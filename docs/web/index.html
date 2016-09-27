@@ -338,7 +338,7 @@
                             </a>
 						</li>
 						<li>
-                            <a href="#sync">
+                            <a href="#Sync">
                                 <i class="fa fa-save fa-fw"></i>
                                 Sync
                             </a>
@@ -347,6 +347,12 @@
                             <a href="#CatPage">
                                 <i class="fa fa-list fa-fw"></i>
                                 Categories
+                            </a>
+                        </li>
+						<li>
+                            <a href="#Keywords">
+                                <span class="glyphicon glyphicon-filter"></span>
+                                Keywords
                             </a>
                         </li>
                     </ul>
@@ -418,6 +424,11 @@
 	<script type="text/template" id="AppView">
 		<div class="panel panel-default">
 			<div class="panel-heading">
+				<div class="pull-right">
+					<button class="btn btn-default btn-xs" id="applyKeywords">
+						<span class="glyphicon glyphicon-filter"></span>
+					</button>
+				</div>
 				Raw Data
 				(<span id="dateFrom"></span> - <span id="dateTill"></span>)
 				<span class="badge" id="numRows"></span>
