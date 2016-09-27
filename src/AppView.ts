@@ -144,6 +144,7 @@ export default class AppView extends bb.View<Expenses> {
 		if (this.$('#expenseTable').length) {
 			this.cache = this.$el.children().detach();
 		}
+		//this.categories.$el.hide();
 		elapse.timeEnd('AppView.hide');
 	}
 

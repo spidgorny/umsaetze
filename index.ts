@@ -1,7 +1,9 @@
 /// <reference path="typings/index.d.ts" />
 
-var util = require('util');
-var stream = require('stream');
+const util = require('util');
+const stream = require('stream');
+const fs = require('fs');
+
 function StringifyStream(){
 	stream.Transform.call(this);
 
@@ -36,7 +38,6 @@ class SpardaBank {
 	keyWords = {};
 
 	convertMoneyFormat() {
-		var fs = require('fs');
 		var transform = require('stream-transform');
 
 		var totalRows = 1690;	// line-by-line counting will not work
@@ -263,6 +264,7 @@ var sb = new SpardaBank();
 //sb.convertMoneyFormat();
 sb.readExcelFile().then((categoryList) => {
 	console.log('categoryList', categoryList);
+	fs.writeFileSync('keywords.json', JSON.stringify(categoryList, '', '\n'));
 	sb.categorize(categoryList);
 	return true;
 }).catch((e) => {

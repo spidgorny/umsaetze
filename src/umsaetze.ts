@@ -33,7 +33,10 @@ $(function() {
 	});
 	// console.log(ws);
 
-	var start = Backbone.history.start();
+	Backbone.history.start();
 	// console.log(start);
 });
 
+// only run this once
+// import ImportKeywords from './ImportKeywords';
+// let i = new ImportKeywords();

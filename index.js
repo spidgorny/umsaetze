@@ -1,6 +1,7 @@
 /// <reference path="typings/index.d.ts" />
 var util = require('util');
 var stream = require('stream');
+var fs = require('fs');
 function StringifyStream() {
     stream.Transform.call(this);
     this._readableState.objectMode = false;
@@ -18,7 +19,6 @@ var SpardaBank = (function () {
         this.keyWords = {};
     }
     SpardaBank.prototype.convertMoneyFormat = function () {
-        var fs = require('fs');
         var transform = require('stream-transform');
         var totalRows = 1690; // line-by-line counting will not work
         /*		var counter = transform(function (record: Record, callback) {
@@ -209,6 +209,7 @@ var sb = new SpardaBank();
 //sb.convertMoneyFormat();
 sb.readExcelFile().then(function (categoryList) {
     console.log('categoryList', categoryList);
+    fs.writeFileSync('keywords.json', JSON.stringify(categoryList, '', '\n'));
     sb.categorize(categoryList);
     return true;
 }).catch(function (e) {

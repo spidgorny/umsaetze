@@ -111,6 +111,7 @@ var AppView = (function (_super) {
         if (this.$('#expenseTable').length) {
             this.cache = this.$el.children().detach();
         }
+        //this.categories.$el.hide();
         elapse.timeEnd('AppView.hide');
     };
     return AppView;
