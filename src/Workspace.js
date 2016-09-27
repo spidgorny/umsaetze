@@ -12,7 +12,7 @@ var CatPage_1 = require("./CatPage");
 var CategoryCollection_1 = require("./Category/CategoryCollection");
 var bb = require('backbone');
 var $ = require('jquery');
-var _ = require('underscore');
+// let _ = require('underscore');
 var Workspace = (function (_super) {
     __extends(Workspace, _super);
     function Workspace(options) {
@@ -66,6 +66,9 @@ var Workspace = (function (_super) {
         this.activateMenu();
         if (this.app) {
             this.app.hide();
+        }
+        else {
+            $('#MonthSelect').hide(); // for consistency
         }
         if (!this.syncPage) {
             this.syncPage = new Sync_1["default"](this.model);

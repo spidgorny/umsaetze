@@ -102,6 +102,10 @@ var CategoryCollection = (function (_super) {
             }), { silent: true });
         }
     };
+    /**
+     * @deprecated - attempt #2 - not finished
+     * @returns {Array}
+     */
     CategoryCollection.prototype.getCategoriesFromExpenses2 = function () {
         var options = [];
         var categories = this.expenses.groupBy('category');

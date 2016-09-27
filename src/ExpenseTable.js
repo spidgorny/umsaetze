@@ -7,6 +7,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var KeywordCollection_1 = require("./KeywordCollection");
 var Keyword_1 = require("./Keyword");
+var umsaetze_1 = require("./umsaetze");
 var elapse = require('elapse');
 elapse.configure({
     debug: true
@@ -31,6 +32,7 @@ var ExpenseTable = (function (_super) {
         this.$el.on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
         // slow re-rendering of the whole table when collection changes
         //this.listenTo(this.collection, 'change', this.render);
+        this.on("all", umsaetze_1.debug("ExpenseTable"));
     }
     ExpenseTable.prototype.setCategoryList = function (list) {
         this.categoryList = list;

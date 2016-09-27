@@ -13,6 +13,7 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
 var Chart = require('chart.js');
+var umsaetze_1 = require('../umsaetze');
 var CategoryView = (function (_super) {
     __extends(CategoryView, _super);
     function CategoryView(options) {
@@ -21,9 +22,16 @@ var CategoryView = (function (_super) {
         this.setElement($('#categories'));
         this.listenTo(this.model, 'change', this.render);
         this.$el.on('click', 'a.filterByCategory', this.filterByCategory.bind(this));
+        this.on("all", umsaetze_1.debug("CategoryView"));
     }
     CategoryView.prototype.setExpenses = function (expenses) {
         this.expenses = expenses;
+        this.listenTo(this.expenses, 'change', this.recalculate);
+    };
+    CategoryView.prototype.recalculate = function () {
+        console.warn('CategoryView.recalculate');
+        this.model.getCategoriesFromExpenses();
+        // should call render?
     };
     CategoryView.prototype.render = function () {
         var _this = this;
@@ -47,10 +55,8 @@ var CategoryView = (function (_super) {
                 sign: catCount.amount >= 0 ? 'positive' : 'negative'
             })));
         });
-        this.$el.html(content.join('\n'));
-        this.$el.append('<div class="category text-right">' +
-            '<a href="#" class="filterByCategory">Total</a>: ' + sum.toFixed(2) + ' &euro;' +
-            '</div>');
+        this.$('#catElements').html(content.join('\n'));
+        this.$('.total').html(sum.toFixed(2));
         this.showPieChart();
         elapse.timeEnd('CategoryView.render');
         return this;
@@ -106,7 +112,7 @@ var CategoryView = (function (_super) {
         event.preventDefault();
         var link = $(event.target);
         var id = link.attr('data-id');
-        console.error('filterByCategory', id);
+        console.log('filterByCategory', id);
         var cat = this.model.get(id);
         //console.log(cat);
         //this.expenses.filterByMonth();
@@ -120,6 +126,14 @@ var CategoryView = (function (_super) {
             this.expenses.filterByMonth();
         }
         this.expenses.trigger('change'); // slow!
+    };
+    CategoryView.prototype.hide = function () {
+        this.$el.hide();
+        $('#pieChart').hide();
+    };
+    CategoryView.prototype.show = function () {
+        this.$el.show();
+        $('#pieChart').show();
     };
     return CategoryView;
 }(Backbone.View));

@@ -8,7 +8,7 @@ import CategoryCollection from "./Category/CategoryCollection";
 import RouterOptions = Backbone.RouterOptions;
 let bb = require('backbone');
 let $ = require('jquery');
-let _ = require('underscore');
+// let _ = require('underscore');
 
 export default class Workspace extends bb.Router {
 
@@ -74,6 +74,8 @@ export default class Workspace extends bb.Router {
 		this.activateMenu();
 		if (this.app) {
 			this.app.hide();
+		} else {
+			$('#MonthSelect').hide();	// for consistency
 		}
 		if (!this.syncPage) {
 			this.syncPage = new Sync(this.model);

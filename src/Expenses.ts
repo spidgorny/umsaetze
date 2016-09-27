@@ -9,6 +9,7 @@ import PersistenceOptions = Backbone.PersistenceOptions;
 import KeywordCollection from "./KeywordCollection";
 import Keyword from "./Keyword";
 import CategoryCount from "./Category/CategoryCount";
+import {debug} from "./umsaetze";
 const bb = require('backbone');
 let BackboneLocalStorage = require("backbone.localstorage");
 require('datejs');
@@ -34,6 +35,7 @@ export default class Expenses extends bb.Collection<Transaction> {
 			console.log('Expenses changed event');
 			this.saveAll();
 		});
+		this.on("all", debug("Expenses"));
 	}
 
 	/**

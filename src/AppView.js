@@ -7,6 +7,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 var ExpenseTable_1 = require("./ExpenseTable");
 var CategoryView_1 = require("./Category/CategoryView");
 var MonthSelect_1 = require("./MonthSelect");
+var umsaetze_1 = require("./umsaetze");
 // import Backbone from 'backbone';
 var elapse = require('elapse');
 elapse.configure({
@@ -50,6 +51,7 @@ var AppView = (function (_super) {
         //this.listenTo(this.collection, "change", this.table.render);
         //this.listenTo(this.collection, "change", this.categories.change); // wrong collection inside ? wft?!
         $('.custom-search-form input').on('keyup', _.debounce(this.onSearch.bind(this), 300));
+        this.on("all", umsaetze_1.debug("AppView"));
     }
     AppView.prototype.render = function () {
         if (!['', '#'].includes(window.location.hash))
@@ -103,15 +105,17 @@ var AppView = (function (_super) {
         else {
             this.render();
         }
+        this.categories.show();
         elapse.timeEnd('AppView.show');
     };
     AppView.prototype.hide = function () {
         elapse.time('AppView.hide');
         this.ms.hide();
-        if (this.$('#expenseTable').length) {
+        if (this.$('#expenseTable').length
+            && this.$('#expenseTable').is(':visible')) {
             this.cache = this.$el.children().detach();
         }
-        //this.categories.$el.hide();
+        this.categories.hide();
         elapse.timeEnd('AppView.hide');
     };
     return AppView;

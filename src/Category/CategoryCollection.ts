@@ -117,6 +117,10 @@ export default class CategoryCollection extends bb.Collection<CategoryCount> {
 		}
 	}
 
+	/**
+	 * @deprecated - attempt #2 - not finished
+	 * @returns {Array}
+	 */
 	getCategoriesFromExpenses2() {
 		let options = [];
 		let categories = this.expenses.groupBy('category');

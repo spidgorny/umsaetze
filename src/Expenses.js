@@ -9,6 +9,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Transaction_1 = require('./Transaction');
+var umsaetze_1 = require("./umsaetze");
 var bb = require('backbone');
 var BackboneLocalStorage = require("backbone.localstorage");
 require('datejs');
@@ -28,6 +29,7 @@ var Expenses = (function (_super) {
             console.log('Expenses changed event');
             _this.saveAll();
         });
+        this.on("all", umsaetze_1.debug("Expenses"));
     }
     /**
      * Should be called after constructor to read data from LS

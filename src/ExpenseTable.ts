@@ -5,6 +5,7 @@ import Transaction from "./Transaction";
 import CategoryCollection from "./Category/CategoryCollection";
 import KeywordCollection from "./KeywordCollection";
 import Keyword from "./Keyword";
+import {debug} from "./umsaetze";
 const elapse = require('elapse');
 elapse.configure({
 	debug: true
@@ -41,6 +42,7 @@ export default class ExpenseTable extends Backbone.View<any> {
 
 		// slow re-rendering of the whole table when collection changes
 		//this.listenTo(this.collection, 'change', this.render);
+		this.on("all", debug("ExpenseTable"));
 	}
 
 	setCategoryList(list: CategoryCollection) {

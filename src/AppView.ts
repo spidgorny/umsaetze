@@ -5,6 +5,7 @@ import CategoryView from "./Category/CategoryView";
 import MonthSelect from "./MonthSelect";
 import ViewOptions = Backbone.ViewOptions;
 import Transaction from "./Transaction";
+import {debug} from "./umsaetze";
 // import Backbone from 'backbone';
 let elapse = require('elapse');
 elapse.configure({
@@ -13,7 +14,6 @@ elapse.configure({
 let bb = require('backbone');
 let $ = require('jquery');
 let _ = require('underscore');
-
 
 export default class AppView extends bb.View<Expenses> {
 
@@ -72,6 +72,7 @@ export default class AppView extends bb.View<Expenses> {
 		//this.listenTo(this.collection, "change", this.categories.change); // wrong collection inside ? wft?!
 		$('.custom-search-form input').on('keyup',
 			_.debounce(this.onSearch.bind(this), 300));
+		this.on("all", debug("AppView"));
 	}
 
 	render() {
@@ -135,16 +136,18 @@ export default class AppView extends bb.View<Expenses> {
 		} else {
 			this.render();
 		}
+		this.categories.show();
 		elapse.timeEnd('AppView.show');
 	}
 
 	hide() {
 		elapse.time('AppView.hide');
 		this.ms.hide();
-		if (this.$('#expenseTable').length) {
+		if (this.$('#expenseTable').length
+			&& this.$('#expenseTable').is(':visible')) {
 			this.cache = this.$el.children().detach();
 		}
-		//this.categories.$el.hide();
+		this.categories.hide();
 		elapse.timeEnd('AppView.hide');
 	}
 

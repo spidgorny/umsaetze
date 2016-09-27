@@ -5,7 +5,7 @@ var Workspace_1 = require("./Workspace");
 // var _ = require('underscore');
 var Backbone = require('backbone');
 var $ = require('jquery');
-var _ = require('underscore');
+// const _ = require('underscore');
 function asyncLoop(arr, callback, done) {
     (function loop(i) {
         //callback when the loop goes on
@@ -25,8 +25,14 @@ function asyncLoop(arr, callback, done) {
     }(0)); //start with 0
 }
 exports.asyncLoop = asyncLoop;
+function debug(name) {
+    return function () {
+        //console.warn(name + ":", arguments);
+    };
+}
+exports.debug = debug;
 $(function () {
-    var ws = new Workspace_1["default"]({
+    new Workspace_1["default"]({
         root: 'umsaetze/web/'
     });
     // console.log(ws);

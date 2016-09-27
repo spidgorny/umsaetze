@@ -11,6 +11,7 @@ const Backbone = require('backbone');
 const _ = require('underscore');
 const $ = require('jquery');
 const Chart = require('chart.js');
+import {debug} from '../umsaetze';
 
 export default class CategoryView extends Backbone.View<CategoryCollection> {
 
@@ -27,10 +28,18 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 		this.setElement($('#categories'));
 		this.listenTo(this.model, 'change', this.render);
 		this.$el.on('click', 'a.filterByCategory', this.filterByCategory.bind(this));
+		this.on("all", debug("CategoryView"));
 	}
 
 	setExpenses(expenses) {
 		this.expenses = expenses;
+		this.listenTo(this.expenses, 'change', this.recalculate);
+	}
+
+	recalculate() {
+		console.warn('CategoryView.recalculate');
+		this.model.getCategoriesFromExpenses();
+		// should call render?
 	}
 
 	render() {
@@ -61,10 +70,8 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 				})
 			));
 		});
-		this.$el.html(content.join('\n'));
-		this.$el.append('<div class="category text-right">' +
-			'<a href="#" class="filterByCategory">Total</a>: '+sum.toFixed(2)+' &euro;'+
-		'</div>');
+		this.$('#catElements').html(content.join('\n'));
+		this.$('.total').html(sum.toFixed(2));
 
 		this.showPieChart();
 
@@ -124,7 +131,7 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 		event.preventDefault();
 		let link = $(event.target);
 		let id = link.attr('data-id');
-		console.error('filterByCategory', id);
+		console.log('filterByCategory', id);
 		let cat = this.model.get(id);
 		//console.log(cat);
 		//this.expenses.filterByMonth();
@@ -137,6 +144,16 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 			this.expenses.filterByMonth();
 		}
 		this.expenses.trigger('change');	// slow!
+	}
+
+	hide() {
+		this.$el.hide();
+		$('#pieChart').hide();
+	}
+
+	show() {
+		this.$el.show();
+		$('#pieChart').show();
 	}
 
 }
