@@ -22,6 +22,7 @@ var Workspace = (function (_super) {
         this.routes = {
             "": "AppView",
             ":year/:month": "MonthSelect",
+            ":year/:month/:category": "MonthSelectCategory",
             "CatPage": "CatPage",
             "Sync": "Sync",
             "Keywords": "Keywords"
@@ -112,6 +113,15 @@ var Workspace = (function (_super) {
         console.log('MonthSelect', year, month);
         this.AppView();
         this.appPage.ms.setYearMonth(year, month);
+    };
+    Workspace.prototype.MonthSelectCategory = function (year, month, category) {
+        console.log('MonthSelectCategory', year, month, category);
+        this.AppView();
+        this.appPage.ms.setYearMonth(year, month);
+        var cat = this.categoryList.findWhere({ catName: category });
+        console.log('MonthSelectCategory cat', cat);
+        this.appPage.collection.filterByCategory(cat);
+        this.appPage.collection.trigger('change'); // slow!
     };
     return Workspace;
 }(bb.Router));

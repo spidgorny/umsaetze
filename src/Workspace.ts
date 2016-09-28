@@ -15,11 +15,12 @@ let $ = require('jquery');
 export default class Workspace extends bb.Router {
 
 	routes = {
-		"":             "AppView",
-		":year/:month":	"MonthSelect",
-		"CatPage":		"CatPage",
-		"Sync":         "Sync",
-		"Keywords":     "Keywords",
+		"":             			"AppView",
+		":year/:month":				"MonthSelect",
+		":year/:month/:category":	"MonthSelectCategory",
+		"CatPage":					"CatPage",
+		"Sync":         			"Sync",
+		"Keywords":     			"Keywords",
 	};
 
 	model: Expenses;
@@ -124,6 +125,17 @@ export default class Workspace extends bb.Router {
 		console.log('MonthSelect', year, month);
 		this.AppView();
 		this.appPage.ms.setYearMonth(year, month);
+	}
+
+	MonthSelectCategory(year, month, category) {
+		console.log('MonthSelectCategory', year, month, category);
+		this.AppView();
+		this.appPage.ms.setYearMonth(year, month);
+		let cat = this.categoryList.findWhere({catName: category});
+		console.log('MonthSelectCategory cat', cat);
+		this.appPage.collection.filterByCategory(cat);
+		this.appPage.collection.trigger('change');	// slow!
+
 	}
 
 }

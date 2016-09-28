@@ -181,8 +181,10 @@ export default class CatPage extends Backbone.View<Transaction> {
 		if (first) {
 			let yearMonth = labels[first._index];
 			let [year, month] = yearMonth.split('-');
-			console.log(yearMonth, year, month);
-			Backbone.history.navigate('#/'+year+'/'+month);
+			let categoryID = $(event.target).closest('tr').attr('data-id');
+			let category: CategoryCount = this.categoryList.get(categoryID);
+			console.log(yearMonth, year, month, category);
+			Backbone.history.navigate('#/'+year+'/'+month+'/'+category.get('catName'));
 		}
 	}
 

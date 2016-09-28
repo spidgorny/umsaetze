@@ -164,8 +164,10 @@ var CatPage = (function (_super) {
         if (first) {
             var yearMonth = labels[first._index];
             var _a = yearMonth.split('-'), year = _a[0], month = _a[1];
-            console.log(yearMonth, year, month);
-            Backbone.history.navigate('#/' + year + '/' + month);
+            var categoryID = $(event.target).closest('tr').attr('data-id');
+            var category = this.categoryList.get(categoryID);
+            console.log(yearMonth, year, month, category);
+            Backbone.history.navigate('#/' + year + '/' + month + '/' + category.get('catName'));
         }
     };
     return CatPage;
