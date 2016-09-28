@@ -9,7 +9,7 @@ var $ = require('jquery');
 var KeywordsView = (function (_super) {
     __extends(KeywordsView, _super);
     function KeywordsView() {
-        _super.apply(this, arguments);
+        _super.call(this);
         this.$el = $('#app');
     }
     KeywordsView.prototype.render = function () {

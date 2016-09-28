@@ -21,6 +21,7 @@ var Workspace = (function (_super) {
         _super.call(this, options);
         this.routes = {
             "": "AppView",
+            ":year/:month": "MonthSelect",
             "CatPage": "CatPage",
             "Sync": "Sync",
             "Keywords": "Keywords"
@@ -106,6 +107,11 @@ var Workspace = (function (_super) {
             this.keywordsPage.keywords = this.keywords;
         }
         this.keywordsPage.render();
+    };
+    Workspace.prototype.MonthSelect = function (year, month) {
+        console.log('MonthSelect', year, month);
+        this.AppView();
+        this.appPage.ms.setYearMonth(year, month);
     };
     return Workspace;
 }(bb.Router));

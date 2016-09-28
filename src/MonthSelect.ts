@@ -6,6 +6,7 @@ const $ = require('jquery');
 require('datejs');
 const _ = require('underscore');
 
+
 export default class MonthSelect extends Backbone.View<any> {
 
 	$el = $('#MonthSelect');
@@ -83,31 +84,109 @@ export default class MonthSelect extends Backbone.View<any> {
 		this.$el.hide();
 	}
 
+	getMonthIndex() {
+		let result = Date.getMonthNumberFromName(this.selectedMonth) + 1;
+		console.log('getMonthIndex', this.selectedMonth, result);
+		return result;
+	}
+
+	getMonthIndexFor(monthName: string) {
+		let result = Date.getMonthNumberFromName(monthName) + 1;
+		console.log('getMonthIndex', monthName, result);
+		return result;
+	}
+
+	getMonthNameFor(index) {
+		return this.getShortMonthNameFor(index);
+	}
+
+	changeYear(event) {
+		// this.selectedYear = this.yearSelect.val();	// don't set yet - URL will do
+		Backbone.history.navigate('#/' + this.yearSelect.val() + '/' + this.getMonthIndex());
+	}
+
 	clickOnMonth(event) {
 		this.monthOptions.removeClass('btn-success').addClass('btn-default');
 		let $button = $(event.target);
 		$button.removeClass('btn-default');
 		$button.addClass('btn-success');
-		this.selectedMonth = $button.text();
+		//this.selectedMonth = $button.text();	// don't set yet - URL will do
+		Backbone.history.navigate('#/' + this.selectedYear + '/' + this.getMonthIndexFor($button.text()));
+	}
 
+	setYear(year) {
+		// if (this.selectedYear == year) return;
+		console.log('setYear', year);
+		this.selectedYear = year;
+		//console.log(this.selectedYear);
+		window.localStorage.setItem('MonthSelect.year', this.selectedYear);
+		this.render();		// repaint months as available or not
+		this.trigger('MonthSelect:change');
+	}
+
+	setMonth(month: number) {
+		let monthName = this.getMonthNameFor(month);
+		// if (this.selectedMonth == monthName) {
+		// 	console.warn('same month', this.selectedMonth, monthName);
+		// 	return;
+		// }
+		console.log('setMonth', month);
+		this.selectedMonth = monthName;
+		window.localStorage.setItem('MonthSelect.month', this.selectedMonth);
+		this.trigger('MonthSelect:change');
+	}
+
+	setYearMonth(year: number, month: number) {
+		console.log('setYearMonth', year, month);
+
+		this.selectedYear = year;
+		//console.log(this.selectedYear);
+		window.localStorage.setItem('MonthSelect.year', this.selectedYear);
+
+		let monthName = this.getMonthNameFor(month);
+		this.selectedMonth = monthName;
 		window.localStorage.setItem('MonthSelect.month', this.selectedMonth);
 
+		this.render();		// repaint months as available or not
 		this.trigger('MonthSelect:change');
 	}
 
-	changeYear(event) {
-		this.selectedYear = this.yearSelect.val();
-		console.log(this.selectedYear);
-		window.localStorage.setItem('MonthSelect.year', this.selectedYear);
-		this.render();
-		this.trigger('MonthSelect:change');
+	trigger(what) {
+		console.warn(what);
+		super.trigger(what);
 	}
 
+	/**
+	 * @public
+	 * @returns {Date}
+	 */
 	getSelected() {
-		let sSelectedDate = this.selectedYear+'-'+(1+Date.getMonthNumberFromName(this.selectedMonth))+'-01';
+		let sSelectedDate = this.selectedYear+'-'+this.getMonthIndex()+'-01';
 		let selectedDate = new Date(sSelectedDate);
 		console.log('selectedDate', sSelectedDate, selectedDate);
 		return selectedDate;
 	}
 
+	/**
+	 * http://stackoverflow.com/questions/1643320/get-month-name-from-date
+	 * @type {[string,string,string,string,string,string,string,string,string,string,string,string]}
+	 */
+	monthNames = [
+		"January", "February", "March",
+		"April", "May", "June",
+		"July", "August", "September",
+		"October", "November", "December"
+	];
+
+	getMonthName() {
+		return this.monthNames[this.selectedMonth];
+	}
+
+	getShortMonthName() {
+		return this.getMonthName().substr(0, 3);
+	}
+
+	getShortMonthNameFor(index) {
+		return this.monthNames[index-1].substr(0, 3);
+	};
 }

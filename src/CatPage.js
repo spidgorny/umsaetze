@@ -109,6 +109,7 @@ var CatPage = (function (_super) {
      * https://codepen.io/ojame/pen/HpKvx
      */
     CatPage.prototype.renderSparkLines = function () {
+        var _this = this;
         var $sparkline = $('.sparkline');
         $sparkline.each(function (index, self) {
             //console.log(self);
@@ -151,10 +152,21 @@ var CatPage = (function (_super) {
                                     padding: 0
                                 }
                             }]
-                    }
+                    },
+                    onClick: _this.clickOnChart.bind(_this, labels)
                 }
             });
         });
+    };
+    CatPage.prototype.clickOnChart = function (labels, event, aChartElement) {
+        console.log(labels, aChartElement);
+        var first = aChartElement.length ? aChartElement[0] : null;
+        if (first) {
+            var yearMonth = labels[first._index];
+            var _a = yearMonth.split('-'), year = _a[0], month = _a[1];
+            console.log(yearMonth, year, month);
+            Backbone.history.navigate('#/' + year + '/' + month);
+        }
     };
     return CatPage;
 }(Backbone.View));

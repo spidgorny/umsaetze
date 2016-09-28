@@ -61,6 +61,9 @@ var CategoryView = (function (_super) {
             })));
         });
         this.$('#catElements').html(content.join('\n'));
+        if (!incomeRow) {
+            incomeRow = { amount: 0 };
+        }
         this.$('.income').html(incomeRow.amount.toFixed(2));
         this.$('.total').html(sum.toFixed(2));
         this.showPieChart();

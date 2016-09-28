@@ -16,6 +16,7 @@ export default class Workspace extends bb.Router {
 
 	routes = {
 		"":             "AppView",
+		":year/:month":	"MonthSelect",
 		"CatPage":		"CatPage",
 		"Sync":         "Sync",
 		"Keywords":     "Keywords",
@@ -117,6 +118,12 @@ export default class Workspace extends bb.Router {
 			this.keywordsPage.keywords = this.keywords;
 		}
 		this.keywordsPage.render();
+	}
+
+	MonthSelect(year, month) {
+		console.log('MonthSelect', year, month);
+		this.AppView();
+		this.appPage.ms.setYearMonth(year, month);
 	}
 
 }

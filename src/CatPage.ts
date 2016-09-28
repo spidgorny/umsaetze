@@ -168,9 +168,22 @@ export default class CatPage extends Backbone.View<Transaction> {
 								padding: 0,
 							}
 						}]
-					}
+					},
+					onClick: this.clickOnChart.bind(this, labels),
 				}
 			});
 		});
 	}
+
+	private clickOnChart(labels, event: MouseEvent, aChartElement) {
+		console.log(labels, aChartElement);
+		let first = aChartElement.length ? aChartElement[0] : null;
+		if (first) {
+			let yearMonth = labels[first._index];
+			let [year, month] = yearMonth.split('-');
+			console.log(yearMonth, year, month);
+			Backbone.history.navigate('#/'+year+'/'+month);
+		}
+	}
+
 }

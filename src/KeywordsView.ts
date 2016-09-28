@@ -11,6 +11,10 @@ export default class KeywordsView extends Backbone.View {
 	 */
 	keywords: KeywordCollection;
 
+	constructor() {
+		super();
+	}
+
 	render() {
 		let content = this.keywords.getJSON();
 		this.$el.html('<pre>'+content+'</pre>');
