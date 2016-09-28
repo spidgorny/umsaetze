@@ -46,6 +46,13 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 		elapse.time('CategoryView.render');
 		let content = [];
 		let categoryCount = this.model.toJSON();
+
+		// remove income from %
+		let incomeRow = _.findWhere(categoryCount, {
+			catName: 'Income',
+		});
+		categoryCount = _.without(categoryCount, incomeRow);
+
 		let sum: number = <number>_.reduce(categoryCount,
 			(memo, item: CategoryCount) => {
 				// only expenses
@@ -71,6 +78,7 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 			));
 		});
 		this.$('#catElements').html(content.join('\n'));
+		this.$('.income').html(incomeRow.amount.toFixed(2));
 		this.$('.total').html(sum.toFixed(2));
 
 		this.showPieChart();

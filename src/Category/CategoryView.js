@@ -38,6 +38,11 @@ var CategoryView = (function (_super) {
         elapse.time('CategoryView.render');
         var content = [];
         var categoryCount = this.model.toJSON();
+        // remove income from %
+        var incomeRow = _.findWhere(categoryCount, {
+            catName: 'Income'
+        });
+        categoryCount = _.without(categoryCount, incomeRow);
         var sum = _.reduce(categoryCount, function (memo, item) {
             // only expenses
             return memo + Math.abs(item.amount);
@@ -56,6 +61,7 @@ var CategoryView = (function (_super) {
             })));
         });
         this.$('#catElements').html(content.join('\n'));
+        this.$('.income').html(incomeRow.amount.toFixed(2));
         this.$('.total').html(sum.toFixed(2));
         this.showPieChart();
         elapse.timeEnd('CategoryView.render');
