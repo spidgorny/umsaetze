@@ -238,6 +238,7 @@ export default class Expenses extends bb.Collection<Transaction> {
 		let sparks = {};
 		let from = this.getEarliest().moveToFirstDayOfMonth();
 		let till = this.getLatest().moveToLastDayOfMonth();
+		let count = 0;
 		for (let month = from; month.compareTo(till) == -1; month.addMonths(1)) {
 			let month1 = month.clone();
 			month1.addMonths(1);
@@ -248,12 +249,15 @@ export default class Expenses extends bb.Collection<Transaction> {
 				let sameMonth = transaction.getDate().between(month, month1);
 				if (sameCategory && sameMonth) {
 					sum += transaction.getAmount();
+					count++;
 					category.incrementCount();
 					//category.incrementAmountBy(transaction.getAmount());	// spoils CategoryView
 				}
 			});
 			sparks[month.toString('yyyy-MM')] = Math.abs(sum).toFixed(2);
 		}
+		console.log(category.getName(), count);
+		category.set('count', count, { silent: true });
 		return sparks;
 	}
 }

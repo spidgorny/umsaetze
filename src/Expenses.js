@@ -221,6 +221,7 @@ var Expenses = (function (_super) {
         var sparks = {};
         var from = this.getEarliest().moveToFirstDayOfMonth();
         var till = this.getLatest().moveToLastDayOfMonth();
+        var count = 0;
         var _loop_1 = function(month) {
             var month1 = month.clone();
             month1.addMonths(1);
@@ -231,6 +232,7 @@ var Expenses = (function (_super) {
                 var sameMonth = transaction.getDate().between(month, month1);
                 if (sameCategory && sameMonth) {
                     sum += transaction.getAmount();
+                    count++;
                     category.incrementCount();
                 }
             });
@@ -240,6 +242,8 @@ var Expenses = (function (_super) {
         for (var month = from; month.compareTo(till) == -1; month.addMonths(1)) {
             _loop_1(month);
         }
+        console.log(category.getName(), count);
+        category.set('count', count, { silent: true });
         return sparks;
     };
     return Expenses;

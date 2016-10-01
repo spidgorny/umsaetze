@@ -13,7 +13,7 @@ var elapse = require('elapse');
 elapse.configure({
     debug: true
 });
-var bb = require('backbone');
+var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
 var AppView = (function (_super) {
@@ -118,7 +118,7 @@ var AppView = (function (_super) {
         this.table.model.setCategories(this.table.keywords);
     };
     return AppView;
-}(bb.View));
+}(Backbone.View));
 exports.__esModule = true;
 exports["default"] = AppView;
 //# sourceMappingURL=AppView.js.map

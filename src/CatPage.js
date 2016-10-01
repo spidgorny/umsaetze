@@ -48,14 +48,17 @@ var CatPage = (function (_super) {
             var categoryOptions_1 = [];
             this.categoryList.each(function (category) {
                 //console.log(category);
+                var monthlyTotals = _this.collection.getMonthlyTotalsFor(category);
                 category.resetCounters();
+                var averageAmountPerMonth = category.getAverageAmountPerMonth(monthlyTotals);
                 categoryOptions_1.push({
                     catName: category.get('catName'),
                     background: category.get('color'),
                     id: category.cid,
                     used: category.get('count'),
-                    amount: category.getAmount(),
-                    sparkline: JSON.stringify(_this.collection.getMonthlyTotalsFor(category))
+                    amount: averageAmountPerMonth,
+                    average: averageAmountPerMonth,
+                    sparkline: JSON.stringify(monthlyTotals)
                 });
             });
             categoryOptions_1 = _.sortBy(categoryOptions_1, 'catName');
@@ -102,7 +105,7 @@ var CatPage = (function (_super) {
         var button = event.target;
         var tr = $(button).closest('tr');
         var id = tr.attr('data-id');
-        console.log(id);
+        console.log('deleteCategory', id);
         this.categoryList.remove(id);
     };
     /**
@@ -118,6 +121,7 @@ var CatPage = (function (_super) {
             var ctx = self.get(0).getContext("2d");
             // Get the chart data and convert it to an array
             var chartData = JSON.parse(self.attr('data-chart_values'));
+            var average = self.attr('data-average');
             // Build the data object
             var data = Object.values(chartData);
             var labels = Object.keys(chartData);
@@ -126,10 +130,18 @@ var CatPage = (function (_super) {
             // Create the dataset
             datasets['strokeColor'] = self.attr('data-chart_StrokeColor');
             datasets['data'] = data;
+            var lineset = {
+                type: 'line',
+                label: 'Average per month',
+                data: Array(data.length).fill(average),
+                borderColor: '#FF0000',
+                borderWidth: 1,
+                fill: false
+            };
             // Add to data object
             var dataDesc = {};
             dataDesc['labels'] = labels;
-            dataDesc['datasets'] = Array(datasets);
+            dataDesc['datasets'] = Array(datasets, lineset);
             var catPage = _this;
             var chart = new Chart.Line(ctx, {
                 data: dataDesc,

@@ -57,14 +57,17 @@ export default class CatPage extends Backbone.View<Transaction> {
 			let categoryOptions = [];
 			this.categoryList.each((category: CategoryCount) => {
 				//console.log(category);
+				let monthlyTotals = this.collection.getMonthlyTotalsFor(category);
 				category.resetCounters();
+				let averageAmountPerMonth = category.getAverageAmountPerMonth(monthlyTotals);
 				categoryOptions.push({
 					catName: category.get('catName'),
 					background: category.get('color'),
 					id: category.cid,
 					used: category.get('count'),
-					amount: category.getAmount(),	 // rounded
-					sparkline: JSON.stringify(this.collection.getMonthlyTotalsFor(category)),
+					amount: averageAmountPerMonth,
+					average: averageAmountPerMonth,
+					sparkline: JSON.stringify(monthlyTotals),
 				});
 			});
 			categoryOptions = _.sortBy(categoryOptions, 'catName');
@@ -113,7 +116,7 @@ export default class CatPage extends Backbone.View<Transaction> {
 		let button = event.target;
 		let tr = $(button).closest('tr');
 		let id = tr.attr('data-id');
-		console.log(id);
+		console.log('deleteCategory', id);
 		this.categoryList.remove(id);
 	}
 
@@ -130,6 +133,7 @@ export default class CatPage extends Backbone.View<Transaction> {
 
 			// Get the chart data and convert it to an array
 			let chartData = JSON.parse(self.attr('data-chart_values'));
+			let average = self.attr('data-average');
 
 			// Build the data object
 			let data = Object.values(chartData);
@@ -141,10 +145,19 @@ export default class CatPage extends Backbone.View<Transaction> {
 			datasets['strokeColor'] = self.attr('data-chart_StrokeColor');
 			datasets['data'] = data;
 
+			let lineset = {
+				type: 'line',
+				label: 'Average per month',
+				data: Array(data.length).fill(average),
+				borderColor: '#FF0000',
+				borderWidth: 1,
+				fill: false,
+			};
+
 			// Add to data object
 			let dataDesc = {};
 			dataDesc['labels'] = labels;
-			dataDesc['datasets'] = Array(datasets);
+			dataDesc['datasets'] = Array(datasets, lineset);
 
 			let catPage = this;
 			let chart = new Chart.Line(ctx, {

@@ -11,11 +11,11 @@ let elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
-let bb = require('backbone');
+let Backbone = require('backbone');
 let $ = require('jquery');
 let _ = require('underscore');
 
-export default class AppView extends bb.View<Expenses> {
+export default class AppView extends Backbone.View<Expenses> {
 
 	model: Transaction;
 

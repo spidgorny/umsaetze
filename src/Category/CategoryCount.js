@@ -6,7 +6,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Backbone = require('backbone');
-var bbls = require('backbone.localstorage');
+// const bbls = require('backbone.localstorage');
+Object.values = function (obj) { return Object.keys(obj).map(function (key) { return obj[key]; }); };
 var CategoryCount = (function (_super) {
     __extends(CategoryCount, _super);
     function CategoryCount() {
@@ -61,6 +62,13 @@ var CategoryCount = (function (_super) {
      */
     CategoryCount.prototype.incrementAmountBy = function (by) {
         this.set('amount', this.get('amount') + by, { silent: true });
+    };
+    CategoryCount.prototype.getAverageAmountPerMonth = function (totalsPerMonth) {
+        var totals = Object.values(totalsPerMonth);
+        var sum = totals.reduce(function (a, b) { return parseFloat(a) + parseFloat(b); });
+        var avg = sum / totals.length;
+        //console.log(totals, sum, avg);
+        return avg.toFixed(2);
     };
     return CategoryCount;
 }(Backbone.Model));
