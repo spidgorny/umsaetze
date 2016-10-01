@@ -130,9 +130,11 @@ var CatPage = (function (_super) {
             var dataDesc = {};
             dataDesc['labels'] = labels;
             dataDesc['datasets'] = Array(datasets);
-            new Chart.Line(ctx, {
+            var catPage = _this;
+            var chart = new Chart.Line(ctx, {
                 data: dataDesc,
                 options: {
+                    responsive: true,
                     scaleLineColor: "rgba(0,0,0,0)",
                     scaleShowLabels: false,
                     scaleShowGridLines: false,
@@ -153,21 +155,38 @@ var CatPage = (function (_super) {
                                 }
                             }]
                     },
-                    onClick: _this.clickOnChart.bind(_this, labels)
+                    onClick: function (event, aChartElement) {
+                        catPage.clickOnChart(labels, event, aChartElement, this);
+                    }
                 }
             });
+            self.prop('chart', chart);
         });
     };
-    CatPage.prototype.clickOnChart = function (labels, event, aChartElement) {
-        console.log(labels, aChartElement);
+    CatPage.prototype.clickOnChart = function (labels, event, aChartElement, chart) {
+        var catPage = this;
         var first = aChartElement.length ? aChartElement[0] : null;
         if (first) {
+            console.log(labels, aChartElement);
             var yearMonth = labels[first._index];
             var _a = yearMonth.split('-'), year = _a[0], month = _a[1];
             var categoryID = $(event.target).closest('tr').attr('data-id');
-            var category = this.categoryList.get(categoryID);
+            var category = catPage.categoryList.get(categoryID);
             console.log(yearMonth, year, month, category);
             Backbone.history.navigate('#/' + year + '/' + month + '/' + category.get('catName'));
+        }
+        else {
+            console.log(this, event, event.target);
+            var $canvas = $(event.target);
+            if ($canvas.height() == 100) {
+                $canvas.height(300);
+            }
+            else {
+                $canvas.height(100);
+            }
+            setTimeout(function () {
+                chart.resize();
+            }, 1000);
         }
     };
     return CatPage;

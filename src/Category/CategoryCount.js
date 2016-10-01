@@ -5,7 +5,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var bb = require('backbone');
+var Backbone = require('backbone');
 var bbls = require('backbone.localstorage');
 var CategoryCount = (function (_super) {
     __extends(CategoryCount, _super);
@@ -63,7 +63,7 @@ var CategoryCount = (function (_super) {
         this.set('amount', this.get('amount') + by, { silent: true });
     };
     return CategoryCount;
-}(bb.Model));
+}(Backbone.Model));
 exports.__esModule = true;
 exports["default"] = CategoryCount;
 //# sourceMappingURL=CategoryCount.js.map

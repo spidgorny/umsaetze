@@ -1,3 +1,4 @@
+/// <reference path="../../typings/index.d.ts" />
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -9,7 +10,7 @@ var elapse = require('elapse');
 elapse.configure({
     debug: true
 });
-var bb = require('backbone');
+var Backbone = require('backbone');
 var bbls = require('backbone.localstorage');
 var _ = require('underscore');
 /**
@@ -146,7 +147,7 @@ var CategoryCollection = (function (_super) {
         return color;
     };
     return CategoryCollection;
-}(bb.Collection));
+}(Backbone.Collection));
 exports.__esModule = true;
 exports["default"] = CategoryCollection;
 //# sourceMappingURL=CategoryCollection.js.map

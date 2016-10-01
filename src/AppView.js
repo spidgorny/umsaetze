@@ -23,14 +23,14 @@ var AppView = (function (_super) {
      * and this.categoryList as well
      * @param options
      */
-    function AppView(options) {
+    function AppView(options, categoryList) {
         _super.call(this, options);
         this.q = '';
         console.log('construct AppView');
         this.collection = options.collection;
         this.setElement($('#app'));
         this.setTemplate();
-        this.categoryList = options.categoryList;
+        this.categoryList = categoryList;
         this.table = new ExpenseTable_1["default"]({
             model: this.collection,
             el: $('#expenseTable')
@@ -99,13 +99,7 @@ var AppView = (function (_super) {
         this.ms.latest = this.collection.getLatest();
         console.log('MonthSelect range', this.ms.earliest.toString('yyyy-MM-dd'), this.ms.latest.toString('yyyy-MM-dd'), this.collection.size());
         this.ms.show();
-        if (this.cache) {
-            this.$el.html(this.cache);
-            this.cache = null;
-        }
-        else {
-            this.render();
-        }
+        this.render();
         this.categories.show();
         elapse.timeEnd('AppView.show');
     };
@@ -114,7 +108,6 @@ var AppView = (function (_super) {
         this.ms.hide();
         if (this.$('#expenseTable').length
             && this.$('#expenseTable').is(':visible')) {
-            this.cache = this.$el.children().detach();
         }
         this.categories.hide();
         elapse.timeEnd('AppView.hide');

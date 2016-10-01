@@ -1,9 +1,9 @@
 /// <reference path="../../typings/index.d.ts" />
 
-let bb = require('backbone');
+let Backbone = require('backbone');
 const bbls = require('backbone.localstorage');
 
-export default class CategoryCount extends bb.Model {
+export default class CategoryCount extends Backbone.Model {
 
 	catName: string;
 

@@ -1,7 +1,7 @@
 {
   "globalDependencies": {
     "assert": "registry:dt/assert#0.0.0+20160317120654",
-    "backbone": "registry:dt/backbone",
+    "backbone": "registry:dt/backbone#1.3.3+20160805214452",
     "backbone.localstorage": "registry:dt/backbone.localstorage#1.0.0+20160317120654",
     "datejs": "registry:dt/datejs#0.0.0+20160316155526",
     "jasmine": "registry:dt/jasmine#2.2.0+20160621224255",

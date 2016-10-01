@@ -146,9 +146,11 @@ export default class CatPage extends Backbone.View<Transaction> {
 			dataDesc['labels'] = labels;
 			dataDesc['datasets'] = Array(datasets);
 
-			new Chart.Line(ctx, {
+			let catPage = this;
+			let chart = new Chart.Line(ctx, {
 				data: dataDesc,
 				options: {
+					responsive: true,
 					scaleLineColor: "rgba(0,0,0,0)",
 					scaleShowLabels: false,
 					scaleShowGridLines: false,
@@ -169,22 +171,37 @@ export default class CatPage extends Backbone.View<Transaction> {
 							}
 						}]
 					},
-					onClick: this.clickOnChart.bind(this, labels),
+					onClick: function (event: MouseEvent, aChartElement) {
+						catPage.clickOnChart(labels, event, aChartElement, this);
+					}
 				}
 			});
+			self.prop('chart', chart);
 		});
 	}
 
-	private clickOnChart(labels, event: MouseEvent, aChartElement) {
-		console.log(labels, aChartElement);
+	private clickOnChart(labels, event: MouseEvent, aChartElement, chart) {
+		let catPage = this;
 		let first = aChartElement.length ? aChartElement[0] : null;
 		if (first) {
+			console.log(labels, aChartElement);
 			let yearMonth = labels[first._index];
 			let [year, month] = yearMonth.split('-');
 			let categoryID = $(event.target).closest('tr').attr('data-id');
-			let category: CategoryCount = this.categoryList.get(categoryID);
+			let category: CategoryCount = catPage.categoryList.get(categoryID);
 			console.log(yearMonth, year, month, category);
 			Backbone.history.navigate('#/'+year+'/'+month+'/'+category.get('catName'));
+		} else {
+			console.log(this, event, event.target);
+			let $canvas = $(event.target);
+			if ($canvas.height() == 100) {
+				$canvas.height(300);
+			} else {
+				$canvas.height(100);
+			}
+			setTimeout(() => {
+				chart.resize();
+			}, 1000);
 		}
 	}
 

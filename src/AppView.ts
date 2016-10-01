@@ -29,8 +29,6 @@ export default class AppView extends bb.View<Expenses> {
 
 	ms: MonthSelect;
 
-	cache: JQuery;
-
 	q: string = '';
 
 	/**
@@ -38,14 +36,14 @@ export default class AppView extends bb.View<Expenses> {
 	 * and this.categoryList as well
 	 * @param options
 	 */
-	constructor(options?: ViewOptions<Transaction>) {
+	constructor(options?: ViewOptions<Transaction>, categoryList: CategoryCollection) {
 		super(options);
 		console.log('construct AppView');
 		this.collection = options.collection;
 		this.setElement($('#app'));
 		this.setTemplate();
 
-		this.categoryList = options.categoryList;
+		this.categoryList = categoryList;
 
 		this.table = new ExpenseTable({
 			model: this.collection,
@@ -131,12 +129,7 @@ export default class AppView extends bb.View<Expenses> {
 			this.ms.latest.toString('yyyy-MM-dd'), this.collection.size());
 		this.ms.show();
 
-		if (this.cache) {
-			this.$el.html(this.cache);
-			this.cache = null;
-		} else {
-			this.render();
-		}
+		this.render();
 		this.categories.show();
 		elapse.timeEnd('AppView.show');
 	}
@@ -146,7 +139,6 @@ export default class AppView extends bb.View<Expenses> {
 		this.ms.hide();
 		if (this.$('#expenseTable').length
 			&& this.$('#expenseTable').is(':visible')) {
-			this.cache = this.$el.children().detach();
 		}
 		this.categories.hide();
 		elapse.timeEnd('AppView.hide');

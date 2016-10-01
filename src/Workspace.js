@@ -1,4 +1,4 @@
-///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
+///<reference path="../typings/index.d.ts"/>
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -12,7 +12,7 @@ var CatPage_1 = require("./CatPage");
 var KeywordsView_1 = require("./KeywordsView");
 var CategoryCollection_1 = require("./Category/CategoryCollection");
 var KeywordCollection_1 = require("./KeywordCollection");
-var bb = require('backbone');
+var Backbone = require('backbone');
 var $ = require('jquery');
 // let _ = require('underscore');
 var Workspace = (function (_super) {
@@ -61,9 +61,8 @@ var Workspace = (function (_super) {
         this.activateMenu();
         if (!this.appPage) {
             this.appPage = new AppView_1["default"]({
-                collection: this.model,
-                categoryList: this.categoryList
-            });
+                collection: this.model
+            }, this.categoryList);
             this.appPage.table.keywords = this.keywords;
         }
         this.appPage.show();
@@ -124,7 +123,7 @@ var Workspace = (function (_super) {
         this.appPage.collection.trigger('change'); // slow!
     };
     return Workspace;
-}(bb.Router));
+}(Backbone.Router));
 exports.__esModule = true;
 exports["default"] = Workspace;
 //# sourceMappingURL=Workspace.js.map

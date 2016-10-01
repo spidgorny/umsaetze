@@ -1,4 +1,4 @@
-///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
+///<reference path="../typings/index.d.ts"/>
 
 import AppView from './AppView';
 import Sync from './Sync';
@@ -8,11 +8,11 @@ import KeywordsView from "./KeywordsView";
 import CategoryCollection from "./Category/CategoryCollection";
 import RouterOptions = Backbone.RouterOptions;
 import KeywordCollection from "./KeywordCollection";
-let bb = require('backbone');
+let Backbone = require('backbone');
 let $ = require('jquery');
 // let _ = require('underscore');
 
-export default class Workspace extends bb.Router {
+export default class Workspace extends Backbone.Router {
 
 	routes = {
 		"":             			"AppView",
@@ -70,8 +70,7 @@ export default class Workspace extends bb.Router {
 		if (!this.appPage) {
 			this.appPage = new AppView({
 				collection: this.model,
-				categoryList: this.categoryList,
-			});
+			}, this.categoryList);
 			this.appPage.table.keywords = this.keywords;
 		}
 		this.appPage.show();
