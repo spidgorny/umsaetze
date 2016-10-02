@@ -22,6 +22,7 @@ var SummaryView = (function (_super) {
         $.get(href).then(function (result) {
             //console.log(result);
             _this.template = Handlebars.compile(result);
+            console.log(_this.template);
             _this.render();
         });
     }
@@ -37,20 +38,40 @@ var SummaryView = (function (_super) {
             var monthlyTotals = _this.expenses.getMonthlyTotalsFor(category);
             var averageAmountPerMonth = category.getAverageAmountPerMonth(monthlyTotals);
             months = Object.keys(monthlyTotals);
+            monthlyTotals = _.map(monthlyTotals, function (el, key) {
+                var _a = key.split('-'), year = _a[0], month = _a[1];
+                // console.log(key, year, month);
+                return {
+                    year: year,
+                    month: month,
+                    categoryName: category.getName(),
+                    value: el
+                };
+            });
             categoryOptions.push({
-                catName: category.get('catName'),
+                catName: category.getName(),
                 background: category.get('color'),
                 id: category.cid,
                 average: averageAmountPerMonth,
                 perMonth: monthlyTotals
             });
         });
+        var sumAverages = categoryOptions.reduce(function (current, b) {
+            console.log(current, b);
+            return current + parseFloat(b.average);
+        }, 0);
+        console.log('sumAverages', sumAverages);
+        _.each(categoryOptions, function (el) {
+            el.perCent = (el.average / sumAverages * 100).toFixed(2);
+            console.log(el.catName, el.perCent);
+        });
         categoryOptions = _.sortBy(categoryOptions, 'catName');
-        this.$el.html(this.template({
+        var content = this.template({
             categoryOptions: categoryOptions,
             count: this.collection.size(),
             months: months
-        }));
+        });
+        this.$el.html(content);
         return this;
     };
     return SummaryView;

@@ -135,6 +135,8 @@ var Workspace = (function (_super) {
                 collection: this.categoryList
             }, this.model);
         }
+        $('#pieChart').hide();
+        $('#categories').hide();
         this.summaryPage.render();
     };
     return Workspace;

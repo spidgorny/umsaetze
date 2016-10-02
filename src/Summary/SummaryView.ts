@@ -26,6 +26,7 @@ export default class SummaryView extends Backbone.View<CategoryCollection> {
 		$.get(href).then((result) => {
 			//console.log(result);
 			this.template = Handlebars.compile(result);
+			console.log(this.template);
 			this.render();
 		});
 	}
@@ -42,20 +43,41 @@ export default class SummaryView extends Backbone.View<CategoryCollection> {
 			let monthlyTotals = this.expenses.getMonthlyTotalsFor(category);
 			let averageAmountPerMonth = category.getAverageAmountPerMonth(monthlyTotals);
 			months = Object.keys(monthlyTotals);
+			monthlyTotals = _.map(monthlyTotals, (el, key) => {
+				let [year, month] = key.split('-');
+				// console.log(key, year, month);
+				return {
+					year: year,
+					month: month,
+					categoryName: category.getName(),
+					value: el,
+				}
+			});
 			categoryOptions.push({
-				catName: category.get('catName'),
+				catName: category.getName(),
 				background: category.get('color'),
 				id: category.cid,
 				average: averageAmountPerMonth,
 				perMonth: monthlyTotals,
 			});
 		});
+
+		let sumAverages = categoryOptions.reduce(function(current, b) {
+			console.log(current, b);
+			return current + parseFloat(b.average);
+		}, 0);
+		console.log('sumAverages', sumAverages);
+		_.each(categoryOptions, (el) => {
+			el.perCent = (el.average / sumAverages * 100).toFixed(2);
+			console.log(el.catName, el.perCent);
+		});
 		categoryOptions = _.sortBy(categoryOptions, 'catName');
-		this.$el.html(this.template({
+		let content = this.template({
 			categoryOptions: categoryOptions,
 			count: this.collection.size(),
 			months: months,
-		}));
+		});
+		this.$el.html(content);
 
 		return this;
 	}

@@ -151,6 +151,8 @@ export default class Workspace extends Backbone.Router {
 				collection: this.categoryList
 			}, this.model);
 		}
+		$('#pieChart').hide();
+		$('#categories').hide();
 		this.summaryPage.render();
 	}
 
