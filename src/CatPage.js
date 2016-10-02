@@ -11,6 +11,7 @@ var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
 var Chart = require('chart.js');
+var toastr = require('toastr');
 Object.values = function (obj) { return Object.keys(obj).map(function (key) { return obj[key]; }); };
 var CatPage = (function (_super) {
     __extends(CatPage, _super);
@@ -70,6 +71,8 @@ var CatPage = (function (_super) {
             this.$el.on('change', 'input[type="color"]', this.selectColor.bind(this));
             this.$('button.close').on('click', this.deleteCategory.bind(this));
             this.$('#categoryCount').html(this.categoryList.size());
+            this.$('.inlineEdit').data('callback', this.renameCategory.bind(this));
+            ;
             this.renderSparkLines();
         }
         else {
@@ -199,6 +202,23 @@ var CatPage = (function (_super) {
             setTimeout(function () {
                 chart.resize();
             }, 1000);
+        }
+    };
+    CatPage.prototype.renameCategory = function (event, container, newName) {
+        console.log('Rename', newName);
+        var id = container.closest('tr').attr('data-id');
+        var category = this.categoryList.get(id);
+        console.log(id, category);
+        if (category) {
+            var oldName = category.getName();
+            if (this.categoryList.exists(newName)) {
+                toastr.error('This category name is duplicate');
+                container.find('span').text(oldName);
+            }
+            else {
+                category.set('catName', newName);
+                this.collection.replaceCategory(oldName, newName);
+            }
         }
     };
     return CatPage;

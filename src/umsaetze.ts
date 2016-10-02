@@ -41,6 +41,29 @@ $(function() {
 
 	Backbone.history.start();
 	// console.log(start);
+
+	$(document).on('click', '.inlineEdit span', (event) => {
+		let span = $(event.target);
+		let container = span.parent();
+		let input = container.find('input').show();
+		span.hide();
+		input.focus().val(span.text().trim());
+		input.keyup((event) => {
+			console.log(event.key);
+			if (event.keyCode === 13) {
+				$(event.target).blur();
+			}
+		});
+		input.blur((event) => {
+			span.html(input.val().trim());
+			input.hide();
+			span.show();
+			let callback = container.data('callback');
+			if (typeof callback == 'function') {
+				callback(event, container, container.text().trim());
+			}
+		});
+	});
 });
 
 // only run this once

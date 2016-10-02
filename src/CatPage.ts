@@ -9,6 +9,7 @@ const Backbone = require('backbone');
 const $ = require('jquery');
 const _ = require('underscore');
 const Chart = require('chart.js');
+const toastr = require('toastr');
 
 Object.values = obj => Object.keys(obj).map(key => obj[key]);
 
@@ -79,6 +80,7 @@ export default class CatPage extends Backbone.View<Transaction> {
 			this.$el.on('change', 'input[type="color"]', this.selectColor.bind(this));
 			this.$('button.close').on('click', this.deleteCategory.bind(this));
 			this.$('#categoryCount').html(this.categoryList.size());
+			this.$('.inlineEdit').data('callback', this.renameCategory.bind(this)));
 			this.renderSparkLines();
 		} else {
 			this.$el.html('Loading...');
@@ -215,6 +217,23 @@ export default class CatPage extends Backbone.View<Transaction> {
 			setTimeout(() => {
 				chart.resize();
 			}, 1000);
+		}
+	}
+
+	renameCategory(event, container, newName) {
+		console.log('Rename', newName);
+		let id = container.closest('tr').attr('data-id');
+		let category: CategoryCount = this.categoryList.get(id);
+		console.log(id, category);
+		if (category) {
+			let oldName = category.getName();
+			if (this.categoryList.exists(newName)) {
+				toastr.error('This category name is duplicate');
+				container.find('span').text(oldName);
+			} else {
+				category.set('catName', newName);
+				this.collection.replaceCategory(oldName, newName);
+			}
 		}
 	}
 

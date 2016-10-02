@@ -165,4 +165,10 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 		return color;
 	}
 
+	exists(newName) {
+		return !!this.findWhere({
+			catName: newName,
+		});
+	}
+
 }

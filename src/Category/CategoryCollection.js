@@ -146,6 +146,11 @@ var CategoryCollection = (function (_super) {
         }
         return color;
     };
+    CategoryCollection.prototype.exists = function (newName) {
+        return !!this.findWhere({
+            catName: newName
+        });
+    };
     return CategoryCollection;
 }(Backbone.Collection));
 exports.__esModule = true;

@@ -246,6 +246,13 @@ var Expenses = (function (_super) {
         category.set('count', count, { silent: true });
         return sparks;
     };
+    Expenses.prototype.replaceCategory = function (oldName, newName) {
+        this.each(function (transaction) {
+            if (transaction.get('category') == oldName) {
+                transaction.set('category', newName, { silent: true });
+            }
+        });
+    };
     return Expenses;
 }(bb.Collection));
 exports.__esModule = true;

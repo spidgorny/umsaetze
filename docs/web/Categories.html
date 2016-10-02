@@ -27,7 +27,10 @@
 	<tbody>
 		{{#each categoryOptions}}
 			<tr style="background-color: {{background}}" data-id="{{id}}">
-				<td>{{catName}}</td>
+				<td class="inlineEdit">
+					<span>{{catName}}</span>
+					<input style="display: none" />
+				</td>
 				<td>
 					<canvas width="100%" height="100" class="sparkline"
 							data-chart_values="{{sparkline}}"

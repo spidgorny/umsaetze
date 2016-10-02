@@ -11,13 +11,13 @@ let elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
-let toastr = require('toastr');
-let chance = require('chance').Chance();
-let Papa = require('papaparse');
-let bb = require('backbone');
-let bbls = require('backbone.localstorage');
-let $ = require('jquery');
-let _ = require('underscore');
+const toastr = require('toastr');
+const chance = require('chance').Chance();
+const Papa = require('papaparse');
+const bb = require('backbone');
+const bbls = require('backbone.localstorage');
+const $ = require('jquery');
+const _ = require('underscore');
 
 export default class Sync extends bb.View<any> {
 

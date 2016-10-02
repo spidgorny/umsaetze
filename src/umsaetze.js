@@ -38,6 +38,28 @@ $(function () {
     // console.log(ws);
     Backbone.history.start();
     // console.log(start);
+    $(document).on('click', '.inlineEdit span', function (event) {
+        var span = $(event.target);
+        var container = span.parent();
+        var input = container.find('input').show();
+        span.hide();
+        input.focus().val(span.text().trim());
+        input.keyup(function (event) {
+            console.log(event.key);
+            if (event.keyCode === 13) {
+                $(event.target).blur();
+            }
+        });
+        input.blur(function (event) {
+            span.html(input.val().trim());
+            input.hide();
+            span.show();
+            var callback = container.data('callback');
+            if (typeof callback == 'function') {
+                callback(event, container, container.text().trim());
+            }
+        });
+    });
 });
 // only run this once
 // import ImportKeywords from './ImportKeywords';

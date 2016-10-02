@@ -260,4 +260,13 @@ export default class Expenses extends bb.Collection<Transaction> {
 		category.set('count', count, { silent: true });
 		return sparks;
 	}
+
+	replaceCategory(oldName, newName) {
+		this.each((transaction: Transaction) => {
+			if (transaction.get('category') == oldName) {
+				transaction.set('category', newName, {silent: true});
+			}
+		});
+	}
+
 }
