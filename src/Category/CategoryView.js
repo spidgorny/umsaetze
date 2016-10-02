@@ -90,9 +90,11 @@ var CategoryView = (function (_super) {
         var data = [];
         var colors = [];
         this.model.each(function (cat) {
-            labels.push(cat.get('catName'));
-            data.push(Math.abs(cat.getAmount()));
-            colors.push(cat.get('color'));
+            if (cat.getName() != 'Income') {
+                labels.push(cat.get('catName'));
+                data.push(Math.abs(cat.getAmount()));
+                colors.push(cat.get('color'));
+            }
         });
         var data = {
             labels: labels,

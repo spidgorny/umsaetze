@@ -110,9 +110,11 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 		let data = [];
 		let colors = [];
 		this.model.each((cat: CategoryCount) => {
-			labels.push(cat.get('catName'));
-			data.push(Math.abs(cat.getAmount()));
-			colors.push(cat.get('color'));
+			if (cat.getName() != 'Income') {
+				labels.push(cat.get('catName'));
+				data.push(Math.abs(cat.getAmount()));
+				colors.push(cat.get('color'));
+			}
 		});
 		let data = {
 			labels: labels,
