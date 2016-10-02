@@ -1,3 +1,4 @@
+///<reference path="../../typings/index.d.ts"/>
 ///<reference path="../../node_modules/backbone-typings/backbone.d.ts"/>
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {

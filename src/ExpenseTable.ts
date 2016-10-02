@@ -3,8 +3,8 @@
 import Expenses from "./Expenses";
 import Transaction from "./Transaction";
 import CategoryCollection from "./Category/CategoryCollection";
-import KeywordCollection from "./KeywordCollection";
-import Keyword from "./Keyword";
+import KeywordCollection from "./Keyword/KeywordCollection";
+import Keyword from "./Keyword/Keyword";
 import {debug} from "./umsaetze";
 const elapse = require('elapse');
 elapse.configure({

@@ -4,10 +4,11 @@ import AppView from './AppView';
 import Sync from './Sync';
 import Expenses from "./Expenses";
 import CatPage from "./CatPage";
-import KeywordsView from "./KeywordsView";
+import KeywordsView from "./Keyword/KeywordsView";
 import CategoryCollection from "./Category/CategoryCollection";
 import RouterOptions = Backbone.RouterOptions;
-import KeywordCollection from "./KeywordCollection";
+import KeywordCollection from "./Keyword/KeywordCollection";
+import SummaryView from "./Summary/SummaryView";
 let Backbone = require('backbone');
 let $ = require('jquery');
 // let _ = require('underscore');
@@ -21,6 +22,7 @@ export default class Workspace extends Backbone.Router {
 		"CatPage":					"CatPage",
 		"Sync":         			"Sync",
 		"Keywords":     			"Keywords",
+		"Summary": 	    			"Summary",
 	};
 
 	model: Expenses;
@@ -31,6 +33,7 @@ export default class Workspace extends Backbone.Router {
 	syncPage: Sync;
 	catPage: CatPage;
 	keywordsPage: KeywordsView;
+	summaryPage: SummaryView;
 
 	constructor(options?: RouterOptions) {
 		super(options);
@@ -135,6 +138,20 @@ export default class Workspace extends Backbone.Router {
 		this.appPage.collection.filterByCategory(cat);
 		this.appPage.collection.trigger('change');	// slow!
 
+	}
+
+	Summary() {
+		console.log('Summary');
+		this.activateMenu();
+		if (this.appPage) {
+			this.appPage.hide();
+		}
+		if (!this.summaryPage) {
+			this.summaryPage = new SummaryView({
+				collection: this.categoryList
+			}, this.model);
+		}
+		this.summaryPage.render();
 	}
 
 }

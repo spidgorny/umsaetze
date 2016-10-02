@@ -1,0 +1,28 @@
+<h2>
+	Summary
+	<span class="badge" id="categoryCount">{{count}}</span>
+</h2>
+<table class="table">
+	<thead>
+	<tr>
+		<th>Category</th>
+		<th class="text-right">Average</th>
+		<th class="text-right">in %</th>
+		{{#each months}}
+			<th class="text-right">{{this}}</th>
+		{{/each}}
+	</tr>
+	</thead>
+	<tbody>
+	{{#each categoryOptions}}
+	<tr style="background-color: {{background}}" data-id="{{id}}">
+		<td>{{catName}}</td>
+		<td class="text-right">{{average}}</td>
+		<td class="text-right">{{in_percent}}</td>
+		{{#each perMonth}}
+			<td>{{this}}</td>
+		{{/each}}
+	</tr>
+	{{/each}}
+	</tbody>
+</table>

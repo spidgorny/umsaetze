@@ -9,9 +9,10 @@ var AppView_1 = require('./AppView');
 var Sync_1 = require('./Sync');
 var Expenses_1 = require("./Expenses");
 var CatPage_1 = require("./CatPage");
-var KeywordsView_1 = require("./KeywordsView");
+var KeywordsView_1 = require("./Keyword/KeywordsView");
 var CategoryCollection_1 = require("./Category/CategoryCollection");
-var KeywordCollection_1 = require("./KeywordCollection");
+var KeywordCollection_1 = require("./Keyword/KeywordCollection");
+var SummaryView_1 = require("./Summary/SummaryView");
 var Backbone = require('backbone');
 var $ = require('jquery');
 // let _ = require('underscore');
@@ -25,7 +26,8 @@ var Workspace = (function (_super) {
             ":year/:month/:category": "MonthSelectCategory",
             "CatPage": "CatPage",
             "Sync": "Sync",
-            "Keywords": "Keywords"
+            "Keywords": "Keywords",
+            "Summary": "Summary"
         };
         this.keywords = new KeywordCollection_1["default"]();
         this._bindRoutes();
@@ -121,6 +123,19 @@ var Workspace = (function (_super) {
         console.log('MonthSelectCategory cat', cat);
         this.appPage.collection.filterByCategory(cat);
         this.appPage.collection.trigger('change'); // slow!
+    };
+    Workspace.prototype.Summary = function () {
+        console.log('Summary');
+        this.activateMenu();
+        if (this.appPage) {
+            this.appPage.hide();
+        }
+        if (!this.summaryPage) {
+            this.summaryPage = new SummaryView_1["default"]({
+                collection: this.categoryList
+            }, this.model);
+        }
+        this.summaryPage.render();
     };
     return Workspace;
 }(Backbone.Router));
