@@ -242,7 +242,7 @@ var Expenses = (function (_super) {
         for (var month = from; month.compareTo(till) == -1; month.addMonths(1)) {
             _loop_1(month);
         }
-        console.log(category.getName(), count);
+        //console.log(category.getName(), count);
         category.set('count', count, { silent: true });
         return sparks;
     };

@@ -18,30 +18,42 @@ var SummaryView = (function (_super) {
         this.setElement($('#app'));
         var importTag = $('#SummaryPage'); // <import>
         var href = importTag.prop('href');
-        console.log(importTag, href);
+        //console.log(importTag, href);
         $.get(href).then(function (result) {
             //console.log(result);
             _this.template = Handlebars.compile(result);
-            console.log(_this.template);
+            //console.log(this.template);
             _this.render();
         });
     }
     SummaryView.prototype.render = function () {
-        var _this = this;
         if (!this.template) {
             this.$el.html('Loading...');
             return this;
         }
-        var months = [];
+        var categoryOptions = this.getCategoriesWithTotals();
+        var months = _.pluck(categoryOptions[0].perMonth, 'year-month');
+        categoryOptions = this.setPerCent(categoryOptions);
+        categoryOptions = _.sortBy(categoryOptions, 'catName');
+        var content = this.template({
+            categoryOptions: categoryOptions,
+            count: this.collection.size(),
+            months: months
+        });
+        this.$el.html(content);
+        return this;
+    };
+    SummaryView.prototype.getCategoriesWithTotals = function () {
+        var _this = this;
         var categoryOptions = [];
         this.collection.each(function (category) {
             var monthlyTotals = _this.expenses.getMonthlyTotalsFor(category);
             var averageAmountPerMonth = category.getAverageAmountPerMonth(monthlyTotals);
-            months = Object.keys(monthlyTotals);
             monthlyTotals = _.map(monthlyTotals, function (el, key) {
                 var _a = key.split('-'), year = _a[0], month = _a[1];
                 // console.log(key, year, month);
                 return {
+                    'year-month': year + '-' + month,
                     year: year,
                     month: month,
                     categoryName: category.getName(),
@@ -56,23 +68,19 @@ var SummaryView = (function (_super) {
                 perMonth: monthlyTotals
             });
         });
+        return categoryOptions;
+    };
+    SummaryView.prototype.setPerCent = function (categoryOptions) {
         var sumAverages = categoryOptions.reduce(function (current, b) {
-            console.log(current, b);
+            //console.log(current, b);
             return current + parseFloat(b.average);
         }, 0);
         console.log('sumAverages', sumAverages);
         _.each(categoryOptions, function (el) {
             el.perCent = (el.average / sumAverages * 100).toFixed(2);
-            console.log(el.catName, el.perCent);
+            //console.log(el.catName, el.perCent);
         });
-        categoryOptions = _.sortBy(categoryOptions, 'catName');
-        var content = this.template({
-            categoryOptions: categoryOptions,
-            count: this.collection.size(),
-            months: months
-        });
-        this.$el.html(content);
-        return this;
+        return categoryOptions;
     };
     return SummaryView;
 }(Backbone.View));

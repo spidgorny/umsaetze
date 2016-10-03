@@ -256,7 +256,7 @@ export default class Expenses extends bb.Collection<Transaction> {
 			});
 			sparks[month.toString('yyyy-MM')] = Math.abs(sum).toFixed(2);
 		}
-		console.log(category.getName(), count);
+		//console.log(category.getName(), count);
 		category.set('count', count, { silent: true });
 		return sparks;
 	}

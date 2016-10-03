@@ -28,6 +28,9 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 		let ls = new bbls('Categories');
 		//this.colors = simpleStorage.get('CategoryColors');
 		let models = ls.findAll();
+		models = _.uniq(models, false, (e1) => {
+			return e1.catName;
+		});
 		//console.log('categories in LS', models);
 
 		//this.add(models);	// makes Backbone.Model instances
@@ -64,13 +67,26 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 
 	saveToLS() {
 		let ls = new bbls('Categories');
+		let deleteMe = ls.findAll();
+		// console.log('saveToLS', deleteMe.length);
 		this.each((model: CategoryCount) => {
 			if (model.get('id')) {
 				ls.update(model);
+				//deleteMe = _.without(deleteMe, _.findWhere(deleteMe, { id: model.get('id') }))
+				let findIndex = _.findIndex(deleteMe, { id: model.get('id') });
+				if (findIndex > -1) {
+					deleteMe.splice(findIndex, 1);
+				}
 			} else {
 				ls.create(model);
 			}
 		});
+		if (deleteMe.length) {
+			//console.log(deleteMe.length, _.pluck(deleteMe, 'id'), _.pluck(deleteMe, 'catName'));
+			_.each(deleteMe, (el) => {
+				ls.destroy(el);
+			})
+		}
 	}
 
 	resetCounters() {

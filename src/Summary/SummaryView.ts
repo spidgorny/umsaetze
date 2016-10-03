@@ -22,11 +22,11 @@ export default class SummaryView extends Backbone.View<CategoryCollection> {
 		this.setElement($('#app'));
 		let importTag = $('#SummaryPage');	// <import>
 		let href = importTag.prop('href');
-		console.log(importTag, href);
+		//console.log(importTag, href);
 		$.get(href).then((result) => {
 			//console.log(result);
 			this.template = Handlebars.compile(result);
-			console.log(this.template);
+			//console.log(this.template);
 			this.render();
 		});
 	}
@@ -36,17 +36,30 @@ export default class SummaryView extends Backbone.View<CategoryCollection> {
 			this.$el.html('Loading...');
 			return this;
 		}
+		let categoryOptions = this.getCategoriesWithTotals();
+		let months = _.pluck(categoryOptions[0].perMonth, 'year-month');
+		categoryOptions = this.setPerCent(categoryOptions);
+		categoryOptions = _.sortBy(categoryOptions, 'catName');
+		let content = this.template({
+			categoryOptions: categoryOptions,
+			count: this.collection.size(),
+			months: months,
+		});
+		this.$el.html(content);
 
-		let months = [];
+		return this;
+	}
+
+	private getCategoriesWithTotals() {
 		let categoryOptions = [];
 		this.collection.each((category: CategoryCount) => {
 			let monthlyTotals = this.expenses.getMonthlyTotalsFor(category);
 			let averageAmountPerMonth = category.getAverageAmountPerMonth(monthlyTotals);
-			months = Object.keys(monthlyTotals);
 			monthlyTotals = _.map(monthlyTotals, (el, key) => {
 				let [year, month] = key.split('-');
 				// console.log(key, year, month);
 				return {
+					'year-month': year+'-'+month,
 					year: year,
 					month: month,
 					categoryName: category.getName(),
@@ -61,25 +74,20 @@ export default class SummaryView extends Backbone.View<CategoryCollection> {
 				perMonth: monthlyTotals,
 			});
 		});
+		return categoryOptions;
+	}
 
-		let sumAverages = categoryOptions.reduce(function(current, b) {
-			console.log(current, b);
+	private setPerCent(categoryOptions: Array) {
+		let sumAverages = categoryOptions.reduce(function (current, b) {
+			//console.log(current, b);
 			return current + parseFloat(b.average);
 		}, 0);
 		console.log('sumAverages', sumAverages);
 		_.each(categoryOptions, (el) => {
 			el.perCent = (el.average / sumAverages * 100).toFixed(2);
-			console.log(el.catName, el.perCent);
+			//console.log(el.catName, el.perCent);
 		});
-		categoryOptions = _.sortBy(categoryOptions, 'catName');
-		let content = this.template({
-			categoryOptions: categoryOptions,
-			count: this.collection.size(),
-			months: months,
-		});
-		this.$el.html(content);
-
-		return this;
+		return categoryOptions;
 	}
 
 }

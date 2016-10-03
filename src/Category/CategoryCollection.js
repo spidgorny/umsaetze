@@ -25,6 +25,9 @@ var CategoryCollection = (function (_super) {
         var ls = new bbls('Categories');
         //this.colors = simpleStorage.get('CategoryColors');
         var models = ls.findAll();
+        models = _.uniq(models, false, function (e1) {
+            return e1.catName;
+        });
         //console.log('categories in LS', models);
         //this.add(models);	// makes Backbone.Model instances
         _.each(models, function (m) {
@@ -51,14 +54,27 @@ var CategoryCollection = (function (_super) {
     };
     CategoryCollection.prototype.saveToLS = function () {
         var ls = new bbls('Categories');
+        var deleteMe = ls.findAll();
+        // console.log('saveToLS', deleteMe.length);
         this.each(function (model) {
             if (model.get('id')) {
                 ls.update(model);
+                //deleteMe = _.without(deleteMe, _.findWhere(deleteMe, { id: model.get('id') }))
+                var findIndex = _.findIndex(deleteMe, { id: model.get('id') });
+                if (findIndex > -1) {
+                    deleteMe.splice(findIndex, 1);
+                }
             }
             else {
                 ls.create(model);
             }
         });
+        if (deleteMe.length) {
+            //console.log(deleteMe.length, _.pluck(deleteMe, 'id'), _.pluck(deleteMe, 'catName'));
+            _.each(deleteMe, function (el) {
+                ls.destroy(el);
+            });
+        }
     };
     CategoryCollection.prototype.resetCounters = function () {
         this.each(function (row) {

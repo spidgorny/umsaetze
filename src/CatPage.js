@@ -218,6 +218,7 @@ var CatPage = (function (_super) {
             else {
                 category.set('catName', newName);
                 this.collection.replaceCategory(oldName, newName);
+                this.collection.saveToLS();
             }
         }
     };

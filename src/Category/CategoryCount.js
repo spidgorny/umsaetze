@@ -15,11 +15,12 @@ var CategoryCount = (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i - 0] = arguments[_i];
         }
-        _super.call(this, args);
+        _super.call(this);
         this.set('catName', args[0].catName); // this should not be necessary but it is
         this.set('color', args[0].color); // this should not be necessary but it is
         this.set('count', args[0].count); // this should not be necessary but it is
         this.set('amount', args[0].amount); // this should not be necessary but it is
+        this.set('id', args[0].id); // this should not be necessary but it is
         //this.listenTo(this, 'change', this.saveToLS);
         var color = this.get('color');
         if (!color) {

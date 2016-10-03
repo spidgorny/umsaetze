@@ -233,6 +233,7 @@ export default class CatPage extends Backbone.View<Transaction> {
 			} else {
 				category.set('catName', newName);
 				this.collection.replaceCategory(oldName, newName);
+				this.collection.saveToLS();
 			}
 		}
 	}
