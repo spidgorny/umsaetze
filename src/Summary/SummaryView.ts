@@ -4,6 +4,7 @@
 import CategoryCollection from "../Category/CategoryCollection";
 import CategoryCount from "../Category/CategoryCount";
 import Expenses from "../Expenses";
+import SummaryLine from "./SummaryLine";
 const Handlebars = require('handlebars');
 const Backbone: any = require('backbone');
 const _ = require('underscore');
@@ -40,6 +41,7 @@ export default class SummaryView extends Backbone.View<CategoryCollection> {
 		let months = _.pluck(categoryOptions[0].perMonth, 'year-month');
 		categoryOptions = this.setPerCent(categoryOptions);
 		categoryOptions = _.sortBy(categoryOptions, 'catName');
+		categoryOptions = this.addCategoryTotals(categoryOptions);
 		let content = this.template({
 			categoryOptions: categoryOptions,
 			count: this.collection.size(),
@@ -66,13 +68,13 @@ export default class SummaryView extends Backbone.View<CategoryCollection> {
 					value: el,
 				}
 			});
-			categoryOptions.push({
+			categoryOptions.push(new SummaryLine({
 				catName: category.getName(),
 				background: category.get('color'),
 				id: category.cid,
 				average: averageAmountPerMonth,
 				perMonth: monthlyTotals,
-			});
+			}));
 		});
 		return categoryOptions;
 	}
@@ -87,6 +89,37 @@ export default class SummaryView extends Backbone.View<CategoryCollection> {
 			el.perCent = (el.average / sumAverages * 100).toFixed(2);
 			//console.log(el.catName, el.perCent);
 		});
+		return categoryOptions;
+	}
+
+	private addCategoryTotals(categoryOptions: Array) {
+		let groupByCategory = {};
+		_.each(categoryOptions, el => {
+			let [category, specifics] = el.catName.split(':');
+			category = category.trim();
+			if (!groupByCategory[category]) {
+				groupByCategory[category] = [];
+			}
+			groupByCategory[category].push(el);
+		});
+		console.log(groupByCategory);
+
+		// step 2
+		_.each(groupByCategory, (set, setName) => {
+			if (set.length > 1) {
+				let newCat = new SummaryLine({
+					catName: setName + ' [' + set.length + ']',
+					background: '#FF8800',
+				});
+				_.each(set, (el) => {
+					newCat.combine(el);
+				});
+				newCat.average = newCat.average.toFixed(2);
+				newCat.perCent = newCat.perCent.toFixed(2);
+				categoryOptions.push(newCat);
+			}
+		});
+		categoryOptions = _.sortBy(categoryOptions, 'catName');
 		return categoryOptions;
 	}
 

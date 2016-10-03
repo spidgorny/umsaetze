@@ -83,4 +83,5 @@ export default class CategoryCount extends Backbone.Model {
 		//console.log(totals, sum, avg);
 		return avg.toFixed(2);
 	}
+
 }

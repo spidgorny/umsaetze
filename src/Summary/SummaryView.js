@@ -6,6 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var SummaryLine_1 = require("./SummaryLine");
 var Handlebars = require('handlebars');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -35,6 +36,7 @@ var SummaryView = (function (_super) {
         var months = _.pluck(categoryOptions[0].perMonth, 'year-month');
         categoryOptions = this.setPerCent(categoryOptions);
         categoryOptions = _.sortBy(categoryOptions, 'catName');
+        categoryOptions = this.addCategoryTotals(categoryOptions);
         var content = this.template({
             categoryOptions: categoryOptions,
             count: this.collection.size(),
@@ -60,13 +62,13 @@ var SummaryView = (function (_super) {
                     value: el
                 };
             });
-            categoryOptions.push({
+            categoryOptions.push(new SummaryLine_1["default"]({
                 catName: category.getName(),
                 background: category.get('color'),
                 id: category.cid,
                 average: averageAmountPerMonth,
                 perMonth: monthlyTotals
-            });
+            }));
         });
         return categoryOptions;
     };
@@ -80,6 +82,35 @@ var SummaryView = (function (_super) {
             el.perCent = (el.average / sumAverages * 100).toFixed(2);
             //console.log(el.catName, el.perCent);
         });
+        return categoryOptions;
+    };
+    SummaryView.prototype.addCategoryTotals = function (categoryOptions) {
+        var groupByCategory = {};
+        _.each(categoryOptions, function (el) {
+            var _a = el.catName.split(':'), category = _a[0], specifics = _a[1];
+            category = category.trim();
+            if (!groupByCategory[category]) {
+                groupByCategory[category] = [];
+            }
+            groupByCategory[category].push(el);
+        });
+        console.log(groupByCategory);
+        // step 2
+        _.each(groupByCategory, function (set, setName) {
+            if (set.length > 1) {
+                var newCat_1 = new SummaryLine_1["default"]({
+                    catName: setName + ' [' + set.length + ']',
+                    background: '#FF8800'
+                });
+                _.each(set, function (el) {
+                    newCat_1.combine(el);
+                });
+                newCat_1.average = newCat_1.average.toFixed(2);
+                newCat_1.perCent = newCat_1.perCent.toFixed(2);
+                categoryOptions.push(newCat_1);
+            }
+        });
+        categoryOptions = _.sortBy(categoryOptions, 'catName');
         return categoryOptions;
     };
     return SummaryView;
