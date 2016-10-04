@@ -30,6 +30,7 @@ var Collection = (function (_super) {
     };
     Collection.prototype.save = function () {
         simpleStorage.set(this.name, this.models);
+        console.log(this.name + ' saved ' + this.size() + ' records');
     };
     Collection.prototype.each = function (callback) {
         this.models.forEach(function (el) {
