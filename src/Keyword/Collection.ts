@@ -1,7 +1,7 @@
-///<reference path="../typings/index.d.ts"/>
+/// <reference path="../../typings/index.d.ts"/>
 const simpleStorage = require('simpleStorage.js');
 
-export default class Collection {
+export default class Collection extends Array {
 
 	name: string;
 
@@ -10,6 +10,7 @@ export default class Collection {
 	modelClass: any;
 
 	constructor() {
+		super(arguments);
 		this.name = this.constructor.name;
 	}
 
@@ -38,6 +39,14 @@ export default class Collection {
 			//console.log('each', el);
 			callback(el);
 		});
+	}
+
+	getJSON() {
+		return JSON.stringify(this.models, null, '\t');
+	}
+
+	size() {
+		return this.models.length;
 	}
 
 }

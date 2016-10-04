@@ -1,8 +1,15 @@
 "use strict";
-///<reference path="../typings/index.d.ts"/>
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+/// <reference path="../../typings/index.d.ts"/>
 var simpleStorage = require('simpleStorage.js');
-var Collection = (function () {
+var Collection = (function (_super) {
+    __extends(Collection, _super);
     function Collection() {
+        _super.call(this, arguments);
         this.models = [];
         this.name = this.constructor.name;
     }
@@ -30,8 +37,14 @@ var Collection = (function () {
             callback(el);
         });
     };
+    Collection.prototype.getJSON = function () {
+        return JSON.stringify(this.models, null, '\t');
+    };
+    Collection.prototype.size = function () {
+        return this.models.length;
+    };
     return Collection;
-}());
+}(Array));
 exports.__esModule = true;
 exports["default"] = Collection;
 //# sourceMappingURL=Collection.js.map

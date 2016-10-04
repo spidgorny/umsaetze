@@ -14,9 +14,6 @@ var KeywordCollection = (function (_super) {
         this.modelClass = Keyword_1["default"];
         this.fetch();
     }
-    KeywordCollection.prototype.getJSON = function () {
-        return JSON.stringify(this.models, null, '\t');
-    };
     return KeywordCollection;
 }(Collection_1["default"]));
 exports.__esModule = true;
