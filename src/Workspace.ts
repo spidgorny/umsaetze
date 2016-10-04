@@ -1,8 +1,8 @@
 ///<reference path="../typings/index.d.ts"/>
 
 import AppView from './AppView';
-import Sync from './Sync';
-import Expenses from "./Expenses";
+import Sync from './Sync/Sync';
+import Expenses from "./Expenses/Expenses";
 import CatPage from "./CatPage";
 import KeywordsView from "./Keyword/KeywordsView";
 import CategoryCollection from "./Category/CategoryCollection";

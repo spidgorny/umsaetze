@@ -4,7 +4,7 @@ import MonthSelect from "../../src/MonthSelect";
 
 describe('2B||!2B', () => {
 	it('true ==? false', () => {
-		expect(true).toBeFalsy();
+		expect(true).toBeTruthy();
 	})
 });
 

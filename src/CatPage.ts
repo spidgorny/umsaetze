@@ -1,7 +1,7 @@
 /// <reference path="../node_modules/backbone-typings/backbone.d.ts" />
 
-import Expenses from "./Expenses";
-import Transaction from "./Transaction";
+import Expenses from "./Expenses/Expenses";
+import Transaction from "./Expenses/Transaction";
 import CategoryCollection from "./Category/CategoryCollection";
 import CategoryCount from "./Category/CategoryCount";
 const Handlebars = require('handlebars');

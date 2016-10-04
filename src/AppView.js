@@ -4,7 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var ExpenseTable_1 = require("./ExpenseTable");
+var ExpenseTable_1 = require("./Expenses/ExpenseTable");
 var CategoryView_1 = require("./Category/CategoryView");
 var MonthSelect_1 = require("./MonthSelect");
 var umsaetze_1 = require("./umsaetze");

@@ -1,8 +1,8 @@
 /// <reference path="../../typings/index.d.ts" />
 
-import Transaction from "../Transaction";
+import Transaction from "../Expenses/Transaction";
 import CategoryCount from "./CategoryCount";
-import Expenses from "../Expenses";
+import Expenses from "../Expenses/Expenses";
 let elapse = require('elapse');
 elapse.configure({
 	debug: true

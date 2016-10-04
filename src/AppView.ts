@@ -1,10 +1,10 @@
-import Expenses from "./Expenses";
-import ExpenseTable from "./ExpenseTable";
+import Expenses from "./Expenses/Expenses";
+import ExpenseTable from "./Expenses/ExpenseTable";
 import CategoryCollection from "./Category/CategoryCollection";
 import CategoryView from "./Category/CategoryView";
 import MonthSelect from "./MonthSelect";
 import ViewOptions = Backbone.ViewOptions;
-import Transaction from "./Transaction";
+import Transaction from "./Expenses/Transaction";
 import {debug} from "./umsaetze";
 // import Backbone from 'backbone';
 let elapse = require('elapse');

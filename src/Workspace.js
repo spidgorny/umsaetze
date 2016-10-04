@@ -6,8 +6,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var AppView_1 = require('./AppView');
-var Sync_1 = require('./Sync');
-var Expenses_1 = require("./Expenses");
+var Sync_1 = require('./Sync/Sync');
+var Expenses_1 = require("./Expenses/Expenses");
 var CatPage_1 = require("./CatPage");
 var KeywordsView_1 = require("./Keyword/KeywordsView");
 var CategoryCollection_1 = require("./Category/CategoryCollection");

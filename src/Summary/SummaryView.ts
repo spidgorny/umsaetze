@@ -3,7 +3,7 @@
 
 import CategoryCollection from "../Category/CategoryCollection";
 import CategoryCount from "../Category/CategoryCount";
-import Expenses from "../Expenses";
+import Expenses from "../Expenses/Expenses";
 import SummaryLine from "./SummaryLine";
 const Handlebars = require('handlebars');
 const Backbone: any = require('backbone');

@@ -3,7 +3,7 @@
 
 import CategoryCollection from "./CategoryCollection";
 import CategoryCount from "./CategoryCount";
-import Expenses from "../Expenses";
+import Expenses from "../Expenses/Expenses";
 let elapse = require('elapse');
 elapse.configure({
 	debug: true

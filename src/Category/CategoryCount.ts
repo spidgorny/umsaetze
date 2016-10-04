@@ -1,6 +1,6 @@
 /// <reference path="../../typings/index.d.ts" />
 
-import Expenses from "../Expenses";
+import Expenses from "../Expenses/Expenses";
 let Backbone = require('backbone');
 // const bbls = require('backbone.localstorage');
 

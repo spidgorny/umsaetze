@@ -3,7 +3,7 @@
 var MonthSelect_1 = require("../../src/MonthSelect");
 describe('2B||!2B', function () {
     it('true ==? false', function () {
-        expect(true).toBeFalsy();
+        expect(true).toBeTruthy();
     });
 });
 describe('Month Select', function () {
