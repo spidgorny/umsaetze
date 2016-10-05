@@ -1,5 +1,7 @@
 /// <reference path="../../typings/index.d.ts" />
+/// <reference path="Table.ts" />
 
+import {start} from "repl";
 const Papa = require('papaparse');
 
 export default class ParseCSV {
@@ -17,22 +19,28 @@ export default class ParseCSV {
 			skipEmptyLines: true,
 			comments: "#",
 		});
+		console.log('rows after parse', csv.data.length);
 		csv.data = this.analyzeCSV(csv.data);
+		console.log('rows after analyze', csv.data.length);
 		csv.data = this.normalizeCSV(csv.data);
+		console.log('rows after normalize', csv.data.length);
 		//console.log(csv);
+		return csv.data;
 	}
 
 	/**
 	 * Some CSV files contain random data in the header
 	 */
-	private analyzeCSV(data: Array[]) {
+	private analyzeCSV(data: Table) {
 		let startIndex = 0;
 		data.forEach((row, i) => {
 			if (!row.length) {
 				startIndex = i+1;
 			}
 		});
+		console.log('slicing ', startIndex, 'first rows');
 		data = data.slice(startIndex);
+		console.log('first row', data[0]);
 		return data;
 	}
 
@@ -41,7 +49,12 @@ export default class ParseCSV {
 	 */
 	private normalizeCSV(data: any) {
 		console.log(data);
-		return [];
+		for (let i = 0; i < 5 && i < data.length; i++) {
+			let row = data[i];
+			console.log(i, row);
+
+		}
+		return data;
 	}
 
 }

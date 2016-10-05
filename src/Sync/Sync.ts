@@ -1,4 +1,5 @@
 ///<reference path="../../typings/index.d.ts"/>
+/// <reference path="Table.ts" />
 
 import Expenses from "../Expenses/Expenses";
 import Transaction from "../Expenses/Transaction";
@@ -26,8 +27,6 @@ export default class Sync extends Backbone.View<any> {
 	template;
 
 	model: Expenses;
-
-	csvUrl = '../umsaetze-1090729-2016-07-27-00-11-29.cat.csv';
 
 	slowUpdateLoadingBar: Function;
 
@@ -95,7 +94,6 @@ export default class Sync extends Backbone.View<any> {
 	}
 
 	loadSelectedFile(data: string) {
-		console.log('csvUrl', this.csvUrl);
 		this.startLoading();
 
 		let parser = new ParseCSV(data);
@@ -113,7 +111,7 @@ export default class Sync extends Backbone.View<any> {
 		}));
 	}
 
-	fetchCSV(csv: Array, options: PersistenceOptions) {
+	fetchCSV(csv: Table, options: PersistenceOptions) {
 		let processWithoutVisualFeedback = false;
 		if (processWithoutVisualFeedback) {
 			_.each(csv, this.processRow.bind(this));

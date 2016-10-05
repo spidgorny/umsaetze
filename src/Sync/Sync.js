@@ -1,4 +1,5 @@
 ///<reference path="../../typings/index.d.ts"/>
+/// <reference path="Table.ts" />
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -25,7 +26,6 @@ var Sync = (function (_super) {
         var _this = this;
         _super.call(this);
         this.$el = $('#app');
-        this.csvUrl = '../umsaetze-1090729-2016-07-27-00-11-29.cat.csv';
         this.localStorage = new bbls("Expenses");
         this.model = expenses;
         this.listenTo(this.model, 'change', this.render);
@@ -77,7 +77,6 @@ var Sync = (function (_super) {
     };
     Sync.prototype.loadSelectedFile = function (data) {
         var _this = this;
-        console.log('csvUrl', this.csvUrl);
         this.startLoading();
         var parser = new ParseCSV_1["default"](data);
         var csv = parser.parseAndNormalize();
