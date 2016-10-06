@@ -1,10 +1,16 @@
 /// <reference path="typings/index.d.ts" />
+// import sourceMapSupport from 'source-map-support';
+// sourceMapSupport.install();
+require('source-map-support').install();
 
 const util = require('util');
 const stream = require('stream');
 const fs = require('fs');
+// const parser = require('./src/Sync/ParseCSV.js');
+import ParseCSV from "./src/Sync/ParseCSV";
+const iconv = require('iconv-lite');
 
-function StringifyStream(){
+function StringifyStream() {
 	stream.Transform.call(this);
 
 	this._readableState.objectMode = false;
@@ -258,15 +264,29 @@ class SpardaBank {
 		return category;
 	}
 
+	startCategorize() {
+		sb.readExcelFile().then((categoryList) => {
+			console.log('categoryList', categoryList);
+			fs.writeFileSync('keywords.json', JSON.stringify(categoryList, '', '\n'));
+			sb.categorize(categoryList);
+			return true;
+		}).catch((e) => {
+			console.log('Promise error: ' + e);
+		});
+	}
+
+	testParser() {
+		console.log('Loading file...');
+		let data = fs.readFileSync('C:\\Users\\Slawa\\Downloads\\WebDev2012\\umsaetze\\umsaetze-1090729-2016-10-06-00-31-51.csv');
+		data = iconv.decode(data, "ISO-8859-1");
+		console.log('Loaded', data.length);
+		let parse = new ParseCSV(data);
+		parse.parseAndNormalize();
+	}
+
 }
 
-var sb = new SpardaBank();
+let sb = new SpardaBank();
 //sb.convertMoneyFormat();
-sb.readExcelFile().then((categoryList) => {
-	console.log('categoryList', categoryList);
-	fs.writeFileSync('keywords.json', JSON.stringify(categoryList, '', '\n'));
-	sb.categorize(categoryList);
-	return true;
-}).catch((e) => {
-	console.log('Promise error: ' + e);
-});
+// sb.startCategorize();
+sb.testParser();

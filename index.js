@@ -1,7 +1,14 @@
+"use strict";
 /// <reference path="typings/index.d.ts" />
+// import sourceMapSupport from 'source-map-support';
+// sourceMapSupport.install();
+require('source-map-support').install();
 var util = require('util');
 var stream = require('stream');
 var fs = require('fs');
+// const parser = require('./src/Sync/ParseCSV.js');
+var ParseCSV_1 = require("./src/Sync/ParseCSV");
+var iconv = require('iconv-lite');
 function StringifyStream() {
     stream.Transform.call(this);
     this._readableState.objectMode = false;
@@ -203,16 +210,28 @@ var SpardaBank = (function () {
         }
         return category;
     };
+    SpardaBank.prototype.startCategorize = function () {
+        sb.readExcelFile().then(function (categoryList) {
+            console.log('categoryList', categoryList);
+            fs.writeFileSync('keywords.json', JSON.stringify(categoryList, '', '\n'));
+            sb.categorize(categoryList);
+            return true;
+        }).catch(function (e) {
+            console.log('Promise error: ' + e);
+        });
+    };
+    SpardaBank.prototype.testParser = function () {
+        console.log('Loading file...');
+        var data = fs.readFileSync('C:\\Users\\Slawa\\Downloads\\WebDev2012\\umsaetze\\umsaetze-1090729-2016-10-06-00-31-51.csv');
+        data = iconv.decode(data, "ISO-8859-1");
+        console.log('Loaded', data.length);
+        var parse = new ParseCSV_1["default"](data);
+        parse.parseAndNormalize();
+    };
     return SpardaBank;
 }());
 var sb = new SpardaBank();
 //sb.convertMoneyFormat();
-sb.readExcelFile().then(function (categoryList) {
-    console.log('categoryList', categoryList);
-    fs.writeFileSync('keywords.json', JSON.stringify(categoryList, '', '\n'));
-    sb.categorize(categoryList);
-    return true;
-}).catch(function (e) {
-    console.log('Promise error: ' + e);
-});
+// sb.startCategorize();
+sb.testParser();
 //# sourceMappingURL=index.js.map
