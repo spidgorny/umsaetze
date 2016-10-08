@@ -37,7 +37,6 @@ var CategoryView = (function (_super) {
     CategoryView.prototype.render = function () {
         var _this = this;
         elapse.time('CategoryView.render');
-        var content = [];
         var categoryCount = this.model.toJSON();
         // remove income from %
         var incomeRow = _.findWhere(categoryCount, {
@@ -52,6 +51,7 @@ var CategoryView = (function (_super) {
         categoryCount = _.sortBy(categoryCount, function (el) {
             return Math.abs(el.amount);
         }).reverse();
+        var content = [];
         _.each(categoryCount, function (catCount) {
             var width = Math.round(100 * Math.abs(catCount.amount) / Math.abs(sum)) + '%';
             //console.log(catCount.catName, width, catCount.count, catCount.amount);
@@ -67,7 +67,7 @@ var CategoryView = (function (_super) {
         }
         this.$('.income').html(incomeRow.amount.toFixed(2));
         this.$('.total').html(sum.toFixed(2));
-        this.showPieChart();
+        this.showPieChart(Math.abs(sum));
         elapse.timeEnd('CategoryView.render');
         return this;
     };
@@ -86,22 +86,36 @@ var CategoryView = (function (_super) {
             console.error('Not rendering since this.model is undefined');
         }
     };
-    CategoryView.prototype.showPieChart = function () {
+    CategoryView.prototype.showPieChart = function (sum) {
         var labels = [];
-        var data = [];
         var colors = [];
+        var dataSet1 = [];
+        this.model.comparator = function (el) {
+            return -Math.abs(el.getAmount());
+        };
+        this.model.sort();
+        var rest = 0;
         this.model.each(function (cat) {
             if (cat.getName() != 'Income') {
-                labels.push(cat.get('catName'));
-                data.push(Math.abs(cat.getAmount()));
-                colors.push(cat.get('color'));
+                var amount = Math.abs(cat.getAmount());
+                var perCent = 100 * amount / sum;
+                if (perCent > 3) {
+                    labels.push(cat.get('catName'));
+                    dataSet1.push(amount);
+                    colors.push(cat.get('color'));
+                }
+                else {
+                    rest += amount;
+                }
             }
         });
+        labels.push('Rest');
+        dataSet1.push(rest.toFixed(2));
         var data = {
             labels: labels,
             datasets: [
                 {
-                    data: data,
+                    data: dataSet1,
                     backgroundColor: colors,
                     hoverBackgroundColor: colors,
                 }

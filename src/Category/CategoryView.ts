@@ -45,7 +45,6 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 
 	render() {
 		elapse.time('CategoryView.render');
-		let content = [];
 		let categoryCount = this.model.toJSON();
 
 		// remove income from %
@@ -65,6 +64,7 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 			return Math.abs(el.amount);
 		}).reverse();
 
+		let content = [];
 		_.each(categoryCount, (catCount: CategoryCount) => {
 			let width = Math.round(
 				100 * Math.abs(catCount.amount) / Math.abs(sum)
@@ -85,7 +85,7 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 		this.$('.income').html(incomeRow.amount.toFixed(2));
 		this.$('.total').html(sum.toFixed(2));
 
-		this.showPieChart();
+		this.showPieChart(Math.abs(sum));
 
 		elapse.timeEnd('CategoryView.render');
 		return this;
@@ -106,22 +106,37 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 		}
 	}
 
-	showPieChart() {
+	showPieChart(sum) {
 		let labels = [];
-		let data = [];
 		let colors = [];
+		let dataSet1 = [];
+		this.model.comparator = function (el: CategoryCount) {
+			return -Math.abs(el.getAmount());
+		};
+		this.model.sort();
+
+		let rest = 0;
 		this.model.each((cat: CategoryCount) => {
 			if (cat.getName() != 'Income') {
-				labels.push(cat.get('catName'));
-				data.push(Math.abs(cat.getAmount()));
-				colors.push(cat.get('color'));
+				let amount = Math.abs(cat.getAmount());
+				let perCent = 100 * amount / sum;
+				if (perCent > 3) {
+					labels.push(cat.get('catName'));
+					dataSet1.push(amount);
+					colors.push(cat.get('color'));
+				} else {
+					rest += amount;
+				}
 			}
 		});
+		labels.push('Rest');
+		dataSet1.push(rest.toFixed(2));
+
 		let data = {
 			labels: labels,
 			datasets: [
 				{
-					data: data,
+					data: dataSet1,
 					backgroundColor: colors,
 					hoverBackgroundColor: colors,
 				}

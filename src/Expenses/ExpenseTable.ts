@@ -90,7 +90,8 @@ export default class ExpenseTable extends Backbone.View<any> {
 		// does not work in Chrome
 		//this.$el.on('click', 'select', this.openSelect.bind(this));
 		this.$el.on('change', 'select', this.newCategory.bind(this));
-		this.$el.off().on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
+		//console.log('selects', this.$('select'));
+		this.$el.on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
 
 		elapse.timeEnd('ExpenseTable.render');
 		return this;
@@ -139,7 +140,7 @@ export default class ExpenseTable extends Backbone.View<any> {
 	}
 
 	newCategory(event) {
-		//console.log(event);
+		console.log('newCategory');
 		let $select = $(event.target);
 		//console.log('selected', $select.val());
 		let id = $select.closest('tr').attr('data-id');
