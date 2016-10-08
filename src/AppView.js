@@ -58,6 +58,8 @@ var AppView = (function (_super) {
             return;
         console.log('AppView.render()', this.collection.size());
         this.setTemplate();
+        this.collection.setAllVisible();
+        this.collection.filterByMonth();
         this.table.render();
         this.categories.render();
         this.$('#applyKeywords').on('click', this.applyKeywords.bind(this));

@@ -35,3 +35,15 @@ canvas {
 	-o-transition: height 1s;
 	transition: height 1s;
 }
+
+
+/**
+http://stackoverflow.com/questions/26632713/show-delete-button-on-right-side-of-bootstrap-row-on-hover
+*/
+.hover-btn button {
+	visibility: hidden;
+	font-size: 18px;
+}
+tr:hover .hover-btn button {
+	visibility: visible;
+}

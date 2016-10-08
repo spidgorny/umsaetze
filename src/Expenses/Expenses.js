@@ -144,6 +144,10 @@ var Expenses = (function (_super) {
         else if (this.selectedMonth) {
             selectedMonth = this.selectedMonth;
         }
+        else {
+            //throw new Error('filterByMonth no month defined');
+            this.ms;
+        }
         if (selectedMonth) {
             this.each(function (row) {
                 var tDate = row.get('date');
@@ -173,6 +177,7 @@ var Expenses = (function (_super) {
     Expenses.prototype.saveAll = function () {
         var _this = this;
         elapse.time('Expense.saveAll');
+        this.localStorage._clear();
         this.each(function (model) {
             _this.localStorage.update(model);
         });

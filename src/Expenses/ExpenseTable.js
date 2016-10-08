@@ -29,7 +29,7 @@ var ExpenseTable = (function (_super) {
         }
         this.setElement($('#expenseTable'));
         // slow re-rendering of the whole table when collection changes
-        //this.listenTo(this.collection, 'change', this.render);
+        //this.listenTo(this.collection, 'update', this.render);
         this.on("all", umsaetze_1.debug("ExpenseTable"));
     }
     ExpenseTable.prototype.setCategoryList = function (list) {
@@ -67,11 +67,9 @@ var ExpenseTable = (function (_super) {
         $('#dateFrom').html(this.model.getDateFrom().toString('yyyy-MM-dd'));
         $('#dateTill').html(this.model.getDateTill().toString('yyyy-MM-dd'));
         $('#numRows').html(this.model.getVisibleCount().toString());
-        // does not work in Chrome
-        //this.$el.on('click', 'select', this.openSelect.bind(this));
         this.$el.on('change', 'select', this.newCategory.bind(this));
-        //console.log('selects', this.$('select'));
         this.$el.on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
+        this.$el.off('click', 'button.close').on('click', 'button.close', this.deleteRow.bind(this));
         elapse.timeEnd('ExpenseTable.render');
         return this;
     };
@@ -210,6 +208,14 @@ var ExpenseTable = (function (_super) {
         console.log('scrollTop', scrollTop);
         this.render();
         $('body').scrollTop(scrollTop);
+    };
+    ExpenseTable.prototype.deleteRow = function (event) {
+        var button = $(event.target);
+        var dataID = button.closest('tr').attr('data-id');
+        console.log('deleteRow', dataID);
+        this.model.remove(dataID);
+        this.model.saveAll();
+        this.render();
     };
     return ExpenseTable;
 }(Backbone.View));

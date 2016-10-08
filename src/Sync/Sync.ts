@@ -229,9 +229,7 @@ export default class Sync extends Backbone.View<any> {
 			}));
 		}
 		toastr.success('Generated '+amount+' records.');
-		// this.collection.setAllVisible();
 		this.model.trigger('change');
-		// this.router.AppView();
 		Backbone.history.navigate('#', {
 			trigger: true,
 		});

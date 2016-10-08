@@ -153,6 +153,9 @@ export default class Expenses extends bb.Collection<Transaction> {
 			this.selectedMonth = selectedMonth;
 		} else if (this.selectedMonth) {
 			selectedMonth = this.selectedMonth;
+		} else {
+			//throw new Error('filterByMonth no month defined');
+			this.ms
 		}
 
 		if (selectedMonth) {
@@ -185,6 +188,7 @@ export default class Expenses extends bb.Collection<Transaction> {
 
 	saveAll() {
 		elapse.time('Expense.saveAll');
+		this.localStorage._clear();
 		this.each((model: Transaction) => {
 			this.localStorage.update(model);
 		});

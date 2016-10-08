@@ -41,7 +41,7 @@ export default class ExpenseTable extends Backbone.View<any> {
 		this.setElement($('#expenseTable'));
 
 		// slow re-rendering of the whole table when collection changes
-		//this.listenTo(this.collection, 'change', this.render);
+		//this.listenTo(this.collection, 'update', this.render);
 		this.on("all", debug("ExpenseTable"));
 	}
 
@@ -87,11 +87,9 @@ export default class ExpenseTable extends Backbone.View<any> {
 		$('#dateTill').html(this.model.getDateTill().toString('yyyy-MM-dd'));
 		$('#numRows').html(this.model.getVisibleCount().toString());
 
-		// does not work in Chrome
-		//this.$el.on('click', 'select', this.openSelect.bind(this));
 		this.$el.on('change', 'select', this.newCategory.bind(this));
-		//console.log('selects', this.$('select'));
 		this.$el.on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
+		this.$el.off('click', 'button.close').on('click', 'button.close', this.deleteRow.bind(this));
 
 		elapse.timeEnd('ExpenseTable.render');
 		return this;
@@ -245,6 +243,15 @@ export default class ExpenseTable extends Backbone.View<any> {
 		console.log('scrollTop', scrollTop);
 		this.render();
 		$('body').scrollTop(scrollTop);
+	}
+
+	deleteRow(event) {
+		let button = $(event.target);
+		let dataID = button.closest('tr').attr('data-id');
+		console.log('deleteRow', dataID);
+		this.model.remove(dataID);
+		this.model.saveAll();
+		this.render();
 	}
 
 }

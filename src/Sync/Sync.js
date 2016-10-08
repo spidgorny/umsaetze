@@ -197,9 +197,7 @@ var Sync = (function (_super) {
             }));
         }
         toastr.success('Generated ' + amount + ' records.');
-        // this.collection.setAllVisible();
         this.model.trigger('change');
-        // this.router.AppView();
         Backbone.history.navigate('#', {
             trigger: true,
         });
