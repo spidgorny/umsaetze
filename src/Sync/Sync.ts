@@ -9,7 +9,10 @@ import PersistenceOptions = Backbone.PersistenceOptions;
 import Workspace from "../Workspace";
 import ParseCSV from "./ParseCSV";
 import Table from "./Table";
+
 require('file-saver');
+function saveAs(a: any, b: any);
+
 let elapse = require('elapse');
 elapse.configure({
 	debug: true
@@ -109,7 +112,7 @@ export default class Sync extends Backbone.View<any> {
 				});
 				elapse.timeEnd('Expense.saveModels2LS');
 			}
-		}));
+		});
 	}
 
 	fetchCSV(csv: Table, options: PersistenceOptions) {
@@ -153,7 +156,10 @@ export default class Sync extends Backbone.View<any> {
 		if (options && options.success) {
 			options.success();
 		}
-		this.model.setAllVisible();
+
+		// this makes all months visible at once
+		// this.model.setAllVisible();
+
 		console.log('Trigger change on Expenses');
 		this.model.trigger('change');
 		Backbone.history.navigate('#', {
@@ -161,15 +167,14 @@ export default class Sync extends Backbone.View<any> {
 		});
 	}
 
-	loadJSON(e, file)
-	{
+	loadJSON(e, file) {
 		// console.log('loadJSON', e);
 		// console.log(file);
 		// console.log(e.target.result);
 		try {
 			let data = JSON.parse(e.target.result);
 			toastr.info('Importing '+data.length+' entries');
-			_.each(data, (row) {
+			_.each(data, (row) => {
 				this.model.add(new Transaction(row));
 			});
 			toastr.success('Imported');

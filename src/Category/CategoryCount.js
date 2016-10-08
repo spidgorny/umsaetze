@@ -73,6 +73,6 @@ var CategoryCount = (function (_super) {
     };
     return CategoryCount;
 }(Backbone.Model));
-exports.__esModule = true;
-exports["default"] = CategoryCount;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = CategoryCount;
 //# sourceMappingURL=CategoryCount.js.map

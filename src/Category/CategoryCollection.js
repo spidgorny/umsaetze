@@ -31,7 +31,7 @@ var CategoryCollection = (function (_super) {
         //console.log('categories in LS', models);
         //this.add(models);	// makes Backbone.Model instances
         _.each(models, function (m) {
-            _this.add(new CategoryCount_1["default"](m));
+            _this.add(new CategoryCount_1.default(m));
         });
         // sort
         this.models = _.uniq(this.models, function (el) {
@@ -112,10 +112,10 @@ var CategoryCollection = (function (_super) {
             exists.set('amount', amountBefore + amountAfter, { silent: true });
         }
         else {
-            this.add(new CategoryCount_1["default"]({
+            this.add(new CategoryCount_1.default({
                 catName: categoryName,
                 count: 1,
-                amount: transaction.get('amount')
+                amount: transaction.get('amount'),
             }), { silent: true });
         }
     };
@@ -164,7 +164,7 @@ var CategoryCollection = (function (_super) {
     };
     CategoryCollection.prototype.exists = function (newName) {
         return !!this.findWhere({
-            catName: newName
+            catName: newName,
         });
     };
     CategoryCollection.prototype.random = function () {
@@ -172,6 +172,6 @@ var CategoryCollection = (function (_super) {
     };
     return CategoryCollection;
 }(Backbone.Collection));
-exports.__esModule = true;
-exports["default"] = CategoryCollection;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = CategoryCollection;
 //# sourceMappingURL=CategoryCollection.js.map

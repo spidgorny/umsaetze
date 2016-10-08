@@ -44,7 +44,7 @@ var KeywordsView = (function (_super) {
             '</div>',
             '</div>',
         ];
-        this.$el.html(RecursiveArrayOfStrings_1["default"].merge(content));
+        this.$el.html(RecursiveArrayOfStrings_1.default.merge(content));
         this.$('#removeDuplicates').off().on('click', this.removeDuplicates.bind(this));
         console.timeEnd('KeywordsView::render');
     };
@@ -67,6 +67,6 @@ var KeywordsView = (function (_super) {
     };
     return KeywordsView;
 }(Backbone.View));
-exports.__esModule = true;
-exports["default"] = KeywordsView;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = KeywordsView;
 //# sourceMappingURL=KeywordsView.js.map

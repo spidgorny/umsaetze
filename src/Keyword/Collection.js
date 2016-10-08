@@ -50,6 +50,6 @@ var Collection = (function (_super) {
     };
     return Collection;
 }(Array));
-exports.__esModule = true;
-exports["default"] = Collection;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Collection;
 //# sourceMappingURL=Collection.js.map

@@ -4,11 +4,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Row = (function () {
-    function Row() {
-    }
-    return Row;
-}());
 var Table = (function (_super) {
     __extends(Table, _super);
     function Table() {
@@ -16,11 +11,33 @@ var Table = (function (_super) {
     }
     Table.fromText = function (text) {
         var self = new Table();
-        var lines = Table.CSVToArray(text, ';');
+        var lines = self.tryBestSeparator(text);
         lines.forEach(function (row, i) {
             self.push(row);
         });
         return self;
+    };
+    Table.prototype.tryBestSeparator = function (text) {
+        var linesC = Table.CSVToArray(text, ',');
+        var linesS = Table.CSVToArray(text, ';');
+        var colsC = [];
+        var colsS = [];
+        for (var i = 0; i < 100 && i < linesC.length && i < linesS.length; i++) {
+            colsC.push(linesC[i].length);
+            colsS.push(linesS[i].length);
+        }
+        console.log(colsC, colsS);
+        var sumC = colsC.reduce(function (a, b) { return a + b; });
+        var sumS = colsS.reduce(function (a, b) { return a + b; });
+        console.log(sumC, sumS);
+        var lines;
+        if (sumC > sumS) {
+            lines = linesC;
+        }
+        else {
+            lines = linesS;
+        }
+        return lines;
     };
     /**
      * http://stackoverflow.com/questions/1293147/javascript-code-to-parse-csv-data
@@ -88,6 +105,6 @@ var Table = (function (_super) {
     };
     return Table;
 }(Array));
-exports.__esModule = true;
-exports["default"] = Table;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Table;
 //# sourceMappingURL=Table.js.map

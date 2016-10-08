@@ -31,17 +31,17 @@ var AppView = (function (_super) {
         this.setElement($('#app'));
         this.setTemplate();
         this.categoryList = categoryList;
-        this.table = new ExpenseTable_1["default"]({
+        this.table = new ExpenseTable_1.default({
             model: this.collection,
             el: $('#expenseTable')
         });
         this.table.setCategoryList(this.categoryList);
-        this.categories = new CategoryView_1["default"]({
-            model: this.categoryList
+        this.categories = new CategoryView_1.default({
+            model: this.categoryList,
         });
         this.categories.setExpenses(this.collection);
         //console.log('category view collection', this.categories.model);
-        this.ms = new MonthSelect_1["default"]();
+        this.ms = new MonthSelect_1.default();
         this.ms.earliest = this.collection.getEarliest();
         this.ms.latest = this.collection.getLatest();
         this.ms.render();
@@ -119,6 +119,6 @@ var AppView = (function (_super) {
     };
     return AppView;
 }(Backbone.View));
-exports.__esModule = true;
-exports["default"] = AppView;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = AppView;
 //# sourceMappingURL=AppView.js.map

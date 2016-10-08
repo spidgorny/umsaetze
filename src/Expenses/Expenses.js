@@ -23,7 +23,7 @@ var Expenses = (function (_super) {
     function Expenses(models, options) {
         var _this = this;
         _super.call(this, models, options);
-        this.model = Transaction_1["default"];
+        this.model = Transaction_1.default;
         this.localStorage = new BackboneLocalStorage("Expenses");
         this.listenTo(this, 'change', function () {
             console.log('Expenses changed event');
@@ -43,7 +43,7 @@ var Expenses = (function (_super) {
         console.log('models from LS', models.length);
         if (models.length) {
             _.each(models, function (el) {
-                _this.add(new Transaction_1["default"](el));
+                _this.add(new Transaction_1.default(el));
             });
             //this.unserializeDate();
             this.trigger('change');
@@ -258,6 +258,6 @@ var Expenses = (function (_super) {
     };
     return Expenses;
 }(bb.Collection));
-exports.__esModule = true;
-exports["default"] = Expenses;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Expenses;
 //# sourceMappingURL=Expenses.js.map

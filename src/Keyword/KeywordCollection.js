@@ -11,11 +11,11 @@ var KeywordCollection = (function (_super) {
     __extends(KeywordCollection, _super);
     function KeywordCollection() {
         _super.call(this);
-        this.modelClass = Keyword_1["default"];
+        this.modelClass = Keyword_1.default;
         this.fetch();
     }
     return KeywordCollection;
-}(Collection_1["default"]));
-exports.__esModule = true;
-exports["default"] = KeywordCollection;
+}(Collection_1.default));
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = KeywordCollection;
 //# sourceMappingURL=KeywordCollection.js.map

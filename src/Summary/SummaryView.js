@@ -40,7 +40,7 @@ var SummaryView = (function (_super) {
         var content = this.template({
             categoryOptions: categoryOptions,
             count: this.collection.size(),
-            months: months
+            months: months,
         });
         this.$el.html(content);
         return this;
@@ -59,15 +59,15 @@ var SummaryView = (function (_super) {
                     year: year,
                     month: month,
                     categoryName: category.getName(),
-                    value: el
+                    value: el,
                 };
             });
-            categoryOptions.push(new SummaryLine_1["default"]({
+            categoryOptions.push(new SummaryLine_1.default({
                 catName: category.getName(),
                 background: category.get('color'),
                 id: category.cid,
                 average: averageAmountPerMonth,
-                perMonth: monthlyTotals
+                perMonth: monthlyTotals,
             }));
         });
         return categoryOptions;
@@ -98,9 +98,9 @@ var SummaryView = (function (_super) {
         // step 2
         _.each(groupByCategory, function (set, setName) {
             if (set.length > 1) {
-                var newCat_1 = new SummaryLine_1["default"]({
+                var newCat_1 = new SummaryLine_1.default({
                     catName: setName + ' [' + set.length + ']',
-                    background: '#FF8800'
+                    background: '#FF8800',
                 });
                 _.each(set, function (el) {
                     newCat_1.combine(el);
@@ -115,6 +115,6 @@ var SummaryView = (function (_super) {
     };
     return SummaryView;
 }(Backbone.View));
-exports.__esModule = true;
-exports["default"] = SummaryView;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = SummaryView;
 //# sourceMappingURL=SummaryView.js.map

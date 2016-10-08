@@ -6,6 +6,7 @@ import CategoryCollection from "../Category/CategoryCollection";
 import KeywordCollection from "../Keyword/KeywordCollection";
 import Keyword from "../Keyword/Keyword";
 import {debug} from "../umsaetze";
+import Table from "../Sync/Table";
 const elapse = require('elapse');
 elapse.configure({
 	debug: true
@@ -38,7 +39,6 @@ export default class ExpenseTable extends Backbone.View<any> {
 		}
 
 		this.setElement($('#expenseTable'));
-		this.$el.on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
 
 		// slow re-rendering of the whole table when collection changes
 		//this.listenTo(this.collection, 'change', this.render);
@@ -58,8 +58,9 @@ export default class ExpenseTable extends Backbone.View<any> {
 		elapse.time('ExpenseTable.render');
 		console.log('ExpenseTable.render()', this.model.size());
 
-		let rows = [];
 		let visible = this.model.getVisible();
+
+		let table = new Table();
 		_.each(visible, (transaction: Transaction) => {
 			let attributes = transaction.toJSON();
 			attributes.sDate = transaction.getDate().toString('yyyy-MM-dd');
@@ -68,8 +69,16 @@ export default class ExpenseTable extends Backbone.View<any> {
 			attributes.categoryOptions = this.getCategoryOptions(transaction);
 			attributes.background = this.categoryList.getColorFor(transaction.get('category'));
 
+			table.push(attributes);
+		});
+		// sortBy only works with direct attributes (not Model)
+		table = _.sortBy(table, 'date');
+
+		let rows = [];
+		table.forEach((attributes: Object) => {
 			rows.push(this.template(attributes));
 		});
+
 		console.log('rendering', rows.length, 'rows');
 		this.$el.html(rows.join('\n'));
 		//console.log(this.$el);
@@ -81,6 +90,7 @@ export default class ExpenseTable extends Backbone.View<any> {
 		// does not work in Chrome
 		//this.$el.on('click', 'select', this.openSelect.bind(this));
 		this.$el.on('change', 'select', this.newCategory.bind(this));
+		this.$el.off().on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
 
 		elapse.timeEnd('ExpenseTable.render');
 		return this;
@@ -147,7 +157,7 @@ export default class ExpenseTable extends Backbone.View<any> {
 	}
 
 	textSelectedEvent(event: MouseEvent) {
-		//console.log('textSelectedEvent');
+		// console.log('textSelectedEvent');
 		let text = ExpenseTable.getSelectedText().trim();
 		if (text) {
 			//console.log(text);

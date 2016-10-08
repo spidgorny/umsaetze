@@ -32,7 +32,7 @@ function debug(name) {
 }
 exports.debug = debug;
 $(function () {
-    new Workspace_1["default"]({
+    new Workspace_1.default({
         root: 'umsaetze/web/'
     });
     // console.log(ws);

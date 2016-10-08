@@ -40,7 +40,7 @@ var Sync = (function (_super) {
         if (this.template) {
             this.$el.html(this.template({
                 memoryRows: this.model.size(),
-                lsRows: this.localStorage.records.length
+                lsRows: this.localStorage.records.length,
             }));
             this.$('#Refresh').on('click', this.refresh.bind(this));
             this.$('#Generate').on('click', this.generate.bind(this));
@@ -48,14 +48,14 @@ var Sync = (function (_super) {
             FileReaderJS.setupInput(document.getElementById('file-input-csv'), {
                 readAsDefault: 'Text',
                 on: {
-                    load: this.load.bind(this)
+                    load: this.load.bind(this),
                 }
             });
             // this.$('#LoadJSON').on('click', this.loadJSON.bind(this));
             FileReaderJS.setupInput(document.getElementById('file-input-json'), {
                 readAsDefault: 'Text',
                 on: {
-                    load: this.loadJSON.bind(this)
+                    load: this.loadJSON.bind(this),
                 }
             });
             this.$('#Save').on('click', this.save.bind(this));
@@ -78,7 +78,7 @@ var Sync = (function (_super) {
     Sync.prototype.loadSelectedFile = function (data) {
         var _this = this;
         this.startLoading();
-        var parser = new ParseCSV_1["default"](data);
+        var parser = new ParseCSV_1.default(data);
         var csv = parser.parseAndNormalize();
         return this.fetchCSV(csv, {
             success: function () {
@@ -90,7 +90,6 @@ var Sync = (function (_super) {
                 elapse.timeEnd('Expense.saveModels2LS');
             }
         });
-        ;
     };
     Sync.prototype.fetchCSV = function (csv, options) {
         var processWithoutVisualFeedback = false;
@@ -111,7 +110,7 @@ var Sync = (function (_super) {
     Sync.prototype.processRow = function (row, i, length) {
         this.slowUpdateLoadingBar(i, length);
         if (row && row.amount) {
-            this.model.add(new Transaction_1["default"](row), { silent: true });
+            this.model.add(new Transaction_1.default(row), { silent: true });
         }
     };
     Sync.prototype.updateLoadingBar = function (i, length) {
@@ -128,11 +127,12 @@ var Sync = (function (_super) {
         if (options && options.success) {
             options.success();
         }
-        this.model.setAllVisible();
+        // this makes all months visible at once
+        // this.model.setAllVisible();
         console.log('Trigger change on Expenses');
         this.model.trigger('change');
         Backbone.history.navigate('#', {
-            trigger: true
+            trigger: true,
         });
     };
     Sync.prototype.loadJSON = function (e, file) {
@@ -144,12 +144,12 @@ var Sync = (function (_super) {
             var data = JSON.parse(e.target.result);
             toastr.info('Importing ' + data.length + ' entries');
             _.each(data, function (row) {
-                _this.model.add(new Transaction_1["default"](row));
+                _this.model.add(new Transaction_1.default(row));
             });
             toastr.success('Imported');
             this.model.trigger('change');
             Backbone.history.navigate('#', {
-                trigger: true
+                trigger: true,
             });
         }
         catch (e) {
@@ -186,14 +186,14 @@ var Sync = (function (_super) {
         for (var _i = 0, _a = _.range(amount); _i < _a.length; _i++) {
             var i = _a[_i];
             var category = categories.random();
-            this.model.add(new Transaction_1["default"]({
+            this.model.add(new Transaction_1.default({
                 account: account,
                 category: category.get('catName') || "Default",
                 currency: "EUR",
                 amount: chance.floating({ fixed: 2, min: -1000, max: 1000 }),
                 payment_type: "DEBIT_CARD",
                 date: chance.date({ year: new Date().getFullYear() }),
-                note: chance.sentence()
+                note: chance.sentence(),
             }));
         }
         toastr.success('Generated ' + amount + ' records.');
@@ -201,11 +201,11 @@ var Sync = (function (_super) {
         this.model.trigger('change');
         // this.router.AppView();
         Backbone.history.navigate('#', {
-            trigger: true
+            trigger: true,
         });
     };
     return Sync;
 }(Backbone.View));
-exports.__esModule = true;
-exports["default"] = Sync;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Sync;
 //# sourceMappingURL=Sync.js.map

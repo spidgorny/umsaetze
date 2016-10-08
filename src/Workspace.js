@@ -27,13 +27,13 @@ var Workspace = (function (_super) {
             "CatPage": "CatPage",
             "Sync": "Sync",
             "Keywords": "Keywords",
-            "Summary": "Summary"
+            "Summary": "Summary",
         };
-        this.keywords = new KeywordCollection_1["default"]();
+        this.keywords = new KeywordCollection_1.default();
         this._bindRoutes();
-        this.model = new Expenses_1["default"]();
+        this.model = new Expenses_1.default();
         this.model.fetch();
-        this.categoryList = new CategoryCollection_1["default"]();
+        this.categoryList = new CategoryCollection_1.default();
         this.categoryList.setExpenses(this.model);
     }
     Workspace.prototype.activateMenu = function () {
@@ -62,8 +62,8 @@ var Workspace = (function (_super) {
         console.log('AppView');
         this.activateMenu();
         if (!this.appPage) {
-            this.appPage = new AppView_1["default"]({
-                collection: this.model
+            this.appPage = new AppView_1.default({
+                collection: this.model,
             }, this.categoryList);
             this.appPage.table.keywords = this.keywords;
         }
@@ -79,7 +79,7 @@ var Workspace = (function (_super) {
             $('#MonthSelect').hide(); // for consistency
         }
         if (!this.syncPage) {
-            this.syncPage = new Sync_1["default"](this.model);
+            this.syncPage = new Sync_1.default(this.model);
             this.syncPage.router = this;
         }
         this.syncPage.render();
@@ -94,7 +94,7 @@ var Workspace = (function (_super) {
             this.appPage.hide();
         }
         if (!this.catPage) {
-            this.catPage = new CatPage_1["default"](this.model, this.categoryList);
+            this.catPage = new CatPage_1.default(this.model, this.categoryList);
         }
         this.catPage.render();
     };
@@ -105,7 +105,7 @@ var Workspace = (function (_super) {
             this.appPage.hide();
         }
         if (!this.keywordsPage) {
-            this.keywordsPage = new KeywordsView_1["default"]();
+            this.keywordsPage = new KeywordsView_1.default();
             this.keywordsPage.keywords = this.keywords;
         }
         this.keywordsPage.render();
@@ -131,7 +131,7 @@ var Workspace = (function (_super) {
             this.appPage.hide();
         }
         if (!this.summaryPage) {
-            this.summaryPage = new SummaryView_1["default"]({
+            this.summaryPage = new SummaryView_1.default({
                 collection: this.categoryList
             }, this.model);
         }
@@ -141,6 +141,6 @@ var Workspace = (function (_super) {
     };
     return Workspace;
 }(Backbone.Router));
-exports.__esModule = true;
-exports["default"] = Workspace;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Workspace;
 //# sourceMappingURL=Workspace.js.map

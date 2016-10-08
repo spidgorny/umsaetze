@@ -99,25 +99,25 @@ export default class ParseCSV {
 		//console.log(typeSet[0]);
 		if (!typeSet[0].equals(common)) {
 			// first row is a header
-			data = data.slice(1);	// remove header
+			data = <Table>data.slice(1);	// remove header
 		}
 
 		let header = this.getHeaderFromTypes(common);
 		console.log(header, 'header');
 
 		let dataWithHeader = new Table();
-		data.forEach(row => {
+		data.forEach((row) => {
 			dataWithHeader.push(
 				this.zip(header, row));
 		});
-		console.log(dataWithHeader[0]);
+		console.log(dataWithHeader[0], 'dataWithHeader');
 
 		return dataWithHeader;
 	}
 
 	getRowTypes(row: Row) {
 		let types = [];
-		row.forEach((el: string) => {
+		row.forEach((el: any) => {
 			let float = parseFloat(el);
 			let date = Date.parse(el);
 			let isDate = !!date && el.indexOf(',') == -1;	// dates are without ,
@@ -135,7 +135,7 @@ export default class ParseCSV {
 	getRowTypesForSomeRows(data: Table) {
 		let typeSet = [];
 		for (let i = 0; i < 10 && i < data.length; i++) {
-			let row = data[i];
+			let row: Row = data[i];
 			// console.log(i, row);
 			let types = this.getRowTypes(row);
 			//console.log(types);
@@ -176,9 +176,9 @@ export default class ParseCSV {
 	 * http://stackoverflow.com/questions/1117916/merge-keys-array-and-values-array-into-an-object-in-javascript
 	 * @param names
 	 * @param values
-	 * @returns {{}}
+	 * @returns Row
 	 */
-	zip(names: Array, values: Array) {
+	zip(names: Array<string>, values: Array<any>) {
 		let result = new Row();
 		for (let i = 0; i < names.length; i++) {
 			result[names[i]] = values[i];

@@ -24,7 +24,7 @@ var Transaction = (function (_super) {
     function Transaction(attributes, options) {
         _super.call(this, attributes, options);
         this.defaults = {
-            visible: true
+            visible: true,
         };
         var dDate;
         var sDate = this.get('date');
@@ -51,7 +51,9 @@ var Transaction = (function (_super) {
             this.set('visible', true);
         }
         // make sure it's defined
-        this.set('category', this.get('category'));
+        this.set('category', this.get('category') || 'Default');
+        // should be set
+        this.set('note', this.get('note'));
     }
     Transaction.prototype.sign = function () {
         return this.get('amount') >= 0 ? 'positive' : 'negative';
@@ -84,6 +86,6 @@ var Transaction = (function (_super) {
     };
     return Transaction;
 }(bb.Model));
-exports.__esModule = true;
-exports["default"] = Transaction;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Transaction;
 //# sourceMappingURL=Transaction.js.map

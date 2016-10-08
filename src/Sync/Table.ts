@@ -1,18 +1,37 @@
-class Row {
-	date: Date;
-	amount: number;
-	note: string;
-}
+import Row from "./Row";
 
 export default class Table extends Array<Row> {
 
-	static fromText(text) {
+	static fromText(text: string) {
 		let self = new Table();
-		let lines = Table.CSVToArray(text, ';');
+		let lines = self.tryBestSeparator(text);
 		lines.forEach((row, i) => {
 			self.push(row);
 		});
 		return self;
+	}
+
+	tryBestSeparator(text: string) {
+		let linesC = Table.CSVToArray(text, ',');
+		let linesS = Table.CSVToArray(text, ';');
+
+		let colsC = [];
+		let colsS = [];
+		for (let i = 0; i < 100 && i < linesC.length && i < linesS.length; i++) {
+			colsC.push(linesC[i].length);
+			colsS.push(linesS[i].length);
+		}
+		console.log(colsC, colsS);
+		let sumC = colsC.reduce(function (a, b) { return a + b; });
+		let sumS = colsS.reduce(function (a, b) { return a + b; });
+		console.log(sumC, sumS);
+		let lines;
+		if (sumC > sumS) {
+			lines = linesC;
+		} else {
+			lines = linesS;
+		}
+		return lines;
 	}
 
 	/**

@@ -59,12 +59,12 @@ var CatPage = (function (_super) {
                     used: category.get('count'),
                     amount: averageAmountPerMonth,
                     average: averageAmountPerMonth,
-                    sparkline: JSON.stringify(monthlyTotals)
+                    sparkline: JSON.stringify(monthlyTotals),
                 });
             });
             categoryOptions_1 = _.sortBy(categoryOptions_1, 'catName');
             this.$el.html(this.template({
-                categoryOptions: categoryOptions_1
+                categoryOptions: categoryOptions_1,
             }));
             this.$('#addCategoryForm').on('submit', this.addCategory.bind(this));
             this.$('input[name="newName"]').focus();
@@ -85,8 +85,8 @@ var CatPage = (function (_super) {
         var $form = $(event.target);
         var newName = $form.find('input').val();
         console.log('newName', newName);
-        var categoryObject = new CategoryCount_1["default"]({
-            catName: newName
+        var categoryObject = new CategoryCount_1.default({
+            catName: newName,
         });
         console.log('get', categoryObject.get('catName'));
         console.log('get', categoryObject.get('color'));
@@ -139,7 +139,7 @@ var CatPage = (function (_super) {
                 data: Array(data.length).fill(average),
                 borderColor: '#FF0000',
                 borderWidth: 1,
-                fill: false
+                fill: false,
             };
             // Add to data object
             var dataDesc = {};
@@ -160,13 +160,13 @@ var CatPage = (function (_super) {
                     scaleFontSize: 1,
                     scaleFontColor: "rgba(0,0,0,0)",
                     legend: {
-                        display: false
+                        display: false,
                     },
                     maintainAspectRatio: false,
                     scales: {
                         yAxes: [{
                                 ticks: {
-                                    padding: 0
+                                    padding: 0,
                                 }
                             }]
                     },
@@ -224,6 +224,6 @@ var CatPage = (function (_super) {
     };
     return CatPage;
 }(Backbone.View));
-exports.__esModule = true;
-exports["default"] = CatPage;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = CatPage;
 //# sourceMappingURL=CatPage.js.map

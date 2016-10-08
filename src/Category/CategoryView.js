@@ -41,7 +41,7 @@ var CategoryView = (function (_super) {
         var categoryCount = this.model.toJSON();
         // remove income from %
         var incomeRow = _.findWhere(categoryCount, {
-            catName: 'Income'
+            catName: 'Income',
         });
         categoryCount = _.without(categoryCount, incomeRow);
         var sum = _.reduce(categoryCount, function (memo, item) {
@@ -58,7 +58,7 @@ var CategoryView = (function (_super) {
             content.push(_this.template(_.extend(catCount, {
                 width: width,
                 amount: Math.round(catCount.amount),
-                sign: catCount.amount >= 0 ? 'positive' : 'negative'
+                sign: catCount.amount >= 0 ? 'positive' : 'negative',
             })));
         });
         this.$('#catElements').html(content.join('\n'));
@@ -103,7 +103,7 @@ var CategoryView = (function (_super) {
                 {
                     data: data,
                     backgroundColor: colors,
-                    hoverBackgroundColor: colors
+                    hoverBackgroundColor: colors,
                 }
             ]
         };
@@ -115,7 +115,7 @@ var CategoryView = (function (_super) {
             data: data,
             options: {
                 legend: {
-                    display: false
+                    display: false,
                 }
             }
         });
@@ -149,6 +149,6 @@ var CategoryView = (function (_super) {
     };
     return CategoryView;
 }(Backbone.View));
-exports.__esModule = true;
-exports["default"] = CategoryView;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = CategoryView;
 //# sourceMappingURL=CategoryView.js.map

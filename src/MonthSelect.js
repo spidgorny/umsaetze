@@ -168,6 +168,6 @@ var MonthSelect = (function (_super) {
     ;
     return MonthSelect;
 }(Backbone.View));
-exports.__esModule = true;
-exports["default"] = MonthSelect;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = MonthSelect;
 //# sourceMappingURL=MonthSelect.js.map

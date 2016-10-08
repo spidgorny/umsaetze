@@ -7,6 +7,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Keyword_1 = require("../Keyword/Keyword");
 var umsaetze_1 = require("../umsaetze");
+var Table_1 = require("../Sync/Table");
 var elapse = require('elapse');
 elapse.configure({
     debug: true
@@ -27,7 +28,6 @@ var ExpenseTable = (function (_super) {
             $('#app').html(template());
         }
         this.setElement($('#expenseTable'));
-        this.$el.on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
         // slow re-rendering of the whole table when collection changes
         //this.listenTo(this.collection, 'change', this.render);
         this.on("all", umsaetze_1.debug("ExpenseTable"));
@@ -44,8 +44,8 @@ var ExpenseTable = (function (_super) {
         }
         elapse.time('ExpenseTable.render');
         console.log('ExpenseTable.render()', this.model.size());
-        var rows = [];
         var visible = this.model.getVisible();
+        var table = new Table_1.default();
         _.each(visible, function (transaction) {
             var attributes = transaction.toJSON();
             attributes.sDate = transaction.getDate().toString('yyyy-MM-dd');
@@ -53,6 +53,12 @@ var ExpenseTable = (function (_super) {
                 ? 'bg-warning' : '';
             attributes.categoryOptions = _this.getCategoryOptions(transaction);
             attributes.background = _this.categoryList.getColorFor(transaction.get('category'));
+            table.push(attributes);
+        });
+        // sortBy only works with direct attributes (not Model)
+        table = _.sortBy(table, 'date');
+        var rows = [];
+        table.forEach(function (attributes) {
             rows.push(_this.template(attributes));
         });
         console.log('rendering', rows.length, 'rows');
@@ -64,6 +70,7 @@ var ExpenseTable = (function (_super) {
         // does not work in Chrome
         //this.$el.on('click', 'select', this.openSelect.bind(this));
         this.$el.on('change', 'select', this.newCategory.bind(this));
+        this.$el.off().on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
         elapse.timeEnd('ExpenseTable.render');
         return this;
     };
@@ -124,7 +131,7 @@ var ExpenseTable = (function (_super) {
         }
     };
     ExpenseTable.prototype.textSelectedEvent = function (event) {
-        //console.log('textSelectedEvent');
+        // console.log('textSelectedEvent');
         var text = ExpenseTable.getSelectedText().trim();
         if (text) {
             //console.log(text);
@@ -132,7 +139,7 @@ var ExpenseTable = (function (_super) {
             if (!$contextMenu.length) {
                 var template = handlebars.compile($('#categoryMenu').html());
                 var menuHTML = template({
-                    catlist: this.categoryList.getOptions()
+                    catlist: this.categoryList.getOptions(),
                 });
                 $('body').append(menuHTML);
                 $contextMenu = $('#contextMenu'); // after append
@@ -193,9 +200,9 @@ var ExpenseTable = (function (_super) {
     ExpenseTable.prototype.applyFilter = function (text, menu) {
         var categoryName = menu.text().trim();
         console.log(text, 'to be', categoryName);
-        this.keywords.add(new Keyword_1["default"]({
+        this.keywords.add(new Keyword_1.default({
             word: text,
-            category: categoryName
+            category: categoryName,
         }));
         this.model.setCategories(this.keywords);
         var scrollTop = document.body.scrollTop;
@@ -205,6 +212,6 @@ var ExpenseTable = (function (_super) {
     };
     return ExpenseTable;
 }(Backbone.View));
-exports.__esModule = true;
-exports["default"] = ExpenseTable;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = ExpenseTable;
 //# sourceMappingURL=ExpenseTable.js.map

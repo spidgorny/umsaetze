@@ -54,7 +54,10 @@ export default class Transaction extends bb.Model {
 		}
 
 		// make sure it's defined
-		this.set('category', this.get('category'));
+		this.set('category', this.get('category') || 'Default');
+
+		// should be set
+		this.set('note', this.get('note'));
 	}
 
 	sign() {

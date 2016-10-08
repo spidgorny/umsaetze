@@ -1,9 +1,7 @@
 .idea
 node_modules
 typings
-umsaetze*.csv
-
-/startbootstrap-sb-admin-2/
+test/data/
 /docs/themes/
 /docs/.deploy_git/
 /docs/filereader.js/

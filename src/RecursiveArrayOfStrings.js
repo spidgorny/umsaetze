@@ -24,6 +24,6 @@ var RecursiveArrayOfStrings = (function (_super) {
     };
     return RecursiveArrayOfStrings;
 }(Array));
-exports.__esModule = true;
-exports["default"] = RecursiveArrayOfStrings;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = RecursiveArrayOfStrings;
 //# sourceMappingURL=RecursiveArrayOfStrings.js.map

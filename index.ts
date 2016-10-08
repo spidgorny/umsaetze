@@ -277,13 +277,14 @@ class SpardaBank {
 
 	testParser() {
 		console.log('Loading file...');
-		let data = fs.readFileSync('C:\\Users\\Slawa\\Downloads\\WebDev2012\\umsaetze\\umsaetze-1090729-2016-10-06-00-31-51.csv');
+		//let data = fs.readFileSync('test/data/umsaetze-1090729-2016-10-06-00-31-51.csv');
+		let data = fs.readFileSync('test/data/SimpleImport.csv');
 		data = iconv.decode(data, "ISO-8859-1");
 		console.log('Loaded', data.length);
 		let parse = new ParseCSV(data);
 		let nice = parse.parseAndNormalize();
-		for (let i = 0; i < 8 && i < nice.length; i++) {
-			// console.log(nice[i]);
+		for (let i = 0; i < 2 && i < nice.length; i++) {
+			console.log(nice[i]);
 		}
 	}
 

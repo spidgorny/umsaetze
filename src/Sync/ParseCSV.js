@@ -24,12 +24,12 @@ var ParseCSV = (function () {
                 header: true,
                 dynamicTyping: true,
                 skipEmptyLines: true,
-                comments: "#"
+                comments: "#",
             });
             csv = csvObj.data;
         }
         else {
-            csv = Table_1["default"].fromText(this.data);
+            csv = Table_1.default.fromText(this.data);
         }
         this.text = null; // save RAM
         console.log('rows after parse', csv.length);
@@ -93,11 +93,11 @@ var ParseCSV = (function () {
         }
         var header = this.getHeaderFromTypes(common);
         console.log(header, 'header');
-        var dataWithHeader = new Table_1["default"]();
+        var dataWithHeader = new Table_1.default();
         data.forEach(function (row) {
             dataWithHeader.push(_this.zip(header, row));
         });
-        console.log(dataWithHeader[0]);
+        console.log(dataWithHeader[0], 'dataWithHeader');
         return dataWithHeader;
     };
     ParseCSV.prototype.getRowTypes = function (row) {
@@ -162,10 +162,10 @@ var ParseCSV = (function () {
      * http://stackoverflow.com/questions/1117916/merge-keys-array-and-values-array-into-an-object-in-javascript
      * @param names
      * @param values
-     * @returns {{}}
+     * @returns Row
      */
     ParseCSV.prototype.zip = function (names, values) {
-        var result = new Table_2["default"]();
+        var result = new Table_2.default();
         for (var i = 0; i < names.length; i++) {
             result[names[i]] = values[i];
         }
@@ -187,6 +187,6 @@ var ParseCSV = (function () {
     };
     return ParseCSV;
 }());
-exports.__esModule = true;
-exports["default"] = ParseCSV;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = ParseCSV;
 //# sourceMappingURL=ParseCSV.js.map

@@ -12,6 +12,6 @@ var Keyword = (function () {
     }
     return Keyword;
 }());
-exports.__esModule = true;
-exports["default"] = Keyword;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Keyword;
 //# sourceMappingURL=Keyword.js.map

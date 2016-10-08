@@ -67,7 +67,7 @@ var SpardaBank = (function () {
         var stringifier = stringify({
             header: true,
             columns: storeColumns,
-            delimiter: ';'
+            delimiter: ';',
         });
         var path = require('path');
         var ext = path.extname(this.sourceFile);
@@ -90,7 +90,7 @@ var SpardaBank = (function () {
             delimiter: ';',
             columns: true,
             comment: '#',
-            skip_empty_lines: true
+            skip_empty_lines: true,
         });
         return parser;
     };
@@ -158,9 +158,9 @@ var SpardaBank = (function () {
                 amount: 'amount',
                 payment_type: 'payment_type',
                 date: 'date',
-                note: 'note'
+                note: 'note',
             },
-            delimiter: ';'
+            delimiter: ';',
         });
         var path = require('path');
         var ext = path.extname(this.sourceFile);
@@ -222,12 +222,14 @@ var SpardaBank = (function () {
     };
     SpardaBank.prototype.testParser = function () {
         console.log('Loading file...');
-        var data = fs.readFileSync('C:\\Users\\Slawa\\Downloads\\WebDev2012\\umsaetze\\umsaetze-1090729-2016-10-06-00-31-51.csv');
+        //let data = fs.readFileSync('test/data/umsaetze-1090729-2016-10-06-00-31-51.csv');
+        var data = fs.readFileSync('test/data/SimpleImport.csv');
         data = iconv.decode(data, "ISO-8859-1");
         console.log('Loaded', data.length);
-        var parse = new ParseCSV_1["default"](data);
+        var parse = new ParseCSV_1.default(data);
         var nice = parse.parseAndNormalize();
-        for (var i = 0; i < 8 && i < nice.length; i++) {
+        for (var i = 0; i < 2 && i < nice.length; i++) {
+            console.log(nice[i]);
         }
     };
     return SpardaBank;

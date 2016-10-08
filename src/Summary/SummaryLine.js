@@ -28,6 +28,6 @@ var SummaryLine = (function () {
     };
     return SummaryLine;
 }());
-exports.__esModule = true;
-exports["default"] = SummaryLine;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = SummaryLine;
 //# sourceMappingURL=SummaryLine.js.map
