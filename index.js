@@ -226,7 +226,9 @@ var SpardaBank = (function () {
         data = iconv.decode(data, "ISO-8859-1");
         console.log('Loaded', data.length);
         var parse = new ParseCSV_1["default"](data);
-        parse.parseAndNormalize();
+        var nice = parse.parseAndNormalize();
+        for (var i = 0; i < 8 && i < nice.length; i++) {
+        }
     };
     return SpardaBank;
 }());

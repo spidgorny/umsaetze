@@ -167,6 +167,9 @@ var CategoryCollection = (function (_super) {
             catName: newName
         });
     };
+    CategoryCollection.prototype.random = function () {
+        return _.sample(this.models);
+    };
     return CategoryCollection;
 }(Backbone.Collection));
 exports.__esModule = true;

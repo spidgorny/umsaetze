@@ -4,6 +4,11 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var Row = (function () {
+    function Row() {
+    }
+    return Row;
+}());
 var Table = (function (_super) {
     __extends(Table, _super);
     function Table() {
@@ -57,7 +62,7 @@ var Table = (function (_super) {
                 // add an empty row to our data array.
                 arrData.push([]);
             }
-            var strMatchedValue;
+            var strMatchedValue = void 0;
             // Now that we have our delimiter out of the way,
             // let's check to see which kind of value we
             // captured (quoted or unquoted).

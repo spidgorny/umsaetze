@@ -187,4 +187,8 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 		});
 	}
 
+	random() {
+		return _.sample(this.models);
+	}
+
 }

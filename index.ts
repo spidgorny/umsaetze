@@ -281,7 +281,10 @@ class SpardaBank {
 		data = iconv.decode(data, "ISO-8859-1");
 		console.log('Loaded', data.length);
 		let parse = new ParseCSV(data);
-		parse.parseAndNormalize();
+		let nice = parse.parseAndNormalize();
+		for (let i = 0; i < 8 && i < nice.length; i++) {
+			// console.log(nice[i]);
+		}
 	}
 
 }

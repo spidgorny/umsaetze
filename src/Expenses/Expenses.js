@@ -253,6 +253,9 @@ var Expenses = (function (_super) {
             }
         });
     };
+    Expenses.prototype.clear = function () {
+        this.reset(null);
+    };
     return Expenses;
 }(bb.Collection));
 exports.__esModule = true;

@@ -52,6 +52,9 @@ export default class Transaction extends bb.Model {
 		if (!this.has('visible')) {
 			this.set('visible', true);
 		}
+
+		// make sure it's defined
+		this.set('category', this.get('category'));
 	}
 
 	sign() {

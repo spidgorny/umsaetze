@@ -50,6 +50,8 @@ var Transaction = (function (_super) {
         if (!this.has('visible')) {
             this.set('visible', true);
         }
+        // make sure it's defined
+        this.set('category', this.get('category'));
     }
     Transaction.prototype.sign = function () {
         return this.get('amount') >= 0 ? 'positive' : 'negative';

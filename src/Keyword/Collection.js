@@ -6,6 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 /// <reference path="../../typings/index.d.ts"/>
 var simpleStorage = require('simpleStorage.js');
+var _ = require('underscore');
 var Collection = (function (_super) {
     __extends(Collection, _super);
     function Collection() {
@@ -43,6 +44,9 @@ var Collection = (function (_super) {
     };
     Collection.prototype.size = function () {
         return this.models.length;
+    };
+    Collection.prototype.random = function () {
+        return _.sample(this.models);
     };
     return Collection;
 }(Array));

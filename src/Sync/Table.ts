@@ -1,4 +1,8 @@
-type Row = Array<string>;
+class Row {
+	date: Date;
+	amount: number;
+	note: string;
+}
 
 export default class Table extends Array<Row> {
 
@@ -24,7 +28,7 @@ export default class Table extends Array<Row> {
 		strDelimiter = (strDelimiter || ",");
 
 		// Create a regular expression to parse the CSV values.
-		var objPattern = new RegExp(
+		let objPattern = new RegExp(
 			(
 				// Delimiters.
 				"(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
@@ -41,11 +45,11 @@ export default class Table extends Array<Row> {
 
 		// Create an array to hold our data. Give the array
 		// a default empty first row.
-		var arrData = [[]];
+		let arrData = [[]];
 
 		// Create an array to hold our individual pattern
 		// matching groups.
-		var arrMatches = null;
+		let arrMatches = null;
 
 
 		// Keep looping over the regular expression matches
@@ -53,7 +57,7 @@ export default class Table extends Array<Row> {
 		while (arrMatches = objPattern.exec( strData )){
 
 			// Get the delimiter that was found.
-			var strMatchedDelimiter = arrMatches[ 1 ];
+			let strMatchedDelimiter = arrMatches[ 1 ];
 
 			// Check to see if the given delimiter has a length
 			// (is not the start of string) and if it matches
@@ -70,7 +74,7 @@ export default class Table extends Array<Row> {
 
 			}
 
-			var strMatchedValue;
+			let strMatchedValue;
 
 			// Now that we have our delimiter out of the way,
 			// let's check to see which kind of value we

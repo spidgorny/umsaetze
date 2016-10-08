@@ -269,4 +269,8 @@ export default class Expenses extends bb.Collection<Transaction> {
 		});
 	}
 
+	clear() {
+		this.reset(null);
+	}
+
 }

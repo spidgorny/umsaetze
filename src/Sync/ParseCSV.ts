@@ -38,6 +38,7 @@ export default class ParseCSV {
 		} else {
 			csv = Table.fromText(this.data);
 		}
+		this.text = null;	// save RAM
 		console.log('rows after parse', csv.length);
 		csv = this.trim(csv);
 		console.log('rows after trim', csv.length);
@@ -45,7 +46,8 @@ export default class ParseCSV {
 		console.log('rows after analyze', csv.length);
 		csv = this.normalizeCSV(csv);
 		console.log('rows after normalize', csv.length);
-		//console.log(csv);
+		csv = this.convertDataTypes(csv);
+		console.log('rows after convertDataTypes', csv.length);
 		return csv;
 	}
 
@@ -103,9 +105,10 @@ export default class ParseCSV {
 		let header = this.getHeaderFromTypes(common);
 		console.log(header, 'header');
 
-		let dataWithHeader = [];
+		let dataWithHeader = new Table();
 		data.forEach(row => {
-			dataWithHeader.push(this.zip(header, row));
+			dataWithHeader.push(
+				this.zip(header, row));
 		});
 		console.log(dataWithHeader[0]);
 
@@ -175,12 +178,25 @@ export default class ParseCSV {
 	 * @param values
 	 * @returns {{}}
 	 */
-	zip(names, values) {
-		let result = {};
+	zip(names: Array, values: Array) {
+		let result = new Row();
 		for (let i = 0; i < names.length; i++) {
 			result[names[i]] = values[i];
 		}
 		return result;
 	}
 
+	private convertDataTypes(csv: Table) {
+		csv.forEach((row, i) => {
+			if (row.amount) {
+				let amount = row.amount.replace(',', '.');
+				row.amount = parseFloat(amount); // german format
+				row.date = Date.parseExact(row.date, 'dd.MM.yyyy');
+			} else {
+				console.log(row);
+				delete csv[i];
+			}
+		});
+		return csv;
+	}
 }

@@ -2,6 +2,7 @@
 "use strict";
 var Papa = require('papaparse');
 var Table_1 = require('./Table');
+var Table_2 = require('./Table');
 require('datejs');
 /**
  * http://stackoverflow.com/questions/3115982/how-to-check-if-two-arrays-are-equal-with-javascript
@@ -30,6 +31,7 @@ var ParseCSV = (function () {
         else {
             csv = Table_1["default"].fromText(this.data);
         }
+        this.text = null; // save RAM
         console.log('rows after parse', csv.length);
         csv = this.trim(csv);
         console.log('rows after trim', csv.length);
@@ -37,7 +39,8 @@ var ParseCSV = (function () {
         console.log('rows after analyze', csv.length);
         csv = this.normalizeCSV(csv);
         console.log('rows after normalize', csv.length);
-        //console.log(csv);
+        csv = this.convertDataTypes(csv);
+        console.log('rows after convertDataTypes', csv.length);
         return csv;
     };
     /**
@@ -90,7 +93,7 @@ var ParseCSV = (function () {
         }
         var header = this.getHeaderFromTypes(common);
         console.log(header, 'header');
-        var dataWithHeader = [];
+        var dataWithHeader = new Table_1["default"]();
         data.forEach(function (row) {
             dataWithHeader.push(_this.zip(header, row));
         });
@@ -162,11 +165,25 @@ var ParseCSV = (function () {
      * @returns {{}}
      */
     ParseCSV.prototype.zip = function (names, values) {
-        var result = {};
+        var result = new Table_2["default"]();
         for (var i = 0; i < names.length; i++) {
             result[names[i]] = values[i];
         }
         return result;
+    };
+    ParseCSV.prototype.convertDataTypes = function (csv) {
+        csv.forEach(function (row, i) {
+            if (row.amount) {
+                var amount = row.amount.replace(',', '.');
+                row.amount = parseFloat(amount); // german format
+                row.date = Date.parseExact(row.date, 'dd.MM.yyyy');
+            }
+            else {
+                console.log(row);
+                delete csv[i];
+            }
+        });
+        return csv;
     };
     return ParseCSV;
 }());

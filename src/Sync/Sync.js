@@ -182,11 +182,13 @@ var Sync = (function (_super) {
         toastr.info('Generating...');
         var amount = 100;
         var account = chance.word();
+        var categories = this.router.categoryList;
         for (var _i = 0, _a = _.range(amount); _i < _a.length; _i++) {
             var i = _a[_i];
+            var category = categories.random();
             this.model.add(new Transaction_1["default"]({
                 account: account,
-                category: "Default",
+                category: category.get('catName') || "Default",
                 currency: "EUR",
                 amount: chance.floating({ fixed: 2, min: -1000, max: 1000 }),
                 payment_type: "DEBIT_CARD",

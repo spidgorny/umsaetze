@@ -1,5 +1,6 @@
 /// <reference path="../../typings/index.d.ts"/>
 const simpleStorage = require('simpleStorage.js');
+const _ = require('underscore');
 
 export default class Collection extends Array {
 
@@ -48,6 +49,10 @@ export default class Collection extends Array {
 
 	size() {
 		return this.models.length;
+	}
+
+	random() {
+		return _.sample(this.models);
 	}
 
 }

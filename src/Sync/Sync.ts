@@ -8,6 +8,7 @@ import {asyncLoop} from "../umsaetze";
 import PersistenceOptions = Backbone.PersistenceOptions;
 import Workspace from "../Workspace";
 import ParseCSV from "./ParseCSV";
+import Table from "./Table";
 require('file-saver');
 let elapse = require('elapse');
 elapse.configure({
@@ -209,10 +210,12 @@ export default class Sync extends Backbone.View<any> {
 		toastr.info('Generating...');
 		let amount = 100;
 		let account = chance.word();
+		let categories = this.router.categoryList;
 		for (let i of _.range(amount)) {
+			let category = categories.random();
 			this.model.add(new Transaction({
 				account: account,
-				category: "Default",
+				category: category.get('catName') || "Default",
 				currency: "EUR",
 				amount: chance.floating({fixed: 2, min: -1000, max: 1000}),
 				payment_type: "DEBIT_CARD",
