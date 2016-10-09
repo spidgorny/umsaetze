@@ -21,8 +21,10 @@ var Collection = (function (_super) {
         var _this = this;
         var models = simpleStorage.get(this.name) || [];
         models.forEach(function (row) {
-            var model = new _this.modelClass(row);
-            _this.add(model);
+            if (row) {
+                var model = new _this.modelClass(row);
+                _this.add(model);
+            }
         });
     };
     Collection.prototype.add = function (model) {
@@ -47,6 +49,16 @@ var Collection = (function (_super) {
     };
     Collection.prototype.random = function () {
         return _.sample(this.models);
+    };
+    Collection.prototype.remove = function (id, idField) {
+        if (idField === void 0) { idField = 'id'; }
+        var index = _.findIndex(this.models, function (el) {
+            return el[idField] == id;
+        });
+        console.log(index, id, idField);
+        if (index > -1) {
+            delete this.models[index];
+        }
     };
     return Collection;
 }(Array));

@@ -21,8 +21,10 @@ export default class Collection extends Array {
 	fetch() {
 		let models = simpleStorage.get(this.name) || [];
 		models.forEach((row) => {
-			let model = new this.modelClass(row);
-			this.add(model);
+			if (row) {
+				let model = new this.modelClass(row);
+				this.add(model);
+			}
 		});
 	}
 
@@ -53,6 +55,16 @@ export default class Collection extends Array {
 
 	random() {
 		return _.sample(this.models);
+	}
+
+	remove(id, idField = 'id') {
+		let index = _.findIndex(this.models, el => {
+			return el[idField] == id;
+		});
+		console.log(index, id, idField);
+		if (index > -1) {
+			delete this.models[index];
+		}
 	}
 
 }

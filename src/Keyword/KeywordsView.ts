@@ -28,17 +28,24 @@ export default class KeywordsView extends Backbone.View {
 			'<tr>',
 				'<th>Keyword</th>',
 				'<th>Category</th>',
+				'<th></th>',
 			'</tr>',
 			'</thead>',
 		];
 		content.push('<tbody>');
-		this.keywords.each(el => {
-			content.push([
-				'<tr>',
-				'<td>', el.word, '</td>',
-				'<td>', el.category, '</td>',
-				'</tr>',
-			]);
+		this.keywords.each((el: Keyword) => {
+			content.push(`
+				<tr data-id="${el.word}">
+				<td>${el.word}</td>
+				<td>${el.category}</td>
+				<td class="hover-btn">
+					<button type="button" class="close btn-sm" data-dismiss="alert">
+						<span aria-hidden="true">×</span>
+						<span class="sr-only">Delete</span>
+					</button>
+				</td>
+				</tr>`
+			);
 		});
 		content.push('</tbody>');
 		content.push('</table>');
@@ -49,7 +56,7 @@ export default class KeywordsView extends Backbone.View {
 				<div class="panel-heading">
 					<div class="pull-right">
 						<button class="btn btn-default btn-xs" id="removeDuplicates">
-						<span class="glyphicon glyphicon-filter"></span>
+							<span class="glyphicon glyphicon-filter"></span>
 						</button>
 				</div>
 				Keywords 
@@ -63,6 +70,7 @@ export default class KeywordsView extends Backbone.View {
 
 		this.$el.html(RecursiveArrayOfStrings.merge(content));
 		this.$('#removeDuplicates').off().on('click', this.removeDuplicates.bind(this));
+		this.$el.off('click', 'button.close').on('click', 'button.close', this.deleteRow.bind(this));
 		console.timeEnd('KeywordsView::render');
 	}
 
@@ -79,6 +87,15 @@ export default class KeywordsView extends Backbone.View {
 		} else {
 			toastr.error(`No duplicates to remove`);
 		}
+		this.keywords.save();
+		this.render();
+	}
+
+	deleteRow(event: MouseEvent) {
+		let button = $(event.target);
+		let dataID = button.closest('tr').attr('data-id');
+		console.log(dataID);
+		this.keywords.remove(dataID, 'word');
 		this.keywords.save();
 		this.render();
 	}
