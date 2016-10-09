@@ -1,43 +1,67 @@
 <div class="panel panel-default">
 	<div class="panel-heading">
+		<button id="Refresh" class="btn btn-default">
+			<span class="fa fa-refresh"></span>
+		</button>
 		Sync
 	</div>
 	<!-- /.panel-heading -->
 	<div class="panel-body">
-		<dl>
-			<dt>Records in memory:</dt>
-			<dd><%- memoryRows %></dd>
-			<dt>Records in local storage:</dt>
-			<dd><%- lsRows %></dd>
-		</dl>
-		<button id="Refresh" class="btn btn-default">
-			<span class="fa fa-refresh"></span>
-		</button>
-		<button id="Generate" class="btn btn-default">Generate random data (100 at a time)</button>
-
-		<!--<button id="Load" class="btn btn-default">Load CSV</button>-->
-		<form id="file-form" method="post" enctype="multipart/form-data">
-			<div class="form-group">
-				<label>Import CSV:
-					<input type="file" id="file-input-csv" name="file-input">
-				</label>
+		<div class="row">
+			<div class="col-md-5">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Records in memory:
+					</div>
+					<div class="panel-body">
+						<form id="file-form" method="post" enctype="multipart/form-data">
+							<div class="form-group">
+								<label>Import CSV:
+									<input type="file" id="file-input-csv" name="file-input">
+								</label>
+							</div>
+						</form>
+						<div style="text-align: center">
+							<span class="glyphicon glyphicon-arrow-down"></span>
+						</div>
+						<h2 style="text-align: center"><%- memoryRows %></h2>
+						<button id="Generate" class="btn btn-default">
+							<span class="glyphicon glyphicon-equalizer"></span>
+							Generate random data (100 at a time)
+						</button>
+					</div>
+				</div>
 			</div>
-		</form>
-
-
-		<!--<button id="LoadJSON" class="btn btn-default">Load JSON</button>-->
-		<form id="file-form" method="post" enctype="multipart/form-data">
-			<div class="form-group">
-				<label>Import JSON:
-					<input type="file" id="file-input-json" name="file-input">
-				</label>
+			<div class="col-md-2" style="padding-top: 5em;">
+				<button class="btn btn-warning center-block" id="saveToLS">
+					<span class="glyphicon glyphicon-arrow-right"></span> Save
+				</button>
 			</div>
-		</form>
-
-		<button id="Save" class="btn btn-success">
-			<span class="glyphicon glyphicon-download"></span>
-			Save JSON
-		</button>
+			<div class="col-md-5">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Records in local storage:
+					</div>
+					<div class="panel-body">
+						<form id="file-form" method="post" enctype="multipart/form-data">
+							<div class="form-group">
+								<label>Import JSON:
+									<input type="file" id="file-input-json" name="file-input">
+								</label>
+							</div>
+						</form>
+						<div style="text-align: center">
+							<span class="glyphicon glyphicon-arrow-down"></span>
+						</div>
+						<h2 style="text-align: center"><%- lsRows %></h2>
+						<button id="Save" class="btn btn-success">
+							<span class="glyphicon glyphicon-download"></span>
+							Save JSON
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="panel-footer clearfix">
 		<div class="pull-right">

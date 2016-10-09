@@ -60,6 +60,7 @@ var Sync = (function (_super) {
             });
             this.$('#Save').on('click', this.save.bind(this));
             this.$('#Clear').on('click', this.clear.bind(this));
+            this.$('#saveToLS').on('click', this.saveToLS.bind(this));
         }
         else {
             this.$el.html('Loading ...');
@@ -201,6 +202,11 @@ var Sync = (function (_super) {
         Backbone.history.navigate('#', {
             trigger: true,
         });
+    };
+    Sync.prototype.saveToLS = function () {
+        toastr.success('Saving...');
+        this.model.saveAll();
+        this.render();
     };
     return Sync;
 }(Backbone.View));

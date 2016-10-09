@@ -80,6 +80,7 @@ export default class Sync extends Backbone.View<any> {
 
 			this.$('#Save').on('click', this.save.bind(this));
 			this.$('#Clear').on('click', this.clear.bind(this));
+			this.$('#saveToLS').on('click', this.saveToLS.bind(this));
 		} else {
 			this.$el.html('Loading ...');
 		}
@@ -233,6 +234,12 @@ export default class Sync extends Backbone.View<any> {
 		Backbone.history.navigate('#', {
 			trigger: true,
 		});
+	}
+
+	saveToLS() {
+		toastr.success('Saving...');
+		this.model.saveAll();
+		this.render();
 	}
 
 }
