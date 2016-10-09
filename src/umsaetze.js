@@ -4,6 +4,9 @@ var Workspace_1 = require("./Workspace");
 // var bootstrap = require('bootstrap');
 // var _ = require('underscore');
 var Backbone = require('backbone');
+if (window.__backboneAgent) {
+    window.__backboneAgent.handleBackbone(Backbone);
+}
 var $ = require('jquery');
 // const _ = require('underscore');
 function asyncLoop(arr, callback, done) {

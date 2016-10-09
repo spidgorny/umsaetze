@@ -92,6 +92,7 @@ export default class ExpenseTable extends Backbone.View<any> {
 			attributes.categoryOptions = this.getCategoryOptions(transaction);
 			attributes.background = this.categoryList.getColorFor(transaction.get('category'));
 			attributes.checkedDone = transaction.get('done') ? 'checked' : '';
+			attributes.amount = attributes.amount.toFixed(2);
 
 			table.push(attributes);
 		});

@@ -74,6 +74,7 @@ var ExpenseTable = (function (_super) {
             attributes.categoryOptions = _this.getCategoryOptions(transaction);
             attributes.background = _this.categoryList.getColorFor(transaction.get('category'));
             attributes.checkedDone = transaction.get('done') ? 'checked' : '';
+            attributes.amount = attributes.amount.toFixed(2);
             table.push(attributes);
         });
         // sortBy only works with direct attributes (not Model)

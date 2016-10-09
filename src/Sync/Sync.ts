@@ -57,7 +57,7 @@ export default class Sync extends Backbone.View<any> {
 		if (this.template) {
 			this.$el.html(this.template({
 				memoryRows: this.model.size(),
-				lsRows: this.localStorage.records.length,
+				lsRows: this.localStorage.findAll().length,
 			}));
 			this.$('#Refresh').on('click', this.refresh.bind(this));
 			this.$('#Generate').on('click', this.generate.bind(this));

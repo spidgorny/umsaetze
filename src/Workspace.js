@@ -59,7 +59,7 @@ var Workspace = (function (_super) {
         }
     };
     Workspace.prototype.AppView = function () {
-        console.log('AppView');
+        console.warn('AppView');
         this.activateMenu();
         if (!this.appPage) {
             this.appPage = new AppView_1.default({
@@ -70,7 +70,7 @@ var Workspace = (function (_super) {
         this.appPage.show();
     };
     Workspace.prototype.Sync = function () {
-        console.log('Sync');
+        console.warn('Sync');
         this.activateMenu();
         if (this.appPage) {
             this.appPage.hide();
@@ -88,7 +88,7 @@ var Workspace = (function (_super) {
         // ms.render();
     };
     Workspace.prototype.CatPage = function () {
-        console.log('CatPage');
+        console.warn('CatPage');
         this.activateMenu();
         if (this.appPage) {
             this.appPage.hide();
@@ -99,7 +99,7 @@ var Workspace = (function (_super) {
         this.catPage.render();
     };
     Workspace.prototype.Keywords = function () {
-        console.log('Keywords');
+        console.warn('Keywords');
         this.activateMenu();
         if (this.appPage) {
             this.appPage.hide();
@@ -111,12 +111,12 @@ var Workspace = (function (_super) {
         this.keywordsPage.render();
     };
     Workspace.prototype.MonthSelect = function (year, month) {
-        console.log('MonthSelect', year, month);
+        console.warn('MonthSelect', year, month);
         this.AppView();
         this.appPage.ms.setYearMonth(year, month);
     };
     Workspace.prototype.MonthSelectCategory = function (year, month, category) {
-        console.log('MonthSelectCategory', year, month, category);
+        console.warn('MonthSelectCategory', year, month, category);
         this.AppView();
         this.appPage.ms.setYearMonth(year, month);
         var cat = this.categoryList.findWhere({ catName: category });

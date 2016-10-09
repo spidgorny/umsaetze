@@ -5,6 +5,9 @@ import Workspace from "./Workspace";
 // var bootstrap = require('bootstrap');
 // var _ = require('underscore');
 const Backbone = require('backbone');
+if (window.__backboneAgent) {
+	window.__backboneAgent.handleBackbone(Backbone);
+}
 const $ = require('jquery');
 // const _ = require('underscore');
 

@@ -35,7 +35,7 @@ export default class Collection extends Array {
 
 	save() {
 		simpleStorage.set(this.name, this.models);
-		console.log(this.name+' saved '+this.size()+' records');
+		//console.log(this.name+' saved '+this.size()+' records');
 	}
 
 	each(callback: Function) {

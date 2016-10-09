@@ -14,8 +14,8 @@ elapse.configure({
 const Backbone = require('backbone');
 const $ = require('jquery');
 const _ = require('underscore');
-const BS = require('bootstrap');
-let bs = BS;
+// const BS = require('bootstrap');
+// let bs = BS;
 
 export default class AppView extends Backbone.View<Expenses> {
 
@@ -79,15 +79,16 @@ export default class AppView extends Backbone.View<Expenses> {
 		//if (!['', '#'].includes(window.location.hash)) return;
 		console.log('AppView.render()', this.collection.size());
 		this.setTemplate();
-		this.collection.setAllVisible();
-		this.collection.filterByMonth();
+
+		// should not be done as any outside filter stop working
+		// this.collection.setAllVisible();
+		// this.collection.filterByMonth();
+
 		this.table.render();
-		console.log('AppView.render() 2');
 		this.categories.render();
-		console.log('AppView.render() 3');
 		this.$('#applyKeywords').on('click', this.applyKeywords.bind(this));
-		let popover = $('[data-toggle="popover"]').popover();
-		console.log(popover);
+		// let popover = $('[data-toggle="popover"]').popover();
+		// console.log(popover);
 		return this;
 	}
 

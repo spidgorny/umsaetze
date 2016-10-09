@@ -47,7 +47,6 @@ var Expenses = (function (_super) {
             });
             //this.unserializeDate();
             this.trigger('change');
-            return;
         }
     };
     /**
@@ -218,7 +217,8 @@ var Expenses = (function (_super) {
         this.trigger('change');
     };
     /**
-     * TODO: generate matrix separately and then return only the value in a grid
+     * TODO: generate matrix separately and then return only the value in a grid.
+     * JavaScript is so fast it's tempting to ignore this
      * @param category
      * @returns {{}}
      */
@@ -226,16 +226,32 @@ var Expenses = (function (_super) {
         var sparks = {};
         var from = this.getEarliest().moveToFirstDayOfMonth();
         var till = this.getLatest().moveToLastDayOfMonth();
+        console.log({
+            from: from.toString('yyyy-MM-dd HH:mm'),
+            till: till.toString('yyyy-MM-dd HH:mm'),
+        });
         var count = 0;
         var _loop_1 = function(month) {
             var month1 = month.clone();
-            month1.addMonths(1);
-            //console.log(month, month1, Date.today().between(month, month1));
+            month1.addMonths(1).add(-1).minutes();
+            // console.log({
+            // 	month: month.toString('yyyy-MM-dd HH:mm'),
+            // 	month1: month1.toString('yyyy-MM-dd HH:mm'),
+            // 	today_is_between: Date.today().between(month, month1)
+            // });
             var sum = 0;
             this_1.each(function (transaction) {
                 var sameCategory = transaction.get('category') == category.getName();
                 var sameMonth = transaction.getDate().between(month, month1);
                 if (sameCategory && sameMonth) {
+                    // if (category.getName() == 'Darlehen' && month.toString('yyyy-MM-dd') == '2014-09-01') {
+                    // 	console.log({
+                    // 		transDate: transaction.getDate().toString('yyyy-MM-dd HH:mm'),
+                    // 		transAmount: transaction.getAmount(),
+                    // 		month: month.toString('yyyy-MM-dd HH:mm'),
+                    // 		month1: month1.toString('yyyy-MM-dd HH:mm'),
+                    // 	});
+                    // }
                     sum += transaction.getAmount();
                     count++;
                     category.incrementCount();

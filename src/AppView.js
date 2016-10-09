@@ -16,8 +16,8 @@ elapse.configure({
 var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
-var BS = require('bootstrap');
-var bs = BS;
+// const BS = require('bootstrap');
+// let bs = BS;
 var AppView = (function (_super) {
     __extends(AppView, _super);
     /**
@@ -59,15 +59,14 @@ var AppView = (function (_super) {
         //if (!['', '#'].includes(window.location.hash)) return;
         console.log('AppView.render()', this.collection.size());
         this.setTemplate();
-        this.collection.setAllVisible();
-        this.collection.filterByMonth();
+        // should not be done as any outside filter stop working
+        // this.collection.setAllVisible();
+        // this.collection.filterByMonth();
         this.table.render();
-        console.log('AppView.render() 2');
         this.categories.render();
-        console.log('AppView.render() 3');
         this.$('#applyKeywords').on('click', this.applyKeywords.bind(this));
-        var popover = $('[data-toggle="popover"]').popover();
-        console.log(popover);
+        // let popover = $('[data-toggle="popover"]').popover();
+        // console.log(popover);
         return this;
     };
     AppView.prototype.setTemplate = function () {

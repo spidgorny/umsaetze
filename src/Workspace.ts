@@ -68,7 +68,7 @@ export default class Workspace extends Backbone.Router {
 	}
 
 	AppView() {
-		console.log('AppView');
+		console.warn('AppView');
 		this.activateMenu();
 		if (!this.appPage) {
 			this.appPage = new AppView({
@@ -80,7 +80,7 @@ export default class Workspace extends Backbone.Router {
 	}
 
 	Sync() {
-		console.log('Sync');
+		console.warn('Sync');
 		this.activateMenu();
 		if (this.appPage) {
 			this.appPage.hide();
@@ -99,7 +99,7 @@ export default class Workspace extends Backbone.Router {
 	}
 
 	CatPage() {
-		console.log('CatPage');
+		console.warn('CatPage');
 		this.activateMenu();
 		if (this.appPage) {
 			this.appPage.hide();
@@ -111,7 +111,7 @@ export default class Workspace extends Backbone.Router {
 	}
 
 	Keywords() {
-		console.log('Keywords');
+		console.warn('Keywords');
 		this.activateMenu();
 		if (this.appPage) {
 			this.appPage.hide();
@@ -124,20 +124,19 @@ export default class Workspace extends Backbone.Router {
 	}
 
 	MonthSelect(year, month) {
-		console.log('MonthSelect', year, month);
+		console.warn('MonthSelect', year, month);
 		this.AppView();
 		this.appPage.ms.setYearMonth(year, month);
 	}
 
 	MonthSelectCategory(year, month, category) {
-		console.log('MonthSelectCategory', year, month, category);
+		console.warn('MonthSelectCategory', year, month, category);
 		this.AppView();
 		this.appPage.ms.setYearMonth(year, month);
 		let cat = this.categoryList.findWhere({catName: category});
 		console.log('MonthSelectCategory cat', cat);
 		this.appPage.collection.filterByCategory(cat);
 		this.appPage.collection.trigger('change');	// slow!
-
 	}
 
 	Summary() {
