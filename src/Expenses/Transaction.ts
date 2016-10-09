@@ -58,6 +58,8 @@ export default class Transaction extends bb.Model {
 
 		// should be set
 		this.set('note', this.get('note'));
+
+		this.set('done', this.get('done'));
 	}
 
 	sign() {

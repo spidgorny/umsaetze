@@ -58,22 +58,7 @@ export default class ExpenseTable extends Backbone.View<any> {
 		elapse.time('ExpenseTable.render');
 		console.log('ExpenseTable.render()', this.model.size());
 
-		let visible = this.model.getVisible();
-
-		let table = new Table();
-		_.each(visible, (transaction: Transaction) => {
-			let attributes = transaction.toJSON();
-			attributes.sDate = transaction.getDate().toString('yyyy-MM-dd');
-			attributes.cssClass = attributes.category == 'Default'
-				? 'bg-warning' : '';
-			attributes.categoryOptions = this.getCategoryOptions(transaction);
-			attributes.background = this.categoryList.getColorFor(transaction.get('category'));
-
-			table.push(attributes);
-		});
-		// sortBy only works with direct attributes (not Model)
-		table = _.sortBy(table, 'date');
-
+		let table = this.getTransactionAttributesTable();
 		let rows = [];
 		table.forEach((attributes: Object) => {
 			rows.push(this.template(attributes));
@@ -90,9 +75,29 @@ export default class ExpenseTable extends Backbone.View<any> {
 		this.$el.on('change', 'select', this.newCategory.bind(this));
 		this.$el.on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
 		this.$el.off('click', 'button.close').on('click', 'button.close', this.deleteRow.bind(this));
+		this.$el.on('click', 'input.checkedDone', this.onCheck.bind(this));
 
 		elapse.timeEnd('ExpenseTable.render');
 		return this;
+	}
+
+	getTransactionAttributesTable() {
+		let visible = this.model.getVisible();
+		let table = new Table();
+		_.each(visible, (transaction: Transaction) => {
+			let attributes = transaction.toJSON();
+			attributes.sDate = transaction.getDate().toString('yyyy-MM-dd');
+			attributes.cssClass = attributes.category == 'Default'
+				? 'bg-warning' : '';
+			attributes.categoryOptions = this.getCategoryOptions(transaction);
+			attributes.background = this.categoryList.getColorFor(transaction.get('category'));
+			attributes.checkedDone = transaction.get('done') ? 'checked' : '';
+
+			table.push(attributes);
+		});
+		// sortBy only works with direct attributes (not Model)
+		table = _.sortBy(table, 'date');
+		return table;
 	}
 
 	/**
@@ -231,7 +236,15 @@ export default class ExpenseTable extends Backbone.View<any> {
 		return position;
 	}
 
+	/**
+	 * When clicking on the category item from the popup menu
+	 * @param text
+	 * @param menu
+	 */
 	applyFilter(text, menu) {
+		let scrollTop = document.body.scrollTop;
+		console.log('scrollTop', scrollTop);
+
 		let categoryName = menu.text().trim();
 		console.log(text, 'to be', categoryName);
 		this.keywords.add(new Keyword({
@@ -239,10 +252,12 @@ export default class ExpenseTable extends Backbone.View<any> {
 			category: categoryName,
 		}));
 		this.model.setCategories(this.keywords);
-		let scrollTop = document.body.scrollTop;
-		console.log('scrollTop', scrollTop);
 		this.render();
-		$('body').scrollTop(scrollTop);
+
+		setTimeout(() => {
+			console.log('Scrolling', scrollTop);
+			$('body').scrollTop(scrollTop);
+		}, 0);
 	}
 
 	deleteRow(event) {
@@ -252,6 +267,16 @@ export default class ExpenseTable extends Backbone.View<any> {
 		this.model.remove(dataID);
 		this.model.saveAll();
 		this.render();
+	}
+
+	onCheck(event: MouseEvent) {
+		let checkbox = $(event.target);
+		let id = checkbox.closest('tr').attr('data-id');
+		let transaction = this.model.get(id);
+		//console.log(checkbox, id, transaction);
+		if (transaction) {
+			transaction.set('done', true);
+		}
 	}
 
 }

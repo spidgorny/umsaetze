@@ -54,6 +54,7 @@ var Transaction = (function (_super) {
         this.set('category', this.get('category') || 'Default');
         // should be set
         this.set('note', this.get('note'));
+        this.set('done', this.get('done'));
     }
     Transaction.prototype.sign = function () {
         return this.get('amount') >= 0 ? 'positive' : 'negative';

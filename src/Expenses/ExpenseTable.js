@@ -44,19 +44,7 @@ var ExpenseTable = (function (_super) {
         }
         elapse.time('ExpenseTable.render');
         console.log('ExpenseTable.render()', this.model.size());
-        var visible = this.model.getVisible();
-        var table = new Table_1.default();
-        _.each(visible, function (transaction) {
-            var attributes = transaction.toJSON();
-            attributes.sDate = transaction.getDate().toString('yyyy-MM-dd');
-            attributes.cssClass = attributes.category == 'Default'
-                ? 'bg-warning' : '';
-            attributes.categoryOptions = _this.getCategoryOptions(transaction);
-            attributes.background = _this.categoryList.getColorFor(transaction.get('category'));
-            table.push(attributes);
-        });
-        // sortBy only works with direct attributes (not Model)
-        table = _.sortBy(table, 'date');
+        var table = this.getTransactionAttributesTable();
         var rows = [];
         table.forEach(function (attributes) {
             rows.push(_this.template(attributes));
@@ -70,8 +58,27 @@ var ExpenseTable = (function (_super) {
         this.$el.on('change', 'select', this.newCategory.bind(this));
         this.$el.on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
         this.$el.off('click', 'button.close').on('click', 'button.close', this.deleteRow.bind(this));
+        this.$el.on('click', 'input.checkedDone', this.onCheck.bind(this));
         elapse.timeEnd('ExpenseTable.render');
         return this;
+    };
+    ExpenseTable.prototype.getTransactionAttributesTable = function () {
+        var _this = this;
+        var visible = this.model.getVisible();
+        var table = new Table_1.default();
+        _.each(visible, function (transaction) {
+            var attributes = transaction.toJSON();
+            attributes.sDate = transaction.getDate().toString('yyyy-MM-dd');
+            attributes.cssClass = attributes.category == 'Default'
+                ? 'bg-warning' : '';
+            attributes.categoryOptions = _this.getCategoryOptions(transaction);
+            attributes.background = _this.categoryList.getColorFor(transaction.get('category'));
+            attributes.checkedDone = transaction.get('done') ? 'checked' : '';
+            table.push(attributes);
+        });
+        // sortBy only works with direct attributes (not Model)
+        table = _.sortBy(table, 'date');
+        return table;
     };
     /**
      * @deprecated - not working in Chrome
@@ -196,7 +203,14 @@ var ExpenseTable = (function (_super) {
             position -= menu;
         return position;
     };
+    /**
+     * When clicking on the category item from the popup menu
+     * @param text
+     * @param menu
+     */
     ExpenseTable.prototype.applyFilter = function (text, menu) {
+        var scrollTop = document.body.scrollTop;
+        console.log('scrollTop', scrollTop);
         var categoryName = menu.text().trim();
         console.log(text, 'to be', categoryName);
         this.keywords.add(new Keyword_1.default({
@@ -204,10 +218,11 @@ var ExpenseTable = (function (_super) {
             category: categoryName,
         }));
         this.model.setCategories(this.keywords);
-        var scrollTop = document.body.scrollTop;
-        console.log('scrollTop', scrollTop);
         this.render();
-        $('body').scrollTop(scrollTop);
+        setTimeout(function () {
+            console.log('Scrolling', scrollTop);
+            $('body').scrollTop(scrollTop);
+        }, 0);
     };
     ExpenseTable.prototype.deleteRow = function (event) {
         var button = $(event.target);
@@ -216,6 +231,15 @@ var ExpenseTable = (function (_super) {
         this.model.remove(dataID);
         this.model.saveAll();
         this.render();
+    };
+    ExpenseTable.prototype.onCheck = function (event) {
+        var checkbox = $(event.target);
+        var id = checkbox.closest('tr').attr('data-id');
+        var transaction = this.model.get(id);
+        //console.log(checkbox, id, transaction);
+        if (transaction) {
+            transaction.set('done', true);
+        }
     };
     return ExpenseTable;
 }(Backbone.View));

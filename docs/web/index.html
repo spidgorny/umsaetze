@@ -425,10 +425,11 @@
 				<table class="table">
 					<thead>
 					<tr>
-						<td>Date</td>
-						<td>Amount</td>
-						<td>Category</td>
-						<td>Note</td>
+						<th>Date</th>
+						<th>Amount</th>
+						<th>Done</th>
+						<th>Category</th>
+						<th>Note</th>
 					</tr>
 					</thead>
 					<tbody id="expenseTable">
@@ -462,6 +463,9 @@
 			</td>
 			<td class="money <%- sign %>">
 				<%- amount %> &euro;
+			</td>
+			<td>
+				<input type="checkbox" class="checkedDone" name="done[<%- id %>]" <%- checkedDone %> title="Done" />
 			</td>
 			<td>
 				<select name="category" title="Category">
