@@ -18,6 +18,7 @@ var SummaryLine = (function () {
                 // if (this.catName == 'Auto') console.log(el, sl2.perMonth[index]);
                 el.value = parseFloat(el.value) + parseFloat(sl2.perMonth[index].value);
                 // if (this.catName == 'Auto') console.log(el.value);
+                el.value = el.value.toFixed(2);
                 return el;
             });
         }

@@ -51,6 +51,17 @@ var MonthSelect = (function (_super) {
         console.time('MonthSelect.render');
         this.earliest.moveToFirstDayOfMonth();
         var selectedDate = this.getSelected();
+        // year
+        var options = [];
+        var minYear = this.earliest.getFullYear();
+        var maxYear = this.latest.getFullYear();
+        console.log(minYear, maxYear);
+        for (var y = minYear; y <= maxYear; y++) {
+            var selected = selectedDate.getFullYear() == y ? 'selected' : '';
+            options.push('<option ' + selected + '>' + y + '</option>');
+        }
+        this.yearSelect.html(options.join("\n"));
+        // month
         this.monthOptions.each(function (i, button) {
             var monthNumber = i + 1;
             //console.log(button);
@@ -148,7 +159,7 @@ var MonthSelect = (function (_super) {
     };
     /**
      * @public
-     * @returns {Date}
+     * @returns Date
      */
     MonthSelect.prototype.getSelected = function () {
         var sSelectedDate = this.selectedYear + '-' + this.getMonthIndex() + '-01';

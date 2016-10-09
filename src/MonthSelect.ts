@@ -45,9 +45,20 @@ export default class MonthSelect extends Backbone.View<any> {
 	render() {
 		console.time('MonthSelect.render');
 		this.earliest.moveToFirstDayOfMonth();
-
 		let selectedDate = this.getSelected();
 
+		// year
+		let options = [];
+		let minYear = this.earliest.getFullYear();
+		let maxYear = this.latest.getFullYear();
+		console.log(minYear, maxYear);
+		for (let y = minYear; y <= maxYear; y++) {
+			let selected = selectedDate.getFullYear() == y ? 'selected' : '';
+			options.push('<option '+selected+'>'+y+'</option>');
+		}
+		this.yearSelect.html(options.join("\n"));
+
+		// month
 		this.monthOptions.each((i, button) => {
 			let monthNumber = i+1;
 			//console.log(button);
@@ -158,7 +169,7 @@ export default class MonthSelect extends Backbone.View<any> {
 
 	/**
 	 * @public
-	 * @returns {Date}
+	 * @returns Date
 	 */
 	getSelected() {
 		let sSelectedDate = this.selectedYear+'-'+this.getMonthIndex()+'-01';
