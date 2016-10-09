@@ -87,6 +87,11 @@ var SummaryView = (function (_super) {
     SummaryView.prototype.addCategoryTotals = function (categoryOptions) {
         var groupByCategory = {};
         _.each(categoryOptions, function (el) {
+            if (!el.catName) {
+                console.log(el);
+                //throw new Error('addCategoryTotals has element without catName');
+                return; // ignore
+            }
             var _a = el.catName.split(':'), category = _a[0], specifics = _a[1];
             category = category.trim();
             if (!groupByCategory[category]) {

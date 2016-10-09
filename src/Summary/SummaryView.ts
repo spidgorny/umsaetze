@@ -95,6 +95,11 @@ export default class SummaryView extends Backbone.View<CategoryCollection> {
 	private addCategoryTotals(categoryOptions: Array) {
 		let groupByCategory = {};
 		_.each(categoryOptions, el => {
+			if (!el.catName) {
+				console.log(el);
+				//throw new Error('addCategoryTotals has element without catName');
+				return;	// ignore
+			}
 			let [category, specifics] = el.catName.split(':');
 			category = category.trim();
 			if (!groupByCategory[category]) {
