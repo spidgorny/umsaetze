@@ -14,7 +14,9 @@ margin: 1em auto;
 	</form>
 </div>
  
-## Quick Start
+## Quick Start 
+
+![Screenshot](img/2016-10-10 02_10_02-Umsaetze.png)
 
 * Download CSV file from your bank with the account transactions.
 * Go to [https://spidgorny.github.io/umsaetze/web/](https://spidgorny.github.io/umsaetze/web/) and switch to [Sync] menu.
