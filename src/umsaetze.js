@@ -84,7 +84,7 @@ var Umsaetze = (function () {
             // tour.init();
             // Start the tour
             // tour.start();
-        }, 5000);
+        }, 5);
     };
     return Umsaetze;
 }());

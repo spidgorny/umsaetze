@@ -76,12 +76,16 @@ export default class CatPage extends Backbone.View<Transaction> {
 				categoryOptions: categoryOptions,
 			}));
 			this.$('#addCategoryForm').on('submit', this.addCategory.bind(this));
-			this.$('input[name="newName"]').focus();
+			if ($(document).scrollTop() < 1) {
+				this.$('input[name="newName"]').focus();
+			}
 			this.$el.on('change', 'input[type="color"]', this.selectColor.bind(this));
 			this.$('button.close').on('click', this.deleteCategory.bind(this));
 			this.$('#categoryCount').html(this.categoryList.size());
-			this.$('.inlineEdit').data('callback', this.renameCategory.bind(this)));
-			this.renderSparkLines();
+			this.$('.inlineEdit').data('callback', this.renameCategory.bind(this));
+			setTimeout(() => {
+				this.renderSparkLines();
+			}, 5000);
 		} else {
 			this.$el.html('Loading...');
 		}

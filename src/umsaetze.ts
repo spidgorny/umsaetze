@@ -92,7 +92,7 @@ class Umsaetze {
 			// tour.init();
 			// Start the tour
 			// tour.start();
-		}, 5000);
+		}, 5);
 	}
 
 }

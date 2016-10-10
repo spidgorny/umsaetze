@@ -226,10 +226,10 @@ var Expenses = (function (_super) {
         var sparks = {};
         var from = this.getEarliest().moveToFirstDayOfMonth();
         var till = this.getLatest().moveToLastDayOfMonth();
-        console.log({
-            from: from.toString('yyyy-MM-dd HH:mm'),
-            till: till.toString('yyyy-MM-dd HH:mm'),
-        });
+        // console.log({
+        // 	from: from.toString('yyyy-MM-dd HH:mm'),
+        // 	till: till.toString('yyyy-MM-dd HH:mm'),
+        // });
         var count = 0;
         var _loop_1 = function(month) {
             var month1 = month.clone();

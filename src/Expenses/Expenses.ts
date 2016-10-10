@@ -242,10 +242,10 @@ export default class Expenses extends bb.Collection<Transaction> {
 		let sparks = {};
 		let from = this.getEarliest().moveToFirstDayOfMonth();
 		let till = this.getLatest().moveToLastDayOfMonth();
-		console.log({
-			from: from.toString('yyyy-MM-dd HH:mm'),
-			till: till.toString('yyyy-MM-dd HH:mm'),
-		});
+		// console.log({
+		// 	from: from.toString('yyyy-MM-dd HH:mm'),
+		// 	till: till.toString('yyyy-MM-dd HH:mm'),
+		// });
 		let count = 0;
 		for (let month = from; month.compareTo(till) == -1; month.addMonths(1)) {
 			let month1 = month.clone();
