@@ -2,7 +2,7 @@
 "use strict";
 var Papa = require('papaparse');
 var Table_1 = require('./Table');
-var Table_2 = require('./Table');
+var Row_1 = require('./Row');
 require('datejs');
 /**
  * http://stackoverflow.com/questions/3115982/how-to-check-if-two-arrays-are-equal-with-javascript
@@ -100,30 +100,12 @@ var ParseCSV = (function () {
         console.log(dataWithHeader[0], 'dataWithHeader');
         return dataWithHeader;
     };
-    ParseCSV.prototype.getRowTypes = function (row) {
-        var types = [];
-        row.forEach(function (el) {
-            var float = parseFloat(el);
-            var date = Date.parse(el);
-            var isDate = !!date && el.indexOf(',') == -1; // dates are without ,
-            if (float && !isDate) {
-                types.push('number');
-            }
-            else if (isDate) {
-                types.push('date');
-            }
-            else {
-                types.push('string');
-            }
-        });
-        return types;
-    };
     ParseCSV.prototype.getRowTypesForSomeRows = function (data) {
         var typeSet = [];
-        for (var i = 0; i < 10 && i < data.length; i++) {
-            var row = data[i];
-            // console.log(i, row);
-            var types = this.getRowTypes(row);
+        for (var i = 0; i < 100 && i < data.length; i++) {
+            var row = new Row_1.default(data[i]);
+            console.log(i, row);
+            var types = row.getRowTypes();
             //console.log(types);
             typeSet.push(types);
         }
@@ -165,7 +147,7 @@ var ParseCSV = (function () {
      * @returns Row
      */
     ParseCSV.prototype.zip = function (names, values) {
-        var result = new Table_2.default();
+        var result = new Row_1.default();
         for (var i = 0; i < names.length; i++) {
             result[names[i]] = values[i];
         }

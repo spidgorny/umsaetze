@@ -3,7 +3,7 @@
 import {start} from "repl";
 const Papa = require('papaparse');
 import Table from './Table';
-import Row from './Table';
+import Row from './Row';
 require('datejs');
 
 /**
@@ -115,29 +115,12 @@ export default class ParseCSV {
 		return dataWithHeader;
 	}
 
-	getRowTypes(row: Row) {
-		let types = [];
-		row.forEach((el: any) => {
-			let float = parseFloat(el);
-			let date = Date.parse(el);
-			let isDate = !!date && el.indexOf(',') == -1;	// dates are without ,
-			if (float && !isDate) {
-				types.push('number');
-			} else if (isDate) {
-				types.push('date');
-			} else {
-				types.push('string');
-			}
-		});
-		return types;
-	}
-
 	getRowTypesForSomeRows(data: Table) {
 		let typeSet = [];
-		for (let i = 0; i < 10 && i < data.length; i++) {
-			let row: Row = data[i];
-			// console.log(i, row);
-			let types = this.getRowTypes(row);
+		for (let i = 0; i < 100 && i < data.length; i++) {
+			let row: Row = new Row(data[i]);
+			console.log(i, row);
+			let types = row.getRowTypes();
 			//console.log(types);
 			typeSet.push(types);
 		}
