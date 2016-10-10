@@ -9,6 +9,7 @@ const fs = require('fs');
 // const parser = require('./src/Sync/ParseCSV.js');
 import ParseCSV from "./src/Sync/ParseCSV";
 const iconv = require('iconv-lite');
+const _ = require('underscore');
 
 function StringifyStream() {
 	stream.Transform.call(this);
@@ -275,10 +276,78 @@ class SpardaBank {
 		});
 	}
 
+	testImport() {
+		let testFixture = [
+			{
+				file: 'test/data/SpardaBank/umsaetze-1090729-2016-10-06-00-31-51.csv',
+				result: [
+					{
+						date: new Date('Wed Oct 05 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+						amount: -50.29,
+						note: 'TOTAL DEUTSCHLAND GM 04.10.2016 08.15.29 620895 EUR      50,29 EC          74110494 562760 PAN 6729509200010907293 FTS-Tankstelle//FRANKFURT/D 001 12/2017 GIROCARD',
+					},
+					{
+						date: new Date('Wed Oct 05 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+						amount: -35.64,
+						note: '1u1 Internet SE SEPA-BASISLASTSCHRIFT SVWZ+ OTHR sonst ige Zahlung KD-Nr. K1505564 9/ RG-Nr. 100031626551 EREF + 004199835838 MREF+ 002000 1185661 CRED+ DE74ZZZ000000 45294',
+					},
+				]
+			},
+			{
+				file: 'test/data/SimpleImport.csv',
+				result: [
+					{
+						date: new Date('Sat Oct 01 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+						amount: 10,
+						note: 'Rewe' },
+					{
+						date: new Date('Sun Oct 02 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+						amount: 20,
+						note: 'Penny' },
+				],
+			},
+		];
+		testFixture.forEach(set => {
+			console.log('File: '+set.file);
+			let data = fs.readFileSync(set.file);
+			data = iconv.decode(data, "ISO-8859-1");
+			let parse = new ParseCSV(data);
+			let nice = parse.parseAndNormalize();
+			let row0 = nice[0];
+			row0 = _.pick(row0, 'date', 'amount', 'note');
+			// specific order for JSON comparison
+			row0 = {
+				date: row0.date,
+				amount: row0.amount,
+				note: row0.note,
+			};
+			let row1 = nice[1];
+			row1 = _.pick(row1, 'date', 'amount', 'note');
+			row1 = {
+				date: row1.date,
+				amount: row1.amount,
+				note: row1.note,
+			};
+			// if (_.isEqual(row0, set.result[0]) && _.isEqual(row1, set.result[1])) {
+			if (JSON.stringify(row0) == JSON.stringify(set.result[0])
+				&& JSON.stringify(row1) == JSON.stringify(set.result[1])) {
+				console.log('OK');
+			} else {
+				console.error('Parsed file does not match');
+				console.lofg(JSON.stringify(row0));
+				console.log(JSON.stringify(set.result[0]));
+				console.log(JSON.stringify(row1));
+				console.log(JSON.stringify(set.result[1]));
+				throw new Error(set.file+' test failed');
+			}
+		});
+	}
+
 	testParser() {
 		console.log('Loading file...');
-		//let data = fs.readFileSync('test/data/umsaetze-1090729-2016-10-06-00-31-51.csv');
-		let data = fs.readFileSync('test/data/SimpleImport.csv');
+		// let data = fs.readFileSync('test/data/SpardaBank/umsaetze-1090729-2016-10-06-00-31-51.csv');
+		// let data = fs.readFileSync('test/data/SimpleImport.csv');
+		let data = fs.readFileSync('test/data/DeutscheBank/Kontoumsaetze_100_390590800_20161010_221922.csv');
 		data = iconv.decode(data, "ISO-8859-1");
 		console.log('Loaded', data.length);
 		let parse = new ParseCSV(data);
@@ -293,4 +362,5 @@ class SpardaBank {
 let sb = new SpardaBank();
 //sb.convertMoneyFormat();
 // sb.startCategorize();
+// sb.testImport();
 sb.testParser();

@@ -3,7 +3,7 @@ title: Umsaetze
 ---
 This is a tool to categorize your expenses as recorded by your bank. First you download the data from the bank in CSV format. Import it here and assign categories to each entry. This tool allows you to do all that without storing your data on any server - it's stored in your browser local storage and not transmitted over the network. So nobody can see your money business.
 
-This is like 
+This is like [Numbrs](https://www.centralway.com/en/) but without providing your bank account password to anybody.
 
 <div style="
 width: auto; 
