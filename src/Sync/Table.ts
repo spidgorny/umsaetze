@@ -149,4 +149,15 @@ export default class Table extends ArrayPlus {
 		return typeSet;
 	}
 
+	filterMostlyNull() {
+		let notNull = this.filter((row) => {
+			let countNull = row.filter(type => {
+				return type == 'null';
+			}).length;
+			// console.log(countNull, row);
+			return countNull < row.length / 2;
+		});
+		return new Table(notNull);
+	}
+
 }

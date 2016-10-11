@@ -361,5 +361,5 @@ class SpardaBank {
 let sb = new SpardaBank();
 //sb.convertMoneyFormat();
 // sb.startCategorize();
-// sb.testImport();
+sb.testImport();
 sb.testParser();

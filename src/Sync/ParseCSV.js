@@ -88,19 +88,20 @@ var ParseCSV = (function () {
         var _this = this;
         //console.log(data);
         var typeSet = data.getRowTypesForSomeRows();
+        typeSet = typeSet.filterMostlyNull();
         // console.log(typeSet, 'typeSet');
         var common = typeSet.mode();
-        console.log(common, 'common');
-        console.log(typeSet.length, 'typeSet.length');
-        console.log(typeSet[0], 'typeSet[0]');
-        console.log(data[0], 'data[0]');
+        console.log(JSON.stringify(common), 'common');
+        // console.log(typeSet.length, 'typeSet.length');
+        // console.log(typeSet[0], 'typeSet[0]');
+        // console.log(data[0], 'data[0]');
         if (typeSet.length
             && !typeSet[0].equals(common)) {
             // first row is a header
             data = data.slice(1); // remove header
         }
         var header = this.getHeaderFromTypes(common);
-        console.log(header, 'header');
+        console.log(JSON.stringify(header), 'header');
         var dataWithHeader = new Table_1.default();
         data.forEach(function (row) {
             dataWithHeader.push(_this.zip(header, row));

@@ -118,6 +118,16 @@ var Table = (function (_super) {
         });
         return typeSet;
     };
+    Table.prototype.filterMostlyNull = function () {
+        var notNull = this.filter(function (row) {
+            var countNull = row.filter(function (type) {
+                return type == 'null';
+            }).length;
+            // console.log(countNull, row);
+            return countNull < row.length / 2;
+        });
+        return new Table(notNull);
+    };
     return Table;
 }(ArrayPlus_1.default));
 Object.defineProperty(exports, "__esModule", { value: true });

@@ -96,13 +96,14 @@ export default class ParseCSV {
 	private normalizeCSV(data: Table) {
 		//console.log(data);
 		let typeSet = data.getRowTypesForSomeRows();
+		typeSet = typeSet.filterMostlyNull();
 		// console.log(typeSet, 'typeSet');
 		let common = typeSet.mode();
-		console.log(common, 'common');
+		console.log(JSON.stringify(common), 'common');
 
-		console.log(typeSet.length, 'typeSet.length');
-		console.log(typeSet[0], 'typeSet[0]');
-		console.log(data[0], 'data[0]');
+		// console.log(typeSet.length, 'typeSet.length');
+		// console.log(typeSet[0], 'typeSet[0]');
+		// console.log(data[0], 'data[0]');
 		if (typeSet.length
 			&& !typeSet[0].equals(common)) {
 			// first row is a header
@@ -110,7 +111,7 @@ export default class ParseCSV {
 		}
 
 		let header = this.getHeaderFromTypes(common);
-		console.log(header, 'header');
+		console.log(JSON.stringify(header), 'header');
 
 		let dataWithHeader = new Table();
 		data.forEach((row) => {

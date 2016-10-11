@@ -305,6 +305,6 @@ var SpardaBank = (function () {
 var sb = new SpardaBank();
 //sb.convertMoneyFormat();
 // sb.startCategorize();
-// sb.testImport();
+sb.testImport();
 sb.testParser();
 //# sourceMappingURL=index.js.map
