@@ -11,11 +11,11 @@ require('datejs');
  * @param array
  * @returns {boolean}
  */
-Array.prototype.equals = function( array ) {
+/*Array.prototype.equals = function( array ) {
 	return this.length == array.length &&
 		this.every( function(this_i,i) { return this_i == array[i] } )
 };
-
+*/
 
 export default class ParseCSV {
 
@@ -38,7 +38,7 @@ export default class ParseCSV {
 		} else {
 			csv = Table.fromText(this.data);
 		}
-		this.text = null;	// save RAM
+		this.data = null;	// save RAM
 		console.log('rows after parse', csv.length);
 		csv = this.trim(csv);
 		console.log('rows after trim', csv.length);
@@ -59,16 +59,19 @@ export default class ParseCSV {
 	 */
 	trim(csv: Table) {
 		let rev = csv.reverse();	// start at the bottom of the file
-		let startIndex = 0;
+		let startIndex = null;
 		rev.forEach((row, i) => {
 			// first row with real data
-			if (!startIndex && row.length && row[0] != '') {
+			if (startIndex == null
+				&& row.length && row[0] != '') {
 				startIndex = i;
 				console.log('trim @', startIndex);
 			}
 		});
-		csv = csv.slice(startIndex);
-		return csv.reverse();
+		let data = rev.slice(startIndex);
+		// console.log(data[0]);
+		data = data.reverse();
+		return new Table(data);
 	}
 
 	/**
@@ -83,8 +86,8 @@ export default class ParseCSV {
 			}
 		});
 		console.log('slicing ', startIndex, 'first rows');
-		data = data.slice(startIndex);
-		return data;
+		let sliced = data.slice(startIndex);
+		return new Table(sliced);
 	}
 
 	/**
@@ -92,12 +95,16 @@ export default class ParseCSV {
 	 */
 	private normalizeCSV(data: Table) {
 		//console.log(data);
-		let typeSet = this.getRowTypesForSomeRows(data);
-		let common = this.mode(typeSet);
+		let typeSet = data.getRowTypesForSomeRows();
+		// console.log(typeSet, 'typeSet');
+		let common = typeSet.mode();
 		console.log(common, 'common');
 
-		//console.log(typeSet[0]);
-		if (!typeSet[0].equals(common)) {
+		console.log(typeSet.length, 'typeSet.length');
+		console.log(typeSet[0], 'typeSet[0]');
+		console.log(data[0], 'data[0]');
+		if (typeSet.length
+			&& !typeSet[0].equals(common)) {
 			// first row is a header
 			data = <Table>data.slice(1);	// remove header
 		}
@@ -113,30 +120,6 @@ export default class ParseCSV {
 		console.log(dataWithHeader[0], 'dataWithHeader');
 
 		return dataWithHeader;
-	}
-
-	getRowTypesForSomeRows(data: Table) {
-		let typeSet = [];
-		for (let i = 0; i < 100 && i < data.length; i++) {
-			let row: Row = new Row(data[i]);
-			console.log(i, row);
-			let types = row.getRowTypes();
-			//console.log(types);
-			typeSet.push(types);
-		}
-		return typeSet;
-	}
-
-	/**
-	 * http://stackoverflow.com/questions/1053843/get-the-element-with-the-highest-occurrence-in-an-array
-	 * @param arr
-	 * @returns {T|_ChainSingle<T>|TModel}
-	 */
-	mode(arr) {
-		return arr.sort((a,b) =>
-			arr.filter(v => v===a).length
-			- arr.filter(v => v===b).length
-		).pop();
 	}
 
 	getHeaderFromTypes(common: string[]) {
@@ -176,7 +159,7 @@ export default class ParseCSV {
 				row.amount = parseFloat(amount); // german format
 				row.date = Date.parseExact(row.date, 'dd.MM.yyyy');
 			} else {
-				console.log(row);
+				//console.warn('convertDataTypes', row);
 				delete csv[i];
 			}
 		});

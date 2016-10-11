@@ -9,10 +9,11 @@ require('datejs');
  * @param array
  * @returns {boolean}
  */
-Array.prototype.equals = function (array) {
+/*Array.prototype.equals = function( array ) {
     return this.length == array.length &&
-        this.every(function (this_i, i) { return this_i == array[i]; });
+        this.every( function(this_i,i) { return this_i == array[i] } )
 };
+*/
 var ParseCSV = (function () {
     function ParseCSV(data) {
         this.data = data;
@@ -31,7 +32,7 @@ var ParseCSV = (function () {
         else {
             csv = Table_1.default.fromText(this.data);
         }
-        this.text = null; // save RAM
+        this.data = null; // save RAM
         console.log('rows after parse', csv.length);
         csv = this.trim(csv);
         console.log('rows after trim', csv.length);
@@ -51,16 +52,19 @@ var ParseCSV = (function () {
      */
     ParseCSV.prototype.trim = function (csv) {
         var rev = csv.reverse(); // start at the bottom of the file
-        var startIndex = 0;
+        var startIndex = null;
         rev.forEach(function (row, i) {
             // first row with real data
-            if (!startIndex && row.length && row[0] != '') {
+            if (startIndex == null
+                && row.length && row[0] != '') {
                 startIndex = i;
                 console.log('trim @', startIndex);
             }
         });
-        csv = csv.slice(startIndex);
-        return csv.reverse();
+        var data = rev.slice(startIndex);
+        // console.log(data[0]);
+        data = data.reverse();
+        return new Table_1.default(data);
     };
     /**
      * Some CSV files contain random data in the header
@@ -74,8 +78,8 @@ var ParseCSV = (function () {
             }
         });
         console.log('slicing ', startIndex, 'first rows');
-        data = data.slice(startIndex);
-        return data;
+        var sliced = data.slice(startIndex);
+        return new Table_1.default(sliced);
     };
     /**
      * We got pure data with headers here
@@ -83,11 +87,15 @@ var ParseCSV = (function () {
     ParseCSV.prototype.normalizeCSV = function (data) {
         var _this = this;
         //console.log(data);
-        var typeSet = this.getRowTypesForSomeRows(data);
-        var common = this.mode(typeSet);
+        var typeSet = data.getRowTypesForSomeRows();
+        // console.log(typeSet, 'typeSet');
+        var common = typeSet.mode();
         console.log(common, 'common');
-        //console.log(typeSet[0]);
-        if (!typeSet[0].equals(common)) {
+        console.log(typeSet.length, 'typeSet.length');
+        console.log(typeSet[0], 'typeSet[0]');
+        console.log(data[0], 'data[0]');
+        if (typeSet.length
+            && !typeSet[0].equals(common)) {
             // first row is a header
             data = data.slice(1); // remove header
         }
@@ -99,28 +107,6 @@ var ParseCSV = (function () {
         });
         console.log(dataWithHeader[0], 'dataWithHeader');
         return dataWithHeader;
-    };
-    ParseCSV.prototype.getRowTypesForSomeRows = function (data) {
-        var typeSet = [];
-        for (var i = 0; i < 100 && i < data.length; i++) {
-            var row = new Row_1.default(data[i]);
-            console.log(i, row);
-            var types = row.getRowTypes();
-            //console.log(types);
-            typeSet.push(types);
-        }
-        return typeSet;
-    };
-    /**
-     * http://stackoverflow.com/questions/1053843/get-the-element-with-the-highest-occurrence-in-an-array
-     * @param arr
-     * @returns {T|_ChainSingle<T>|TModel}
-     */
-    ParseCSV.prototype.mode = function (arr) {
-        return arr.sort(function (a, b) {
-            return arr.filter(function (v) { return v === a; }).length
-                - arr.filter(function (v) { return v === b; }).length;
-        }).pop();
     };
     ParseCSV.prototype.getHeaderFromTypes = function (common) {
         var header = [];
@@ -161,7 +147,7 @@ var ParseCSV = (function () {
                 row.date = Date.parseExact(row.date, 'dd.MM.yyyy');
             }
             else {
-                console.log(row);
+                //console.warn('convertDataTypes', row);
                 delete csv[i];
             }
         });

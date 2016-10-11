@@ -1,25 +1,30 @@
+import ArrayPlus from "./ArrayPlus";
 const _ = require('underscore');
+const _isNumeric = require('underscore.isnumeric');
 
-export default class Row extends Array<any> {
+export default class Row extends ArrayPlus {
 	date: Date;
 	amount: number;
 	note: string;
 
-	constructor(rawData) {
-		super();
-		_.extend(this, rawData);
+	constructor(rawData?) {
+		super(rawData);
 	}
 
 	getRowTypes() {
 		let types = [];
 		this.forEach((el: any) => {
+			// console.log('getRowTypes', el);
 			let float = parseFloat(el);
 			let date = Date.parse(el);
 			let isDate = !!date && el.indexOf(',') == -1;	// dates are without ","
-			let commas = el.split(',').length - 1;
 			let isEmpty = _.isNull(el)
 				|| _.isUndefined(el)
 				|| el == '';
+			let commas = 0;
+			if (_.isString(el)) {
+				commas = el.split(',').length - 1;
+			}
 			if (float && !isDate && commas == 1) {
 				types.push('number');
 			} else if (isDate) {
@@ -30,15 +35,7 @@ export default class Row extends Array<any> {
 				types.push('string');
 			}
 		});
-		return types;
-	}
-
-	forEach(callback) {
-		super.forEach((row, i) => {
-			if (_.isNumber(i)) {
-				callback(row, i);
-			}
-		});
+		return new ArrayPlus(types);
 	}
 
 }

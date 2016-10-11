@@ -4,23 +4,28 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var ArrayPlus_1 = require("./ArrayPlus");
 var _ = require('underscore');
+var _isNumeric = require('underscore.isnumeric');
 var Row = (function (_super) {
     __extends(Row, _super);
     function Row(rawData) {
-        _super.call(this);
-        _.extend(this, rawData);
+        _super.call(this, rawData);
     }
     Row.prototype.getRowTypes = function () {
         var types = [];
         this.forEach(function (el) {
+            // console.log('getRowTypes', el);
             var float = parseFloat(el);
             var date = Date.parse(el);
             var isDate = !!date && el.indexOf(',') == -1; // dates are without ","
-            var commas = el.split(',').length - 1;
             var isEmpty = _.isNull(el)
                 || _.isUndefined(el)
                 || el == '';
+            var commas = 0;
+            if (_.isString(el)) {
+                commas = el.split(',').length - 1;
+            }
             if (float && !isDate && commas == 1) {
                 types.push('number');
             }
@@ -34,17 +39,10 @@ var Row = (function (_super) {
                 types.push('string');
             }
         });
-        return types;
-    };
-    Row.prototype.forEach = function (callback) {
-        _super.prototype.forEach.call(this, function (row, i) {
-            if (_.isNumber(i)) {
-                callback(row, i);
-            }
-        });
+        return new ArrayPlus_1.default(types);
     };
     return Row;
-}(Array));
+}(ArrayPlus_1.default));
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Row;
 //# sourceMappingURL=Row.js.map

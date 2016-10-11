@@ -4,10 +4,13 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var Row_1 = require("./Row");
+var ArrayPlus_1 = require("./ArrayPlus");
+var _ = require('underscore');
 var Table = (function (_super) {
     __extends(Table, _super);
-    function Table() {
-        _super.apply(this, arguments);
+    function Table(rows) {
+        _super.call(this, rows);
     }
     Table.fromText = function (text) {
         var self = new Table();
@@ -26,10 +29,10 @@ var Table = (function (_super) {
             colsC.push(linesC[i].length);
             colsS.push(linesS[i].length);
         }
-        console.log(colsC, colsS);
+        // console.log(colsC, colsS);
         var sumC = colsC.reduce(function (a, b) { return a + b; });
         var sumS = colsS.reduce(function (a, b) { return a + b; });
-        console.log(sumC, sumS);
+        console.log(', => ', sumC, '; => ', sumS);
         var lines;
         if (sumC > sumS) {
             lines = linesC;
@@ -99,12 +102,24 @@ var Table = (function (_super) {
         // Return the parsed data.
         return (arrData);
     };
-    Table.prototype.equals = function (array) {
-        return this.length == array.length &&
-            this.every(function (this_i, i) { return this_i == array[i]; });
+    Table.prototype.getRowTypesForSomeRows = function () {
+        var typeSet = new Table();
+        console.log('getRowTypesForSomeRows', this.length);
+        var iter = 0;
+        this.forEach(function (row0, i) {
+            var row = new Row_1.default(row0);
+            var types = row.getRowTypes();
+            //console.log(i, row, types);
+            typeSet.push(types);
+            iter++;
+            if (iter > 100) {
+                return false;
+            }
+        });
+        return typeSet;
     };
     return Table;
-}(Array));
+}(ArrayPlus_1.default));
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Table;
 //# sourceMappingURL=Table.js.map

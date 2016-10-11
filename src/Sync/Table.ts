@@ -1,6 +1,14 @@
 import Row from "./Row";
+import ArrayPlus from "./ArrayPlus";
 
-export default class Table extends Array<Row> {
+const _ = require('underscore');
+
+
+export default class Table extends ArrayPlus {
+
+	constructor(rows?: Array<any>) {
+		super(rows);
+	}
 
 	static fromText(text: string) {
 		let self = new Table();
@@ -21,10 +29,10 @@ export default class Table extends Array<Row> {
 			colsC.push(linesC[i].length);
 			colsS.push(linesS[i].length);
 		}
-		console.log(colsC, colsS);
+		// console.log(colsC, colsS);
 		let sumC = colsC.reduce(function (a, b) { return a + b; });
 		let sumS = colsS.reduce(function (a, b) { return a + b; });
-		console.log(sumC, sumS);
+		console.log(', => ', sumC, '; => ', sumS);
 		let lines;
 		if (sumC > sumS) {
 			lines = linesC;
@@ -124,9 +132,21 @@ export default class Table extends Array<Row> {
 		return( arrData );
 	}
 
-	equals( array ) {
-		return this.length == array.length &&
-			this.every( function(this_i,i) { return this_i == array[i] } )
+	getRowTypesForSomeRows() {
+		let typeSet = new Table();
+		console.log('getRowTypesForSomeRows', this.length);
+		let iter = 0;
+		this.forEach((row0, i) => {
+			let row: Row = new Row(row0);
+			let types = row.getRowTypes();
+			//console.log(i, row, types);
+			typeSet.push(types);
+			iter++;
+			if (iter > 100) {
+				return false;
+			}
+		});
+		return typeSet;
 	}
 
 }

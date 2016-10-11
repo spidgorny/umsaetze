@@ -334,7 +334,7 @@ class SpardaBank {
 				console.log('OK');
 			} else {
 				console.error('Parsed file does not match');
-				console.lofg(JSON.stringify(row0));
+				console.log(JSON.stringify(row0));
 				console.log(JSON.stringify(set.result[0]));
 				console.log(JSON.stringify(row1));
 				console.log(JSON.stringify(set.result[1]));
@@ -346,10 +346,9 @@ class SpardaBank {
 	testParser() {
 		console.log('Loading file...');
 		// let data = fs.readFileSync('test/data/SpardaBank/umsaetze-1090729-2016-10-06-00-31-51.csv');
-		let data = fs.readFileSync('test/data/SimpleImport.csv');
-		// let data = fs.readFileSync('test/data/DeutscheBank/Kontoumsaetze_100_390590800_20161010_221922.csv');
+		// let data = fs.readFileSync('test/data/SimpleImport.csv');
+		let data = fs.readFileSync('test/data/DeutscheBank/Kontoumsaetze_100_390590800_20161010_221922.csv');
 		data = iconv.decode(data, "ISO-8859-1");
-		console.log('Loaded', data.length);
 		let parse = new ParseCSV(data);
 		let nice = parse.parseAndNormalize();
 		for (let i = 0; i < 2 && i < nice.length; i++) {
