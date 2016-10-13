@@ -85,47 +85,23 @@ var ParseCSV = (function () {
      * We got pure data with headers here
      */
     ParseCSV.prototype.normalizeCSV = function (data) {
-        var _this = this;
         //console.log(data);
         var typeSet = data.getRowTypesForSomeRows();
         typeSet = typeSet.filterMostlyNull();
         // console.log(typeSet, 'typeSet');
-        var common = typeSet.mode();
+        var aCommon = typeSet.mode();
+        var common = new Row_1.default(aCommon);
         console.log(JSON.stringify(common), 'common');
-        // console.log(typeSet.length, 'typeSet.length');
-        // console.log(typeSet[0], 'typeSet[0]');
-        // console.log(data[0], 'data[0]');
-        if (typeSet.length
-            && !typeSet[0].equals(common)) {
-            // first row is a header
-            data = data.slice(1); // remove header
-        }
-        var header = this.getHeaderFromTypes(common);
-        console.log(JSON.stringify(header), 'header');
+        data = common.filterByCommon(data);
+        console.log('rows after filterByCommon', data.length);
         var dataWithHeader = new Table_1.default();
         data.forEach(function (row) {
-            dataWithHeader.push(_this.zip(header, row));
+            var header = common.getHeaderFromTypes(row);
+            console.log(JSON.stringify(header), 'header');
+            dataWithHeader.push(header);
         });
-        console.log(dataWithHeader[0], 'dataWithHeader');
+        //console.log(dataWithHeader[0], 'dataWithHeader line 0');
         return dataWithHeader;
-    };
-    ParseCSV.prototype.getHeaderFromTypes = function (common) {
-        var header = [];
-        common.forEach(function (el, i) {
-            if (el == 'date' && header.indexOf('date') == -1) {
-                header.push('date');
-            }
-            else if (el == 'number' && header.indexOf('amount') == -1) {
-                header.push('amount');
-            }
-            else if (el == 'string' && header.indexOf('note') == -1) {
-                header.push('note');
-            }
-            else {
-                header.push('col_' + i);
-            }
-        });
-        return header;
     };
     /**
      * http://stackoverflow.com/questions/1117916/merge-keys-array-and-values-array-into-an-object-in-javascript
@@ -145,7 +121,16 @@ var ParseCSV = (function () {
             if (row.amount) {
                 var amount = row.amount.replace(',', '.');
                 row.amount = parseFloat(amount); // german format
-                row.date = Date.parseExact(row.date, 'dd.MM.yyyy');
+                var date = Date.parseExact(row.date, 'dd.MM.yyyy');
+                if (!date) {
+                    date = Date.parseExact(row.date, 'dd.MM.yy');
+                    if (!date) {
+                        console.warn('Date parse error', row.date, date);
+                    }
+                }
+                if (date) {
+                    row.date = date;
+                }
             }
             else {
                 //console.warn('convertDataTypes', row);

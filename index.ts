@@ -306,6 +306,19 @@ class SpardaBank {
 						note: 'Penny' },
 				],
 			},
+			{
+				file: 'test/data/DeutscheBank/Kontoumsaetze_100_390590800_20161010_221922.csv',
+				result: [
+					{
+						date: new Date('Mon May 02 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+						amount: -100,
+						note: 'ADAC E.V. IVKIN VIKTOR IVKIN SVETLANA BEITRAG: 01.05.16-01.05.17' },
+					{
+						date: new Date('Mon May 02 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+						amount: -90,
+						note: 'CONTINENTALE/EUROPA VERBUND' },
+				],
+			},
 		];
 		testFixture.forEach(set => {
 			console.log('File: '+set.file);
@@ -362,4 +375,4 @@ let sb = new SpardaBank();
 //sb.convertMoneyFormat();
 // sb.startCategorize();
 sb.testImport();
-sb.testParser();
+// sb.testParser();

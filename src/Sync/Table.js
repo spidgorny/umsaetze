@@ -10,7 +10,14 @@ var _ = require('underscore');
 var Table = (function (_super) {
     __extends(Table, _super);
     function Table(rows) {
-        _super.call(this, rows);
+        var _this = this;
+        _super.call(this);
+        if (rows) {
+            //console.log('ArrayPlus', rows.length);
+            rows.forEach(function (el, i) {
+                _this[i] = new Row_1.default(el);
+            });
+        }
     }
     Table.fromText = function (text) {
         var self = new Table();

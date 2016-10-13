@@ -98,45 +98,21 @@ export default class ParseCSV {
 		let typeSet = data.getRowTypesForSomeRows();
 		typeSet = typeSet.filterMostlyNull();
 		// console.log(typeSet, 'typeSet');
-		let common = typeSet.mode();
+		let aCommon = typeSet.mode();
+		let common = new Row(aCommon);
 		console.log(JSON.stringify(common), 'common');
-
-		// console.log(typeSet.length, 'typeSet.length');
-		// console.log(typeSet[0], 'typeSet[0]');
-		// console.log(data[0], 'data[0]');
-		if (typeSet.length
-			&& !typeSet[0].equals(common)) {
-			// first row is a header
-			data = <Table>data.slice(1);	// remove header
-		}
-
-		let header = this.getHeaderFromTypes(common);
-		console.log(JSON.stringify(header), 'header');
+		data = common.filterByCommon(data);
+		console.log('rows after filterByCommon', data.length);
 
 		let dataWithHeader = new Table();
 		data.forEach((row) => {
-			dataWithHeader.push(
-				this.zip(header, row));
+			let header = common.getHeaderFromTypes(row);
+			console.log(JSON.stringify(header), 'header');
+			dataWithHeader.push(header);
 		});
-		console.log(dataWithHeader[0], 'dataWithHeader');
 
+		//console.log(dataWithHeader[0], 'dataWithHeader line 0');
 		return dataWithHeader;
-	}
-
-	getHeaderFromTypes(common: string[]) {
-		let header = [];
-		common.forEach((el, i) => {
-			if (el == 'date' && header.indexOf('date') == -1) {
-				header.push('date');
-			} else if (el == 'number' && header.indexOf('amount') == -1) {
-				header.push('amount');
-			} else if (el == 'string' && header.indexOf('note') == -1) {
-				header.push('note');
-			} else {
-				header.push('col_'+i);
-			}
-		});
-		return header;
 	}
 
 	/**
@@ -158,7 +134,19 @@ export default class ParseCSV {
 			if (row.amount) {
 				let amount = row.amount.replace(',', '.');
 				row.amount = parseFloat(amount); // german format
-				row.date = Date.parseExact(row.date, 'dd.MM.yyyy');
+
+				let date = Date.parseExact(row.date, 'dd.MM.yyyy');
+				if (!date) {
+					date = Date.parseExact(row.date, 'dd.MM.yy');
+					if (!date) {
+						console.warn('Date parse error', row.date, date);
+					}
+				}
+
+				if (date) {
+					row.date = date;
+				}
+
 			} else {
 				//console.warn('convertDataTypes', row);
 				delete csv[i];

@@ -7,7 +7,13 @@ const _ = require('underscore');
 export default class Table extends ArrayPlus {
 
 	constructor(rows?: Array<any>) {
-		super(rows);
+		super();
+		if (rows) {
+			//console.log('ArrayPlus', rows.length);
+			rows.forEach((el, i) => {
+				this[i] = new Row(el);
+			});
+		}
 	}
 
 	static fromText(text: string) {
