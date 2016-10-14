@@ -229,12 +229,12 @@ var SpardaBank = (function () {
                     {
                         date: new Date('Wed Oct 05 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
                         amount: -50.29,
-                        note: 'TOTAL DEUTSCHLAND GM 04.10.2016 08.15.29 620895 EUR      50,29 EC          74110494 562760 PAN 6729509200010907293 FTS-Tankstelle//FRANKFURT/D 001 12/2017 GIROCARD',
+                        note: 'TOTAL DEUTSCHLAND GM 04.10.2016 08.15.29 620895 EUR      50,29 EC          74110494 562760 PAN 6729509200010907293 FTS-Tankstelle//FRANKFURT/D 001 12/2017 GIROCARD EUR',
                     },
                     {
                         date: new Date('Wed Oct 05 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
                         amount: -35.64,
-                        note: '1u1 Internet SE SEPA-BASISLASTSCHRIFT SVWZ+ OTHR sonst ige Zahlung KD-Nr. K1505564 9/ RG-Nr. 100031626551 EREF + 004199835838 MREF+ 002000 1185661 CRED+ DE74ZZZ000000 45294',
+                        note: '1u1 Internet SE SEPA-BASISLASTSCHRIFT SVWZ+ OTHR sonst ige Zahlung KD-Nr. K1505564 9/ RG-Nr. 100031626551 EREF + 004199835838 MREF+ 002000 1185661 CRED+ DE74ZZZ000000 45294 EUR',
                     },
                 ]
             },
@@ -257,11 +257,24 @@ var SpardaBank = (function () {
                     {
                         date: new Date('Mon May 02 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
                         amount: -100,
-                        note: 'ADAC E.V. IVKIN VIKTOR IVKIN SVETLANA BEITRAG: 01.05.16-01.05.17' },
+                        note: 'SEPA-Lastschrift von Allg.Deutscher Automobil-Club ADAC e.V. ADAC E.V. IVKIN VIKTOR IVKIN SVETLANA BEITRAG: 01.05.16-01.05.17 DE16700500000006055830 BYLADEMMXXX MGLNR 452681382 / 452681374 AD45268138220150529001 DE30ZZZ00000056950 EUR' },
                     {
                         date: new Date('Mon May 02 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
                         amount: -90,
-                        note: 'CONTINENTALE/EUROPA VERBUND' },
+                        note: 'SEPA-Lastschrift von CONTINENTALE/EUROPA VERBUND 187195037 KFZ 137,88 DE95440400370347777500 COBADEFFXXX 1,68E+13 R0100033281694 DE95ZZZ00000053646 EUR' },
+                ],
+            },
+            {
+                file: 'test/data/Santander/Santander_2362226300_20161010_2217.csv',
+                result: [
+                    {
+                        date: new Date('Mon May 02 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+                        amount: -68.18,
+                        note: 'Lastschrift ??? SEPA-LASTSCHRIFT VON AACHENMUENCHENER 32940058755BBCSHCP IBAN DE26370400440500900608 BIC COBADEFF TYPE CO1 EREF+AM-VERS 010075276820 010516 1185217' },
+                    {
+                        date: new Date('Mon May 02 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+                        amount: -272.7,
+                        note: 'Lastschrift ??? SEPA-LASTSCHRIFT VON HANSEMERKUR VERS. 32940058755BBCSDWM IBAN DE24200300000000241414 BIC HYVEDEMM TYPE CO1 EREF+133587242 MREF+141737784A00016' },
                 ],
             },
         ];
@@ -305,13 +318,21 @@ var SpardaBank = (function () {
         console.log('Loading file...');
         // let data = fs.readFileSync('test/data/SpardaBank/umsaetze-1090729-2016-10-06-00-31-51.csv');
         // let data = fs.readFileSync('test/data/SimpleImport.csv');
-        var data = fs.readFileSync('test/data/DeutscheBank/Kontoumsaetze_100_390590800_20161010_221922.csv');
+        // let data = fs.readFileSync('test/data/DeutscheBank/Kontoumsaetze_100_390590800_20161010_221922.csv');
+        var data = fs.readFileSync('test/data/Santander/Santander_2362226300_20161010_2217.csv');
         data = iconv.decode(data, "ISO-8859-1");
         var parse = new ParseCSV_1.default(data);
         var nice = parse.parseAndNormalize();
         for (var i = 0; i < 2 && i < nice.length; i++) {
             console.log(nice[i]);
         }
+    };
+    SpardaBank.prototype.testLongest = function () {
+        var strings = [
+            'a', 'bb', 'ccc', ''
+        ];
+        var longest = strings.reduce(function (a, b) { return a.length > b.length ? a : b; });
+        console.log(longest, 'longest');
     };
     return SpardaBank;
 }());
@@ -320,4 +341,5 @@ var sb = new SpardaBank();
 // sb.startCategorize();
 sb.testImport();
 // sb.testParser();
+// sb.testLongest();
 //# sourceMappingURL=index.js.map
