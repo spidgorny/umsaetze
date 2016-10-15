@@ -332,6 +332,19 @@ class SpardaBank {
 						note: 'Lastschrift ??? SEPA-LASTSCHRIFT VON HANSEMERKUR VERS. 32940058755BBCSDWM IBAN DE24200300000000241414 BIC HYVEDEMM TYPE CO1 EREF+133587242 MREF+141737784A00016' },
 				],
 			},
+			{
+				file: 'test/data/Volksbank/Umsaetze_DE29501900006000010268_2016.10.10.csv',
+				result: [
+					{
+						date: new Date('Mon Oct 10 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+						amount: 10.2,
+						note: 'ISSUER DEUTSCHE POST AG DE29501900006000010268 FFVBDEFF LASTSCHRIFT\r\nDEUTSCHE POST/Frankfurt am\r\nMain/DE\r\n08.10.2016 um 13:08:44 Uhr\r\n58209953/034313/CICC/NPIN\r\n50190000/6000010268/1/1216\r\nREF 076433/260111 EUR' },
+					{
+						date: new Date('Mon Oct 10 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+						amount: 175.99,
+						note: 'ISSUER GALERIA KAUFHOF GMBH FFM DE29501900006000010268 FFVBDEFF LASTSCHRIFT\r\nGaleria Kaufhof Frankfurt/F\r\nrankfurt/DE\r\n08.10.2016 um 14:41:33 Uhr\r\n67108002/168068/CICC/FPIN\r\n50190000/6000010268/1/1216 EUR' }
+				],
+			},
 		];
 		testFixture.forEach(set => {
 			console.log('File: '+set.file);
@@ -374,7 +387,9 @@ class SpardaBank {
 		// let data = fs.readFileSync('test/data/SpardaBank/umsaetze-1090729-2016-10-06-00-31-51.csv');
 		// let data = fs.readFileSync('test/data/SimpleImport.csv');
 		// let data = fs.readFileSync('test/data/DeutscheBank/Kontoumsaetze_100_390590800_20161010_221922.csv');
-		let data = fs.readFileSync('test/data/Santander/Santander_2362226300_20161010_2217.csv');
+		// let data = fs.readFileSync('test/data/Santander/Santander_2362226300_20161010_2217.csv');
+		//let data = fs.readFileSync('test/data/Volksbank/Umsaetze_DE29501900006000010268_2016.10.10.csv');
+		let data = fs.readFileSync('test/data/Nassau/20161010-140238155-umsatz.CSV');
 		data = iconv.decode(data, "ISO-8859-1");
 		let parse = new ParseCSV(data);
 		let nice = parse.parseAndNormalize();
@@ -396,6 +411,6 @@ class SpardaBank {
 let sb = new SpardaBank();
 //sb.convertMoneyFormat();
 // sb.startCategorize();
-sb.testImport();
-// sb.testParser();
+// sb.testImport();
+sb.testParser();
 // sb.testLongest();

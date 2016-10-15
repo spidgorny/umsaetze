@@ -40,7 +40,7 @@ export default class ParseCSV {
 		}
 		this.data = null;	// save RAM
 		console.log('rows after parse', csv.length);
-		csv = this.trim(csv);
+		csv = csv.trimAll();
 		console.log('rows after trim', csv.length);
 		csv = this.analyzeCSV(csv);
 		console.log('rows after analyze', csv.length);
@@ -49,29 +49,6 @@ export default class ParseCSV {
 		csv = this.convertDataTypes(csv);
 		console.log('rows after convertDataTypes', csv.length);
 		return csv;
-	}
-
-	/**
-	 * Remove empty lines from the bottom of the file.
-	 * This is required for analyzeCSV() to work.
-	 * @param csv
-	 * @returns {Row[]}
-	 */
-	trim(csv: Table) {
-		let rev = csv.reverse();	// start at the bottom of the file
-		let startIndex = null;
-		rev.forEach((row, i) => {
-			// first row with real data
-			if (startIndex == null
-				&& row.length && row[0] != '') {
-				startIndex = i;
-				console.log('trim @', startIndex);
-			}
-		});
-		let data = rev.slice(startIndex);
-		// console.log(data[0]);
-		data = data.reverse();
-		return new Table(data);
 	}
 
 	/**
@@ -105,9 +82,12 @@ export default class ParseCSV {
 		console.log('rows after filterByCommon', data.length);
 
 		let dataWithHeader = new Table();
-		data.forEach((row) => {
-			let header = common.getHeaderFromTypes(row);
-			console.log(JSON.stringify(header), 'header');
+		data.forEach((row, i) => {
+			let header = common.getHeaderFromTypes(row, i);
+			if (i == 0) {
+				row.peek(row, common);
+				console.log(JSON.stringify(header), 'header');
+			}
 			dataWithHeader.push(header);
 		});
 

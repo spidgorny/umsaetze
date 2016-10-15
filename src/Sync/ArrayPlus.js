@@ -5,6 +5,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var _ = require('underscore');
+var naturalSort = require('javascript-natural-sort');
 var ArrayPlus = (function (_super) {
     __extends(ArrayPlus, _super);
     function ArrayPlus(rows) {
@@ -22,11 +23,12 @@ var ArrayPlus = (function (_super) {
      */
     ArrayPlus.prototype.forEach = function (callback) {
         // super.forEach((row, i) => {
-        for (var i in this) {
-            var row = this[i];
-            // console.log('forEach', i);
-            if (this.isNumeric(i)) {
-                var ok = callback(row, parseInt(i));
+        var sorted_keys = Object.keys(this).sort(naturalSort);
+        for (var i = 0; i < sorted_keys.length; i++) {
+            var key = sorted_keys[i];
+            var row = this[key];
+            if (this.isNumeric(key)) {
+                var ok = callback(row, parseInt(key));
                 if (ok === false) {
                     break;
                 }

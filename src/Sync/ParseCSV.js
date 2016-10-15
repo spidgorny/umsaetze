@@ -34,7 +34,7 @@ var ParseCSV = (function () {
         }
         this.data = null; // save RAM
         console.log('rows after parse', csv.length);
-        csv = this.trim(csv);
+        csv = csv.trimAll();
         console.log('rows after trim', csv.length);
         csv = this.analyzeCSV(csv);
         console.log('rows after analyze', csv.length);
@@ -43,28 +43,6 @@ var ParseCSV = (function () {
         csv = this.convertDataTypes(csv);
         console.log('rows after convertDataTypes', csv.length);
         return csv;
-    };
-    /**
-     * Remove empty lines from the bottom of the file.
-     * This is required for analyzeCSV() to work.
-     * @param csv
-     * @returns {Row[]}
-     */
-    ParseCSV.prototype.trim = function (csv) {
-        var rev = csv.reverse(); // start at the bottom of the file
-        var startIndex = null;
-        rev.forEach(function (row, i) {
-            // first row with real data
-            if (startIndex == null
-                && row.length && row[0] != '') {
-                startIndex = i;
-                console.log('trim @', startIndex);
-            }
-        });
-        var data = rev.slice(startIndex);
-        // console.log(data[0]);
-        data = data.reverse();
-        return new Table_1.default(data);
     };
     /**
      * Some CSV files contain random data in the header
@@ -95,9 +73,12 @@ var ParseCSV = (function () {
         data = common.filterByCommon(data);
         console.log('rows after filterByCommon', data.length);
         var dataWithHeader = new Table_1.default();
-        data.forEach(function (row) {
-            var header = common.getHeaderFromTypes(row);
-            console.log(JSON.stringify(header), 'header');
+        data.forEach(function (row, i) {
+            var header = common.getHeaderFromTypes(row, i);
+            if (i == 0) {
+                row.peek(row, common);
+                console.log(JSON.stringify(header), 'header');
+            }
             dataWithHeader.push(header);
         });
         //console.log(dataWithHeader[0], 'dataWithHeader line 0');

@@ -1,4 +1,5 @@
 const _ = require('underscore');
+const naturalSort = require('javascript-natural-sort');
 
 export default class ArrayPlus extends Array<any> {
 
@@ -18,11 +19,12 @@ export default class ArrayPlus extends Array<any> {
 	 */
 	forEach(callback) {
 		// super.forEach((row, i) => {
-		for (let i in this) {
-			let row = this[i];
-			// console.log('forEach', i);
-			if (this.isNumeric(i)) {
-				let ok = callback(row, parseInt(i));
+		let sorted_keys = Object.keys(this).sort(naturalSort);
+		for (let i = 0; i < sorted_keys.length; i++) {
+			let key = sorted_keys[i];
+			let row = this[key];
+			if (this.isNumeric(key)) {
+				let ok = callback(row, parseInt(key));
 				if (ok === false) {
 					break;
 				}

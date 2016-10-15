@@ -13,6 +13,16 @@ var Row = (function (_super) {
     function Row(rawData) {
         _super.call(this, rawData);
     }
+    Row.prototype.trim = function () {
+        var copy = new Row();
+        this.forEach(function (el, i) {
+            el = (el || '').trim();
+            if (el.length) {
+                copy[i] = el;
+            }
+        });
+        return copy;
+    };
     Row.prototype.getRowTypes = function () {
         var types = [];
         this.forEach(function (el) {
@@ -60,6 +70,7 @@ var Row = (function (_super) {
         });
     };
     Row.prototype.padTo = function (aa, maxLen) {
+        aa = aa.replace(/(?:\r\n|\r|\n)/g, ' ');
         aa = aa.substr(0, maxLen);
         var paddingLength = maxLen - aa.length;
         var padding = ' '.repeat(paddingLength);
@@ -67,27 +78,35 @@ var Row = (function (_super) {
     };
     Row.prototype.filterByCommon = function (data) {
         var _this = this;
-        var filtered = data.filter(function (row) {
+        var matchNumber = 0;
+        var filtered = data.filter(function (row, i) {
             var rowTypes = row.getRowTypes();
-            _this.peek(row, rowTypes, _this);
+            if (i + 1 == 5) {
+                _this.peek(row, rowTypes, _this);
+            }
             var match = rowTypes.similar(_this);
             var matchPercent = rowTypes.similarPercent(_this);
-            console.log(match, '/', _this.length, '=', matchPercent, '%');
-            return matchPercent >= 80;
+            console.log(i + 1, match, '/', _this.length, '=', matchPercent, '%', row.length);
+            // let firstMatch100 = matchNumber == 0 && matchPercent == 100;
+            var restMatch80 = matchPercent >= 80;
+            var sameLength = row.length == _this.length;
+            var bReturn = restMatch80 && sameLength;
+            matchNumber += bReturn ? 1 : 0;
+            return bReturn;
         });
         return new Table_1.default(filtered);
     };
-    Row.prototype.getHeaderFromTypes = function (dataRow) {
+    Row.prototype.getHeaderFromTypes = function (dataRow, rowNr) {
         var header = new Row();
         var strings = [];
         this.forEach(function (el, i) {
-            if (el == 'date' && header.indexOf('date') == -1) {
+            if (el == 'date' && !header.date) {
                 header.date = dataRow[i];
             }
-            else if (el == 'number' && header.indexOf('amount') == -1) {
+            else if (el == 'number' && !header.amount) {
                 header.amount = dataRow[i];
             }
-            else if (el == 'string' && header.indexOf('note') == -1) {
+            else if (el == 'string') {
                 strings.push(dataRow[i].trim());
             }
         });
@@ -95,6 +114,8 @@ var Row = (function (_super) {
         //let longest = strings.reduce(function (a, b) { return a.length > b.length ? a : b; });
         //header.note = longest.trim();
         header.note = strings.join(' ');
+        if (!rowNr) {
+        }
         return header;
     };
     Row.prototype.similar = function (to) {

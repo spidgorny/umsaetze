@@ -12,6 +12,17 @@ export default class Row extends ArrayPlus {
 		super(rawData);
 	}
 
+	trim() {
+		let copy = new Row();
+		this.forEach((el, i) => {
+			el = (el || '').trim();
+			if (el.length) {
+				copy[i] = el;
+			}
+		});
+		return copy;
+	}
+
 	getRowTypes() {
 		let types = [];
 		this.forEach((el: any) => {
@@ -57,6 +68,7 @@ export default class Row extends ArrayPlus {
 	}
 
 	padTo(aa, maxLen: number) {
+		aa = aa.replace(/(?:\r\n|\r|\n)/g, ' ');
 		aa = aa.substr(0, maxLen);
 		let paddingLength = maxLen - aa.length;
 		let padding = ' '.repeat(paddingLength);
@@ -64,27 +76,35 @@ export default class Row extends ArrayPlus {
 	}
 
 	filterByCommon(data: Table) {
-		let filtered = data.filter((row: Row) => {
+		let matchNumber = 0;
+		let filtered = data.filter((row: Row, i: number) => {
 			let rowTypes = row.getRowTypes();
-			this.peek(row, rowTypes, this);
+			if (i+1 == 5) {
+				this.peek(row, rowTypes, this);
+			}
 			let match = rowTypes.similar(this);
 			let matchPercent = rowTypes.similarPercent(this);
-			console.log(match, '/', this.length, '=', matchPercent, '%');
-			return matchPercent >= 80;
+			console.log(i+1, match, '/', this.length, '=', matchPercent, '%', row.length);
+			// let firstMatch100 = matchNumber == 0 && matchPercent == 100;
+			let restMatch80 = /*matchNumber &&*/ matchPercent >= 80;
+			let sameLength = row.length == this.length;
+			let bReturn = /*firstMatch100 ||*/ restMatch80 && sameLength;
+			matchNumber += bReturn ? 1 : 0;
+			return bReturn;
 		});
 		return new Table(filtered);
 	}
 
-	getHeaderFromTypes(dataRow: Row) {
+	getHeaderFromTypes(dataRow: Row, rowNr: number) {
 		let header = new Row();
 
 		let strings = [];
 		this.forEach((el, i) => {
-			if (el == 'date' && header.indexOf('date') == -1) {
+			if (el == 'date' && !header.date) {
 				header.date = dataRow[i];
-			} else if (el == 'number' && header.indexOf('amount') == -1) {
+			} else if (el == 'number' && !header.amount) {
 				header.amount = dataRow[i];
-			} else if (el == 'string' && header.indexOf('note') == -1) {
+			} else if (el == 'string') {
 				strings.push(dataRow[i].trim());
 			}
 		});
@@ -93,6 +113,13 @@ export default class Row extends ArrayPlus {
 		//let longest = strings.reduce(function (a, b) { return a.length > b.length ? a : b; });
 		//header.note = longest.trim();
 		header.note = strings.join(' ');
+
+		if (!rowNr) {
+			// console.log(this, 'common');
+			// console.log(strings, 'strings');
+			// console.log(dataRow, 'dataRow');
+			// console.log(header, 'header');
+		}
 
 		return header;
 	}

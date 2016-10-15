@@ -138,6 +138,45 @@ export default class Table extends ArrayPlus {
 		return( arrData );
 	}
 
+	/**
+	 * Remove empty lines from the bottom of the file.
+	 * This is required for analyzeCSV() to work.
+	 * @returns {Row[]}
+	 */
+	trim() {
+		let rev = this.reverse();	// start at the bottom of the file
+		let startIndex = null;
+		rev.forEach((row, i) => {
+			// first row with real data
+			if (startIndex == null
+				&& row.length && row[0] != '') {
+				startIndex = i;
+				console.log('trim @', startIndex);
+			}
+		});
+		let data = rev.slice(startIndex);
+		// console.log(data[0]);
+		data = data.reverse();
+		return new Table(data);
+	}
+
+	/**
+	 * Remove empty lines from anywhere in the file.
+	 * This is required for analyzeCSV() to work.
+	 * @returns {Row[]}
+	 */
+	trimAll() {
+		let data = new Table();
+		this.forEach((row: Row, i) => {
+			let rowObj = new Row(row);
+			let rowTrimmed = rowObj.trim();
+			if (rowTrimmed.length) {
+				data.push(rowObj);	// original non trimmed row
+			}
+		});
+		return data;
+	}
+
 	getRowTypesForSomeRows() {
 		let typeSet = new Table();
 		console.log('getRowTypesForSomeRows', this.length);

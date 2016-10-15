@@ -109,6 +109,43 @@ var Table = (function (_super) {
         // Return the parsed data.
         return (arrData);
     };
+    /**
+     * Remove empty lines from the bottom of the file.
+     * This is required for analyzeCSV() to work.
+     * @returns {Row[]}
+     */
+    Table.prototype.trim = function () {
+        var rev = this.reverse(); // start at the bottom of the file
+        var startIndex = null;
+        rev.forEach(function (row, i) {
+            // first row with real data
+            if (startIndex == null
+                && row.length && row[0] != '') {
+                startIndex = i;
+                console.log('trim @', startIndex);
+            }
+        });
+        var data = rev.slice(startIndex);
+        // console.log(data[0]);
+        data = data.reverse();
+        return new Table(data);
+    };
+    /**
+     * Remove empty lines from anywhere in the file.
+     * This is required for analyzeCSV() to work.
+     * @returns {Row[]}
+     */
+    Table.prototype.trimAll = function () {
+        var data = new Table();
+        this.forEach(function (row, i) {
+            var rowObj = new Row_1.default(row);
+            var rowTrimmed = rowObj.trim();
+            if (rowTrimmed.length) {
+                data.push(rowObj); // original non trimmed row
+            }
+        });
+        return data;
+    };
     Table.prototype.getRowTypesForSomeRows = function () {
         var typeSet = new Table();
         console.log('getRowTypesForSomeRows', this.length);
