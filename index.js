@@ -1,7 +1,9 @@
-"use strict";
 /// <reference path="typings/index.d.ts" />
 // import sourceMapSupport from 'source-map-support';
 // sourceMapSupport.install();
+"use strict";
+var path = require('path');
+var ParseMT940_1 = require("./src/Sync/ParseMT940");
 require('source-map-support').install();
 var util = require('util');
 var stream = require('stream');
@@ -372,10 +374,25 @@ var SpardaBank = (function () {
         // let data = fs.readFileSync('test/data/DeutscheBank/Kontoumsaetze_100_390590800_20161010_221922.csv');
         // let data = fs.readFileSync('test/data/Santander/Santander_2362226300_20161010_2217.csv');
         //let data = fs.readFileSync('test/data/Volksbank/Umsaetze_DE29501900006000010268_2016.10.10.csv');
-        var data = fs.readFileSync('test/data/Nassau/20161010-140238155-umsatz.CSV');
-        data = iconv.decode(data, "ISO-8859-1");
-        var parse = new ParseCSV_1.default(data);
-        var nice = parse.parseAndNormalize();
+        // let data = fs.readFileSync('test/data/Nassau/20161010-140238155-umsatz.CSV');
+        var file = 'test/data/Nassau/20161010-140238155-umsMT940.TXT';
+        console.log(file);
+        var data = fs.readFileSync(file);
+        console.log('read', data.length, 'bytes');
+        var ext = path.extname(file).toLowerCase();
+        var nice;
+        if (ext == '.csv') {
+            data = iconv.decode(data, "ISO-8859-1");
+            var parse = new ParseCSV_1.default(data);
+            nice = parse.parseAndNormalize();
+        }
+        else if (ext == '.txt') {
+            var parse = new ParseMT940_1.default(data);
+            nice = parse.parseAndNormalize();
+        }
+        else {
+            throw new Error('Unknown extension: ' + ext);
+        }
         for (var i = 0; i < 2 && i < nice.length; i++) {
             console.log(nice[i]);
         }
@@ -392,7 +409,7 @@ var SpardaBank = (function () {
 var sb = new SpardaBank();
 //sb.convertMoneyFormat();
 // sb.startCategorize();
-sb.testImport();
-// sb.testParser();
+// sb.testImport();
+sb.testParser();
 // sb.testLongest();
 //# sourceMappingURL=index.js.map

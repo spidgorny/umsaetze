@@ -1,6 +1,10 @@
 /// <reference path="typings/index.d.ts" />
 // import sourceMapSupport from 'source-map-support';
 // sourceMapSupport.install();
+
+import path = require('path');
+
+import ParseMT940 from "./src/Sync/ParseMT940";
 require('source-map-support').install();
 
 const util = require('util');
@@ -430,10 +434,23 @@ class SpardaBank {
 		// let data = fs.readFileSync('test/data/DeutscheBank/Kontoumsaetze_100_390590800_20161010_221922.csv');
 		// let data = fs.readFileSync('test/data/Santander/Santander_2362226300_20161010_2217.csv');
 		//let data = fs.readFileSync('test/data/Volksbank/Umsaetze_DE29501900006000010268_2016.10.10.csv');
-		let data = fs.readFileSync('test/data/Nassau/20161010-140238155-umsatz.CSV');
-		data = iconv.decode(data, "ISO-8859-1");
-		let parse = new ParseCSV(data);
-		let nice = parse.parseAndNormalize();
+		// let data = fs.readFileSync('test/data/Nassau/20161010-140238155-umsatz.CSV');
+		let file = 'test/data/Nassau/20161010-140238155-umsMT940.TXT';
+		console.log(file);
+		let data = fs.readFileSync(file);
+		console.log('read', data.length, 'bytes');
+		let ext = path.extname(file).toLowerCase();
+		let nice;
+		if (ext == '.csv') {
+			data = iconv.decode(data, "ISO-8859-1");
+			let parse = new ParseCSV(data);
+			nice = parse.parseAndNormalize();
+		} else if (ext == '.txt') {
+			let parse = new ParseMT940(data);
+			nice = parse.parseAndNormalize();
+		} else {
+			throw new Error('Unknown extension: '+ext);
+		}
 		for (let i = 0; i < 2 && i < nice.length; i++) {
 			console.log(nice[i]);
 		}
@@ -452,6 +469,6 @@ class SpardaBank {
 let sb = new SpardaBank();
 //sb.convertMoneyFormat();
 // sb.startCategorize();
-sb.testImport();
-// sb.testParser();
+// sb.testImport();
+sb.testParser();
 // sb.testLongest();
