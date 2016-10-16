@@ -49,25 +49,25 @@ export default class Row extends ArrayPlus {
 				types.push('string');
 			}
 		});
-		//this.peek(this, types);
+		//Row.peek(this, types);
 		return new Row(types);
 	}
 
-	peek(a, b, c?) {
+	static peek(a, b, c?) {
 		console.log('-- ', a.length, b.length, c ? c.length : '');
 		let maxLen = 50;
 		a.forEach((aa: string, i: number) => {
 			aa = aa || '';
 			let bb = b[i] || '';
 			let cc = c ? c[i] || '' : '';
-			aa = this.padTo(aa, maxLen);
-			bb = this.padTo(bb, maxLen);
-			cc = this.padTo(cc, maxLen);
+			aa = Row.padTo(aa, maxLen);
+			bb = Row.padTo(bb, maxLen);
+			cc = Row.padTo(cc, maxLen);
 			console.log(aa, '\t', bb, '\t', cc);
 		});
 	}
 
-	padTo(aa, maxLen: number) {
+	static padTo(aa, maxLen: number) {
 		aa = aa.replace(/(?:\r\n|\r|\n)/g, ' ');
 		aa = aa.substr(0, maxLen);
 		let paddingLength = maxLen - aa.length;
@@ -80,7 +80,7 @@ export default class Row extends ArrayPlus {
 		let filtered = data.filter((row: Row, i: number) => {
 			let rowTypes = row.getRowTypes();
 			if (i+1 == 5) {
-				this.peek(row, rowTypes, this);
+				Row.peek(row, rowTypes, this);
 			}
 			let match = rowTypes.similar(this);
 			let matchPercent = rowTypes.similarPercent(this);

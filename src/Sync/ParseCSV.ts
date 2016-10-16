@@ -85,7 +85,7 @@ export default class ParseCSV {
 		data.forEach((row, i) => {
 			let header = common.getHeaderFromTypes(row, i);
 			if (i == 0) {
-				row.peek(row, common);
+				Row.peek(row, common);
 				console.log(JSON.stringify(header), 'header');
 			}
 			dataWithHeader.push(header);

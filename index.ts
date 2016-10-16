@@ -280,6 +280,7 @@ class SpardaBank {
 		let testFixture = [
 			{
 				file: 'test/data/SpardaBank/umsaetze-1090729-2016-10-06-00-31-51.csv',
+				rows: 234,
 				result: [
 					{
 						date: new Date('Wed Oct 05 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
@@ -295,6 +296,7 @@ class SpardaBank {
 			},
 			{
 				file: 'test/data/SimpleImport.csv',
+				rows: 4,
 				result: [
 					{
 						date: new Date('Sat Oct 01 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
@@ -308,6 +310,7 @@ class SpardaBank {
 			},
 			{
 				file: 'test/data/DeutscheBank/Kontoumsaetze_100_390590800_20161010_221922.csv',
+				rows: 3,
 				result: [
 					{
 						date: new Date('Mon May 02 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
@@ -321,6 +324,7 @@ class SpardaBank {
 			},
 			{
 				file: 'test/data/Santander/Santander_2362226300_20161010_2217.csv',
+				rows: 4,
 				result: [
 					{
 						date: new Date('Mon May 02 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
@@ -334,6 +338,7 @@ class SpardaBank {
 			},
 			{
 				file: 'test/data/Volksbank/Umsaetze_DE29501900006000010268_2016.10.10.csv',
+				rows: 36,
 				result: [
 					{
 						date: new Date('Mon Oct 10 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
@@ -345,6 +350,34 @@ class SpardaBank {
 						note: 'ISSUER GALERIA KAUFHOF GMBH FFM DE29501900006000010268 FFVBDEFF LASTSCHRIFT\r\nGaleria Kaufhof Frankfurt/F\r\nrankfurt/DE\r\n08.10.2016 um 14:41:33 Uhr\r\n67108002/168068/CICC/FPIN\r\n50190000/6000010268/1/1216 EUR' }
 				],
 			},
+			{
+				file: 'test/data/Nassau/20161010-140238155-umsatz.CSV',
+				rows: 5,
+				result: [
+					{
+						date: new Date('Tue Oct 11 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+						amount: -29,
+						note: '140238155 SEPA-ELV-LASTSCHRIFT EREF+66022610346682071016195738MREF+6602261063371610071957CRED+DE95ZZZ00001678202SVWZ+ELV66022610 07.10 19.57 ME31 COS 580 SAGT VIELEN DANK DE89200400000245333001 COBADEFFXXX EUR Umsatz vorgemerkt' },
+					{
+						date: new Date('Mon Oct 10 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+						amount: -370,
+						note: '140238155 FOLGELASTSCHRIFT EREF+K11222371592/000005/16ZVS18FMREF+KFZF11100073236814102015CRED+DE09ZZZ00000000001SVWZ+KFZ-STEUER FUER F IL 137 FUER DIE ZEIT VOM 09.10.2016 BIS ZUM 08.10.2017 KASSENZEICHEN K11222371592ABWA+KKR ZENTRALKASSE DES BUNDES BUNDESKASSE IN HALLE/SAALE DE20860000000086001170 MARKDEF1860 EUR Umsatz gebucht' },
+				],
+			},
+			{
+				file: 'test/data/Nassau/20161010-140238155-umsatz(1).CSV',
+				rows: 5,
+				result: [
+					{
+						date: new Date('Tue Oct 10 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+						amount: -29,
+						note: '140238155 SEPA-ELV-LASTSCHRIFT ELV66022610 07.10 19.57 ME31 COS 580 SAGT VIELEN DANK DE89200400000245333001 COBADEFFXXX EUR Umsatz vorgemerkt' },
+					{
+						date: new Date('Mon Oct 10 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+						amount: -370,
+						note: '140238155 FOLGELASTSCHRIFT KFZ-STEUER FUER F IL 137 FUER DIE ZEIT VOM 09.10.2016 BIS ZUM 08.10.2017 KASSENZEICHEN K11222371592 BUNDESKASSE IN HALLE/SAALE DE20860000000086001170 MARKDEF1860 EUR Umsatz gebucht' },
+				],
+			},
 		];
 		testFixture.forEach(set => {
 			console.log('File: '+set.file);
@@ -352,6 +385,13 @@ class SpardaBank {
 			data = iconv.decode(data, "ISO-8859-1");
 			let parse = new ParseCSV(data);
 			let nice = parse.parseAndNormalize();
+
+			if (nice.length != set.rows) {
+				console.log('parsed', nice.length, 'rows, expecting', set.rows);
+				console.log(nice);
+				throw new Error('number of rows is not the same');
+			}
+
 			let row0 = nice[0];
 			row0 = _.pick(row0, 'date', 'amount', 'note');
 			// specific order for JSON comparison
@@ -360,6 +400,7 @@ class SpardaBank {
 				amount: row0.amount,
 				note: row0.note,
 			};
+
 			let row1 = nice[1];
 			row1 = _.pick(row1, 'date', 'amount', 'note');
 			row1 = {
@@ -411,6 +452,6 @@ class SpardaBank {
 let sb = new SpardaBank();
 //sb.convertMoneyFormat();
 // sb.startCategorize();
-// sb.testImport();
-sb.testParser();
+sb.testImport();
+// sb.testParser();
 // sb.testLongest();
