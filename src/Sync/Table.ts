@@ -3,7 +3,6 @@ import ArrayPlus from "./ArrayPlus";
 
 const _ = require('underscore');
 
-
 export default class Table extends ArrayPlus {
 
 	constructor(rows?: Array<any>) {

@@ -1,3 +1,5 @@
+/// <reference path="../../typings/index.d.ts" />
+
 const _ = require('underscore');
 const naturalSort = require('javascript-natural-sort');
 

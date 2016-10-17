@@ -1,7 +1,17 @@
+/// <reference path="../../typings/index.d.ts" />
+
 import ArrayPlus from "./ArrayPlus";
 import Table from "./Table";
 const _ = require('underscore');
-const _isNumeric = require('underscore.isnumeric');
+// const _isNumeric = require('underscore.isnumeric');
+
+String.prototype.repeat = function(count: number) {
+	let accu = '';
+	for (let i = 0; i < count; i++) {
+		accu += this.toString();
+	}
+	return accu;
+};
 
 export default class Row extends ArrayPlus {
 	date: Date;

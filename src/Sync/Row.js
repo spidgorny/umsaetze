@@ -1,3 +1,4 @@
+/// <reference path="../../typings/index.d.ts" />
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -7,7 +8,14 @@ var __extends = (this && this.__extends) || function (d, b) {
 var ArrayPlus_1 = require("./ArrayPlus");
 var Table_1 = require("./Table");
 var _ = require('underscore');
-var _isNumeric = require('underscore.isnumeric');
+// const _isNumeric = require('underscore.isnumeric');
+String.prototype.repeat = function (count) {
+    var accu = '';
+    for (var i = 0; i < count; i++) {
+        accu += this.toString();
+    }
+    return accu;
+};
 var Row = (function (_super) {
     __extends(Row, _super);
     function Row(rawData) {

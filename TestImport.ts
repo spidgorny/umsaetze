@@ -7,6 +7,7 @@ import ParseMT940 from "./src/Sync/ParseMT940";
 const fs = require('fs');
 const iconv = require('iconv-lite');
 import path = require('path');
+const _ = require('underscore');
 
 class TestImport {
 
@@ -20,13 +21,14 @@ class TestImport {
 
 	testParser() {
 		console.log('Loading file...');
-		// let data = fs.readFileSync('test/data/SpardaBank/umsaetze-1090729-2016-10-06-00-31-51.csv');
-		// let data = fs.readFileSync('test/data/SimpleImport.csv');
-		// let data = fs.readFileSync('test/data/DeutscheBank/Kontoumsaetze_100_390590800_20161010_221922.csv');
-		// let data = fs.readFileSync('test/data/Santander/Santander_2362226300_20161010_2217.csv');
-		//let data = fs.readFileSync('test/data/Volksbank/Umsaetze_DE29501900006000010268_2016.10.10.csv');
-		// let data = fs.readFileSync('test/data/Nassau/20161010-140238155-umsatz.CSV');
-		let file = 'test/data/Nassau/20161010-140238155-umsMT940.TXT';
+		// let file = 'test/data/SpardaBank/umsaetze-1090729-2016-10-06-00-31-51.csv';
+		// let file = 'test/data/SimpleImport.csv';
+		// let file = 'test/data/DeutscheBank/Kontoumsaetze_100_390590800_20161010_221922.csv';
+		// let file = 'test/data/Santander/Santander_2362226300_20161010_2217.csv';
+		// let file = 'test/data/Volksbank/Umsaetze_DE29501900006000010268_2016.10.10.csv';
+		// let file = 'test/data/Nassau/20161010-140238155-umsatz.CSV';
+		let file = 'test/data/20161017-53012647-umsatz.CSV';
+		// let file = 'test/data/Nassau/20161010-140238155-umsMT940.TXT';
 		console.log(file);
 		let data = fs.readFileSync(file);
 		console.log('read', data.length, 'bytes');
@@ -149,49 +151,65 @@ class TestImport {
 						note: '140238155 FOLGELASTSCHRIFT KFZ-STEUER FUER F IL 137 FUER DIE ZEIT VOM 09.10.2016 BIS ZUM 08.10.2017 KASSENZEICHEN K11222371592 BUNDESKASSE IN HALLE/SAALE DE20860000000086001170 MARKDEF1860 EUR Umsatz gebucht' },
 				],
 			},
+			{
+				file: 'test/data/20161017-53012647-umsatz.CSV',
+				rows: 4,
+				result: [
+					{
+						date: new Date('Wed Oct 12 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+						amount: -297,
+						note: '53012647 ONLINE-UEBERWEISUNG SVWZ+Berlin RueckerstattungDATUM 12.10.2016, 18.34 UHR1.TAN 934500 Pidgornyy Svyetoslav DE14500905000001090729 GENODEF1S12 EUR Umsatz gebucht' },
+					{
+						date: new Date('Wed Oct 12 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+						amount: -297,
+						note: '53012647 ONLINE-UEBERWEISUNG SVWZ+Berlin RueckerstattungDATUM 12.10.2016, 18.34 UHR1.TAN 934500 Pidgornyy Svyetoslav DE14500905000001090729 GENODEF1S12 EUR Umsatz gebucht' },
+				],
+			},
 		];
 		testFixture.forEach(set => {
-			console.log('File: '+set.file);
-			let data = fs.readFileSync(set.file);
-			data = iconv.decode(data, "ISO-8859-1");
-			let parse = new ParseCSV(data);
-			let nice = parse.parseAndNormalize();
+			console.log('File:', set.file);
+			console.log('Exists:', fs.existsSync(set.file));
+			if (fs.existsSync(set.file)) {
+				let data = fs.readFileSync(set.file);
+				data = iconv.decode(data, "ISO-8859-1");
+				let parse = new ParseCSV(data);
+				let nice = parse.parseAndNormalize();
 
-			if (nice.length != set.rows) {
-				console.log('parsed', nice.length, 'rows, expecting', set.rows);
-				console.log(nice);
-				throw new Error('number of rows is not the same');
-			}
+				if (nice.length != set.rows) {
+					console.log('parsed', nice.length, 'rows, expecting', set.rows);
+					console.log(nice);
+					throw new Error('number of rows is not the same');
+				}
 
-			let row0 = nice[0];
-			row0 = _.pick(row0, 'date', 'amount', 'note');
-			// specific order for JSON comparison
-			row0 = {
-				date: row0.date,
-				amount: row0.amount,
-				note: row0.note,
-			};
+				let row0 = this.pluckImportant(nice[0]);
+				let row1 = this.pluckImportant(nice[1]);
 
-			let row1 = nice[1];
-			row1 = _.pick(row1, 'date', 'amount', 'note');
-			row1 = {
-				date: row1.date,
-				amount: row1.amount,
-				note: row1.note,
-			};
-			// if (_.isEqual(row0, set.result[0]) && _.isEqual(row1, set.result[1])) {
-			if (JSON.stringify(row0) == JSON.stringify(set.result[0])
-				&& JSON.stringify(row1) == JSON.stringify(set.result[1])) {
-				console.log('OK');
-			} else {
-				console.error('Parsed file does not match');
-				console.log(JSON.stringify(row0));
-				console.log(JSON.stringify(set.result[0]));
-				console.log(JSON.stringify(row1));
-				console.log(JSON.stringify(set.result[1]));
-				throw new Error(set.file+' test failed');
+				// if (_.isEqual(row0, set.result[0]) && _.isEqual(row1, set.result[1])) {
+				if (JSON.stringify(row0) == JSON.stringify(set.result[0])
+					&& JSON.stringify(row1) == JSON.stringify(set.result[1])) {
+					console.log('OK');
+				} else {
+					console.error('Parsed file does not match');
+					console.log(JSON.stringify(row0));
+					console.log(JSON.stringify(set.result[0]));
+					console.log(JSON.stringify(row1));
+					console.log(JSON.stringify(set.result[1]));
+					throw new Error(set.file + ' test failed');
+				}
 			}
 		});
+	}
+
+	pluckImportant(niceRow) {
+		let row0 = niceRow;
+		row0 = _.pick(row0, 'date', 'amount', 'note');
+		// specific order for JSON comparison
+		row0 = {
+			date: row0.date,
+			amount: row0.amount,
+			note: row0.note,
+		};
+		return row0;
 	}
 
 }

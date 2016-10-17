@@ -21,7 +21,6 @@ margin: auto;
 </div>
 
 ## Introduction
-
 I suppose you have a bank account. Most likely you also have an online banking access and can see your purchases and incomes in a long list. What you likely don't know is how much do you spend in total by categories. Not because you are not interested, but because it seems complicated and time consuming.
 
 I was in your shoes. Below I present my own solution to this.
