@@ -73,6 +73,6 @@ var ArrayPlus = (function (_super) {
     };
     return ArrayPlus;
 }(Array));
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = ArrayPlus;
+exports.__esModule = true;
+exports["default"] = ArrayPlus;
 //# sourceMappingURL=ArrayPlus.js.map

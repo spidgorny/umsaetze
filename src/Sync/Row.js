@@ -93,7 +93,7 @@ var Row = (function (_super) {
             matchNumber += bReturn ? 1 : 0;
             return bReturn;
         });
-        return new Table_1.default(filtered);
+        return new Table_1["default"](filtered);
     };
     Row.prototype.getHeaderFromTypes = function (dataRow, rowNr) {
         var header = new Row();
@@ -130,7 +130,7 @@ var Row = (function (_super) {
         return similar / this.length * 100;
     };
     return Row;
-}(ArrayPlus_1.default));
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = Row;
+}(ArrayPlus_1["default"]));
+exports.__esModule = true;
+exports["default"] = Row;
 //# sourceMappingURL=Row.js.map

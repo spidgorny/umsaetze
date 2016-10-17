@@ -18,7 +18,7 @@ var ParseMT940 = (function () {
                 if (tag) {
                     flow.push({
                         tag: tag,
-                        data: data,
+                        data: data
                     });
                 }
                 tag = parts[1];
@@ -31,7 +31,7 @@ var ParseMT940 = (function () {
         if (tag) {
             flow.push({
                 tag: tag,
-                data: data,
+                data: data
             });
         }
         console.log(flow);
@@ -39,6 +39,6 @@ var ParseMT940 = (function () {
     };
     return ParseMT940;
 }());
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = ParseMT940;
+exports.__esModule = true;
+exports["default"] = ParseMT940;
 //# sourceMappingURL=ParseMT940.js.map

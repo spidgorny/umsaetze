@@ -47,6 +47,7 @@
     "stream-to-promise": "^2.2.0",
     "toastr": "^2.1.2",
     "typescript": "^1.8.10",
+    "typings": "^1.4.0",
     "underscore": "^1.8.3",
     "underscore.isnumeric": "^1.0.5",
     "utf8": "^2.1.1",
