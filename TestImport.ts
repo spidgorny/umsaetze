@@ -27,8 +27,9 @@ class TestImport {
 		// let file = 'test/data/Santander/Santander_2362226300_20161010_2217.csv';
 		// let file = 'test/data/Volksbank/Umsaetze_DE29501900006000010268_2016.10.10.csv';
 		// let file = 'test/data/Nassau/20161010-140238155-umsatz.CSV';
-		let file = 'test/data/20161017-53012647-umsatz.CSV';
+		// let file = 'test/data/20161017-53012647-umsatz.CSV';
 		// let file = 'test/data/Nassau/20161010-140238155-umsMT940.TXT';
+		let file = 'test/data/BmwBank/BMWFS_OLB_Export_20161019.csv';
 		console.log(file);
 		let data = fs.readFileSync(file);
 		console.log('read', data.length, 'bytes');
@@ -152,8 +153,22 @@ class TestImport {
 				],
 			},
 			{
-				file: 'test/data/20161017-53012647-umsatz.CSV',
+				file: 'test/data/SparkasseHanau/20161017-53012647-umsatz.CSV',
 				rows: 4,
+				result: [
+					{
+						date: new Date('Wed Oct 12 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+						amount: -297,
+						note: '53012647 ONLINE-UEBERWEISUNG SVWZ+Berlin RueckerstattungDATUM 12.10.2016, 18.34 UHR1.TAN 934500 Pidgornyy Svyetoslav DE14500905000001090729 GENODEF1S12 EUR Umsatz gebucht' },
+					{
+						date: new Date('Wed Oct 12 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+						amount: -297,
+						note: '53012647 ONLINE-UEBERWEISUNG SVWZ+Berlin RueckerstattungDATUM 12.10.2016, 18.34 UHR1.TAN 934500 Pidgornyy Svyetoslav DE14500905000001090729 GENODEF1S12 EUR Umsatz gebucht' },
+				],
+			},
+			{
+				file: 'test/data/PostBank/PB_Umsatzauskunft_KtoNr0110173606_17-10-2016_1402.csv',
+				rows: 204,
 				result: [
 					{
 						date: new Date('Wed Oct 12 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),

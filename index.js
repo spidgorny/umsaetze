@@ -20,8 +20,8 @@ StringifyStream.prototype._transform = function (obj, encoding, cb) {
 };
 var SpardaBank = (function () {
     function SpardaBank() {
-        this.sourceFile = 'umsaetze-1090729-2016-07-27-00-11-29.csv';
-        this.keywordFile = 'keywords.xlsx';
+        this.sourceFile = 'test/data/SpardaBank/umsaetze-1090729-2016-07-27-00-11-29.csv';
+        this.keywordFile = 'test/data/keywords.xlsx';
         this.keyWords = {};
     }
     SpardaBank.prototype.convertMoneyFormat = function () {
@@ -66,7 +66,7 @@ var SpardaBank = (function () {
         var stringifier = stringify({
             header: true,
             columns: storeColumns,
-            delimiter: ';'
+            delimiter: ';',
         });
         var path = require('path');
         var ext = path.extname(this.sourceFile);
@@ -89,7 +89,7 @@ var SpardaBank = (function () {
             delimiter: ';',
             columns: true,
             comment: '#',
-            skip_empty_lines: true
+            skip_empty_lines: true,
         });
         return parser;
     };
@@ -157,9 +157,9 @@ var SpardaBank = (function () {
                 amount: 'amount',
                 payment_type: 'payment_type',
                 date: 'date',
-                note: 'note'
+                note: 'note',
             },
-            delimiter: ';'
+            delimiter: ';',
         });
         var path = require('path');
         var ext = path.extname(this.sourceFile);
@@ -212,7 +212,7 @@ var SpardaBank = (function () {
     SpardaBank.prototype.startCategorize = function () {
         sb.readExcelFile().then(function (categoryList) {
             console.log('categoryList', categoryList);
-            fs.writeFileSync('keywords.json', JSON.stringify(categoryList, '', '\n'));
+            fs.writeFileSync('test/data/keywords.json', JSON.stringify(categoryList, '', '\n'));
             sb.categorize(categoryList);
             return true;
         }).catch(function (e) {
