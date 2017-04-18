@@ -59,11 +59,11 @@ export default class AppView extends Backbone.View<Expenses> {
 		this.categories.setExpenses(this.collection);
 		//console.log('category view collection', this.categories.model);
 
-		this.ms = new MonthSelect();
+		this.ms = MonthSelect.getInstance();
 		this.ms.earliest = this.collection.getEarliest();
 		this.ms.latest = this.collection.getLatest();
 		this.ms.render();
-		this.listenTo(this.ms, 'MonthSelect:change', this.monthChange);
+		this.listenTo(this.ms, 'MonthSelect:change', this.monthChange.bind(this));
 
 		this.collection.selectedMonth = this.ms.getSelected();	// for filtering to know which month we're in
 

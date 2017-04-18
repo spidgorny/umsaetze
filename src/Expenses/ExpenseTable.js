@@ -246,4 +246,3 @@ var ExpenseTable = (function (_super) {
 }(Backbone.View));
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = ExpenseTable;
-//# sourceMappingURL=ExpenseTable.js.map

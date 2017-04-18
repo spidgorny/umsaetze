@@ -31,4 +31,3 @@ var SummaryLine = (function () {
 }());
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = SummaryLine;
-//# sourceMappingURL=SummaryLine.js.map

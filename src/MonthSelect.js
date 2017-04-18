@@ -12,7 +12,6 @@ require('datejs');
 var _ = require('underscore');
 var MonthSelect = (function (_super) {
     __extends(MonthSelect, _super);
-    //localStorage: Backbone.LocalStorage;
     function MonthSelect() {
         _super.call(this);
         this.$el = $('#MonthSelect');
@@ -34,6 +33,8 @@ var MonthSelect = (function (_super) {
         ];
         // console.log(this.yearSelect);
         // console.log(this.monthOptions);
+        // this is a problem for HistoryView because it switches to page type
+        // this.monthOptions.on('click', this.clickOnMonthAndNavigate.bind(this));
         this.monthOptions.on('click', this.clickOnMonth.bind(this));
         this.yearSelect.on('change', this.changeYear.bind(this));
         //this.localStorage = new Backbone.LocalStorage('MonthSelect');
@@ -45,7 +46,14 @@ var MonthSelect = (function (_super) {
         if (month) {
             this.selectedMonth = month;
         }
+        console.log('MonthSelect', this.selectedYear, this.selectedMonth);
     }
+    MonthSelect.getInstance = function () {
+        if (!MonthSelect.instance) {
+            MonthSelect.instance = new MonthSelect();
+        }
+        return MonthSelect.instance;
+    };
     MonthSelect.prototype.render = function () {
         var _this = this;
         console.time('MonthSelect.render');
@@ -99,7 +107,7 @@ var MonthSelect = (function (_super) {
     };
     MonthSelect.prototype.getMonthIndex = function () {
         var result = Date.getMonthNumberFromName(this.selectedMonth) + 1;
-        console.log('getMonthIndex', this.selectedMonth, result);
+        console.log('getMonthIndex', this.selectedMonth, '=>', result);
         return result;
     };
     MonthSelect.prototype.getMonthIndexFor = function (monthName) {
@@ -114,13 +122,23 @@ var MonthSelect = (function (_super) {
         // this.selectedYear = this.yearSelect.val();	// don't set yet - URL will do
         Backbone.history.navigate('#/' + this.yearSelect.val() + '/' + this.getMonthIndex());
     };
-    MonthSelect.prototype.clickOnMonth = function (event) {
+    MonthSelect.prototype.clickOnMonthAndNavigate = function (event) {
         this.monthOptions.removeClass('btn-success').addClass('btn-default');
         var $button = $(event.target);
         $button.removeClass('btn-default');
         $button.addClass('btn-success');
         //this.selectedMonth = $button.text();	// don't set yet - URL will do
-        Backbone.history.navigate('#/' + this.selectedYear + '/' + this.getMonthIndexFor($button.text()));
+        var monthIndex = this.getMonthIndexFor($button.text());
+        Backbone.history.navigate('#/' + this.selectedYear + '/' + monthIndex);
+    };
+    MonthSelect.prototype.clickOnMonth = function (event) {
+        this.monthOptions.removeClass('btn-success').addClass('btn-default');
+        var $button = $(event.target);
+        $button.removeClass('btn-default');
+        $button.addClass('btn-success');
+        this.selectedMonth = $button.text();
+        window.localStorage.setItem('MonthSelect.month', this.selectedMonth);
+        this.trigger('MonthSelect:change');
     };
     MonthSelect.prototype.setYear = function (year) {
         // if (this.selectedYear == year) return;
@@ -176,9 +194,7 @@ var MonthSelect = (function (_super) {
     MonthSelect.prototype.getShortMonthNameFor = function (index) {
         return this.monthNames[index - 1].substr(0, 3);
     };
-    ;
     return MonthSelect;
 }(Backbone.View));
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = MonthSelect;
-//# sourceMappingURL=MonthSelect.js.map

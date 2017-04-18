@@ -89,4 +89,3 @@ var Transaction = (function (_super) {
 }(bb.Model));
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Transaction;
-//# sourceMappingURL=Transaction.js.map

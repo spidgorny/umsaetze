@@ -10,6 +10,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Transaction_1 = require('./Transaction');
 var umsaetze_1 = require("../umsaetze");
+var MonthSelect_1 = require("../MonthSelect");
 var bb = require('backbone');
 var BackboneLocalStorage = require("backbone.localstorage");
 require('datejs');
@@ -145,7 +146,8 @@ var Expenses = (function (_super) {
         }
         else {
             //throw new Error('filterByMonth no month defined');
-            this.ms;
+            var ms = MonthSelect_1.default.getInstance();
+            selectedMonth = ms.getSelected();
         }
         if (selectedMonth) {
             this.each(function (row) {
@@ -200,6 +202,13 @@ var Expenses = (function (_super) {
     };
     Expenses.prototype.getVisible = function () {
         return this.where({ visible: true });
+    };
+    Expenses.prototype.getSorted = function () {
+        this.comparator = 'date';
+        this.sort();
+        var visible = this.getVisible();
+        // return _.sortBy(visible, 'attributes.date');
+        return visible;
     };
     Expenses.prototype.setCategories = function (keywords) {
         this.each(function (row) {
@@ -277,8 +286,10 @@ var Expenses = (function (_super) {
     Expenses.prototype.clear = function () {
         this.reset(null);
     };
+    Expenses.prototype.map = function (fn) {
+        return _.map(this.models, fn);
+    };
     return Expenses;
 }(bb.Collection));
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Expenses;
-//# sourceMappingURL=Expenses.js.map

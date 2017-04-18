@@ -9,7 +9,8 @@ import CategoryCollection from "./Category/CategoryCollection";
 import RouterOptions = Backbone.RouterOptions;
 import KeywordCollection from "./Keyword/KeywordCollection";
 import SummaryView from "./Summary/SummaryView";
-let Backbone = require('backbone');
+import HistoryView from "./History/HistoryView";
+const Backbone: any = require('backbone');
 let $ = require('jquery');
 // let _ = require('underscore');
 
@@ -23,6 +24,7 @@ export default class Workspace extends Backbone.Router {
 		"Sync":         			"Sync",
 		"Keywords":     			"Keywords",
 		"Summary": 	    			"Summary",
+		"History": 	    			"History",
 	};
 
 	model: Expenses;
@@ -34,6 +36,9 @@ export default class Workspace extends Backbone.Router {
 	catPage: CatPage;
 	keywordsPage: KeywordsView;
 	summaryPage: SummaryView;
+	historyPage: HistoryView;
+
+	currentPage: Backbone.View;
 
 	constructor(options?: RouterOptions) {
 		super(options);
@@ -67,9 +72,16 @@ export default class Workspace extends Backbone.Router {
 		}
 	}
 
+	hideCurrentPage() {
+		if (this.currentPage) {
+			this.currentPage.hide();
+		}
+	}
+
 	AppView() {
 		console.warn('AppView');
 		this.activateMenu();
+		this.hideCurrentPage();
 		if (!this.appPage) {
 			this.appPage = new AppView({
 				collection: this.model,
@@ -77,11 +89,13 @@ export default class Workspace extends Backbone.Router {
 			this.appPage.table.keywords = this.keywords;
 		}
 		this.appPage.show();
+		this.currentPage = this.appPage;
 	}
 
 	Sync() {
 		console.warn('Sync');
 		this.activateMenu();
+		this.hideCurrentPage();
 		if (this.appPage) {
 			this.appPage.hide();
 		} else {
@@ -92,35 +106,30 @@ export default class Workspace extends Backbone.Router {
 			this.syncPage.router = this;
 		}
 		this.syncPage.render();
-
-		// quick testing
-		// let ms: MonthSelect = new MonthSelect();
-		// ms.render();
+		this.currentPage = this.syncPage;
 	}
 
 	CatPage() {
 		console.warn('CatPage');
 		this.activateMenu();
-		if (this.appPage) {
-			this.appPage.hide();
-		}
+		this.hideCurrentPage();
 		if (!this.catPage) {
 			this.catPage = new CatPage(this.model, this.categoryList);
 		}
 		this.catPage.render();
+		this.currentPage = this.catPage;
 	}
 
 	Keywords() {
 		console.warn('Keywords');
 		this.activateMenu();
-		if (this.appPage) {
-			this.appPage.hide();
-		}
+		this.hideCurrentPage();
 		if (!this.keywordsPage) {
 			this.keywordsPage = new KeywordsView();
 			this.keywordsPage.keywords = this.keywords;
 		}
 		this.keywordsPage.render();
+		this.currentPage = this.keywordsPage;
 	}
 
 	MonthSelect(year, month) {
@@ -142,9 +151,7 @@ export default class Workspace extends Backbone.Router {
 	Summary() {
 		console.log('Summary');
 		this.activateMenu();
-		if (this.appPage) {
-			this.appPage.hide();
-		}
+		this.hideCurrentPage();
 		if (!this.summaryPage) {
 			this.summaryPage = new SummaryView({
 				collection: this.categoryList
@@ -153,6 +160,22 @@ export default class Workspace extends Backbone.Router {
 		$('#pieChart').hide();
 		$('#categories').hide();
 		this.summaryPage.render();
+		this.currentPage = this.summaryPage;
+	}
+
+	History() {
+		console.log('History');
+		this.activateMenu();
+		this.hideCurrentPage();
+		if (!this.historyPage) {
+			this.historyPage = new HistoryView({
+				collection: this.model
+			});
+		}
+		$('#pieChart').hide();
+		$('#categories').hide();
+		this.historyPage.render();
+		this.currentPage = this.historyPage;
 	}
 
 }

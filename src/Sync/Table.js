@@ -15,7 +15,7 @@ var Table = (function (_super) {
         if (rows) {
             //console.log('ArrayPlus', rows.length);
             rows.forEach(function (el, i) {
-                _this[i] = new Row_1["default"](el);
+                _this[i] = new Row_1.default(el);
             });
         }
     }
@@ -138,7 +138,7 @@ var Table = (function (_super) {
     Table.prototype.trimAll = function () {
         var data = new Table();
         this.forEach(function (row, i) {
-            var rowObj = new Row_1["default"](row);
+            var rowObj = new Row_1.default(row);
             var rowTrimmed = rowObj.trim();
             if (rowTrimmed.length) {
                 data.push(rowObj); // original non trimmed row
@@ -151,7 +151,7 @@ var Table = (function (_super) {
         console.log('getRowTypesForSomeRows', this.length);
         var iter = 0;
         this.forEach(function (row0, i) {
-            var row = new Row_1["default"](row0);
+            var row = new Row_1.default(row0);
             var types = row.getRowTypes();
             //console.log(i, row, types);
             typeSet.push(types);
@@ -173,7 +173,6 @@ var Table = (function (_super) {
         return new Table(notNull);
     };
     return Table;
-}(ArrayPlus_1["default"]));
-exports.__esModule = true;
-exports["default"] = Table;
-//# sourceMappingURL=Table.js.map
+}(ArrayPlus_1.default));
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Table;

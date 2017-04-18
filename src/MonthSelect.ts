@@ -25,11 +25,17 @@ export default class MonthSelect extends Backbone.View<any> {
 
 	//localStorage: Backbone.LocalStorage;
 
+	static instance: MonthSelect;
+
 	constructor() {
 		super();
 		// console.log(this.yearSelect);
 		// console.log(this.monthOptions);
+
+		// this is a problem for HistoryView because it switches to page type
+		// this.monthOptions.on('click', this.clickOnMonthAndNavigate.bind(this));
 		this.monthOptions.on('click', this.clickOnMonth.bind(this));
+
 		this.yearSelect.on('change', this.changeYear.bind(this));
 		//this.localStorage = new Backbone.LocalStorage('MonthSelect');
 		let year = window.localStorage.getItem('MonthSelect.year');
@@ -40,6 +46,14 @@ export default class MonthSelect extends Backbone.View<any> {
 		if (month) {
 			this.selectedMonth = month;
 		}
+		console.log('MonthSelect', this.selectedYear, this.selectedMonth);
+	}
+
+	static getInstance() {
+		if (!MonthSelect.instance) {
+			MonthSelect.instance = new MonthSelect();
+		}
+		return MonthSelect.instance;
 	}
 
 	render() {
@@ -97,7 +111,7 @@ export default class MonthSelect extends Backbone.View<any> {
 
 	getMonthIndex() {
 		let result = Date.getMonthNumberFromName(this.selectedMonth) + 1;
-		console.log('getMonthIndex', this.selectedMonth, result);
+		console.log('getMonthIndex', this.selectedMonth, '=>', result);
 		return result;
 	}
 
@@ -116,13 +130,25 @@ export default class MonthSelect extends Backbone.View<any> {
 		Backbone.history.navigate('#/' + this.yearSelect.val() + '/' + this.getMonthIndex());
 	}
 
-	clickOnMonth(event) {
+	clickOnMonthAndNavigate(event) {
 		this.monthOptions.removeClass('btn-success').addClass('btn-default');
 		let $button = $(event.target);
 		$button.removeClass('btn-default');
 		$button.addClass('btn-success');
 		//this.selectedMonth = $button.text();	// don't set yet - URL will do
-		Backbone.history.navigate('#/' + this.selectedYear + '/' + this.getMonthIndexFor($button.text()));
+		let monthIndex = this.getMonthIndexFor($button.text());
+		Backbone.history.navigate('#/' + this.selectedYear + '/' + monthIndex);
+	}
+
+	clickOnMonth(event) {
+		this.monthOptions.removeClass('btn-success').addClass('btn-default');
+		let $button = $(event.target);
+		$button.removeClass('btn-default');
+		$button.addClass('btn-success');
+		this.selectedMonth = $button.text();
+		window.localStorage.setItem('MonthSelect.month', this.selectedMonth);
+
+		this.trigger('MonthSelect:change');
 	}
 
 	setYear(year) {
@@ -199,5 +225,6 @@ export default class MonthSelect extends Backbone.View<any> {
 
 	getShortMonthNameFor(index) {
 		return this.monthNames[index-1].substr(0, 3);
-	};
+	}
+
 }

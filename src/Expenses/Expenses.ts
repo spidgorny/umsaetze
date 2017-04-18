@@ -10,6 +10,7 @@ import KeywordCollection from "./KeywordCollection";
 import Keyword from "./.";
 import CategoryCount from "../Category/CategoryCount";
 import {debug} from "../umsaetze";
+import MonthSelect from "../MonthSelect";
 const bb = require('backbone');
 let BackboneLocalStorage = require("backbone.localstorage");
 require('datejs');
@@ -26,6 +27,8 @@ export default class Expenses extends bb.Collection<Transaction> {
 	localStorage: Backbone.LocalStorage;
 
 	selectedMonth: Date;
+
+	comparator: 'date';
 
 	constructor(models?: Transaction[] | Object[], options?: any) {
 		super(models, options);
@@ -154,7 +157,8 @@ export default class Expenses extends bb.Collection<Transaction> {
 			selectedMonth = this.selectedMonth;
 		} else {
 			//throw new Error('filterByMonth no month defined');
-			this.ms
+			let ms = MonthSelect.getInstance();
+			selectedMonth = ms.getSelected();
 		}
 
 		if (selectedMonth) {
@@ -204,8 +208,8 @@ export default class Expenses extends bb.Collection<Transaction> {
 	unserializeDate() {
 		elapse.time('Expense.unserializeDate');
 		this.each((model: Transaction) => {
-			var sDate = model.get('date');
-			var dateObject = new Date(sDate);
+			let sDate = model.get('date');
+			let dateObject = new Date(sDate);
 			console.log(sDate, dateObject);
 			model.set('date', dateObject);
 		});
@@ -214,6 +218,14 @@ export default class Expenses extends bb.Collection<Transaction> {
 
 	getVisible() {
 		return this.where({visible: true});
+	}
+
+	getSorted() {
+		this.comparator = 'date';
+		this.sort();
+		let visible = this.getVisible();
+		// return _.sortBy(visible, 'attributes.date');
+		return visible;
 	}
 
 	setCategories(keywords: KeywordCollection) {
@@ -291,6 +303,10 @@ export default class Expenses extends bb.Collection<Transaction> {
 
 	clear() {
 		this.reset(null);
+	}
+
+	map(fn: Function) {
+		return _.map(this.models, fn);
 	}
 
 }

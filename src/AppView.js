@@ -43,11 +43,11 @@ var AppView = (function (_super) {
         });
         this.categories.setExpenses(this.collection);
         //console.log('category view collection', this.categories.model);
-        this.ms = new MonthSelect_1.default();
+        this.ms = MonthSelect_1.default.getInstance();
         this.ms.earliest = this.collection.getEarliest();
         this.ms.latest = this.collection.getLatest();
         this.ms.render();
-        this.listenTo(this.ms, 'MonthSelect:change', this.monthChange);
+        this.listenTo(this.ms, 'MonthSelect:change', this.monthChange.bind(this));
         this.collection.selectedMonth = this.ms.getSelected(); // for filtering to know which month we're in
         this.listenTo(this.collection, "change", this.render);
         //this.listenTo(this.collection, "change", this.table.render);
@@ -127,4 +127,3 @@ var AppView = (function (_super) {
 }(Backbone.View));
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = AppView;
-//# sourceMappingURL=AppView.js.map

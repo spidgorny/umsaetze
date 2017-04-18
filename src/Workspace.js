@@ -13,6 +13,7 @@ var KeywordsView_1 = require("./Keyword/KeywordsView");
 var CategoryCollection_1 = require("./Category/CategoryCollection");
 var KeywordCollection_1 = require("./Keyword/KeywordCollection");
 var SummaryView_1 = require("./Summary/SummaryView");
+var HistoryView_1 = require("./History/HistoryView");
 var Backbone = require('backbone');
 var $ = require('jquery');
 // let _ = require('underscore');
@@ -28,6 +29,7 @@ var Workspace = (function (_super) {
             "Sync": "Sync",
             "Keywords": "Keywords",
             "Summary": "Summary",
+            "History": "History",
         };
         this.keywords = new KeywordCollection_1.default();
         this._bindRoutes();
@@ -58,9 +60,15 @@ var Workspace = (function (_super) {
             }
         }
     };
+    Workspace.prototype.hideCurrentPage = function () {
+        if (this.currentPage) {
+            this.currentPage.hide();
+        }
+    };
     Workspace.prototype.AppView = function () {
         console.warn('AppView');
         this.activateMenu();
+        this.hideCurrentPage();
         if (!this.appPage) {
             this.appPage = new AppView_1.default({
                 collection: this.model,
@@ -68,10 +76,12 @@ var Workspace = (function (_super) {
             this.appPage.table.keywords = this.keywords;
         }
         this.appPage.show();
+        this.currentPage = this.appPage;
     };
     Workspace.prototype.Sync = function () {
         console.warn('Sync');
         this.activateMenu();
+        this.hideCurrentPage();
         if (this.appPage) {
             this.appPage.hide();
         }
@@ -83,32 +93,28 @@ var Workspace = (function (_super) {
             this.syncPage.router = this;
         }
         this.syncPage.render();
-        // quick testing
-        // let ms: MonthSelect = new MonthSelect();
-        // ms.render();
+        this.currentPage = this.syncPage;
     };
     Workspace.prototype.CatPage = function () {
         console.warn('CatPage');
         this.activateMenu();
-        if (this.appPage) {
-            this.appPage.hide();
-        }
+        this.hideCurrentPage();
         if (!this.catPage) {
             this.catPage = new CatPage_1.default(this.model, this.categoryList);
         }
         this.catPage.render();
+        this.currentPage = this.catPage;
     };
     Workspace.prototype.Keywords = function () {
         console.warn('Keywords');
         this.activateMenu();
-        if (this.appPage) {
-            this.appPage.hide();
-        }
+        this.hideCurrentPage();
         if (!this.keywordsPage) {
             this.keywordsPage = new KeywordsView_1.default();
             this.keywordsPage.keywords = this.keywords;
         }
         this.keywordsPage.render();
+        this.currentPage = this.keywordsPage;
     };
     Workspace.prototype.MonthSelect = function (year, month) {
         console.warn('MonthSelect', year, month);
@@ -127,9 +133,7 @@ var Workspace = (function (_super) {
     Workspace.prototype.Summary = function () {
         console.log('Summary');
         this.activateMenu();
-        if (this.appPage) {
-            this.appPage.hide();
-        }
+        this.hideCurrentPage();
         if (!this.summaryPage) {
             this.summaryPage = new SummaryView_1.default({
                 collection: this.categoryList
@@ -138,9 +142,23 @@ var Workspace = (function (_super) {
         $('#pieChart').hide();
         $('#categories').hide();
         this.summaryPage.render();
+        this.currentPage = this.summaryPage;
+    };
+    Workspace.prototype.History = function () {
+        console.log('History');
+        this.activateMenu();
+        this.hideCurrentPage();
+        if (!this.historyPage) {
+            this.historyPage = new HistoryView_1.default({
+                collection: this.model
+            });
+        }
+        $('#pieChart').hide();
+        $('#categories').hide();
+        this.historyPage.render();
+        this.currentPage = this.historyPage;
     };
     return Workspace;
 }(Backbone.Router));
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Workspace;
-//# sourceMappingURL=Workspace.js.map

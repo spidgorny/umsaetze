@@ -26,12 +26,12 @@ var ParseCSV = (function () {
                 header: true,
                 dynamicTyping: true,
                 skipEmptyLines: true,
-                comments: "#"
+                comments: "#",
             });
             csv = csvObj.data;
         }
         else {
-            csv = Table_1["default"].fromText(this.data);
+            csv = Table_1.default.fromText(this.data);
         }
         this.data = null; // save RAM
         console.log('rows after parse', csv.length);
@@ -58,7 +58,7 @@ var ParseCSV = (function () {
         });
         console.log('slicing ', startIndex, 'first rows');
         var sliced = data.slice(startIndex);
-        return new Table_1["default"](sliced);
+        return new Table_1.default(sliced);
     };
     /**
      * We got pure data with headers here
@@ -69,15 +69,15 @@ var ParseCSV = (function () {
         typeSet = typeSet.filterMostlyNull();
         // console.log(typeSet, 'typeSet');
         var aCommon = typeSet.mode();
-        var common = new Row_1["default"](aCommon);
+        var common = new Row_1.default(aCommon);
         console.log(JSON.stringify(common), 'common');
         data = common.filterByCommon(data);
         console.log('rows after filterByCommon', data.length);
-        var dataWithHeader = new Table_1["default"]();
+        var dataWithHeader = new Table_1.default();
         data.forEach(function (row, i) {
             var header = common.getHeaderFromTypes(row, i);
             if (i == 0) {
-                Row_1["default"].peek(row, common);
+                Row_1.default.peek(row, common);
                 console.log(JSON.stringify(header), 'header');
             }
             dataWithHeader.push(header);
@@ -92,7 +92,7 @@ var ParseCSV = (function () {
      * @returns Row
      */
     ParseCSV.prototype.zip = function (names, values) {
-        var result = new Row_1["default"]();
+        var result = new Row_1.default();
         for (var i = 0; i < names.length; i++) {
             result[names[i]] = values[i];
         }
@@ -123,6 +123,5 @@ var ParseCSV = (function () {
     };
     return ParseCSV;
 }());
-exports.__esModule = true;
-exports["default"] = ParseCSV;
-//# sourceMappingURL=ParseCSV.js.map
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = ParseCSV;

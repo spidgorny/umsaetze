@@ -35,7 +35,7 @@ export default class Transaction extends bb.Model {
 			sDate = dDate.toString('d.M.yyyy');
 		} else {
 			dDate = new Date(sDate);	// to parse from JSON
-			var dDateValid = !isNaN( dDate.getTime() );
+			let dDateValid = !isNaN( dDate.getTime() );
 			if (!dDate || !dDateValid) {
 				dDate = Date.parseExact(sDate, "d.M.yyyy");
 			}

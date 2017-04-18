@@ -174,4 +174,3 @@ var CategoryCollection = (function (_super) {
 }(Backbone.Collection));
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = CategoryCollection;
-//# sourceMappingURL=CategoryCollection.js.map

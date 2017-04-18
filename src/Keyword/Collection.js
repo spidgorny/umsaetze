@@ -64,4 +64,3 @@ var Collection = (function (_super) {
 }(Array));
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Collection;
-//# sourceMappingURL=Collection.js.map

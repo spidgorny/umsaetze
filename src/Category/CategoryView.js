@@ -165,4 +165,3 @@ var CategoryView = (function (_super) {
 }(Backbone.View));
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = CategoryView;
-//# sourceMappingURL=CategoryView.js.map

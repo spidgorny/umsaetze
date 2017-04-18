@@ -9,7 +9,7 @@ const Handlebars = require('handlebars');
 const Backbone: any = require('backbone');
 const _ = require('underscore');
 
-export default class SummaryView extends Backbone.View<CategoryCollection> {
+export default class SummaryView extends Backbone.View<CategoryCollectionModel> {
 
 	collection: CategoryCollection;
 

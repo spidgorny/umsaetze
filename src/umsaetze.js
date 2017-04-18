@@ -2,7 +2,7 @@
 "use strict";
 var Workspace_1 = require("./Workspace");
 // var bootstrap = require('bootstrap');
-// var _ = require('underscore');
+var _ = require('underscore');
 var Backbone = require('backbone');
 if (window.__backboneAgent) {
     window.__backboneAgent.handleBackbone(Backbone);
@@ -28,6 +28,22 @@ function asyncLoop(arr, callback, done) {
     }(0)); //start with 0
 }
 exports.asyncLoop = asyncLoop;
+Object.values = function (obj) { return Object.keys(obj).map(function (key) { return obj[key]; }); };
+// should not use =>
+Array.prototype.average = function () {
+    //console.log('average', this);
+    if (this.length) {
+        var sum = _.reduce(this, function (a, b) {
+            return parseFloat(a) + parseFloat(b);
+        });
+        var avg = sum / this.length;
+        //console.log(totals, sum, avg);
+        return avg.toFixed(2);
+    }
+    else {
+        return null;
+    }
+};
 function debug(name) {
     return function () {
         //console.warn(name + ":", arguments);
@@ -94,4 +110,3 @@ $(function () {
 // only run this once
 // import ImportKeywords from './ImportKeywords';
 // let i = new ImportKeywords();
-//# sourceMappingURL=umsaetze.js.map
