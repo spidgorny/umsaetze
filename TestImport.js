@@ -27,8 +27,9 @@ var TestImport = (function () {
         // let file = 'test/data/Santander/Santander_2362226300_20161010_2217.csv';
         // let file = 'test/data/Volksbank/Umsaetze_DE29501900006000010268_2016.10.10.csv';
         // let file = 'test/data/Nassau/20161010-140238155-umsatz.CSV';
-        var file = 'test/data/20161017-53012647-umsatz.CSV';
+        // let file = 'test/data/20161017-53012647-umsatz.CSV';
         // let file = 'test/data/Nassau/20161010-140238155-umsMT940.TXT';
+        var file = 'test/data/BmwBank/BMWFS_OLB_Export_20161019.csv';
         console.log(file);
         var data = fs.readFileSync(file);
         console.log('read', data.length, 'bytes');
@@ -36,11 +37,11 @@ var TestImport = (function () {
         var nice;
         if (ext == '.csv') {
             data = iconv.decode(data, "ISO-8859-1");
-            var parse = new ParseCSV_1["default"](data);
+            var parse = new ParseCSV_1.default(data);
             nice = parse.parseAndNormalize();
         }
         else if (ext == '.txt') {
-            var parse = new ParseMT940_1["default"](data);
+            var parse = new ParseMT940_1.default(data);
             nice = parse.parseAndNormalize();
         }
         else {
@@ -60,12 +61,12 @@ var TestImport = (function () {
                     {
                         date: new Date('Wed Oct 05 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
                         amount: -50.29,
-                        note: 'TOTAL DEUTSCHLAND GM 04.10.2016 08.15.29 620895 EUR      50,29 EC          74110494 562760 PAN 6729509200010907293 FTS-Tankstelle//FRANKFURT/D 001 12/2017 GIROCARD EUR'
+                        note: 'TOTAL DEUTSCHLAND GM 04.10.2016 08.15.29 620895 EUR      50,29 EC          74110494 562760 PAN 6729509200010907293 FTS-Tankstelle//FRANKFURT/D 001 12/2017 GIROCARD EUR',
                     },
                     {
                         date: new Date('Wed Oct 05 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
                         amount: -35.64,
-                        note: '1u1 Internet SE SEPA-BASISLASTSCHRIFT SVWZ+ OTHR sonst ige Zahlung KD-Nr. K1505564 9/ RG-Nr. 100031626551 EREF + 004199835838 MREF+ 002000 1185661 CRED+ DE74ZZZ000000 45294 EUR'
+                        note: '1u1 Internet SE SEPA-BASISLASTSCHRIFT SVWZ+ OTHR sonst ige Zahlung KD-Nr. K1505564 9/ RG-Nr. 100031626551 EREF + 004199835838 MREF+ 002000 1185661 CRED+ DE74ZZZ000000 45294 EUR',
                     },
                 ]
             },
@@ -81,7 +82,7 @@ var TestImport = (function () {
                         date: new Date('Sun Oct 02 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
                         amount: 20,
                         note: 'Penny' },
-                ]
+                ],
             },
             {
                 file: 'test/data/DeutscheBank/Kontoumsaetze_100_390590800_20161010_221922.csv',
@@ -95,7 +96,7 @@ var TestImport = (function () {
                         date: new Date('Mon May 02 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
                         amount: -90,
                         note: 'SEPA-Lastschrift von CONTINENTALE/EUROPA VERBUND 187195037 KFZ 137,88 DE95440400370347777500 COBADEFFXXX 1,68E+13 R0100033281694 DE95ZZZ00000053646 EUR' },
-                ]
+                ],
             },
             {
                 file: 'test/data/Santander/Santander_2362226300_20161010_2217.csv',
@@ -109,7 +110,7 @@ var TestImport = (function () {
                         date: new Date('Mon May 02 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
                         amount: -272.7,
                         note: 'Lastschrift ??? SEPA-LASTSCHRIFT VON HANSEMERKUR VERS. 32940058755BBCSDWM IBAN DE24200300000000241414 BIC HYVEDEMM TYPE CO1 EREF+133587242 MREF+141737784A00016' },
-                ]
+                ],
             },
             {
                 file: 'test/data/Volksbank/Umsaetze_DE29501900006000010268_2016.10.10.csv',
@@ -123,7 +124,7 @@ var TestImport = (function () {
                         date: new Date('Mon Oct 10 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
                         amount: 175.99,
                         note: 'ISSUER GALERIA KAUFHOF GMBH FFM DE29501900006000010268 FFVBDEFF LASTSCHRIFT\r\nGaleria Kaufhof Frankfurt/F\r\nrankfurt/DE\r\n08.10.2016 um 14:41:33 Uhr\r\n67108002/168068/CICC/FPIN\r\n50190000/6000010268/1/1216 EUR' }
-                ]
+                ],
             },
             {
                 file: 'test/data/Nassau/20161010-140238155-umsatz.CSV',
@@ -137,7 +138,7 @@ var TestImport = (function () {
                         date: new Date('Mon Oct 10 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
                         amount: -370,
                         note: '140238155 FOLGELASTSCHRIFT EREF+K11222371592/000005/16ZVS18FMREF+KFZF11100073236814102015CRED+DE09ZZZ00000000001SVWZ+KFZ-STEUER FUER F IL 137 FUER DIE ZEIT VOM 09.10.2016 BIS ZUM 08.10.2017 KASSENZEICHEN K11222371592ABWA+KKR ZENTRALKASSE DES BUNDES BUNDESKASSE IN HALLE/SAALE DE20860000000086001170 MARKDEF1860 EUR Umsatz gebucht' },
-                ]
+                ],
             },
             {
                 file: 'test/data/Nassau/20161010-140238155-umsatz(1).CSV',
@@ -151,10 +152,10 @@ var TestImport = (function () {
                         date: new Date('Mon Oct 10 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
                         amount: -370,
                         note: '140238155 FOLGELASTSCHRIFT KFZ-STEUER FUER F IL 137 FUER DIE ZEIT VOM 09.10.2016 BIS ZUM 08.10.2017 KASSENZEICHEN K11222371592 BUNDESKASSE IN HALLE/SAALE DE20860000000086001170 MARKDEF1860 EUR Umsatz gebucht' },
-                ]
+                ],
             },
             {
-                file: 'test/data/20161017-53012647-umsatz.CSV',
+                file: 'test/data/SparkasseHanau/20161017-53012647-umsatz.CSV',
                 rows: 4,
                 result: [
                     {
@@ -165,7 +166,21 @@ var TestImport = (function () {
                         date: new Date('Wed Oct 12 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
                         amount: -297,
                         note: '53012647 ONLINE-UEBERWEISUNG SVWZ+Berlin RueckerstattungDATUM 12.10.2016, 18.34 UHR1.TAN 934500 Pidgornyy Svyetoslav DE14500905000001090729 GENODEF1S12 EUR Umsatz gebucht' },
-                ]
+                ],
+            },
+            {
+                file: 'test/data/PostBank/PB_Umsatzauskunft_KtoNr0110173606_17-10-2016_1402.csv',
+                rows: 204,
+                result: [
+                    {
+                        date: new Date('Wed Oct 12 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+                        amount: -297,
+                        note: '53012647 ONLINE-UEBERWEISUNG SVWZ+Berlin RueckerstattungDATUM 12.10.2016, 18.34 UHR1.TAN 934500 Pidgornyy Svyetoslav DE14500905000001090729 GENODEF1S12 EUR Umsatz gebucht' },
+                    {
+                        date: new Date('Wed Oct 12 2016 00:00:00 GMT+0200 (W. Europe Daylight Time)'),
+                        amount: -297,
+                        note: '53012647 ONLINE-UEBERWEISUNG SVWZ+Berlin RueckerstattungDATUM 12.10.2016, 18.34 UHR1.TAN 934500 Pidgornyy Svyetoslav DE14500905000001090729 GENODEF1S12 EUR Umsatz gebucht' },
+                ],
             },
         ];
         testFixture.forEach(function (set) {
@@ -174,7 +189,7 @@ var TestImport = (function () {
             if (fs.existsSync(set.file)) {
                 var data = fs.readFileSync(set.file);
                 data = iconv.decode(data, "ISO-8859-1");
-                var parse = new ParseCSV_1["default"](data);
+                var parse = new ParseCSV_1.default(data);
                 var nice = parse.parseAndNormalize();
                 if (nice.length != set.rows) {
                     console.log('parsed', nice.length, 'rows, expecting', set.rows);
@@ -206,7 +221,7 @@ var TestImport = (function () {
         row0 = {
             date: row0.date,
             amount: row0.amount,
-            note: row0.note
+            note: row0.note,
         };
         return row0;
     };

@@ -38,16 +38,16 @@ declare class Record {
 
 class SpardaBank {
 
-	sourceFile = 'umsaetze-1090729-2016-07-27-00-11-29.csv';
+	sourceFile = 'test/data/SpardaBank/umsaetze-1090729-2016-07-27-00-11-29.csv';
 
-	keywordFile = 'keywords.xlsx';
+	keywordFile = 'test/data/keywords.xlsx';
 
 	keyWords = {};
 
 	convertMoneyFormat() {
-		var transform = require('stream-transform');
+		let transform = require('stream-transform');
 
-		var totalRows = 1690;	// line-by-line counting will not work
+		let totalRows = 1690;	// line-by-line counting will not work
 /*		var counter = transform(function (record: Record, callback) {
 			totalRows++;
 			callback(null, record);
@@ -55,15 +55,15 @@ class SpardaBank {
 			console.log('Counted rows: ', totalRows);
 		});
 */
-		var ProgressBar = require('progress');
-		var pb = new ProgressBar(':bar', {
+		const ProgressBar = require('progress');
+		let pb = new ProgressBar(':bar', {
 			total: totalRows,
 			width: 100
 		});
 
-		var storeColumns = null;
-		var rows = 0;
-		var transformer = transform(function (record: Record, callback) {
+		let storeColumns = null;
+		let rows = 0;
+		let transformer = transform(function (record: Record, callback) {
 			pb.tick();
 			var amount = record.amount;
 			amount = amount.replace('.', '');
@@ -86,21 +86,21 @@ class SpardaBank {
 			callback(null, record);
 		}, {parallel: 1});
 
-		var stringify = require('csv-stringify');
-		var stringifier = stringify({
+		let stringify = require('csv-stringify');
+		let stringifier = stringify({
 			header: true,
 			columns: storeColumns,
 			delimiter: ';',
 		});
 
-		var path = require('path');
-		var ext = path.extname(this.sourceFile);
-		var destination = path.basename(this.sourceFile, ext) + '.import' + ext;
+		const path = require('path');
+		let ext = path.extname(this.sourceFile);
+		let destination = path.basename(this.sourceFile, ext) + '.import' + ext;
 		console.log('Destination: ', destination);
-		var output = fs.createWriteStream(destination);
+		let output = fs.createWriteStream(destination);
 
-		var input = fs.createReadStream(this.sourceFile);
-		var streamToPromise = require('stream-to-promise');
+		let input = fs.createReadStream(this.sourceFile);
+		const streamToPromise = require('stream-to-promise');
 		streamToPromise(input
 		.pipe(this.getParser())
 //		.pipe(counter)
@@ -113,8 +113,8 @@ class SpardaBank {
 	}
 
 	getParser() {
-		var parse = require('csv-parse');
-		var parser = parse({
+		const parse = require('csv-parse');
+		let parser = parse({
 			delimiter: ';',
 			columns: true,
 			comment: '#',
@@ -125,8 +125,8 @@ class SpardaBank {
 
 	readExcelFile() {
 		return new Promise((resolve, reject) => {
-			var Excel = require('exceljs');
-			var workbook = new Excel.Workbook();
+			const Excel = require('exceljs');
+			let workbook = new Excel.Workbook();
 			workbook.xlsx.readFile(this.keywordFile)
 				.then(() => {
 					var sheet = workbook.getWorksheet(1);
@@ -139,14 +139,14 @@ class SpardaBank {
 	dumpSheet(sheet) {
 		return new Promise((resolve, reject) => {
 			sheet.eachRow((row, rowNumber) => {
-				var cells = row.values;
+				let cells = row.values;
 				// not sure why this is needed
 				// var cells = row.values.slice(0, 2);
 
 				//console.log(cells.join('\t'));
 				//console.log(JSON.stringify(cells));
-				var key = cells[1];
-				var category = cells[2];
+				let key = cells[1];
+				let category = cells[2];
 				//console.log(key, category);
 				this.keyWords[key] = category;
 			});
@@ -156,15 +156,15 @@ class SpardaBank {
 	}
 
 	categorize(categoryList: Object) {
-		var chalk = require( "chalk" );
-		var fs = require('fs');
-		var transform = require('stream-transform');
-		var utf8 = require('utf8');
-		var iconv = require('iconv-lite');
+		const chalk = require( "chalk" );
+		const fs = require('fs');
+		const transform = require('stream-transform');
+		const utf8 = require('utf8');
+		const iconv = require('iconv-lite');
 
-		var converterStream = iconv.decodeStream('ISO-8859-1');
+		let converterStream = iconv.decodeStream('ISO-8859-1');
 
-		var transformer = transform((record: Record, callback) => {
+		let transformer = transform((record: Record, callback) => {
 			// record.note = utf8.encode(record.note);
 			//record.note = iconv.decode(record.note, 'ISO-8859-1');
 			// record.note = iconv.encode(record.note, 'UTF-8');
@@ -178,7 +178,7 @@ class SpardaBank {
 			callback(null, record);
 		}, {parallel: 1});
 
-		var input = fs.createReadStream(this.sourceFile.replace('.csv', '.import.csv'));
+		let input = fs.createReadStream(this.sourceFile.replace('.csv', '.import.csv'));
 		//input.setEncoding(null);
 		input.on(
 			"error",
@@ -186,10 +186,10 @@ class SpardaBank {
 				console.log( chalk.bgRed.white( "Error event:", error.message ) );
 			}
 		);
-		var devnull = require('dev-null');
+		const devnull = require('dev-null');
 
-		var stringify = require('csv-stringify');
-		var stringifier = stringify({
+		const stringify = require('csv-stringify');
+		let stringifier = stringify({
 			header: true,
 			columns: {
 				account: 'account',
@@ -203,11 +203,11 @@ class SpardaBank {
 			delimiter: ';',
 		});
 
-		var path = require('path');
-		var ext = path.extname(this.sourceFile);
-		var destination = path.basename(this.sourceFile, ext) + '.cat' + ext;
+		const path = require('path');
+		let ext = path.extname(this.sourceFile);
+		let destination = path.basename(this.sourceFile, ext) + '.cat' + ext;
 		console.log('Destination: ', destination);
-		var output = fs.createWriteStream(destination);
+		let output = fs.createWriteStream(destination);
 
 		return input
 			//.pipe(converterStream)
@@ -256,7 +256,7 @@ class SpardaBank {
 
 	getCategoryFor(note: string) {
 		let category = 'Default';
-		for (var keyWord in this.keyWords) {
+		for (let keyWord in this.keyWords) {
 			if (note.indexOf(keyWord) > -1) {
 				console.log(keyWord, this.keyWords[keyWord]);
 				return this.keyWords[keyWord];
@@ -268,7 +268,7 @@ class SpardaBank {
 	startCategorize() {
 		sb.readExcelFile().then((categoryList) => {
 			console.log('categoryList', categoryList);
-			fs.writeFileSync('keywords.json', JSON.stringify(categoryList, '', '\n'));
+			fs.writeFileSync('test/data/keywords.json', JSON.stringify(categoryList, '', '\n'));
 			sb.categorize(categoryList);
 			return true;
 		}).catch((e) => {
