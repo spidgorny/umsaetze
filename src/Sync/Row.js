@@ -8,14 +8,10 @@ var __extends = (this && this.__extends) || function (d, b) {
 var ArrayPlus_1 = require("./ArrayPlus");
 var Table_1 = require("./Table");
 var _ = require('underscore');
+var accounting = require('accounting-js');
 // const _isNumeric = require('underscore.isnumeric');
-String.prototype.repeat = function (count) {
-    var accu = '';
-    for (var i = 0; i < count; i++) {
-        accu += this.toString();
-    }
-    return accu;
-};
+require('../Util/String');
+var Number_1 = require("../Util/Number");
 var Row = (function (_super) {
     __extends(Row, _super);
     function Row(rawData) {
@@ -35,7 +31,8 @@ var Row = (function (_super) {
         var types = [];
         this.forEach(function (el) {
             // console.log('getRowTypes', el);
-            var float = parseFloat(el);
+            // let float = parseFloat(el);	// does not handle 1.000,12 well
+            var float = Number_1.default(el);
             var date = Date.parse(el);
             var isDate = !!date && el.indexOf(',') == -1; // dates are without ","
             var isEmpty = _.isNull(el)

@@ -161,7 +161,7 @@ export default class Table extends ArrayPlus {
 
 	/**
 	 * Remove empty lines from anywhere in the file.
-	 * This is required for analyzeCSV() to work.
+	 * This prevents analyzeCSV() from working since it needs empty lines in the middle of the file.
 	 * @returns {Row[]}
 	 */
 	trimAll() {

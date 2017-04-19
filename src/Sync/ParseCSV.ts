@@ -1,6 +1,7 @@
 /// <reference path="../../typings/index.d.ts" />
 
 // import {start} from "repl";
+import detectFloat from "../Util/Number";
 const Papa = require('papaparse');
 import Table from './Table';
 import Row from './Row';
@@ -40,7 +41,8 @@ export default class ParseCSV {
 		}
 		this.data = null;	// save RAM
 		console.log('rows after parse', csv.length);
-		csv = csv.trimAll();
+		csv = csv.trim();
+		// csv = csv.trimAll(); // prevents analyzeCSV from working
 		console.log('rows after trim', csv.length);
 		csv = this.analyzeCSV(csv);
 		console.log('rows after analyze', csv.length);
@@ -112,8 +114,7 @@ export default class ParseCSV {
 	private convertDataTypes(csv: Table) {
 		csv.forEach((row, i) => {
 			if (row.amount) {
-				let amount = row.amount.replace(',', '.');
-				row.amount = parseFloat(amount); // german format
+				row.amount = detectFloat(row.amount);
 
 				let date = Date.parseExact(row.date, 'dd.MM.yyyy');
 				if (!date) {
