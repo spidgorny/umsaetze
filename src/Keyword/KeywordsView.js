@@ -74,4 +74,3 @@ var KeywordsView = (function (_super) {
 }(Backbone.View));
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = KeywordsView;
-//# sourceMappingURL=KeywordsView.js.map

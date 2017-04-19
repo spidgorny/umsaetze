@@ -12,7 +12,6 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Chart = require('chart.js');
 var toastr = require('toastr');
-Object.values = function (obj) { return Object.keys(obj).map(function (key) { return obj[key]; }); };
 var CatPage = (function (_super) {
     __extends(CatPage, _super);
     function CatPage(expenses, categoryList) {
@@ -229,4 +228,3 @@ var CatPage = (function (_super) {
 }(Backbone.View));
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = CatPage;
-//# sourceMappingURL=CatPage.js.map

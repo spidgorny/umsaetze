@@ -212,4 +212,3 @@ var Sync = (function (_super) {
 }(Backbone.View));
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Sync;
-//# sourceMappingURL=Sync.js.map

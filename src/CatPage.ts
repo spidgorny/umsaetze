@@ -11,8 +11,6 @@ const _ = require('underscore');
 const Chart = require('chart.js');
 const toastr = require('toastr');
 
-Object.values = obj => Object.keys(obj).map(key => obj[key]);
-
 export default class CatPage extends Backbone.View<Transaction> {
 
 	$el = $('#app');

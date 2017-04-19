@@ -6,7 +6,7 @@ let Backbone = require('backbone');
 
 Object.values = obj => Object.keys(obj).map(key => obj[key]);
 
-export default class CategoryCount extends Backbone.Model {
+export default class CategoryCount extends Backbone.Model<any> {
 
 	catName: string;
 

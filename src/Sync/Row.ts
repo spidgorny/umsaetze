@@ -3,15 +3,10 @@
 import ArrayPlus from "./ArrayPlus";
 import Table from "./Table";
 const _ = require('underscore');
+const accounting = require('accounting-js');
 // const _isNumeric = require('underscore.isnumeric');
-
-String.prototype.repeat = function(count: number) {
-	let accu = '';
-	for (let i = 0; i < count; i++) {
-		accu += this.toString();
-	}
-	return accu;
-};
+require('../Util/String');
+import detectFloat from "../Util/Number";
 
 export default class Row extends ArrayPlus {
 	date: Date;
@@ -37,7 +32,9 @@ export default class Row extends ArrayPlus {
 		let types = [];
 		this.forEach((el: any) => {
 			// console.log('getRowTypes', el);
-			let float = parseFloat(el);
+			// let float = parseFloat(el);	// does not handle 1.000,12 well
+			let float = detectFloat(el);
+
 			let date = Date.parse(el);
 			let isDate = !!date && el.indexOf(',') == -1;	// dates are without ","
 			let isEmpty = _.isNull(el)

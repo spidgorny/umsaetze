@@ -3,7 +3,7 @@
 import CollectionFetchOptions = Backbone.CollectionFetchOptions;
 import Workspace from "./Workspace";
 // var bootstrap = require('bootstrap');
-// var _ = require('underscore');
+var _ = require('underscore');
 const Backbone = require('backbone');
 if (window.__backboneAgent) {
 	window.__backboneAgent.handleBackbone(Backbone);
@@ -29,6 +29,33 @@ export function asyncLoop(arr: Array<any>, callback: Function, done?: Function) 
 		}
 	}(0));                                         //start with 0
 }
+
+declare interface ObjectConstructor {
+
+	values: Function;
+
+}
+
+Object.values = obj => Object.keys(obj).map(key => obj[key]);
+
+declare interface Array<T> {
+	average(): Array<T>;
+}
+
+// should not use =>
+Array.prototype.average = function () {
+	//console.log('average', this);
+	if (this.length) {
+		const sum = _.reduce(this, (a: string, b: string) => {
+			return parseFloat(a) + parseFloat(b);
+		});
+		let avg = sum / this.length;
+		//console.log(totals, sum, avg);
+		return avg.toFixed(2);
+	} else {
+		return null;
+	}
+};
 
 export function debug(name) {
 	return function() {

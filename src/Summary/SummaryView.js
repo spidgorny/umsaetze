@@ -122,4 +122,3 @@ var SummaryView = (function (_super) {
 }(Backbone.View));
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = SummaryView;
-//# sourceMappingURL=SummaryView.js.map
