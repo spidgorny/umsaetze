@@ -41,4 +41,3 @@ var ParseMT940 = (function () {
 }());
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = ParseMT940;
-//# sourceMappingURL=ParseMT940.js.map

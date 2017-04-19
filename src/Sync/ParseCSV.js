@@ -1,6 +1,7 @@
 /// <reference path="../../typings/index.d.ts" />
 "use strict";
 // import {start} from "repl";
+var Number_1 = require("../Util/Number");
 var Papa = require('papaparse');
 var Table_1 = require('./Table');
 var Row_1 = require('./Row');
@@ -35,7 +36,8 @@ var ParseCSV = (function () {
         }
         this.data = null; // save RAM
         console.log('rows after parse', csv.length);
-        csv = csv.trimAll();
+        csv = csv.trim();
+        // csv = csv.trimAll(); // prevents analyzeCSV from working
         console.log('rows after trim', csv.length);
         csv = this.analyzeCSV(csv);
         console.log('rows after analyze', csv.length);
@@ -101,8 +103,7 @@ var ParseCSV = (function () {
     ParseCSV.prototype.convertDataTypes = function (csv) {
         csv.forEach(function (row, i) {
             if (row.amount) {
-                var amount = row.amount.replace(',', '.');
-                row.amount = parseFloat(amount); // german format
+                row.amount = Number_1.default(row.amount);
                 var date = Date.parseExact(row.date, 'dd.MM.yyyy');
                 if (!date) {
                     date = Date.parseExact(row.date, 'dd.MM.yy');
