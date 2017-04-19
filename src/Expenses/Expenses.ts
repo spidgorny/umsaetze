@@ -162,17 +162,27 @@ export default class Expenses extends bb.Collection<Transaction> {
 		}
 
 		if (selectedMonth) {
-			this.each((row: Transaction) => {
-				let tDate: Date = row.get('date');
-				let sameYear = tDate.getFullYear() == selectedMonth.getFullYear();
-				let sameMonth = tDate.getMonth() == selectedMonth.getMonth();
-				if (!sameYear || !sameMonth) {
-					row.set('visible', false, {silent: true});
-				}
+			let inThisMonth = this.whereMonth(selectedMonth);
+			let allOthers = _.difference(this.models, inThisMonth);
+			allOthers.forEach((row: Transaction) => {
+				row.set('visible', false, {silent: true});
 			});
 			this.saveAll();
 		}
 		elapse.timeEnd('Expense.filterByMonth');
+	}
+
+	whereMonth(selectedMonth: Date) {
+		let filtered = [];
+		this.each((row: Transaction) => {
+			let tDate: Date = row.get('date');
+			let sameYear = tDate.getFullYear() == selectedMonth.getFullYear();
+			let sameMonth = tDate.getMonth() == selectedMonth.getMonth();
+			if (sameYear && sameMonth) {
+				filtered.push(row);
+			}
+		});
+		return filtered;
 	}
 
 	filterByCategory(category: CategoryCount) {
@@ -307,6 +317,33 @@ export default class Expenses extends bb.Collection<Transaction> {
 
 	map(fn: Function) {
 		return _.map(this.models, fn);
+	}
+
+	/**
+	 * This is supposed to be used after this.filterByMonth()
+	 */
+	stepBackTillSalary() {
+		let ms = MonthSelect.getInstance();
+		let selectedMonth = ms.getSelected();
+
+		if (selectedMonth) {
+			let selectedMonthMinus1 = selectedMonth.clone().addMonths(-1);
+			let prevMonth = this.whereMonth(selectedMonthMinus1);
+			let max = _.reduce(prevMonth, (acc, row: Transaction) => {
+				return Math.max(acc, row.get('amount'));
+			}, 0);
+			//console.log(selectedMonthMinus1.toString('yyyy-MM-dd'), prevMonth.length, max);
+
+			let doAppend = false;
+			prevMonth.forEach((row: Transaction) => {
+				if (row.get('amount') == max) {
+					doAppend = true;
+				}
+				if (doAppend) {
+					row.set('visible', true);
+				}
+			})
+		}
 	}
 
 }

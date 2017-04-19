@@ -150,17 +150,26 @@ var Expenses = (function (_super) {
             selectedMonth = ms.getSelected();
         }
         if (selectedMonth) {
-            this.each(function (row) {
-                var tDate = row.get('date');
-                var sameYear = tDate.getFullYear() == selectedMonth.getFullYear();
-                var sameMonth = tDate.getMonth() == selectedMonth.getMonth();
-                if (!sameYear || !sameMonth) {
-                    row.set('visible', false, { silent: true });
-                }
+            var inThisMonth = this.whereMonth(selectedMonth);
+            var allOthers = _.difference(this.models, inThisMonth);
+            allOthers.forEach(function (row) {
+                row.set('visible', false, { silent: true });
             });
             this.saveAll();
         }
         elapse.timeEnd('Expense.filterByMonth');
+    };
+    Expenses.prototype.whereMonth = function (selectedMonth) {
+        var filtered = [];
+        this.each(function (row) {
+            var tDate = row.get('date');
+            var sameYear = tDate.getFullYear() == selectedMonth.getFullYear();
+            var sameMonth = tDate.getMonth() == selectedMonth.getMonth();
+            if (sameYear && sameMonth) {
+                filtered.push(row);
+            }
+        });
+        return filtered;
     };
     Expenses.prototype.filterByCategory = function (category) {
         elapse.time('Expense.filterByCategory');
@@ -288,6 +297,30 @@ var Expenses = (function (_super) {
     };
     Expenses.prototype.map = function (fn) {
         return _.map(this.models, fn);
+    };
+    /**
+     * This is supposed to be used after this.filterByMonth()
+     */
+    Expenses.prototype.stepBackTillSalary = function () {
+        var ms = MonthSelect_1.default.getInstance();
+        var selectedMonth = ms.getSelected();
+        if (selectedMonth) {
+            var selectedMonthMinus1 = selectedMonth.clone().addMonths(-1);
+            var prevMonth = this.whereMonth(selectedMonthMinus1);
+            var max_1 = _.reduce(prevMonth, function (acc, row) {
+                return Math.max(acc, row.get('amount'));
+            }, 0);
+            //console.log(selectedMonthMinus1.toString('yyyy-MM-dd'), prevMonth.length, max);
+            var doAppend_1 = false;
+            prevMonth.forEach(function (row) {
+                if (row.get('amount') == max_1) {
+                    doAppend_1 = true;
+                }
+                if (doAppend_1) {
+                    row.set('visible', true);
+                }
+            });
+        }
     };
     return Expenses;
 }(bb.Collection));

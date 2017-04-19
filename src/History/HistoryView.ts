@@ -5,6 +5,7 @@ import MyView from "./MyView";
 import Expenses from "../Expenses/Expenses";
 import MonthSelect from "../MonthSelect";
 import Transaction from "../Expenses/Transaction";
+import slTable from "../Util/slTable";
 const Handlebars = require('handlebars');
 const Backbone: any = require('backbone');
 const _ = require('underscore');
@@ -36,18 +37,25 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 			'data-chart_StrokeColor="rgba(151,187,0,1)" '+
 			'data-average="<%= average %>" '+
 			'></canvas>');
+
+		// let nintendo = this.collection.findWhere({id: '6137a425c770c89cfd55d60f91448749'});
+		// if (nintendo) {
+		// 	nintendo.set('amount', 3714.69);
+		// 	console.log(nintendo);
+		// }
 	}
 
 	render() {
 		this.collection.setAllVisible();
 		const yearMonth = this.ms.getSelected();
 		this.collection.filterByMonth(yearMonth);
+		this.collection.stepBackTillSalary();
 		const dataThisMonth = this.collection.getSorted();
 
 		let accumulator = 0;
 		let onlyMoney = dataThisMonth.map((set: Transaction) => {
-			//console.log(set);
 			accumulator += set.get('amount');
+			//console.log(set.get('amount'), accumulator);
 			return accumulator;
 		});
 
@@ -55,16 +63,20 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 			let date: IDateJS = set.get('date');
 			return date.toString('yyyy.MM.dd');
 		});
-		let labelMoney = _.object(labels, onlyMoney);
+		//let labelMoney = _.object(labels, onlyMoney);
 
 		let content = '';
 		content += this.template({
 			average: onlyMoney.average(),
 		});
+
+		let tab = new slTable(JSON.parse(JSON.stringify(dataThisMonth)));
+		content += tab;
+
 		content += '<pre>' + JSON.stringify(dataThisMonth, null, 4) + '</pre>';
 		this.$el.html(content);
 
-		this.renderSparkLines(labelMoney);
+		this.renderSparkLines(labels, onlyMoney);
 
 		return this;
 	}
@@ -78,7 +90,7 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 		this.render();
 	}
 
-	private renderSparkLines(chartData) {
+	private renderSparkLines(labels: Array, data: Array) {
 		let $sparkline = $('.sparkline');
 		$sparkline.each((index, self) => {
 			//console.log($self);
@@ -89,10 +101,6 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 			// Get the chart data and convert it to an array
 			let average = $self.attr('data-average');
 
-			// Build the data object
-			let data = Object.values(chartData);
-			let labels = Object.keys(chartData);
-			//console.log(data, labels);
 			let datasets = {};
 
 			// Create the dataset
