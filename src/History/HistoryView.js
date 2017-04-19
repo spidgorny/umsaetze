@@ -7,6 +7,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var MonthSelect_1 = require("../MonthSelect");
+var slTable_1 = require("../Util/slTable");
 var Handlebars = require('handlebars');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -29,30 +30,38 @@ var HistoryView = (function (_super) {
             'data-chart_StrokeColor="rgba(151,187,0,1)" ' +
             'data-average="<%= average %>" ' +
             '></canvas>');
+        // let nintendo = this.collection.findWhere({id: '6137a425c770c89cfd55d60f91448749'});
+        // if (nintendo) {
+        // 	nintendo.set('amount', 3714.69);
+        // 	console.log(nintendo);
+        // }
     }
     HistoryView.prototype.render = function () {
         this.collection.setAllVisible();
         var yearMonth = this.ms.getSelected();
         this.collection.filterByMonth(yearMonth);
+        this.collection.stepBackTillSalary();
         var dataThisMonth = this.collection.getSorted();
         var accumulator = 0;
         var onlyMoney = dataThisMonth.map(function (set) {
-            //console.log(set);
             accumulator += set.get('amount');
+            //console.log(set.get('amount'), accumulator);
             return accumulator;
         });
         var labels = dataThisMonth.map(function (set) {
             var date = set.get('date');
             return date.toString('yyyy.MM.dd');
         });
-        var labelMoney = _.object(labels, onlyMoney);
+        //let labelMoney = _.object(labels, onlyMoney);
         var content = '';
         content += this.template({
             average: onlyMoney.average(),
         });
+        var tab = new slTable_1.default(JSON.parse(JSON.stringify(dataThisMonth)));
+        content += tab;
         content += '<pre>' + JSON.stringify(dataThisMonth, null, 4) + '</pre>';
         this.$el.html(content);
-        this.renderSparkLines(labelMoney);
+        this.renderSparkLines(labels, onlyMoney);
         return this;
     };
     HistoryView.prototype.hide = function () {
@@ -62,7 +71,7 @@ var HistoryView = (function (_super) {
         //console.error('monthChange event');
         this.render();
     };
-    HistoryView.prototype.renderSparkLines = function (chartData) {
+    HistoryView.prototype.renderSparkLines = function (labels, data) {
         var _this = this;
         var $sparkline = $('.sparkline');
         $sparkline.each(function (index, self) {
@@ -72,10 +81,6 @@ var HistoryView = (function (_super) {
             var ctx = $self.get(0).getContext("2d");
             // Get the chart data and convert it to an array
             var average = $self.attr('data-average');
-            // Build the data object
-            var data = Object.values(chartData);
-            var labels = Object.keys(chartData);
-            //console.log(data, labels);
             var datasets = {};
             // Create the dataset
             datasets['strokeColor'] = $self.attr('data-chart_StrokeColor');

@@ -208,6 +208,11 @@ var Sync = (function (_super) {
         this.model.saveAll();
         this.render();
     };
+    /**
+     * Required by Workspace
+     */
+    Sync.prototype.hide = function () {
+    };
     return Sync;
 }(Backbone.View));
 Object.defineProperty(exports, "__esModule", { value: true });

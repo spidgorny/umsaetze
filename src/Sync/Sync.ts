@@ -242,4 +242,11 @@ export default class Sync extends Backbone.View<any> {
 		this.render();
 	}
 
+	/**
+	 * Required by Workspace
+	 */
+	hide() {
+
+	}
+
 }
