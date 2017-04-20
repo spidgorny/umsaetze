@@ -322,10 +322,8 @@ export default class Expenses extends bb.Collection<Transaction> {
 	/**
 	 * This is supposed to be used after this.filterByMonth()
 	 */
-	stepBackTillSalary() {
-		let ms = MonthSelect.getInstance();
+	stepBackTillSalary(ms: MonthSelect) {
 		let selectedMonth = ms.getSelected();
-
 		if (selectedMonth) {
 			let selectedMonthMinus1 = selectedMonth.clone().addMonths(-1);
 			let prevMonth = this.whereMonth(selectedMonthMinus1);

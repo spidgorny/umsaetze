@@ -19,3 +19,7 @@ export default function detectFloat(source: String) {
 	}
 	return float;
 }
+
+Number.prototype.clamp = function(min, max) {
+	return Math.min(Math.max(this, min), max);
+};

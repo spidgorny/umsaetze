@@ -23,3 +23,6 @@ function detectFloat(source) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = detectFloat;
+Number.prototype.clamp = function (min, max) {
+    return Math.min(Math.max(this, min), max);
+};

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "nodeunit",
     "clone-theme": "git clone https://github.com/BlackrockDigital/startbootstrap-sb-admin-2.git",
     "get-filereader": "git clone https://github.com/bgrins/filereader.js docs/filereader.js",
     "compile": "node_modules/.bin/browserify src/umsaetze.js -o docs/web/bundle.js",
@@ -33,6 +33,7 @@
     "dev-null": "^0.1.1",
     "elapse": "^0.1.1",
     "exceljs": "^0.2.11",
+    "expect": "^1.20.2",
     "file-saver": "^1.3.2",
     "handlebars": "^4.0.5",
     "hexo": "^3.2.2",

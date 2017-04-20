@@ -269,4 +269,14 @@ export default class TestImport {
 			console.log(float, float == must ? 'OK'.green : 'Error'.red);
 		});
 	}
+
 }
+
+module.exports = {
+
+	test1: function (test) {
+		let ti = new TestImport();
+		test.done();
+	}
+
+};

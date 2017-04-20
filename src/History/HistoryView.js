@@ -38,7 +38,7 @@ var HistoryView = (function (_super) {
         this.collection.setAllVisible();
         var yearMonth = this.ms.getSelected();
         this.collection.filterByMonth(yearMonth);
-        this.collection.stepBackTillSalary();
+        this.collection.stepBackTillSalary(this.ms);
         var dataThisMonth = this.collection.getSorted();
         var accumulator = 0;
         var onlyMoney = dataThisMonth.map(function (set) {

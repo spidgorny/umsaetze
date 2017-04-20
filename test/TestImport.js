@@ -271,3 +271,9 @@ var TestImport = (function () {
 }());
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = TestImport;
+module.exports = {
+    test1: function (test) {
+        var ti = new TestImport();
+        test.done();
+    }
+};

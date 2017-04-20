@@ -17,7 +17,7 @@ var MonthSelect = (function (_super) {
         this.$el = $('#MonthSelect');
         this.yearSelect = this.$('select');
         this.monthOptions = this.$('button');
-        this.selectedYear = this.yearSelect.val();
+        this.selectedYear = this.yearSelect.val() || new Date().getFullYear();
         this.selectedMonth = 'Feb';
         this.earliest = new Date();
         this.latest = new Date();
@@ -31,6 +31,9 @@ var MonthSelect = (function (_super) {
             "July", "August", "September",
             "October", "November", "December"
         ];
+        if (!this.storageProvider) {
+            this.storageProvider = window.localStorage;
+        }
         // console.log(this.yearSelect);
         // console.log(this.monthOptions);
         // this is a problem for HistoryView because it switches to page type
@@ -38,11 +41,11 @@ var MonthSelect = (function (_super) {
         this.monthOptions.on('click', this.clickOnMonth.bind(this));
         this.yearSelect.on('change', this.changeYear.bind(this));
         //this.localStorage = new Backbone.LocalStorage('MonthSelect');
-        var year = window.localStorage.getItem('MonthSelect.year');
+        var year = this.storageProvider.getItem('MonthSelect.year');
         if (year) {
             this.selectedYear = year;
         }
-        var month = window.localStorage.getItem('MonthSelect.month');
+        var month = this.storageProvider.getItem('MonthSelect.month');
         if (month) {
             this.selectedMonth = month;
         }
@@ -137,7 +140,7 @@ var MonthSelect = (function (_super) {
         $button.removeClass('btn-default');
         $button.addClass('btn-success');
         this.selectedMonth = $button.text();
-        window.localStorage.setItem('MonthSelect.month', this.selectedMonth);
+        this.storageProvider.setItem('MonthSelect.month', this.selectedMonth);
         this.trigger('MonthSelect:change');
     };
     MonthSelect.prototype.setYear = function (year) {
@@ -145,7 +148,7 @@ var MonthSelect = (function (_super) {
         console.log('setYear', year);
         this.selectedYear = year;
         //console.log(this.selectedYear);
-        window.localStorage.setItem('MonthSelect.year', this.selectedYear);
+        this.storageProvider.setItem('MonthSelect.year', this.selectedYear);
         this.render(); // repaint months as available or not
         this.trigger('MonthSelect:change');
     };
@@ -157,17 +160,17 @@ var MonthSelect = (function (_super) {
         // }
         console.log('setMonth', month);
         this.selectedMonth = monthName;
-        window.localStorage.setItem('MonthSelect.month', this.selectedMonth);
+        this.storageProvider.setItem('MonthSelect.month', this.selectedMonth);
         this.trigger('MonthSelect:change');
     };
     MonthSelect.prototype.setYearMonth = function (year, month) {
         console.log('setYearMonth', year, month);
         this.selectedYear = year;
         //console.log(this.selectedYear);
-        window.localStorage.setItem('MonthSelect.year', this.selectedYear);
+        this.storageProvider.setItem('MonthSelect.year', this.selectedYear);
         var monthName = this.getMonthNameFor(month);
         this.selectedMonth = monthName;
-        window.localStorage.setItem('MonthSelect.month', this.selectedMonth);
+        this.storageProvider.setItem('MonthSelect.month', this.selectedMonth);
         this.render(); // repaint months as available or not
         this.trigger('MonthSelect:change');
     };
@@ -198,6 +201,7 @@ var MonthSelect = (function (_super) {
         this.earliest = collection.getEarliest();
         this.latest = collection.getLatest();
         console.log('MonthSelect.update', this.earliest.toString('yyyy-MM-dd'), this.latest.toString('yyyy-MM-dd'));
+        this.selectedYear = this.selectedYear.clamp(this.earliest.getFullYear(), this.latest.getFullYear());
         this.show();
     };
     return MonthSelect;

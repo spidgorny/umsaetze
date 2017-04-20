@@ -47,7 +47,7 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 		this.collection.setAllVisible();
 		const yearMonth = this.ms.getSelected();
 		this.collection.filterByMonth(yearMonth);
-		this.collection.stepBackTillSalary();
+		this.collection.stepBackTillSalary(this.ms);
 		const dataThisMonth = this.collection.getSorted();
 
 		let accumulator = 0;

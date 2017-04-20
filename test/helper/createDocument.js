@@ -13,6 +13,5 @@ function createDocument() {
     });
     return document;
 }
-exports.__esModule = true;
-exports["default"] = createDocument;
-//# sourceMappingURL=createDocument.js.map
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = createDocument;

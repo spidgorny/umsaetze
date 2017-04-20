@@ -301,8 +301,7 @@ var Expenses = (function (_super) {
     /**
      * This is supposed to be used after this.filterByMonth()
      */
-    Expenses.prototype.stepBackTillSalary = function () {
-        var ms = MonthSelect_1.default.getInstance();
+    Expenses.prototype.stepBackTillSalary = function (ms) {
         var selectedMonth = ms.getSelected();
         if (selectedMonth) {
             var selectedMonthMinus1 = selectedMonth.clone().addMonths(-1);

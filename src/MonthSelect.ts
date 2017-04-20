@@ -3,6 +3,7 @@
 
 import Backbone = require('backbone');
 import Expenses from "./Expenses/Expenses";
+import LocalStorage = Backbone.LocalStorage;
 const $ = require('jquery');
 require('datejs');
 const _ = require('underscore');
@@ -16,7 +17,7 @@ export default class MonthSelect extends Backbone.View<any> {
 
 	monthOptions: JQuery = this.$('button');
 
-	selectedYear = this.yearSelect.val();
+	selectedYear = this.yearSelect.val() || new Date().getFullYear();
 
 	selectedMonth = 'Feb';
 
@@ -28,8 +29,15 @@ export default class MonthSelect extends Backbone.View<any> {
 
 	static instance: MonthSelect;
 
+	storageProvider: Storage;
+
 	constructor() {
 		super();
+
+		if (!this.storageProvider) {
+			this.storageProvider = window.localStorage;
+		}
+
 		// console.log(this.yearSelect);
 		// console.log(this.monthOptions);
 
@@ -39,11 +47,11 @@ export default class MonthSelect extends Backbone.View<any> {
 
 		this.yearSelect.on('change', this.changeYear.bind(this));
 		//this.localStorage = new Backbone.LocalStorage('MonthSelect');
-		let year = window.localStorage.getItem('MonthSelect.year');
+		let year = this.storageProvider.getItem('MonthSelect.year');
 		if (year) {
 			this.selectedYear = year;
 		}
-		let month = window.localStorage.getItem('MonthSelect.month');
+		let month = this.storageProvider.getItem('MonthSelect.month');
 		if (month) {
 			this.selectedMonth = month;
 		}
@@ -147,7 +155,7 @@ export default class MonthSelect extends Backbone.View<any> {
 		$button.removeClass('btn-default');
 		$button.addClass('btn-success');
 		this.selectedMonth = $button.text();
-		window.localStorage.setItem('MonthSelect.month', this.selectedMonth);
+		this.storageProvider.setItem('MonthSelect.month', this.selectedMonth);
 
 		this.trigger('MonthSelect:change');
 	}
@@ -157,7 +165,7 @@ export default class MonthSelect extends Backbone.View<any> {
 		console.log('setYear', year);
 		this.selectedYear = year;
 		//console.log(this.selectedYear);
-		window.localStorage.setItem('MonthSelect.year', this.selectedYear);
+		this.storageProvider.setItem('MonthSelect.year', this.selectedYear);
 		this.render();		// repaint months as available or not
 		this.trigger('MonthSelect:change');
 	}
@@ -170,7 +178,7 @@ export default class MonthSelect extends Backbone.View<any> {
 		// }
 		console.log('setMonth', month);
 		this.selectedMonth = monthName;
-		window.localStorage.setItem('MonthSelect.month', this.selectedMonth);
+		this.storageProvider.setItem('MonthSelect.month', this.selectedMonth);
 		this.trigger('MonthSelect:change');
 	}
 
@@ -179,11 +187,11 @@ export default class MonthSelect extends Backbone.View<any> {
 
 		this.selectedYear = year;
 		//console.log(this.selectedYear);
-		window.localStorage.setItem('MonthSelect.year', this.selectedYear);
+		this.storageProvider.setItem('MonthSelect.year', this.selectedYear);
 
 		let monthName = this.getMonthNameFor(month);
 		this.selectedMonth = monthName;
-		window.localStorage.setItem('MonthSelect.month', this.selectedMonth);
+		this.storageProvider.setItem('MonthSelect.month', this.selectedMonth);
 
 		this.render();		// repaint months as available or not
 		this.trigger('MonthSelect:change');
@@ -234,6 +242,12 @@ export default class MonthSelect extends Backbone.View<any> {
 		console.log('MonthSelect.update',
 			this.earliest.toString('yyyy-MM-dd'),
 			this.latest.toString('yyyy-MM-dd'));
+
+		this.selectedYear = this.selectedYear.clamp(
+			this.earliest.getFullYear(),
+			this.latest.getFullYear()
+		);
+
 		this.show();
 	}
 
