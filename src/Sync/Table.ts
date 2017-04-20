@@ -204,4 +204,20 @@ export default class Table extends ArrayPlus {
 		return new Table(notNull);
 	}
 
+	toVanilla() {
+		let copy = [];
+		this.forEach(row => {
+			copy.push(row.toVanilla());
+		});
+		return copy;
+	}
+
+	toVanillaTable() {
+		let copy = [];
+		this.forEach(row => {
+			copy.push(Object.values(row.toVanilla()));
+		});
+		return copy;
+	}
+
 }

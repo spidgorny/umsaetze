@@ -49,6 +49,7 @@ var ParseCSV = (function () {
     };
     /**
      * Some CSV files contain random data in the header
+     * @public for tests
      */
     ParseCSV.prototype.analyzeCSV = function (data) {
         // console.log('last row', data[data.length-1]);

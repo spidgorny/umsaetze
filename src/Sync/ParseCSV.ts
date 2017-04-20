@@ -55,8 +55,9 @@ export default class ParseCSV {
 
 	/**
 	 * Some CSV files contain random data in the header
+	 * @public for tests
 	 */
-	private analyzeCSV(data: Table) {
+	public analyzeCSV(data: Table) {
 		// console.log('last row', data[data.length-1]);
 		let startIndex = 0;
 		data.forEach((row, i) => {

@@ -9,6 +9,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 var Transaction_1 = require("../Expenses/Transaction");
 var umsaetze_1 = require("../umsaetze");
 var ParseCSV_1 = require("./ParseCSV");
+var MonthSelect_1 = require("../MonthSelect");
 require('file-saver');
 var elapse = require('elapse');
 elapse.configure({
@@ -132,6 +133,8 @@ var Sync = (function (_super) {
         // this.model.setAllVisible();
         console.log('Trigger change on Expenses');
         this.model.trigger('change');
+        var ms = MonthSelect_1.default.getInstance();
+        this.ms.update(this.model);
         Backbone.history.navigate('#', {
             trigger: true,
         });

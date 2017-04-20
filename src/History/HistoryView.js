@@ -20,9 +20,7 @@ var HistoryView = (function (_super) {
         this.collection = options.collection;
         this.setElement($('#app'));
         this.ms = MonthSelect_1.default.getInstance();
-        this.ms.earliest = this.collection.getEarliest();
-        this.ms.latest = this.collection.getLatest();
-        this.ms.show();
+        this.ms.update(this.collection);
         this.listenTo(this.ms, 'MonthSelect:change', this.monthChange.bind(this));
         this.template = _.template('<canvas width="1024" height="256" ' +
             'class="sparkline" ' +
@@ -52,13 +50,11 @@ var HistoryView = (function (_super) {
             var date = set.get('date');
             return date.toString('yyyy.MM.dd');
         });
-        //let labelMoney = _.object(labels, onlyMoney);
         var content = '';
         content += this.template({
             average: onlyMoney.average(),
         });
-        var tab = new slTable_1.default(JSON.parse(JSON.stringify(dataThisMonth)));
-        content += tab;
+        content += new slTable_1.default(JSON.parse(JSON.stringify(dataThisMonth)));
         content += '<pre>' + JSON.stringify(dataThisMonth, null, 4) + '</pre>';
         this.$el.html(content);
         this.renderSparkLines(labels, onlyMoney);

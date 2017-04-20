@@ -7,9 +7,8 @@ var assert = require('assert');
 describe('MonthSelect', function () {
     describe('construct', function () {
         it('constructor should make an object', function () {
-            var ms = new MonthSelect_1["default"]();
-            expect(ms).to.be.instance.of(MonthSelect_1["default"]);
+            var ms = new MonthSelect_1.default();
+            expect(ms).to.be.instance.of(MonthSelect_1.default);
         });
     });
 });
-//# sourceMappingURL=MonthSelect.test.js.map

@@ -145,4 +145,8 @@ export default class Row extends ArrayPlus {
 		return similar / this.length * 100;
 	}
 
+	toVanilla() {
+		return JSON.parse(JSON.stringify(this));
+	}
+
 }

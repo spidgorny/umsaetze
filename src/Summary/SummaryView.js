@@ -118,6 +118,11 @@ var SummaryView = (function (_super) {
         categoryOptions = _.sortBy(categoryOptions, 'catName');
         return categoryOptions;
     };
+    /**
+     * For Workspace
+     */
+    SummaryView.prototype.hide = function () {
+    };
     return SummaryView;
 }(Backbone.View));
 Object.defineProperty(exports, "__esModule", { value: true });

@@ -128,4 +128,11 @@ export default class SummaryView extends Backbone.View<CategoryCollectionModel> 
 		return categoryOptions;
 	}
 
+	/**
+	 * For Workspace
+	 */
+	hide() {
+
+	}
+
 }

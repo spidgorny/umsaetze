@@ -2,6 +2,7 @@
 ///<reference path="../typings/index.d.ts"/>
 
 import Backbone = require('backbone');
+import Expenses from "./Expenses/Expenses";
 const $ = require('jquery');
 require('datejs');
 const _ = require('underscore');
@@ -227,4 +228,14 @@ export default class MonthSelect extends Backbone.View<any> {
 		return this.monthNames[index-1].substr(0, 3);
 	}
 
+	update(collection: Expenses) {
+		this.earliest = collection.getEarliest();
+		this.latest = collection.getLatest();
+		console.log('MonthSelect.update',
+			this.earliest.toString('yyyy-MM-dd'),
+			this.latest.toString('yyyy-MM-dd'));
+		this.show();
+	}
+
 }
+

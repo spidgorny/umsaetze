@@ -26,9 +26,7 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 		this.setElement($('#app'));
 
 		this.ms = MonthSelect.getInstance();
-		this.ms.earliest = this.collection.getEarliest();
-		this.ms.latest = this.collection.getLatest();
-		this.ms.show();
+		this.ms.update(this.collection);
 		this.listenTo(this.ms, 'MonthSelect:change', this.monthChange.bind(this));
 
 		this.template = _.template('<canvas width="1024" height="256" ' +
@@ -63,15 +61,13 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 			let date: IDateJS = set.get('date');
 			return date.toString('yyyy.MM.dd');
 		});
-		//let labelMoney = _.object(labels, onlyMoney);
 
 		let content = '';
 		content += this.template({
 			average: onlyMoney.average(),
 		});
 
-		let tab = new slTable(JSON.parse(JSON.stringify(dataThisMonth)));
-		content += tab;
+		content += new slTable(JSON.parse(JSON.stringify(dataThisMonth)));
 
 		content += '<pre>' + JSON.stringify(dataThisMonth, null, 4) + '</pre>';
 		this.$el.html(content);

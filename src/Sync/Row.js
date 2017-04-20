@@ -134,6 +134,9 @@ var Row = (function (_super) {
         var similar = this.similar(to);
         return similar / this.length * 100;
     };
+    Row.prototype.toVanilla = function () {
+        return JSON.parse(JSON.stringify(this));
+    };
     return Row;
 }(ArrayPlus_1.default));
 Object.defineProperty(exports, "__esModule", { value: true });

@@ -194,6 +194,12 @@ var MonthSelect = (function (_super) {
     MonthSelect.prototype.getShortMonthNameFor = function (index) {
         return this.monthNames[index - 1].substr(0, 3);
     };
+    MonthSelect.prototype.update = function (collection) {
+        this.earliest = collection.getEarliest();
+        this.latest = collection.getLatest();
+        console.log('MonthSelect.update', this.earliest.toString('yyyy-MM-dd'), this.latest.toString('yyyy-MM-dd'));
+        this.show();
+    };
     return MonthSelect;
 }(Backbone.View));
 Object.defineProperty(exports, "__esModule", { value: true });

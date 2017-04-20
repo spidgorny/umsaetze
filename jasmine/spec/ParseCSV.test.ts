@@ -1,5 +1,6 @@
 /// <reference path="../../typings/index.d.ts" />
-import ParseCSV = require('../../src/Sync/ParseCSV');
+import ParseCSV from "../../src/Sync/ParseCSV";
+import Table from "../../src/Sync/Table";
 
 describe("ParseCSV", function() {
 
@@ -12,12 +13,12 @@ describe("ParseCSV", function() {
 
 	it('should skip all lines before and including empty', () => {
 		let parser = new ParseCSV();
-		let nicer = parser.analyzeCSV([
+		let nicer = parser.analyzeCSV(new Table([
 			['asd'],
 			[],
 			['qwe'],
-		]);
-		expect(nicer).toBeEqual([['qwe']]);
+		]));
+		expect(nicer.toVanillaTable()).toEqual([['qwe']]);
 	});
 
 });

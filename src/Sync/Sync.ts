@@ -9,6 +9,7 @@ import PersistenceOptions = Backbone.PersistenceOptions;
 import Workspace from "../Workspace";
 import ParseCSV from "./ParseCSV";
 import Table from "./Table";
+import MonthSelect from "../MonthSelect";
 
 require('file-saver');
 function saveAs(a: any, b: any);
@@ -163,6 +164,10 @@ export default class Sync extends Backbone.View<any> {
 
 		console.log('Trigger change on Expenses');
 		this.model.trigger('change');
+
+		let ms = MonthSelect.getInstance();
+		this.ms.update(this.model);
+
 		Backbone.history.navigate('#', {
 			trigger: true,
 		});

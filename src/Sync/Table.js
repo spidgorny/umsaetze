@@ -172,6 +172,20 @@ var Table = (function (_super) {
         });
         return new Table(notNull);
     };
+    Table.prototype.toVanilla = function () {
+        var copy = [];
+        this.forEach(function (row) {
+            copy.push(row.toVanilla());
+        });
+        return copy;
+    };
+    Table.prototype.toVanillaTable = function () {
+        var copy = [];
+        this.forEach(function (row) {
+            copy.push(Object.values(row.toVanilla()));
+        });
+        return copy;
+    };
     return Table;
 }(ArrayPlus_1.default));
 Object.defineProperty(exports, "__esModule", { value: true });
