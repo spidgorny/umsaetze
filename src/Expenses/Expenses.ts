@@ -94,15 +94,15 @@ export default class Expenses extends bb.Collection<Transaction> {
 		if (!this.size()) {
 			return new Date();
 		}
-		let max = new Date().addYears(10).valueOf();
+		let min = new Date().addYears(10).valueOf();
 		this.each((row: Transaction) => {
 			let dDate = row.getDate();
 			let date: number = dDate.valueOf();
-			if (date < max) {
-				max = date;
+			if (date < min) {
+				min = date;
 			}
 		});
-		return new Date(max);
+		return new Date(min);
 	}
 
 	getLatest() {
@@ -339,7 +339,7 @@ export default class Expenses extends bb.Collection<Transaction> {
 					doAppend = true;
 				}
 				if (doAppend) {
-					row.set('visible', true);
+					row.set('visible', true, {silent: true});
 				}
 			})
 		}

@@ -4,10 +4,11 @@
 import Backbone = require('backbone');
 import Expenses from "./Expenses/Expenses";
 import LocalStorage = Backbone.LocalStorage;
+import ExpensesMock from "../test/helper/ExpensesMock";
 const $ = require('jquery');
 require('datejs');
 const _ = require('underscore');
-
+import detectFloat from "./Util/Number";
 
 export default class MonthSelect extends Backbone.View<any> {
 
@@ -17,7 +18,7 @@ export default class MonthSelect extends Backbone.View<any> {
 
 	monthOptions: JQuery = this.$('button');
 
-	selectedYear = this.yearSelect.val() || new Date().getFullYear();
+	selectedYear = parseInt(this.yearSelect.val()) || new Date().getFullYear();
 
 	selectedMonth = 'Feb';
 
@@ -30,6 +31,17 @@ export default class MonthSelect extends Backbone.View<any> {
 	static instance: MonthSelect;
 
 	storageProvider: Storage;
+
+	/**
+	 * http://stackoverflow.com/questions/1643320/get-month-name-from-date
+	 * @type {[string,string,string,string,string,string,string,string,string,string,string,string]}
+	 */
+	monthNames = [
+		"January", "February", "March",
+		"April", "May", "June",
+		"July", "August", "September",
+		"October", "November", "December"
+	];
 
 	constructor() {
 		super();
@@ -49,7 +61,7 @@ export default class MonthSelect extends Backbone.View<any> {
 		//this.localStorage = new Backbone.LocalStorage('MonthSelect');
 		let year = this.storageProvider.getItem('MonthSelect.year');
 		if (year) {
-			this.selectedYear = year;
+			this.selectedYear = parseInt(year);
 		}
 		let month = this.storageProvider.getItem('MonthSelect.month');
 		if (month) {
@@ -74,7 +86,7 @@ export default class MonthSelect extends Backbone.View<any> {
 		let options = [];
 		let minYear = this.earliest.getFullYear();
 		let maxYear = this.latest.getFullYear();
-		console.log(minYear, maxYear);
+		// console.log('minYear', minYear, 'maxYear', maxYear);
 		for (let y = minYear; y <= maxYear; y++) {
 			let selected = selectedDate.getFullYear() == y ? 'selected' : '';
 			options.push('<option '+selected+'>'+y+'</option>');
@@ -214,20 +226,18 @@ export default class MonthSelect extends Backbone.View<any> {
 	}
 
 	/**
-	 * http://stackoverflow.com/questions/1643320/get-month-name-from-date
-	 * @type {[string,string,string,string,string,string,string,string,string,string,string,string]}
+	 * @deprecated
+	 * @returns {string|string|string|string|string|string|string|string|string|string|string|string}
 	 */
-	monthNames = [
-		"January", "February", "March",
-		"April", "May", "June",
-		"July", "August", "September",
-		"October", "November", "December"
-	];
-
 	getMonthName() {
+		throw new Error('getMonthName called when selectedMonth is a string already');
 		return this.monthNames[this.selectedMonth];
 	}
 
+	/**
+	 * @deprecated
+	 * @returns {string}
+	 */
 	getShortMonthName() {
 		return this.getMonthName().substr(0, 3);
 	}
@@ -236,17 +246,22 @@ export default class MonthSelect extends Backbone.View<any> {
 		return this.monthNames[index-1].substr(0, 3);
 	}
 
-	update(collection: Expenses) {
+	update(collection: Expenses|ExpensesMock) {
 		this.earliest = collection.getEarliest();
 		this.latest = collection.getLatest();
-		console.log('MonthSelect.update',
-			this.earliest.toString('yyyy-MM-dd'),
-			this.latest.toString('yyyy-MM-dd'));
+		// console.log('MonthSelect.update',
+		// 	this.earliest.toString('yyyy-MM-dd'),
+		// 	this.latest.toString('yyyy-MM-dd'));
 
 		this.selectedYear = this.selectedYear.clamp(
 			this.earliest.getFullYear(),
 			this.latest.getFullYear()
 		);
+		let selectedMonthIndex = this.getMonthIndex().clamp(
+			this.earliest.getMonth(),
+			this.latest.getMonth()
+		);
+		this.selectedMonth = this.getShortMonthNameFor(selectedMonthIndex);
 
 		this.show();
 	}

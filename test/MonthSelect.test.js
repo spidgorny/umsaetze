@@ -8,6 +8,7 @@ var ExpensesMock_1 = require("./helper/ExpensesMock");
 var assert = require('assert');
 //import expect, { createSpy, spyOn, isSpy } from 'expect';
 var expect = require('expect');
+require('../src/Util/Number'); // for clamp
 expect.extend({
     toBeAColor: function () {
         expect.assert(this.actual.match(/^#[a-fA-F0-9]{3,6}$/), 'expected %s to be an HTML color', this.actual);
@@ -47,6 +48,10 @@ var MonthSelectTest = (function () {
         //console.log('setUp');
         callback();
     };
+    MonthSelectTest.prototype.test_clamp = function (test) {
+        expect((10).clamp(15, 20)).toBe(15);
+        test.done();
+    };
     MonthSelectTest.prototype.test_construct = function (test) {
         var ms = new MonthSelectMock_1.default();
         expect(ms).toBeA(MonthSelect_1.default);
@@ -75,7 +80,7 @@ var MonthSelectTest = (function () {
         ex.load('test/data/umsaetze-2017-04-20.json');
         var ms = new MonthSelectMock_1.default();
         ms.update(ex);
-        expect(ms.earliest).toBeSameTime(ex.getEarliest());
+        expect(ms.earliest).toBeSameTime(ex.getEarliest().moveToFirstDayOfMonth());
         expect(ms.latest).toBeSameTime(ex.getLatest());
         test.done();
     };
@@ -108,14 +113,17 @@ var MonthSelectTest = (function () {
         ms.update(ex);
         expect(ex.size()).toBe(235);
         ex.setAllVisible();
-        expect(ex.getVisibleCount()).toBe(235);
+        ex.dumpVisible();
+        //let allVisible = ex.getVisible();
+        //console.log(allVisible);
         expect(ex.getVisible().length).toBe(235);
+        expect(ex.getVisibleCount()).toBe(235);
         var yearMonth = ms.getSelected();
         expect(yearMonth).toBeSameTime(new Date('2017-02-01 00:00:00 GMT+1'));
         ex.filterByMonth(yearMonth);
-        expect(ex.getVisible().length).toBe(18);
+        expect(ex.getVisible().length).toBe(85);
         ex.stepBackTillSalary(ms);
-        expect(ex.getVisible().length).toBe(28);
+        expect(ex.getVisible().length).toBe(97);
         test.done();
     };
     return MonthSelectTest;

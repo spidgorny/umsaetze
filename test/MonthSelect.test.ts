@@ -10,6 +10,7 @@ import ExpensesMock from "./helper/ExpensesMock";
 let assert = require('assert');
 //import expect, { createSpy, spyOn, isSpy } from 'expect';
 let expect = require('expect');
+require('../src/Util/Number');	// for clamp
 
 expect.extend( {
 	toBeAColor() {
@@ -64,6 +65,11 @@ class MonthSelectTest {
 		callback();
 	}
 
+	test_clamp(test) {
+		expect((10).clamp(15, 20)).toBe(15);
+		test.done();
+	}
+
 	test_construct(test) {
 		let ms = new MonthSelectMock();
 		expect(ms).toBeA(MonthSelect);
@@ -100,7 +106,7 @@ class MonthSelectTest {
 		ex.load('test/data/umsaetze-2017-04-20.json');
 		let ms = new MonthSelectMock();
 		ms.update(ex);
-		expect(ms.earliest).toBeSameTime(ex.getEarliest());
+		expect(ms.earliest).toBeSameTime(ex.getEarliest().moveToFirstDayOfMonth());
 		expect(ms.latest).toBeSameTime(ex.getLatest());
 		test.done();
 	}
@@ -142,17 +148,20 @@ class MonthSelectTest {
 		expect(ex.size()).toBe(235);
 
 		ex.setAllVisible();
-		expect(ex.getVisibleCount()).toBe(235);
+		ex.dumpVisible();
+		//let allVisible = ex.getVisible();
+		//console.log(allVisible);
 		expect(ex.getVisible().length).toBe(235);
+		expect(ex.getVisibleCount()).toBe(235);
 
 		const yearMonth = ms.getSelected();
 		expect(yearMonth).toBeSameTime(
 			new Date('2017-02-01 00:00:00 GMT+1')
 		);
 		ex.filterByMonth(yearMonth);
-		expect(ex.getVisible().length).toBe(18);
+		expect(ex.getVisible().length).toBe(85);
 		ex.stepBackTillSalary(ms);
-		expect(ex.getVisible().length).toBe(28);
+		expect(ex.getVisible().length).toBe(97);
 		test.done();
 	}
 

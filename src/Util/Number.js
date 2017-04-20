@@ -21,8 +21,7 @@ function detectFloat(source) {
     }
     return float;
 }
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = detectFloat;
+exports.detectFloat = detectFloat;
 Number.prototype.clamp = function (min, max) {
     return Math.min(Math.max(this, min), max);
 };

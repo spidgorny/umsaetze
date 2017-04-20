@@ -17,7 +17,7 @@ var MonthSelect = (function (_super) {
         this.$el = $('#MonthSelect');
         this.yearSelect = this.$('select');
         this.monthOptions = this.$('button');
-        this.selectedYear = this.yearSelect.val() || new Date().getFullYear();
+        this.selectedYear = parseInt(this.yearSelect.val()) || new Date().getFullYear();
         this.selectedMonth = 'Feb';
         this.earliest = new Date();
         this.latest = new Date();
@@ -43,7 +43,7 @@ var MonthSelect = (function (_super) {
         //this.localStorage = new Backbone.LocalStorage('MonthSelect');
         var year = this.storageProvider.getItem('MonthSelect.year');
         if (year) {
-            this.selectedYear = year;
+            this.selectedYear = parseInt(year);
         }
         var month = this.storageProvider.getItem('MonthSelect.month');
         if (month) {
@@ -66,7 +66,7 @@ var MonthSelect = (function (_super) {
         var options = [];
         var minYear = this.earliest.getFullYear();
         var maxYear = this.latest.getFullYear();
-        console.log(minYear, maxYear);
+        // console.log('minYear', minYear, 'maxYear', maxYear);
         for (var y = minYear; y <= maxYear; y++) {
             var selected = selectedDate.getFullYear() == y ? 'selected' : '';
             options.push('<option ' + selected + '>' + y + '</option>');
@@ -188,9 +188,18 @@ var MonthSelect = (function (_super) {
         //console.log('selectedDate', sSelectedDate, selectedDate);
         return selectedDate;
     };
+    /**
+     * @deprecated
+     * @returns {string|string|string|string|string|string|string|string|string|string|string|string}
+     */
     MonthSelect.prototype.getMonthName = function () {
+        throw new Error('getMonthName called when selectedMonth is a string already');
         return this.monthNames[this.selectedMonth];
     };
+    /**
+     * @deprecated
+     * @returns {string}
+     */
     MonthSelect.prototype.getShortMonthName = function () {
         return this.getMonthName().substr(0, 3);
     };
@@ -200,8 +209,12 @@ var MonthSelect = (function (_super) {
     MonthSelect.prototype.update = function (collection) {
         this.earliest = collection.getEarliest();
         this.latest = collection.getLatest();
-        console.log('MonthSelect.update', this.earliest.toString('yyyy-MM-dd'), this.latest.toString('yyyy-MM-dd'));
+        // console.log('MonthSelect.update',
+        // 	this.earliest.toString('yyyy-MM-dd'),
+        // 	this.latest.toString('yyyy-MM-dd'));
         this.selectedYear = this.selectedYear.clamp(this.earliest.getFullYear(), this.latest.getFullYear());
+        var selectedMonthIndex = this.getMonthIndex().clamp(this.earliest.getMonth(), this.latest.getMonth());
+        this.selectedMonth = this.getShortMonthNameFor(selectedMonthIndex);
         this.show();
     };
     return MonthSelect;

@@ -13,22 +13,29 @@ var Backbone = require('backbone');
 var ExpensesMock = (function (_super) {
     __extends(ExpensesMock, _super);
     function ExpensesMock() {
-        this.data = [];
         this.localStorage = new MockStorage_1.default();
+        this.models = [];
     }
     ExpensesMock.prototype.load = function (file) {
         var _this = this;
         var json = fs.readFileSync(file);
         var data = JSON.parse(json);
         data.forEach(function (row) {
-            _this.data.push(new Transaction_1.default(row));
+            _this.models.push(new Transaction_1.default(row));
         });
     };
     ExpensesMock.prototype.size = function () {
-        return this.data.length;
+        return this.models.length;
     };
     ExpensesMock.prototype.each = function (cb) {
-        return this.data.forEach(cb);
+        return this.models.forEach(cb);
+    };
+    ExpensesMock.prototype.dumpVisible = function () {
+        var content = [];
+        this.each(function (model) {
+            content.push(model.get('visible') ? '+' : '-');
+        });
+        console.log('visible', content.join(''));
     };
     return ExpensesMock;
 }(Expenses_1.default));

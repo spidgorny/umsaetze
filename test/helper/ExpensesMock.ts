@@ -8,9 +8,9 @@ const Backbone = require('backbone');
 
 export default class ExpensesMock extends Expenses {
 
-	data: Transaction[] = [];
-
 	localStorage = new MockStorage();
+
+	models: Transaction[] = [];
 
 	constructor() {
 
@@ -20,16 +20,26 @@ export default class ExpensesMock extends Expenses {
 		let json = fs.readFileSync(file);
 		let data = JSON.parse(json);
 		data.forEach(row => {
-			this.data.push(new Transaction(row));
+			this.models.push(new Transaction(row));
 		});
 	}
 
 	size() {
-		return this.data.length;
+		return this.models.length;
 	}
 
 	each(cb: Function) {
-		return this.data.forEach(cb);
+		return this.models.forEach(cb);
 	}
+
+	dumpVisible() {
+		let content = [];
+		this.each((model: Transaction) => {
+			content.push(model.get('visible') ? '+' : '-');
+		});
+		console.log('visible', content.join(''));
+	}
+
+
 
 }

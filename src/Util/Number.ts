@@ -1,7 +1,7 @@
 const accounting = require('accounting-js');
 const _ = require('underscore');
 
-export default function detectFloat(source: String) {
+export function detectFloat(source: String) {
 	if (_.isUndefined(source)) return NaN;
 	let float = accounting.unformat(source);
 	let posComma = source.indexOf(',');
@@ -20,6 +20,10 @@ export default function detectFloat(source: String) {
 	return float;
 }
 
-Number.prototype.clamp = function(min, max) {
+interface Number {
+	clamp(min: Number, max: Number): number;
+}
+
+Number.prototype.clamp = function(min: number, max: number) {
 	return Math.min(Math.max(this, min), max);
 };

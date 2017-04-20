@@ -84,15 +84,15 @@ var Expenses = (function (_super) {
         if (!this.size()) {
             return new Date();
         }
-        var max = new Date().addYears(10).valueOf();
+        var min = new Date().addYears(10).valueOf();
         this.each(function (row) {
             var dDate = row.getDate();
             var date = dDate.valueOf();
-            if (date < max) {
-                max = date;
+            if (date < min) {
+                min = date;
             }
         });
-        return new Date(max);
+        return new Date(min);
     };
     Expenses.prototype.getLatest = function () {
         if (!this.size()) {
@@ -317,7 +317,7 @@ var Expenses = (function (_super) {
                     doAppend_1 = true;
                 }
                 if (doAppend_1) {
-                    row.set('visible', true);
+                    row.set('visible', true, { silent: true });
                 }
             });
         }
