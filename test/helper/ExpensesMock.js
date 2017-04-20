@@ -7,12 +7,14 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Expenses_1 = require("../../src/Expenses/Expenses");
 var Transaction_1 = require("../../src/Expenses/Transaction");
+var MockStorage_1 = require("./MockStorage");
 var fs = require('fs');
 var Backbone = require('backbone');
 var ExpensesMock = (function (_super) {
     __extends(ExpensesMock, _super);
     function ExpensesMock() {
         this.data = [];
+        this.localStorage = new MockStorage_1.default();
     }
     ExpensesMock.prototype.load = function (file) {
         var _this = this;

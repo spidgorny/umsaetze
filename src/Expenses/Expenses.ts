@@ -161,6 +161,7 @@ export default class Expenses extends bb.Collection<Transaction> {
 			selectedMonth = ms.getSelected();
 		}
 
+		console.log('filterMyMonth', selectedMonth);
 		if (selectedMonth) {
 			let inThisMonth = this.whereMonth(selectedMonth);
 			let allOthers = _.difference(this.models, inThisMonth);
@@ -208,10 +209,6 @@ export default class Expenses extends bb.Collection<Transaction> {
 		elapse.timeEnd('Expense.saveAll');
 	}
 
-	getVisibleCount() {
-		return this.getVisible().length;
-	}
-
 	/**
 	 * @deprecated
 	 */
@@ -228,6 +225,10 @@ export default class Expenses extends bb.Collection<Transaction> {
 
 	getVisible() {
 		return this.where({visible: true});
+	}
+
+	getVisibleCount() {
+		return this.getVisible().length;
 	}
 
 	getSorted() {

@@ -12,4 +12,15 @@ export default class MockStorage {
 		this.length++;
 	}
 
+	_clear() {
+		for (let i in Object.getOwnPropertyNames(this)) {
+			delete this[i];
+		}
+		this.length = 0;
+	}
+
+	update(object: any) {
+
+	}
+
 }

@@ -149,6 +149,7 @@ var Expenses = (function (_super) {
             var ms = MonthSelect_1.default.getInstance();
             selectedMonth = ms.getSelected();
         }
+        console.log('filterMyMonth', selectedMonth);
         if (selectedMonth) {
             var inThisMonth = this.whereMonth(selectedMonth);
             var allOthers = _.difference(this.models, inThisMonth);
@@ -193,9 +194,6 @@ var Expenses = (function (_super) {
         });
         elapse.timeEnd('Expense.saveAll');
     };
-    Expenses.prototype.getVisibleCount = function () {
-        return this.getVisible().length;
-    };
     /**
      * @deprecated
      */
@@ -211,6 +209,9 @@ var Expenses = (function (_super) {
     };
     Expenses.prototype.getVisible = function () {
         return this.where({ visible: true });
+    };
+    Expenses.prototype.getVisibleCount = function () {
+        return this.getVisible().length;
     };
     Expenses.prototype.getSorted = function () {
         this.comparator = 'date';

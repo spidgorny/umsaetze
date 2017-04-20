@@ -55,7 +55,7 @@ export default class MonthSelect extends Backbone.View<any> {
 		if (month) {
 			this.selectedMonth = month;
 		}
-		console.log('MonthSelect', this.selectedYear, this.selectedMonth);
+		//console.log('MonthSelect', this.selectedYear, this.selectedMonth);
 	}
 
 	static getInstance() {
@@ -66,7 +66,7 @@ export default class MonthSelect extends Backbone.View<any> {
 	}
 
 	render() {
-		console.time('MonthSelect.render');
+		//console.time('MonthSelect.render');
 		this.earliest.moveToFirstDayOfMonth();
 		let selectedDate = this.getSelected();
 
@@ -103,30 +103,30 @@ export default class MonthSelect extends Backbone.View<any> {
 			}
 			//console.log(sDate, firstOfMonth, isAfter, isBefore, equals);
 		});
-		console.timeEnd('MonthSelect.render');
+		//console.timeEnd('MonthSelect.render');
 		return this;
 	}
 
 	show() {
-		console.log('MonthSelect.show');
+		//console.log('MonthSelect.show');
 		this.$el.show();
 		this.render();	// required as data may have changed (all disabled bug)
 	}
 
 	hide() {
-		console.log('MonthSelect.hide');
+		//console.log('MonthSelect.hide');
 		this.$el.hide();
 	}
 
 	getMonthIndex() {
 		let result = Date.getMonthNumberFromName(this.selectedMonth) + 1;
-		console.log('getMonthIndex', this.selectedMonth, '=>', result);
+		//console.log('getMonthIndex', this.selectedMonth, '=>', result);
 		return result;
 	}
 
 	getMonthIndexFor(monthName: string) {
 		let result = Date.getMonthNumberFromName(monthName) + 1;
-		console.log('getMonthIndex', monthName, result);
+		//console.log('getMonthIndex', monthName, result);
 		return result;
 	}
 
@@ -209,7 +209,7 @@ export default class MonthSelect extends Backbone.View<any> {
 	getSelected() {
 		let sSelectedDate = this.selectedYear+'-'+this.getMonthIndex()+'-01';
 		let selectedDate = new Date(sSelectedDate);
-		console.log('selectedDate', sSelectedDate, selectedDate);
+		//console.log('selectedDate', sSelectedDate, selectedDate);
 		return selectedDate;
 	}
 

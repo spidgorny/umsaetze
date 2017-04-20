@@ -10,6 +10,14 @@ var MockStorage = (function () {
         this[name] = value;
         this.length++;
     };
+    MockStorage.prototype._clear = function () {
+        for (var i in Object.getOwnPropertyNames(this)) {
+            delete this[i];
+        }
+        this.length = 0;
+    };
+    MockStorage.prototype.update = function (object) {
+    };
     return MockStorage;
 }());
 Object.defineProperty(exports, "__esModule", { value: true });

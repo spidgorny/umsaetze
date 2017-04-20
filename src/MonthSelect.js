@@ -49,7 +49,7 @@ var MonthSelect = (function (_super) {
         if (month) {
             this.selectedMonth = month;
         }
-        console.log('MonthSelect', this.selectedYear, this.selectedMonth);
+        //console.log('MonthSelect', this.selectedYear, this.selectedMonth);
     }
     MonthSelect.getInstance = function () {
         if (!MonthSelect.instance) {
@@ -59,7 +59,7 @@ var MonthSelect = (function (_super) {
     };
     MonthSelect.prototype.render = function () {
         var _this = this;
-        console.time('MonthSelect.render');
+        //console.time('MonthSelect.render');
         this.earliest.moveToFirstDayOfMonth();
         var selectedDate = this.getSelected();
         // year
@@ -96,26 +96,26 @@ var MonthSelect = (function (_super) {
             }
             //console.log(sDate, firstOfMonth, isAfter, isBefore, equals);
         });
-        console.timeEnd('MonthSelect.render');
+        //console.timeEnd('MonthSelect.render');
         return this;
     };
     MonthSelect.prototype.show = function () {
-        console.log('MonthSelect.show');
+        //console.log('MonthSelect.show');
         this.$el.show();
         this.render(); // required as data may have changed (all disabled bug)
     };
     MonthSelect.prototype.hide = function () {
-        console.log('MonthSelect.hide');
+        //console.log('MonthSelect.hide');
         this.$el.hide();
     };
     MonthSelect.prototype.getMonthIndex = function () {
         var result = Date.getMonthNumberFromName(this.selectedMonth) + 1;
-        console.log('getMonthIndex', this.selectedMonth, '=>', result);
+        //console.log('getMonthIndex', this.selectedMonth, '=>', result);
         return result;
     };
     MonthSelect.prototype.getMonthIndexFor = function (monthName) {
         var result = Date.getMonthNumberFromName(monthName) + 1;
-        console.log('getMonthIndex', monthName, result);
+        //console.log('getMonthIndex', monthName, result);
         return result;
     };
     MonthSelect.prototype.getMonthNameFor = function (index) {
@@ -185,7 +185,7 @@ var MonthSelect = (function (_super) {
     MonthSelect.prototype.getSelected = function () {
         var sSelectedDate = this.selectedYear + '-' + this.getMonthIndex() + '-01';
         var selectedDate = new Date(sSelectedDate);
-        console.log('selectedDate', sSelectedDate, selectedDate);
+        //console.log('selectedDate', sSelectedDate, selectedDate);
         return selectedDate;
     };
     MonthSelect.prototype.getMonthName = function () {

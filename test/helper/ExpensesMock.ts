@@ -2,12 +2,15 @@
 
 import Expenses from "../../src/Expenses/Expenses";
 import Transaction from "../../src/Expenses/Transaction";
+import MockStorage from "./MockStorage";
 const fs = require('fs');
 const Backbone = require('backbone');
 
 export default class ExpensesMock extends Expenses {
 
 	data: Transaction[] = [];
+
+	localStorage = new MockStorage();
 
 	constructor() {
 
