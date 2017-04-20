@@ -29,9 +29,9 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 		this.ms.update(this.collection);
 		this.listenTo(this.ms, 'MonthSelect:change', this.monthChange.bind(this));
 
-		this.template = _.template('<canvas width="1024" height="256" ' +
+		this.template = _.template('<canvas width="1500" height="512" ' +
 			'class="sparkline" ' +
-			'style="width: 1024px; height: 256px" '+
+			'style="width: 1500px; height: 512px" '+
 			'data-chart_StrokeColor="rgba(151,187,0,1)" '+
 			'data-average="<%= average %>" '+
 			'></canvas>');
@@ -46,12 +46,17 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 	render() {
 		this.collection.setAllVisible();
 		const yearMonth = this.ms.getSelected();
+		console.log('yearMonth', yearMonth);
 		this.collection.filterByMonth(yearMonth);
 		this.collection.stepBackTillSalary(this.ms);
 		const dataThisMonth = this.collection.getSorted();
 
+		let onlyAmounts = dataThisMonth.map((set: Transaction) => {
+			return set.get('amount');
+		});
+
 		let accumulator = 0;
-		let onlyMoney = dataThisMonth.map((set: Transaction) => {
+		let cumulative = dataThisMonth.map((set: Transaction) => {
 			accumulator += set.get('amount');
 			//console.log(set.get('amount'), accumulator);
 			return accumulator;
@@ -64,15 +69,15 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 
 		let content = '';
 		content += this.template({
-			average: onlyMoney.average(),
+			average: onlyAmounts.average(),
 		});
 
 		content += new slTable(JSON.parse(JSON.stringify(dataThisMonth)));
 
-		content += '<pre>' + JSON.stringify(dataThisMonth, null, 4) + '</pre>';
+		//content += '<pre>' + JSON.stringify(dataThisMonth, null, 4) + '</pre>';
 		this.$el.html(content);
 
-		this.renderSparkLines(labels, onlyMoney);
+		this.renderSparkLines(labels, onlyAmounts, cumulative);
 
 		return this;
 	}
@@ -86,7 +91,7 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 		this.render();
 	}
 
-	private renderSparkLines(labels: Array, data: Array) {
+	private renderSparkLines(labels: Array, data: Array, data2: Array) {
 		let $sparkline = $('.sparkline');
 		$sparkline.each((index, self) => {
 			//console.log($self);
@@ -94,19 +99,16 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 			//Get context with jQuery - using jQuery's .get() method.
 			let ctx = $self.get(0).getContext("2d");
 
-			// Get the chart data and convert it to an array
-			let average = $self.attr('data-average');
-
 			let datasets = {};
 
 			// Create the dataset
 			datasets['strokeColor'] = $self.attr('data-chart_StrokeColor');
-			datasets['data'] = data;
+			datasets['data'] = data2;
 
 			let lineset = {
 				type: 'line',
-				label: 'Average per month',
-				data: Array(data.length).fill(average),
+				label: 'Transaction',
+				data: data,
 				borderColor: '#FF0000',
 				borderWidth: 1,
 				fill: false,
@@ -155,7 +157,18 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 	}
 
 	clickOnChart(labels, event, aChart, context) {
-
+		// console.log(labels);
+		// console.log(event);
+		// console.log(aChart);
+		// console.log(context);
+		let any = aChart[0];
+		let index = any._index;
+		// console.log(index);
+		let model = this.collection.getSorted()[index];
+		let id = model.get('id');
+		// console.log(id);
+		$(window).scrollTop($("*:contains('" + id + "'):last").offset().top);
+		document.location.hash = '#History/' + id;
 	}
 
 }

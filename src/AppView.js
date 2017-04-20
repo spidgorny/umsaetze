@@ -111,7 +111,7 @@ var AppView = (function (_super) {
     };
     AppView.prototype.hide = function () {
         elapse.time('AppView.hide');
-        this.ms.hide();
+        //this.ms.hide();	// this may be needed for History
         if (this.$('#expenseTable').length
             && this.$('#expenseTable').is(':visible')) {
         }

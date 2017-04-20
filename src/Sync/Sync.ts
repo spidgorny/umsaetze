@@ -10,6 +10,9 @@ import Workspace from "../Workspace";
 import ParseCSV from "./ParseCSV";
 import Table from "./Table";
 import MonthSelect from "../MonthSelect";
+import {detectFloat} from '../Util/Number';
+
+console.log(detectFloat('3.141528'));
 
 require('file-saver');
 function saveAs(a: any, b: any);
@@ -166,7 +169,7 @@ export default class Sync extends Backbone.View<any> {
 		this.model.trigger('change');
 
 		let ms = MonthSelect.getInstance();
-		this.ms.update(this.model);
+		ms.update(this.model);
 
 		Backbone.history.navigate('#', {
 			trigger: true,

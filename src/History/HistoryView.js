@@ -22,9 +22,9 @@ var HistoryView = (function (_super) {
         this.ms = MonthSelect_1.default.getInstance();
         this.ms.update(this.collection);
         this.listenTo(this.ms, 'MonthSelect:change', this.monthChange.bind(this));
-        this.template = _.template('<canvas width="1024" height="256" ' +
+        this.template = _.template('<canvas width="1500" height="512" ' +
             'class="sparkline" ' +
-            'style="width: 1024px; height: 256px" ' +
+            'style="width: 1500px; height: 512px" ' +
             'data-chart_StrokeColor="rgba(151,187,0,1)" ' +
             'data-average="<%= average %>" ' +
             '></canvas>');
@@ -37,11 +37,15 @@ var HistoryView = (function (_super) {
     HistoryView.prototype.render = function () {
         this.collection.setAllVisible();
         var yearMonth = this.ms.getSelected();
+        console.log('yearMonth', yearMonth);
         this.collection.filterByMonth(yearMonth);
         this.collection.stepBackTillSalary(this.ms);
         var dataThisMonth = this.collection.getSorted();
+        var onlyAmounts = dataThisMonth.map(function (set) {
+            return set.get('amount');
+        });
         var accumulator = 0;
-        var onlyMoney = dataThisMonth.map(function (set) {
+        var cumulative = dataThisMonth.map(function (set) {
             accumulator += set.get('amount');
             //console.log(set.get('amount'), accumulator);
             return accumulator;
@@ -52,12 +56,12 @@ var HistoryView = (function (_super) {
         });
         var content = '';
         content += this.template({
-            average: onlyMoney.average(),
+            average: onlyAmounts.average(),
         });
         content += new slTable_1.default(JSON.parse(JSON.stringify(dataThisMonth)));
-        content += '<pre>' + JSON.stringify(dataThisMonth, null, 4) + '</pre>';
+        //content += '<pre>' + JSON.stringify(dataThisMonth, null, 4) + '</pre>';
         this.$el.html(content);
-        this.renderSparkLines(labels, onlyMoney);
+        this.renderSparkLines(labels, onlyAmounts, cumulative);
         return this;
     };
     HistoryView.prototype.hide = function () {
@@ -67,7 +71,7 @@ var HistoryView = (function (_super) {
         //console.error('monthChange event');
         this.render();
     };
-    HistoryView.prototype.renderSparkLines = function (labels, data) {
+    HistoryView.prototype.renderSparkLines = function (labels, data, data2) {
         var _this = this;
         var $sparkline = $('.sparkline');
         $sparkline.each(function (index, self) {
@@ -75,16 +79,14 @@ var HistoryView = (function (_super) {
             var $self = $(self);
             //Get context with jQuery - using jQuery's .get() method.
             var ctx = $self.get(0).getContext("2d");
-            // Get the chart data and convert it to an array
-            var average = $self.attr('data-average');
             var datasets = {};
             // Create the dataset
             datasets['strokeColor'] = $self.attr('data-chart_StrokeColor');
-            datasets['data'] = data;
+            datasets['data'] = data2;
             var lineset = {
                 type: 'line',
-                label: 'Average per month',
-                data: Array(data.length).fill(average),
+                label: 'Transaction',
+                data: data,
                 borderColor: '#FF0000',
                 borderWidth: 1,
                 fill: false,
@@ -129,6 +131,18 @@ var HistoryView = (function (_super) {
         });
     };
     HistoryView.prototype.clickOnChart = function (labels, event, aChart, context) {
+        // console.log(labels);
+        // console.log(event);
+        // console.log(aChart);
+        // console.log(context);
+        var any = aChart[0];
+        var index = any._index;
+        // console.log(index);
+        var model = this.collection.getSorted()[index];
+        var id = model.get('id');
+        // console.log(id);
+        $(window).scrollTop($("*:contains('" + id + "'):last").offset().top);
+        document.location.hash = '#History/' + id;
     };
     return HistoryView;
 }(Backbone.View));

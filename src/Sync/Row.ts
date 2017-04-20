@@ -6,7 +6,7 @@ const _ = require('underscore');
 const accounting = require('accounting-js');
 // const _isNumeric = require('underscore.isnumeric');
 require('../Util/String');
-import detectFloat from "../Util/Number";
+import {detectFloat} from "../Util/Number";
 
 export default class Row extends ArrayPlus {
 	date: Date;

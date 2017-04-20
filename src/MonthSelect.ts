@@ -8,7 +8,8 @@ import ExpensesMock from "../test/helper/ExpensesMock";
 const $ = require('jquery');
 require('datejs');
 const _ = require('underscore');
-import detectFloat from "./Util/Number";
+import {detectFloat} from "./Util/Number";
+import {Number} from "./Util/Number";
 
 export default class MonthSelect extends Backbone.View<any> {
 
@@ -126,7 +127,7 @@ export default class MonthSelect extends Backbone.View<any> {
 	}
 
 	hide() {
-		//console.log('MonthSelect.hide');
+		console.error('MonthSelect.hide');
 		this.$el.hide();
 	}
 
@@ -177,7 +178,7 @@ export default class MonthSelect extends Backbone.View<any> {
 		console.log('setYear', year);
 		this.selectedYear = year;
 		//console.log(this.selectedYear);
-		this.storageProvider.setItem('MonthSelect.year', this.selectedYear);
+		this.storageProvider.setItem('MonthSelect.year', this.selectedYear+'');
 		this.render();		// repaint months as available or not
 		this.trigger('MonthSelect:change');
 	}

@@ -32,7 +32,7 @@ var Row = (function (_super) {
         this.forEach(function (el) {
             // console.log('getRowTypes', el);
             // let float = parseFloat(el);	// does not handle 1.000,12 well
-            var float = Number_1.default(el);
+            var float = Number_1.detectFloat(el);
             var date = Date.parse(el);
             var isDate = !!date && el.indexOf(',') == -1; // dates are without ","
             var isEmpty = _.isNull(el)

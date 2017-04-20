@@ -145,7 +145,7 @@ export default class AppView extends Backbone.View<Expenses> {
 
 	hide() {
 		elapse.time('AppView.hide');
-		this.ms.hide();
+		//this.ms.hide();	// this may be needed for History
 		if (this.$('#expenseTable').length
 			&& this.$('#expenseTable').is(':visible')) {
 		}

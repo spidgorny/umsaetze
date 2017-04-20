@@ -12,7 +12,7 @@ import SummaryView from "./Summary/SummaryView";
 import HistoryView from "./History/HistoryView";
 const Backbone: any = require('backbone');
 let $ = require('jquery');
-// let _ = require('underscore');
+let _ = require('underscore');
 
 export default class Workspace extends Backbone.Router {
 
@@ -134,18 +134,22 @@ export default class Workspace extends Backbone.Router {
 
 	MonthSelect(year, month) {
 		console.warn('MonthSelect', year, month);
-		this.AppView();
-		this.appPage.ms.setYearMonth(year, month);
+		if (parseInt(year) && parseInt(month)) {
+			this.AppView();
+			this.appPage.ms.setYearMonth(year, month);
+		}
 	}
 
 	MonthSelectCategory(year, month, category) {
 		console.warn('MonthSelectCategory', year, month, category);
-		this.AppView();
-		this.appPage.ms.setYearMonth(year, month);
-		let cat = this.categoryList.findWhere({catName: category});
-		console.log('MonthSelectCategory cat', cat);
-		this.appPage.collection.filterByCategory(cat);
-		this.appPage.collection.trigger('change');	// slow!
+		if (parseInt(year) && parseInt(month)) {
+			this.AppView();
+			this.appPage.ms.setYearMonth(year, month);
+			let cat = this.categoryList.findWhere({catName: category});
+			console.log('MonthSelectCategory cat', cat);
+			this.appPage.collection.filterByCategory(cat);
+			this.appPage.collection.trigger('change');	// slow!
+		}
 	}
 
 	Summary() {

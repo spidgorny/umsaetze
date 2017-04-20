@@ -16,7 +16,7 @@ var SummaryView_1 = require("./Summary/SummaryView");
 var HistoryView_1 = require("./History/HistoryView");
 var Backbone = require('backbone');
 var $ = require('jquery');
-// let _ = require('underscore');
+var _ = require('underscore');
 var Workspace = (function (_super) {
     __extends(Workspace, _super);
     function Workspace(options) {
@@ -118,17 +118,21 @@ var Workspace = (function (_super) {
     };
     Workspace.prototype.MonthSelect = function (year, month) {
         console.warn('MonthSelect', year, month);
-        this.AppView();
-        this.appPage.ms.setYearMonth(year, month);
+        if (parseInt(year) && parseInt(month)) {
+            this.AppView();
+            this.appPage.ms.setYearMonth(year, month);
+        }
     };
     Workspace.prototype.MonthSelectCategory = function (year, month, category) {
         console.warn('MonthSelectCategory', year, month, category);
-        this.AppView();
-        this.appPage.ms.setYearMonth(year, month);
-        var cat = this.categoryList.findWhere({ catName: category });
-        console.log('MonthSelectCategory cat', cat);
-        this.appPage.collection.filterByCategory(cat);
-        this.appPage.collection.trigger('change'); // slow!
+        if (parseInt(year) && parseInt(month)) {
+            this.AppView();
+            this.appPage.ms.setYearMonth(year, month);
+            var cat = this.categoryList.findWhere({ catName: category });
+            console.log('MonthSelectCategory cat', cat);
+            this.appPage.collection.filterByCategory(cat);
+            this.appPage.collection.trigger('change'); // slow!
+        }
     };
     Workspace.prototype.Summary = function () {
         console.log('Summary');

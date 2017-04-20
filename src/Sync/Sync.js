@@ -10,6 +10,8 @@ var Transaction_1 = require("../Expenses/Transaction");
 var umsaetze_1 = require("../umsaetze");
 var ParseCSV_1 = require("./ParseCSV");
 var MonthSelect_1 = require("../MonthSelect");
+var Number_1 = require('../Util/Number');
+console.log(Number_1.detectFloat('3.141528'));
 require('file-saver');
 var elapse = require('elapse');
 elapse.configure({
@@ -134,7 +136,7 @@ var Sync = (function (_super) {
         console.log('Trigger change on Expenses');
         this.model.trigger('change');
         var ms = MonthSelect_1.default.getInstance();
-        this.ms.update(this.model);
+        ms.update(this.model);
         Backbone.history.navigate('#', {
             trigger: true,
         });

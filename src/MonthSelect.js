@@ -105,7 +105,7 @@ var MonthSelect = (function (_super) {
         this.render(); // required as data may have changed (all disabled bug)
     };
     MonthSelect.prototype.hide = function () {
-        //console.log('MonthSelect.hide');
+        console.error('MonthSelect.hide');
         this.$el.hide();
     };
     MonthSelect.prototype.getMonthIndex = function () {
@@ -148,7 +148,7 @@ var MonthSelect = (function (_super) {
         console.log('setYear', year);
         this.selectedYear = year;
         //console.log(this.selectedYear);
-        this.storageProvider.setItem('MonthSelect.year', this.selectedYear);
+        this.storageProvider.setItem('MonthSelect.year', this.selectedYear + '');
         this.render(); // repaint months as available or not
         this.trigger('MonthSelect:change');
     };

@@ -1,7 +1,7 @@
 /// <reference path="../../typings/index.d.ts" />
 "use strict";
 // import {start} from "repl";
-var Number_1 = require("../Util/Number");
+var Number_1 = require('../Util/Number');
 var Papa = require('papaparse');
 var Table_1 = require('./Table');
 var Row_1 = require('./Row');
@@ -104,7 +104,7 @@ var ParseCSV = (function () {
     ParseCSV.prototype.convertDataTypes = function (csv) {
         csv.forEach(function (row, i) {
             if (row.amount) {
-                row.amount = Number_1.default(row.amount);
+                row.amount = Number_1.detectFloat(row.amount);
                 var date = Date.parseExact(row.date, 'dd.MM.yyyy');
                 if (!date) {
                     date = Date.parseExact(row.date, 'dd.MM.yy');

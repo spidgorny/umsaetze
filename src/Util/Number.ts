@@ -20,7 +20,7 @@ export function detectFloat(source: String) {
 	return float;
 }
 
-interface Number {
+export interface Number {
 	clamp(min: Number, max: Number): number;
 }
 

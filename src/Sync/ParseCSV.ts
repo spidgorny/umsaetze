@@ -1,7 +1,7 @@
 /// <reference path="../../typings/index.d.ts" />
 
 // import {start} from "repl";
-import detectFloat from "../Util/Number";
+import {detectFloat} from '../Util/Number';
 const Papa = require('papaparse');
 import Table from './Table';
 import Row from './Row';
