@@ -5,12 +5,13 @@ import MyView from "./MyView";
 import Expenses from "../Expenses/Expenses";
 import MonthSelect from "../MonthSelect";
 import Transaction from "../Expenses/Transaction";
-import slTable from "../Util/slTable";
+import {default as SLTable} from "../Util/SLTable";
 const Handlebars = require('handlebars');
 const Backbone: any = require('backbone');
 const _ = require('underscore');
 const Chart = require('chart.js');
 require('datejs');
+require('../Util/Array');
 
 export default class HistoryView extends Backbone.View<Backbone.Model> {
 
@@ -51,7 +52,7 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 		this.collection.stepBackTillSalary(this.ms);
 		const dataThisMonth = this.collection.getSorted();
 
-		let onlyAmounts = dataThisMonth.map((set: Transaction) => {
+		let onlyAmounts: Array<number> = dataThisMonth.map((set: Transaction) => {
 			return set.get('amount');
 		});
 
@@ -72,7 +73,7 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 			average: onlyAmounts.average(),
 		});
 
-		content += new slTable(JSON.parse(JSON.stringify(dataThisMonth)));
+		content += new SLTable(JSON.parse(JSON.stringify(dataThisMonth)));
 
 		//content += '<pre>' + JSON.stringify(dataThisMonth, null, 4) + '</pre>';
 		this.$el.html(content);
@@ -91,13 +92,13 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 		this.render();
 	}
 
-	private renderSparkLines(labels: Array, data: Array, data2: Array) {
-		let $sparkline = $('.sparkline');
-		$sparkline.each((index, self) => {
+	private renderSparkLines(labels: Array<string>, data: Array<number>, data2: Array<number>) {
+		let $sparkLine = $('.sparkline');
+		$sparkLine.each((index, self) => {
 			//console.log($self);
 			let $self = $(self);
 			//Get context with jQuery - using jQuery's .get() method.
-			let ctx = $self.get(0).getContext("2d");
+			let ctx = (<HTMLCanvasElement>$self.get(0)).getContext("2d");
 
 			let datasets = {};
 
@@ -105,7 +106,7 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 			datasets['strokeColor'] = $self.attr('data-chart_StrokeColor');
 			datasets['data'] = data2;
 
-			let lineset = {
+			let lineSet = {
 				type: 'line',
 				label: 'Transaction',
 				data: data,
@@ -117,7 +118,7 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 			// Add to data object
 			let dataDesc = {};
 			dataDesc['labels'] = labels;
-			dataDesc['datasets'] = Array(datasets, lineset);
+			dataDesc['datasets'] = Array(datasets, lineSet);
 
 			let chart = new Chart.Line(ctx, {
 				data: dataDesc,

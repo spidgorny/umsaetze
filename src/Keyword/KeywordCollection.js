@@ -16,7 +16,11 @@ var Keyword_1 = require("./Keyword");
 var KeywordCollection = /** @class */ (function (_super) {
     __extends(KeywordCollection, _super);
     function KeywordCollection() {
-        var _this = _super.call(this) || this;
+        var arguments2 = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            arguments2[_i] = arguments[_i];
+        }
+        var _this = _super.apply(this, arguments2) || this;
         _this.modelClass = Keyword_1["default"];
         _this.fetch();
         return _this;

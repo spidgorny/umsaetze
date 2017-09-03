@@ -10,6 +10,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
+var backbone_1 = require("backbone");
 var CollectionController = /** @class */ (function (_super) {
     __extends(CollectionController, _super);
     function CollectionController(options) {
@@ -89,6 +90,6 @@ var CollectionController = /** @class */ (function (_super) {
         this.$el.hide();
     };
     return CollectionController;
-}(Backbone.Events));
+}(backbone_1.Events));
 exports["default"] = CollectionController;
 //# sourceMappingURL=CollectionController.js.map

@@ -13,10 +13,12 @@ exports.__esModule = true;
 var Transaction_1 = require("./Transaction");
 var umsaetze_1 = require("../umsaetze");
 var MonthSelect_1 = require("../MonthSelect");
-var Collection = Backbone.Collection;
+var backbone_1 = require("backbone");
 var FakeJQueryXHR_1 = require("../FakeJQueryXHR");
-var bb = require('backbone');
-var BackboneLocalStorage = require('backbone.localstorage');
+var Backbone = require('backbone');
+//let BackboneLocalStorage = require('backbone.localstorage');
+require('backbone.localstorage');
+// import {LocalStorage} from 'backbone.localstorage';
 require('datejs');
 var elapse = require('elapse');
 elapse.configure({
@@ -27,7 +29,7 @@ var Expenses = /** @class */ (function (_super) {
     __extends(Expenses, _super);
     function Expenses(models, options) {
         var _this = _super.call(this, models, options) || this;
-        _this.localStorage = new BackboneLocalStorage("Expenses");
+        _this.localStorage = new Backbone.LocalStorage("Expenses");
         _this.listenTo(_this, 'change', function () {
             console.log('Expenses changed event');
             _this.saveAll();
@@ -36,7 +38,7 @@ var Expenses = /** @class */ (function (_super) {
         return _this;
     }
     Expenses.prototype.comparator = function (compare, to) {
-        return compare.date > to.date
+        return compare.date == to.date
             ? 0 : (compare.date > to.date ? 1 : -1);
     };
     /**
@@ -331,6 +333,6 @@ var Expenses = /** @class */ (function (_super) {
         }
     };
     return Expenses;
-}(Collection));
+}(backbone_1.Collection));
 exports["default"] = Expenses;
 //# sourceMappingURL=Expenses.js.map

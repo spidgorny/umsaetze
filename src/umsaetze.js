@@ -37,11 +37,11 @@ function debug(name) {
 exports.debug = debug;
 var Umsaetze = /** @class */ (function () {
     function Umsaetze() {
-        new Workspace_1["default"]({
+        new Workspace_1["default"]();
+        // console.log(ws);
+        Backbone.history.start({
             root: 'umsaetze/web/'
         });
-        // console.log(ws);
-        Backbone.history.start();
         // console.log(start);
         this.inlineEdit();
         this.tour();
@@ -91,7 +91,9 @@ var Umsaetze = /** @class */ (function () {
     return Umsaetze;
 }());
 $(function () {
-    new Umsaetze();
+    setTimeout(function () {
+        new Umsaetze();
+    }, 10 * 1000);
 });
 // only run this once
 // import ImportKeywords from './ImportKeywords';

@@ -1,9 +1,9 @@
 import Transaction from "./Expenses/Transaction";
-import {Collection, Model} from "backbone";
+import {Collection, Model, Events} from "backbone";
 import Expenses from "./Expenses/Expenses";
 import CollectionArray from "./Keyword/CollectionArray";
 
-export default class CollectionController<T extends Expenses|CollectionArray> extends Backbone.Events {
+export default class CollectionController<T extends Expenses|CollectionArray> extends Events {
 
 	cid = _.uniqueId('view');
 

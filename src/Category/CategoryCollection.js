@@ -18,7 +18,7 @@ elapse.configure({
     debug: true
 });
 var Backbone = require('backbone');
-var bbls = require('backbone.localstorage');
+require('backbone.localstorage');
 var _ = require('underscore');
 /**
  * Depends on Expenses to parse them
@@ -28,7 +28,7 @@ var CategoryCollection = /** @class */ (function (_super) {
     __extends(CategoryCollection, _super);
     function CategoryCollection(options) {
         var _this = _super.call(this, options) || this;
-        var ls = new bbls('Categories');
+        var ls = new Backbone.LocalStorage('Categories');
         //this.colors = simpleStorage.get('CategoryColors');
         var models = ls.findAll();
         models = _.uniq(models, false, function (e1) {
@@ -62,7 +62,7 @@ var CategoryCollection = /** @class */ (function (_super) {
         //this.listenTo(this, 'add', this.addToOptions);
     };
     CategoryCollection.prototype.saveToLS = function () {
-        var ls = new bbls('Categories');
+        var ls = new Backbone.LocalStorage('Categories');
         var deleteMe = ls.findAll();
         // console.log('saveToLS', deleteMe.length);
         this.each(function (model) {

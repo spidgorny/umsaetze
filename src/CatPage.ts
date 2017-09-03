@@ -12,7 +12,7 @@ const $ = require('jquery');
 const _ = require('underscore');
 const Chart = require('chart.js');
 const toastr = require('toastr');
-const object = require('../Util/Object');
+const object = require('./Util/Object');
 
 export default class CatPage extends CollectionController<Expenses> {
 

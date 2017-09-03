@@ -1,6 +1,6 @@
-declare interface Object {
+export declare interface Object {
 	values: Function;
 }
 
-Object.prototype.values = obj => Object.keys(obj).map(key => obj[key]);
+Object.values = obj => Object.keys(obj).map(key => obj[key]);
 

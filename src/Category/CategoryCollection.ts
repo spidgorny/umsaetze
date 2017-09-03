@@ -10,7 +10,7 @@ elapse.configure({
 	debug: true
 });
 const Backbone = require('backbone');
-const bbls = require('backbone.localstorage');
+require('backbone.localstorage');
 const _ = require('underscore');
 
 /**
@@ -27,7 +27,7 @@ export default class CategoryCollection extends Collection<CategoryCount> {
 
 	constructor(options?) {
 		super(options);
-		let ls = new bbls('Categories');
+		let ls = new Backbone.LocalStorage('Categories');
 		//this.colors = simpleStorage.get('CategoryColors');
 		let models = ls.findAll();
 		models = _.uniq(models, false, (e1) => {
@@ -68,7 +68,7 @@ export default class CategoryCollection extends Collection<CategoryCount> {
 	}
 
 	saveToLS() {
-		let ls = new bbls('Categories');
+		let ls = new Backbone.LocalStorage('Categories');
 		let deleteMe = ls.findAll();
 		// console.log('saveToLS', deleteMe.length);
 		this.each((model: CategoryCount) => {

@@ -44,12 +44,12 @@ export function debug(name) {
 class Umsaetze {
 
 	constructor() {
-		new Workspace({
-			root: 'umsaetze/web/'
-		});
+		new Workspace();
 		// console.log(ws);
 
-		Backbone.history.start();
+		Backbone.history.start({
+			root: 'umsaetze/web/'
+		});
 		// console.log(start);
 
 		this.inlineEdit();
@@ -103,7 +103,9 @@ class Umsaetze {
 }
 
 $(function() {
-	new Umsaetze();
+	setTimeout(() => {
+		new Umsaetze();
+	}, 10*1000);
 });
 
 // only run this once

@@ -6,10 +6,13 @@ import Keyword from '../Keyword/Keyword';
 import CategoryCount from '../Category/CategoryCount';
 import {debug} from '../umsaetze';
 import MonthSelect from '../MonthSelect';
-import Collection = Backbone.Collection;
+import {Collection} from 'backbone';
 import FakeJQueryXHR from "../FakeJQueryXHR";
-const bb = require('backbone');
-let BackboneLocalStorage = require('backbone.localstorage');
+
+const Backbone = require('backbone');
+//let BackboneLocalStorage = require('backbone.localstorage');
+require('backbone.localstorage');
+// import {LocalStorage} from 'backbone.localstorage';
 require('datejs');
 let elapse = require('elapse');
 elapse.configure({
@@ -26,13 +29,13 @@ export default class Expenses extends Collection<Transaction> {
 	selectedMonth: Date;
 
 	comparator(compare: Transaction, to?: Transaction) {
-		return compare.date > to.date
+		return compare.date == to.date
 			? 0 : (compare.date > to.date ? 1 : -1);
 	}
 
 	constructor(models?: Transaction[] | Object[], options?: any) {
 		super(models, options);
-		this.localStorage = new BackboneLocalStorage("Expenses");
+		this.localStorage = new Backbone.LocalStorage("Expenses");
 		this.listenTo(this, 'change', () => {
 			console.log('Expenses changed event');
 			this.saveAll();

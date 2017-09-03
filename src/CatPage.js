@@ -19,7 +19,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Chart = require('chart.js');
 var toastr = require('toastr');
-var object = require('../Util/Object');
+var object = require('./Util/Object');
 var CatPage = /** @class */ (function (_super) {
     __extends(CatPage, _super);
     function CatPage(expenses, categoryList) {

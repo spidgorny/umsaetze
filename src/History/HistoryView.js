@@ -13,12 +13,13 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var MonthSelect_1 = require("../MonthSelect");
-var slTable_1 = require("../Util/slTable");
+var SLTable_1 = require("../Util/SLTable");
 var Handlebars = require('handlebars');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Chart = require('chart.js');
 require('datejs');
+require('../Util/Array');
 var HistoryView = /** @class */ (function (_super) {
     __extends(HistoryView, _super);
     function HistoryView(options) {
@@ -65,7 +66,7 @@ var HistoryView = /** @class */ (function (_super) {
         content += this.template({
             average: onlyAmounts.average()
         });
-        content += new slTable_1["default"](JSON.parse(JSON.stringify(dataThisMonth)));
+        content += new SLTable_1["default"](JSON.parse(JSON.stringify(dataThisMonth)));
         //content += '<pre>' + JSON.stringify(dataThisMonth, null, 4) + '</pre>';
         this.$el.html(content);
         this.renderSparkLines(labels, onlyAmounts, cumulative);
@@ -80,8 +81,8 @@ var HistoryView = /** @class */ (function (_super) {
     };
     HistoryView.prototype.renderSparkLines = function (labels, data, data2) {
         var _this = this;
-        var $sparkline = $('.sparkline');
-        $sparkline.each(function (index, self) {
+        var $sparkLine = $('.sparkline');
+        $sparkLine.each(function (index, self) {
             //console.log($self);
             var $self = $(self);
             //Get context with jQuery - using jQuery's .get() method.
@@ -90,7 +91,7 @@ var HistoryView = /** @class */ (function (_super) {
             // Create the dataset
             datasets['strokeColor'] = $self.attr('data-chart_StrokeColor');
             datasets['data'] = data2;
-            var lineset = {
+            var lineSet = {
                 type: 'line',
                 label: 'Transaction',
                 data: data,
@@ -101,7 +102,7 @@ var HistoryView = /** @class */ (function (_super) {
             // Add to data object
             var dataDesc = {};
             dataDesc['labels'] = labels;
-            dataDesc['datasets'] = Array(datasets, lineset);
+            dataDesc['datasets'] = Array(datasets, lineSet);
             var chart = new Chart.Line(ctx, {
                 data: dataDesc,
                 options: {
