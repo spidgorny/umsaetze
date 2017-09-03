@@ -1,5 +1,4 @@
 "use strict";
-/// <reference path="../../typings/index.d.ts" />
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -18,9 +17,12 @@ var toastr = require("toastr");
 var CollectionController_1 = require("../CollectionController");
 var KeywordsView = /** @class */ (function (_super) {
     __extends(KeywordsView, _super);
-    function KeywordsView() {
-        var _this = _super.call(this) || this;
+    function KeywordsView(options) {
+        var _this = this;
         _this.$el = $('#app');
+        console.log(_this);
+        _this = _super.call(this, options) || this;
+        console.log('new KeywordsView()', _this.cid);
         return _this;
     }
     KeywordsView.prototype.render = function () {

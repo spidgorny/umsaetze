@@ -5,11 +5,7 @@ import CollectionArray from "./Keyword/CollectionArray";
 
 export default class CollectionController<T extends Expenses|CollectionArray> extends Events {
 
-	cid = _.uniqueId('view');
-
-	$(selector: string) {
-		return $(selector);
-	}
+	cid;
 	id: string;
 	className: string;
 	el: any;
@@ -19,10 +15,14 @@ export default class CollectionController<T extends Expenses|CollectionArray> ex
 	collection: Expenses;
 
 	constructor(options?) {
-		super();
+		super(); // it has no constructor
 		this.cid = _.uniqueId('view');
 		_.extend(this, _.pick(options, this.viewOptions));
 		this._ensureElement();
+	}
+
+	$(selector: string) {
+		return $(selector);
 	}
 
 	_ensureElement() {

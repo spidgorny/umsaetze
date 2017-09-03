@@ -1,13 +1,9 @@
-/// <reference path="../../typings/index.d.ts" />
-
-import Backbone = require('backbone');
 import $ = require('jquery');
 const _ = require('underscore');
 import KeywordCollection from "./KeywordCollection";
 import RecursiveArrayOfStrings from '../RecursiveArrayOfStrings'
 import Keyword from "./Keyword";
 import toastr = require('toastr');
-import Controller from "../Controller";
 import CollectionController from "../CollectionController";
 
 export default class KeywordsView extends CollectionController<KeywordCollection> {
@@ -19,8 +15,10 @@ export default class KeywordsView extends CollectionController<KeywordCollection
 	 */
 	keywords: KeywordCollection;
 
-	constructor() {
-		super();
+	constructor(options?) {
+		console.log(this);
+		super(options);
+		console.log('new KeywordsView()', this.cid);
 	}
 
 	render() {

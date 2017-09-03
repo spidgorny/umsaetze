@@ -44,6 +44,10 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 		// }
 	}
 
+	initialize() {
+
+	}
+
 	render() {
 		this.collection.setAllVisible();
 		const yearMonth = this.ms.getSelected();

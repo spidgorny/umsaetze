@@ -1,6 +1,7 @@
-/// <reference path="../../typings/index.d.ts" />
 "use strict";
-var ParseMT940 = (function () {
+/// <reference path="../../typings/index.d.ts" />
+exports.__esModule = true;
+var ParseMT940 = /** @class */ (function () {
     function ParseMT940(data) {
         // http://stackoverflow.com/questions/8936984/uint8array-to-string-in-javascript
         this.data = String.fromCharCode.apply(null, data);
@@ -18,7 +19,7 @@ var ParseMT940 = (function () {
                 if (tag) {
                     flow.push({
                         tag: tag,
-                        data: data,
+                        data: data
                     });
                 }
                 tag = parts[1];
@@ -31,7 +32,7 @@ var ParseMT940 = (function () {
         if (tag) {
             flow.push({
                 tag: tag,
-                data: data,
+                data: data
             });
         }
         console.log(flow);
@@ -39,5 +40,5 @@ var ParseMT940 = (function () {
     };
     return ParseMT940;
 }());
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = ParseMT940;
+exports["default"] = ParseMT940;
+//# sourceMappingURL=ParseMT940.js.map

@@ -43,17 +43,23 @@ export function debug(name) {
 
 class Umsaetze {
 
+	router: Workspace;
+
 	constructor() {
-		new Workspace();
+		this.router = new Workspace();
 		// console.log(ws);
 
-		Backbone.history.start({
-			root: 'umsaetze/web/'
+		const ok = Backbone.history.start({
+			root: '/umsaetze/docs/web/'
 		});
-		// console.log(start);
+		console.log('history.start', ok);
+		if (!ok) {
+			console.log(Backbone.history.routes);
+		}
 
 		this.inlineEdit();
 		this.tour();
+		console.log('Umsaetze.constructor() done');
 	}
 
 	inlineEdit() {
@@ -105,7 +111,7 @@ class Umsaetze {
 $(function() {
 	setTimeout(() => {
 		new Umsaetze();
-	}, 10*1000);
+	}, 1*1000);
 });
 
 // only run this once

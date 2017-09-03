@@ -37,14 +37,18 @@ function debug(name) {
 exports.debug = debug;
 var Umsaetze = /** @class */ (function () {
     function Umsaetze() {
-        new Workspace_1["default"]();
+        this.router = new Workspace_1["default"]();
         // console.log(ws);
-        Backbone.history.start({
-            root: 'umsaetze/web/'
+        var ok = Backbone.history.start({
+            root: '/umsaetze/docs/web/'
         });
-        // console.log(start);
+        console.log('history.start', ok);
+        if (!ok) {
+            console.log(Backbone.history.routes);
+        }
         this.inlineEdit();
         this.tour();
+        console.log('Umsaetze.constructor() done');
     }
     Umsaetze.prototype.inlineEdit = function () {
         $(document).on('click', '.inlineEdit span', function (event) {
@@ -93,7 +97,7 @@ var Umsaetze = /** @class */ (function () {
 $(function () {
     setTimeout(function () {
         new Umsaetze();
-    }, 10 * 1000);
+    }, 1 * 1000);
 });
 // only run this once
 // import ImportKeywords from './ImportKeywords';

@@ -9,7 +9,7 @@ import CategoryCollectionModel from "../Category/CategoryCollectionModel";
 import {ViewOptions} from "backbone";
 
 const Handlebars = require('handlebars');
-const Backbone: any = require('backbone');
+const Backbone = require('backbone');
 const _ = require('underscore');
 
 export default class SummaryView extends Backbone.View<CategoryCollectionModel> {
@@ -33,6 +33,10 @@ export default class SummaryView extends Backbone.View<CategoryCollectionModel> 
 			//console.log(this.template);
 			this.render();
 		});
+	}
+
+	initialize() {
+
 	}
 
 	render() {

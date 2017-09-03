@@ -15,7 +15,6 @@ var CollectionController = /** @class */ (function (_super) {
     __extends(CollectionController, _super);
     function CollectionController(options) {
         var _this = _super.call(this) || this;
-        _this.cid = _.uniqueId('view');
         _this.delegateEventSplitter = /^(\S+)\s*(.*)$/;
         _this.viewOptions = ['model', 'collection', 'el', 'id', 'attributes', 'className', 'tagName', 'events'];
         _this.cid = _.uniqueId('view');

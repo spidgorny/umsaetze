@@ -33,6 +33,8 @@ var SummaryView = /** @class */ (function (_super) {
         });
         return _this;
     }
+    SummaryView.prototype.initialize = function () {
+    };
     SummaryView.prototype.render = function () {
         if (!this.template) {
             this.$el.html('Loading...');

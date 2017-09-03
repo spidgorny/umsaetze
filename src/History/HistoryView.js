@@ -42,6 +42,8 @@ var HistoryView = /** @class */ (function (_super) {
         // 	console.log(nintendo);
         // }
     }
+    HistoryView.prototype.initialize = function () {
+    };
     HistoryView.prototype.render = function () {
         this.collection.setAllVisible();
         var yearMonth = this.ms.getSelected();

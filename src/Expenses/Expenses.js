@@ -58,6 +58,7 @@ var Expenses = /** @class */ (function (_super) {
             //this.unserializeDate();
             this.trigger('change');
         }
+        console.log('read', this.length);
         return new FakeJQueryXHR_1["default"]();
     };
     /**
