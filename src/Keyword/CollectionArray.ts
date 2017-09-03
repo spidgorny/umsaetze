@@ -2,7 +2,7 @@
 const simpleStorage = require('simpleStorage.js');
 const _ = require('underscore');
 
-export default class Collection extends Array {
+export default class CollectionArray extends Array {
 
 	name: string;
 

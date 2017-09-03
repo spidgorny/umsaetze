@@ -2,11 +2,12 @@
 
 import Expenses from "../Expenses/Expenses";
 let Backbone = require('backbone');
+import Model = Backbone.Model;
 // const bbls = require('backbone.localstorage');
 
 Object.values = obj => Object.keys(obj).map(key => obj[key]);
 
-export default class CategoryCount extends Backbone.Model<any> {
+export default class CategoryCount extends Model {
 
 	catName: string;
 

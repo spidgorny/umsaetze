@@ -1,10 +1,17 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
 ///<reference path="../../typings/index.d.ts"/>
+var backbone_1 = require("backbone");
 var md5 = require('md5');
 var bb = require('backbone');
 /*
@@ -19,15 +26,15 @@ var bb = require('backbone');
  "visible": false,
  "sign": ""
  */
-var Transaction = (function (_super) {
+var Transaction = /** @class */ (function (_super) {
     __extends(Transaction, _super);
     function Transaction(attributes, options) {
-        _super.call(this, attributes, options);
-        this.defaults = {
-            visible: true,
+        var _this = _super.call(this, attributes, options) || this;
+        _this.defaults = {
+            visible: true
         };
         var dDate;
-        var sDate = this.get('date');
+        var sDate = _this.get('date');
         if (sDate instanceof Date) {
             dDate = sDate.clone();
             sDate = dDate.toString('d.M.yyyy');
@@ -38,23 +45,24 @@ var Transaction = (function (_super) {
             if (!dDate || !dDateValid) {
                 dDate = Date.parseExact(sDate, "d.M.yyyy");
             }
-            this.set('date', dDate);
+            _this.set('date', dDate);
         }
         //console.log(sDate, dDate);
         // this prevents duplicates
-        if (!this.get('id')) {
-            this.set('id', md5(sDate + this.get('amount')));
+        if (!_this.get('id')) {
+            _this.set('id', md5(sDate + _this.get('amount')));
         }
         // number
-        this.set('amount', parseFloat(this.get('amount')));
-        if (!this.has('visible')) {
-            this.set('visible', true);
+        _this.set('amount', parseFloat(_this.get('amount')));
+        if (!_this.has('visible')) {
+            _this.set('visible', true);
         }
         // make sure it's defined
-        this.set('category', this.get('category') || 'Default');
+        _this.set('category', _this.get('category') || 'Default');
         // should be set
-        this.set('note', this.get('note'));
-        this.set('done', this.get('done'));
+        _this.set('note', _this.get('note'));
+        _this.set('done', _this.get('done'));
+        return _this;
     }
     Transaction.prototype.sign = function () {
         return this.get('amount') >= 0 ? 'positive' : 'negative';
@@ -86,6 +94,6 @@ var Transaction = (function (_super) {
         return this.get('amount');
     };
     return Transaction;
-}(bb.Model));
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = Transaction;
+}(backbone_1.Model));
+exports["default"] = Transaction;
+//# sourceMappingURL=Transaction.js.map

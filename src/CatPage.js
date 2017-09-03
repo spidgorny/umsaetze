@@ -1,26 +1,32 @@
-/// <reference path="../node_modules/backbone-typings/backbone.d.ts" />
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+/// <reference path="../node_modules/backbone-typings/backbone.d.ts" />
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
 var CategoryCount_1 = require("./Category/CategoryCount");
+var Controller_1 = require("./Controller");
 var Handlebars = require('handlebars');
 var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
 var Chart = require('chart.js');
 var toastr = require('toastr');
-var CatPage = (function (_super) {
+var CatPage = /** @class */ (function (_super) {
     __extends(CatPage, _super);
     function CatPage(expenses, categoryList) {
-        var _this = this;
-        _super.call(this);
-        this.$el = $('#app');
+        var _this = _super.call(this) || this;
+        _this.$el = $('#app');
         console.log('CatPage.constructor');
-        this.collection = expenses;
-        this.categoryList = categoryList;
+        _this.collection = expenses;
+        _this.categoryList = categoryList;
         var importTag = $('#CatPage');
         var href = importTag.prop('href');
         console.log(importTag, href);
@@ -31,9 +37,10 @@ var CatPage = (function (_super) {
             Handlebars.compile(result));
         });
         //console.log(this);
-        this.listenTo(this.categoryList, 'change', this.render);
-        this.listenTo(this.categoryList, 'add', this.render);
-        this.listenTo(this.categoryList, 'update', this.render);
+        _this.listenTo(_this.categoryList, 'change', _this.render);
+        _this.listenTo(_this.categoryList, 'add', _this.render);
+        _this.listenTo(_this.categoryList, 'update', _this.render);
+        return _this;
     }
     CatPage.prototype.setTemplate = function (html) {
         this.template = html;
@@ -58,12 +65,12 @@ var CatPage = (function (_super) {
                     used: category.get('count'),
                     amount: averageAmountPerMonth,
                     average: averageAmountPerMonth,
-                    sparkline: JSON.stringify(monthlyTotals),
+                    sparkline: JSON.stringify(monthlyTotals)
                 });
             });
             categoryOptions_1 = _.sortBy(categoryOptions_1, 'catName');
             this.$el.html(this.template({
-                categoryOptions: categoryOptions_1,
+                categoryOptions: categoryOptions_1
             }));
             this.$('#addCategoryForm').on('submit', this.addCategory.bind(this));
             if ($(document).scrollTop() < 1) {
@@ -71,7 +78,7 @@ var CatPage = (function (_super) {
             }
             this.$el.on('change', 'input[type="color"]', this.selectColor.bind(this));
             this.$('button.close').on('click', this.deleteCategory.bind(this));
-            this.$('#categoryCount').html(this.categoryList.size());
+            this.$('#categoryCount').html(this.categoryList.size().toString());
             this.$('.inlineEdit').data('callback', this.renameCategory.bind(this));
             setTimeout(function () {
                 _this.renderSparkLines();
@@ -87,8 +94,8 @@ var CatPage = (function (_super) {
         var $form = $(event.target);
         var newName = $form.find('input').val();
         console.log('newName', newName);
-        var categoryObject = new CategoryCount_1.default({
-            catName: newName,
+        var categoryObject = new CategoryCount_1["default"]({
+            catName: newName
         });
         console.log('get', categoryObject.get('catName'));
         console.log('get', categoryObject.get('color'));
@@ -141,7 +148,7 @@ var CatPage = (function (_super) {
                 data: Array(data.length).fill(average),
                 borderColor: '#FF0000',
                 borderWidth: 1,
-                fill: false,
+                fill: false
             };
             // Add to data object
             var dataDesc = {};
@@ -162,13 +169,13 @@ var CatPage = (function (_super) {
                     scaleFontSize: 1,
                     scaleFontColor: "rgba(0,0,0,0)",
                     legend: {
-                        display: false,
+                        display: false
                     },
                     maintainAspectRatio: false,
                     scales: {
                         yAxes: [{
                                 ticks: {
-                                    padding: 0,
+                                    padding: 0
                                 }
                             }]
                     },
@@ -225,6 +232,6 @@ var CatPage = (function (_super) {
         }
     };
     return CatPage;
-}(Backbone.View));
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = CatPage;
+}(Controller_1["default"]));
+exports["default"] = CatPage;
+//# sourceMappingURL=CatPage.js.map

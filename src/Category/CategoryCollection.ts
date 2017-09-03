@@ -3,7 +3,9 @@
 import Transaction from "../Expenses/Transaction";
 import CategoryCount from "./CategoryCount";
 import Expenses from "../Expenses/Expenses";
-let elapse = require('elapse');
+import {Collection} from 'backbone';
+
+const elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
@@ -15,7 +17,7 @@ const _ = require('underscore');
  * Depends on Expenses to parse them
  * and retrieve the total values for each category
  */
-export default class CategoryCollection extends Backbone.Collection<CategoryCount> {
+export default class CategoryCollection extends Collection<CategoryCount> {
 
 	model: CategoryCount|any;
 

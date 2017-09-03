@@ -1,54 +1,61 @@
+"use strict";
 ///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
 ///<reference path="../typings/index.d.ts"/>
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var Backbone = require('backbone');
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
+var Backbone = require("backbone");
 var $ = require('jquery');
 require('datejs');
 var _ = require('underscore');
-var MonthSelect = (function (_super) {
+var MonthSelect = /** @class */ (function (_super) {
     __extends(MonthSelect, _super);
     function MonthSelect() {
-        _super.call(this);
-        this.$el = $('#MonthSelect');
-        this.yearSelect = this.$('select');
-        this.monthOptions = this.$('button');
-        this.selectedYear = parseInt(this.yearSelect.val()) || new Date().getFullYear();
-        this.selectedMonth = 'Feb';
-        this.earliest = new Date();
-        this.latest = new Date();
+        var _this = _super.call(this) || this;
+        _this.$el = $('#MonthSelect');
+        _this.yearSelect = _this.$('select');
+        _this.monthOptions = _this.$('button');
+        _this.selectedYear = parseInt(_this.yearSelect.val()) || new Date().getFullYear();
+        _this.selectedMonth = 'Feb';
+        _this.earliest = new Date();
+        _this.latest = new Date();
         /**
          * http://stackoverflow.com/questions/1643320/get-month-name-from-date
          * @type {[string,string,string,string,string,string,string,string,string,string,string,string]}
          */
-        this.monthNames = [
+        _this.monthNames = [
             "January", "February", "March",
             "April", "May", "June",
             "July", "August", "September",
             "October", "November", "December"
         ];
-        if (!this.storageProvider) {
-            this.storageProvider = window.localStorage;
+        if (!_this.storageProvider) {
+            _this.storageProvider = window.localStorage;
         }
         // console.log(this.yearSelect);
         // console.log(this.monthOptions);
         // this is a problem for HistoryView because it switches to page type
         // this.monthOptions.on('click', this.clickOnMonthAndNavigate.bind(this));
-        this.monthOptions.on('click', this.clickOnMonth.bind(this));
-        this.yearSelect.on('change', this.changeYear.bind(this));
+        _this.monthOptions.on('click', _this.clickOnMonth.bind(_this));
+        _this.yearSelect.on('change', _this.changeYear.bind(_this));
         //this.localStorage = new Backbone.LocalStorage('MonthSelect');
-        var year = this.storageProvider.getItem('MonthSelect.year');
+        var year = _this.storageProvider.getItem('MonthSelect.year');
         if (year) {
-            this.selectedYear = parseInt(year);
+            _this.selectedYear = parseInt(year);
         }
-        var month = this.storageProvider.getItem('MonthSelect.month');
+        var month = _this.storageProvider.getItem('MonthSelect.month');
         if (month) {
-            this.selectedMonth = month;
+            _this.selectedMonth = month;
         }
+        return _this;
         //console.log('MonthSelect', this.selectedYear, this.selectedMonth);
     }
     MonthSelect.getInstance = function () {
@@ -219,5 +226,5 @@ var MonthSelect = (function (_super) {
     };
     return MonthSelect;
 }(Backbone.View));
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = MonthSelect;
+exports["default"] = MonthSelect;
+//# sourceMappingURL=MonthSelect.js.map

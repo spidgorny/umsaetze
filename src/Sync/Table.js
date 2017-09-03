@@ -1,23 +1,29 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
 var Row_1 = require("./Row");
 var ArrayPlus_1 = require("./ArrayPlus");
 var _ = require('underscore');
-var Table = (function (_super) {
+var Table = /** @class */ (function (_super) {
     __extends(Table, _super);
     function Table(rows) {
-        var _this = this;
-        _super.call(this);
+        var _this = _super.call(this) || this;
         if (rows) {
             //console.log('ArrayPlus', rows.length);
             rows.forEach(function (el, i) {
-                _this[i] = new Row_1.default(el);
+                _this[i] = new Row_1["default"](el);
             });
         }
+        return _this;
     }
     Table.fromText = function (text) {
         var self = new Table();
@@ -138,7 +144,7 @@ var Table = (function (_super) {
     Table.prototype.trimAll = function () {
         var data = new Table();
         this.forEach(function (row, i) {
-            var rowObj = new Row_1.default(row);
+            var rowObj = new Row_1["default"](row);
             var rowTrimmed = rowObj.trim();
             if (rowTrimmed.length) {
                 data.push(rowObj); // original non trimmed row
@@ -151,7 +157,7 @@ var Table = (function (_super) {
         console.log('getRowTypesForSomeRows', this.length);
         var iter = 0;
         this.forEach(function (row0, i) {
-            var row = new Row_1.default(row0);
+            var row = new Row_1["default"](row0);
             var types = row.getRowTypes();
             //console.log(i, row, types);
             typeSet.push(types);
@@ -187,6 +193,6 @@ var Table = (function (_super) {
         return copy;
     };
     return Table;
-}(ArrayPlus_1.default));
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = Table;
+}(ArrayPlus_1["default"]));
+exports["default"] = Table;
+//# sourceMappingURL=Table.js.map

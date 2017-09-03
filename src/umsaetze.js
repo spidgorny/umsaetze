@@ -1,5 +1,6 @@
-/// <reference path="../typings/index.d.ts" />
 "use strict";
+/// <reference path="../typings/index.d.ts" />
+exports.__esModule = true;
 var Workspace_1 = require("./Workspace");
 // var bootstrap = require('bootstrap');
 var _ = require('underscore');
@@ -50,9 +51,9 @@ function debug(name) {
     };
 }
 exports.debug = debug;
-var Umsaetze = (function () {
+var Umsaetze = /** @class */ (function () {
     function Umsaetze() {
-        new Workspace_1.default({
+        new Workspace_1["default"]({
             root: 'umsaetze/web/'
         });
         // console.log(ws);
@@ -94,7 +95,8 @@ var Umsaetze = (function () {
                     title: "Let me show you how it works",
                     content: "Here you will see all your expenses in a selected month."
                 },
-            ] });
+            ]
+        });
         setTimeout(function () {
             // Initialize the tour
             // tour.init();
@@ -110,3 +112,4 @@ $(function () {
 // only run this once
 // import ImportKeywords from './ImportKeywords';
 // let i = new ImportKeywords();
+//# sourceMappingURL=umsaetze.js.map

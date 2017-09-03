@@ -1,22 +1,27 @@
+"use strict";
 ///<reference path="../../typings/index.d.ts"/>
 ///<reference path="../../node_modules/backbone-typings/backbone.d.ts"/>
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
 var SummaryLine_1 = require("./SummaryLine");
 var Handlebars = require('handlebars');
 var Backbone = require('backbone');
 var _ = require('underscore');
-var SummaryView = (function (_super) {
+var SummaryView = /** @class */ (function (_super) {
     __extends(SummaryView, _super);
     function SummaryView(options, expenses) {
-        var _this = this;
-        _super.call(this, options);
-        this.expenses = expenses;
-        this.setElement($('#app'));
+        var _this = _super.call(this, options) || this;
+        _this.expenses = expenses;
+        _this.setElement($('#app'));
         var importTag = $('#SummaryPage'); // <import>
         var href = importTag.prop('href');
         //console.log(importTag, href);
@@ -26,6 +31,7 @@ var SummaryView = (function (_super) {
             //console.log(this.template);
             _this.render();
         });
+        return _this;
     }
     SummaryView.prototype.render = function () {
         if (!this.template) {
@@ -40,7 +46,7 @@ var SummaryView = (function (_super) {
         var content = this.template({
             categoryOptions: categoryOptions,
             count: this.collection.size(),
-            months: months,
+            months: months
         });
         this.$el.html(content);
         return this;
@@ -59,15 +65,15 @@ var SummaryView = (function (_super) {
                     year: year,
                     month: month,
                     categoryName: category.getName(),
-                    value: el,
+                    value: el
                 };
             });
-            categoryOptions.push(new SummaryLine_1.default({
+            categoryOptions.push(new SummaryLine_1["default"]({
                 catName: category.getName(),
                 background: category.get('color'),
                 id: category.cid,
                 average: averageAmountPerMonth,
-                perMonth: monthlyTotals,
+                perMonth: monthlyTotals
             }));
         });
         return categoryOptions;
@@ -103,9 +109,9 @@ var SummaryView = (function (_super) {
         // step 2
         _.each(groupByCategory, function (set, setName) {
             if (set.length > 1) {
-                var newCat_1 = new SummaryLine_1.default({
+                var newCat_1 = new SummaryLine_1["default"]({
                     catName: setName + ' [' + set.length + ']',
-                    background: '#FF8800',
+                    background: '#FF8800'
                 });
                 _.each(set, function (el) {
                     newCat_1.combine(el);
@@ -125,5 +131,5 @@ var SummaryView = (function (_super) {
     };
     return SummaryView;
 }(Backbone.View));
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = SummaryView;
+exports["default"] = SummaryView;
+//# sourceMappingURL=SummaryView.js.map

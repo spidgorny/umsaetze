@@ -1,12 +1,18 @@
-///<reference path="../typings/index.d.ts"/>
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var AppView_1 = require('./AppView');
-var Sync_1 = require('./Sync/Sync');
+///<reference path="../typings/index.d.ts"/>
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
+var AppView_1 = require("./AppView");
+var Sync_1 = require("./Sync/Sync");
 var Expenses_1 = require("./Expenses/Expenses");
 var CatPage_1 = require("./CatPage");
 var KeywordsView_1 = require("./Keyword/KeywordsView");
@@ -14,14 +20,14 @@ var CategoryCollection_1 = require("./Category/CategoryCollection");
 var KeywordCollection_1 = require("./Keyword/KeywordCollection");
 var SummaryView_1 = require("./Summary/SummaryView");
 var HistoryView_1 = require("./History/HistoryView");
-var Backbone = require('backbone');
+var backbone_1 = require("backbone");
 var $ = require('jquery');
 var _ = require('underscore');
-var Workspace = (function (_super) {
+var Workspace = /** @class */ (function (_super) {
     __extends(Workspace, _super);
     function Workspace(options) {
-        _super.call(this, options);
-        this.routes = {
+        var _this = _super.call(this, options) || this;
+        _this.routes = {
             "": "AppView",
             ":year/:month": "MonthSelect",
             ":year/:month/:category": "MonthSelectCategory",
@@ -29,14 +35,15 @@ var Workspace = (function (_super) {
             "Sync": "Sync",
             "Keywords": "Keywords",
             "Summary": "Summary",
-            "History": "History",
+            "History": "History"
         };
-        this.keywords = new KeywordCollection_1.default();
-        this._bindRoutes();
-        this.model = new Expenses_1.default();
-        this.model.fetch();
-        this.categoryList = new CategoryCollection_1.default();
-        this.categoryList.setExpenses(this.model);
+        _this.keywords = new KeywordCollection_1["default"]();
+        _this._bindRoutes();
+        _this.model = new Expenses_1["default"]();
+        _this.model.fetch();
+        _this.categoryList = new CategoryCollection_1["default"]();
+        _this.categoryList.setExpenses(_this.model);
+        return _this;
     }
     Workspace.prototype.activateMenu = function () {
         var url = window.location;
@@ -70,8 +77,8 @@ var Workspace = (function (_super) {
         this.activateMenu();
         this.hideCurrentPage();
         if (!this.appPage) {
-            this.appPage = new AppView_1.default({
-                collection: this.model,
+            this.appPage = new AppView_1["default"]({
+                collection: this.model
             }, this.categoryList);
             this.appPage.table.keywords = this.keywords;
         }
@@ -89,7 +96,7 @@ var Workspace = (function (_super) {
             $('#MonthSelect').hide(); // for consistency
         }
         if (!this.syncPage) {
-            this.syncPage = new Sync_1.default(this.model);
+            this.syncPage = new Sync_1["default"](this.model);
             this.syncPage.router = this;
         }
         this.syncPage.render();
@@ -100,7 +107,7 @@ var Workspace = (function (_super) {
         this.activateMenu();
         this.hideCurrentPage();
         if (!this.catPage) {
-            this.catPage = new CatPage_1.default(this.model, this.categoryList);
+            this.catPage = new CatPage_1["default"](this.model, this.categoryList);
         }
         this.catPage.render();
         this.currentPage = this.catPage;
@@ -110,7 +117,7 @@ var Workspace = (function (_super) {
         this.activateMenu();
         this.hideCurrentPage();
         if (!this.keywordsPage) {
-            this.keywordsPage = new KeywordsView_1.default();
+            this.keywordsPage = new KeywordsView_1["default"]();
             this.keywordsPage.keywords = this.keywords;
         }
         this.keywordsPage.render();
@@ -139,7 +146,7 @@ var Workspace = (function (_super) {
         this.activateMenu();
         this.hideCurrentPage();
         if (!this.summaryPage) {
-            this.summaryPage = new SummaryView_1.default({
+            this.summaryPage = new SummaryView_1["default"]({
                 collection: this.categoryList
             }, this.model);
         }
@@ -153,7 +160,7 @@ var Workspace = (function (_super) {
         this.activateMenu();
         this.hideCurrentPage();
         if (!this.historyPage) {
-            this.historyPage = new HistoryView_1.default({
+            this.historyPage = new HistoryView_1["default"]({
                 collection: this.model
             });
         }
@@ -163,6 +170,6 @@ var Workspace = (function (_super) {
         this.currentPage = this.historyPage;
     };
     return Workspace;
-}(Backbone.Router));
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = Workspace;
+}(backbone_1.Router));
+exports["default"] = Workspace;
+//# sourceMappingURL=Workspace.js.map

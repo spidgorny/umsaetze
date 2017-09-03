@@ -1,6 +1,7 @@
 "use strict";
+exports.__esModule = true;
 var _ = require('underscore');
-var slTable = (function () {
+var slTable = /** @class */ (function () {
     function slTable(data) {
         if (data === void 0) { data = []; }
         this.data = data;
@@ -47,5 +48,5 @@ var slTable = (function () {
     };
     return slTable;
 }());
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = slTable;
+exports["default"] = slTable;
+//# sourceMappingURL=slTable.js.map

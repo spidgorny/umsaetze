@@ -1,41 +1,48 @@
-/// <reference path="../../typings/index.d.ts" />
-/// <reference path="../../node_modules/backbone-typings/backbone.d.ts" />
-/// <reference path="../umsaetze.ts" />
-/// <reference path="../Papa.d.ts" />
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var Transaction_1 = require('./Transaction');
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
+var Transaction_1 = require("./Transaction");
 var umsaetze_1 = require("../umsaetze");
 var MonthSelect_1 = require("../MonthSelect");
+var Collection = Backbone.Collection;
+var FakeJQueryXHR_1 = require("../FakeJQueryXHR");
 var bb = require('backbone');
-var BackboneLocalStorage = require("backbone.localstorage");
+var BackboneLocalStorage = require('backbone.localstorage');
 require('datejs');
 var elapse = require('elapse');
 elapse.configure({
     debug: true
 });
 var _ = require('underscore');
-var Expenses = (function (_super) {
+var Expenses = /** @class */ (function (_super) {
     __extends(Expenses, _super);
     function Expenses(models, options) {
-        var _this = this;
-        _super.call(this, models, options);
-        this.model = Transaction_1.default;
-        this.localStorage = new BackboneLocalStorage("Expenses");
-        this.listenTo(this, 'change', function () {
+        var _this = _super.call(this, models, options) || this;
+        _this.localStorage = new BackboneLocalStorage("Expenses");
+        _this.listenTo(_this, 'change', function () {
             console.log('Expenses changed event');
             _this.saveAll();
         });
-        this.on("all", umsaetze_1.debug("Expenses"));
+        _this.on("all", umsaetze_1.debug("Expenses"));
+        return _this;
     }
+    Expenses.prototype.comparator = function (compare, to) {
+        return compare.date > to.date
+            ? 0 : (compare.date > to.date ? 1 : -1);
+    };
     /**
      * Should be called after constructor to read data from LS
      * @param options
-     * @returns {JQueryXHR}
+     * @return JQueryXHR
      */
     Expenses.prototype.fetch = function (options) {
         var _this = this;
@@ -44,11 +51,12 @@ var Expenses = (function (_super) {
         console.log('models from LS', models.length);
         if (models.length) {
             _.each(models, function (el) {
-                _this.add(new Transaction_1.default(el));
+                _this.add(new Transaction_1["default"](el));
             });
             //this.unserializeDate();
             this.trigger('change');
         }
+        return new FakeJQueryXHR_1["default"]();
     };
     /**
      * Only visible
@@ -146,7 +154,7 @@ var Expenses = (function (_super) {
         }
         else {
             //throw new Error('filterByMonth no month defined');
-            var ms = MonthSelect_1.default.getInstance();
+            var ms = MonthSelect_1["default"].getInstance();
             selectedMonth = ms.getSelected();
         }
         console.log('filterMyMonth', selectedMonth);
@@ -214,7 +222,6 @@ var Expenses = (function (_super) {
         return this.getVisible().length;
     };
     Expenses.prototype.getSorted = function () {
-        this.comparator = 'date';
         this.sort();
         var visible = this.getVisible();
         // return _.sortBy(visible, 'attributes.date');
@@ -250,9 +257,9 @@ var Expenses = (function (_super) {
         // 	till: till.toString('yyyy-MM-dd HH:mm'),
         // });
         var count = 0;
-        var _loop_1 = function(month) {
+        var _loop_1 = function (month) {
             var month1 = month.clone();
-            month1.addMonths(1).add(-1).minutes();
+            month1.addMonths(1).add({ minutes: -1 });
             // console.log({
             // 	month: month.toString('yyyy-MM-dd HH:mm'),
             // 	month1: month1.toString('yyyy-MM-dd HH:mm'),
@@ -274,6 +281,7 @@ var Expenses = (function (_super) {
                     sum += transaction.getAmount();
                     count++;
                     category.incrementCount();
+                    //category.incrementAmountBy(transaction.getAmount());	// spoils CategoryView
                 }
             });
             sparks[month.toString('yyyy-MM')] = Math.abs(sum).toFixed(2);
@@ -323,6 +331,6 @@ var Expenses = (function (_super) {
         }
     };
     return Expenses;
-}(bb.Collection));
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = Expenses;
+}(Collection));
+exports["default"] = Expenses;
+//# sourceMappingURL=Expenses.js.map

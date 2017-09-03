@@ -1,11 +1,17 @@
+"use strict";
 ///<reference path="../../typings/index.d.ts"/>
 ///<reference path="../../node_modules/backbone-typings/backbone.d.ts"/>
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
 var elapse = require('elapse');
 elapse.configure({
     debug: true
@@ -14,16 +20,17 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
 var Chart = require('chart.js');
-var umsaetze_1 = require('../umsaetze');
-var CategoryView = (function (_super) {
+var umsaetze_1 = require("../umsaetze");
+var CategoryView = /** @class */ (function (_super) {
     __extends(CategoryView, _super);
     function CategoryView(options) {
-        _super.call(this, options);
-        this.template = _.template($('#categoryTemplate').html());
-        this.setElement($('#categories'));
-        this.listenTo(this.model, 'change', this.render);
-        this.$el.on('click', 'a.filterByCategory', this.filterByCategory.bind(this));
-        this.on("all", umsaetze_1.debug("CategoryView"));
+        var _this = _super.call(this, options) || this;
+        _this.template = _.template($('#categoryTemplate').html());
+        _this.setElement($('#categories'));
+        _this.listenTo(_this.model, 'change', _this.render);
+        _this.$el.on('click', 'a.filterByCategory', _this.filterByCategory.bind(_this));
+        _this.on("all", umsaetze_1.debug("CategoryView"));
+        return _this;
     }
     CategoryView.prototype.setExpenses = function (expenses) {
         this.expenses = expenses;
@@ -40,7 +47,7 @@ var CategoryView = (function (_super) {
         var categoryCount = this.model.toJSON();
         // remove income from %
         var incomeRow = _.findWhere(categoryCount, {
-            catName: 'Income',
+            catName: 'Income'
         });
         categoryCount = _.without(categoryCount, incomeRow);
         var sum = _.reduce(categoryCount, function (memo, item) {
@@ -58,7 +65,7 @@ var CategoryView = (function (_super) {
             content.push(_this.template(_.extend(catCount, {
                 width: width,
                 amount: Math.round(catCount.amount),
-                sign: catCount.amount >= 0 ? 'positive' : 'negative',
+                sign: catCount.amount >= 0 ? 'positive' : 'negative'
             })));
         });
         this.$('#catElements').html(content.join('\n'));
@@ -117,7 +124,7 @@ var CategoryView = (function (_super) {
                 {
                     data: dataSet1,
                     backgroundColor: colors,
-                    hoverBackgroundColor: colors,
+                    hoverBackgroundColor: colors
                 }
             ]
         };
@@ -129,7 +136,7 @@ var CategoryView = (function (_super) {
             data: data,
             options: {
                 legend: {
-                    display: false,
+                    display: false
                 }
             }
         });
@@ -163,5 +170,5 @@ var CategoryView = (function (_super) {
     };
     return CategoryView;
 }(Backbone.View));
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = CategoryView;
+exports["default"] = CategoryView;
+//# sourceMappingURL=CategoryView.js.map

@@ -1,10 +1,16 @@
-/// <reference path="../../typings/index.d.ts" />
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+/// <reference path="../../typings/index.d.ts" />
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
 var ArrayPlus_1 = require("./ArrayPlus");
 var Table_1 = require("./Table");
 var _ = require('underscore');
@@ -12,10 +18,10 @@ var accounting = require('accounting-js');
 // const _isNumeric = require('underscore.isnumeric');
 require('../Util/String');
 var Number_1 = require("../Util/Number");
-var Row = (function (_super) {
+var Row = /** @class */ (function (_super) {
     __extends(Row, _super);
     function Row(rawData) {
-        _super.call(this, rawData);
+        return _super.call(this, rawData) || this;
     }
     Row.prototype.trim = function () {
         var copy = new Row();
@@ -98,7 +104,7 @@ var Row = (function (_super) {
             matchNumber += bReturn ? 1 : 0;
             return bReturn;
         });
-        return new Table_1.default(filtered);
+        return new Table_1["default"](filtered);
     };
     Row.prototype.getHeaderFromTypes = function (dataRow, rowNr) {
         var header = new Row();
@@ -119,6 +125,10 @@ var Row = (function (_super) {
         //header.note = longest.trim();
         header.note = strings.join(' ');
         if (!rowNr) {
+            // console.log(this, 'common');
+            // console.log(strings, 'strings');
+            // console.log(dataRow, 'dataRow');
+            // console.log(header, 'header');
         }
         return header;
     };
@@ -138,6 +148,6 @@ var Row = (function (_super) {
         return JSON.parse(JSON.stringify(this));
     };
     return Row;
-}(ArrayPlus_1.default));
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = Row;
+}(ArrayPlus_1["default"]));
+exports["default"] = Row;
+//# sourceMappingURL=Row.js.map

@@ -1,39 +1,47 @@
-/// <reference path="../../typings/index.d.ts" />
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+/// <reference path="../../typings/index.d.ts" />
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
 var Backbone = require('backbone');
+var Model = Backbone.Model;
 // const bbls = require('backbone.localstorage');
 Object.values = function (obj) { return Object.keys(obj).map(function (key) { return obj[key]; }); };
-var CategoryCount = (function (_super) {
+var CategoryCount = /** @class */ (function (_super) {
     __extends(CategoryCount, _super);
     function CategoryCount() {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i - 0] = arguments[_i];
+            args[_i] = arguments[_i];
         }
-        _super.call(this);
-        this.set('catName', args[0].catName); // this should not be necessary but it is
-        this.set('color', args[0].color); // this should not be necessary but it is
-        this.set('count', args[0].count); // this should not be necessary but it is
-        this.set('amount', args[0].amount); // this should not be necessary but it is
-        this.set('id', args[0].id); // this should not be necessary but it is
+        var _this = _super.call(this) || this;
+        _this.set('catName', args[0].catName); // this should not be necessary but it is
+        _this.set('color', args[0].color); // this should not be necessary but it is
+        _this.set('count', args[0].count); // this should not be necessary but it is
+        _this.set('amount', args[0].amount); // this should not be necessary but it is
+        _this.set('id', args[0].id); // this should not be necessary but it is
         //this.listenTo(this, 'change', this.saveToLS);
-        var color = this.get('color');
+        var color = _this.get('color');
         if (!color) {
-            this.set('color', this.pastelColor());
+            _this.set('color', _this.pastelColor());
         }
-        var count = this.get('count');
+        var count = _this.get('count');
         if (!count) {
-            this.set('count', 0);
+            _this.set('count', 0);
         }
-        var amount = this.get('amount');
+        var amount = _this.get('amount');
         if (!amount) {
-            this.set('amount', 0);
+            _this.set('amount', 0);
         }
+        return _this;
     }
     CategoryCount.prototype.setColor = function (color) {
         this.set('color', color);
@@ -72,6 +80,6 @@ var CategoryCount = (function (_super) {
         return avg.toFixed(2);
     };
     return CategoryCount;
-}(Backbone.Model));
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = CategoryCount;
+}(Model));
+exports["default"] = CategoryCount;
+//# sourceMappingURL=CategoryCount.js.map

@@ -1,7 +1,8 @@
-/// <reference path="../../typings/index.d.ts" />
 "use strict";
+/// <reference path="../../typings/index.d.ts" />
+exports.__esModule = true;
 var _ = require('underscore');
-var SummaryLine = (function () {
+var SummaryLine = /** @class */ (function () {
     function SummaryLine(params) {
         this.average = 0;
         this.perCent = 0;
@@ -29,5 +30,5 @@ var SummaryLine = (function () {
     };
     return SummaryLine;
 }());
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = SummaryLine;
+exports["default"] = SummaryLine;
+//# sourceMappingURL=SummaryLine.js.map

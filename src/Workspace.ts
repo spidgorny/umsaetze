@@ -10,11 +10,13 @@ import RouterOptions = Backbone.RouterOptions;
 import KeywordCollection from "./Keyword/KeywordCollection";
 import SummaryView from "./Summary/SummaryView";
 import HistoryView from "./History/HistoryView";
-const Backbone: any = require('backbone');
+import {View, Router} from 'backbone';
+import Controller from "./Controller";
+import CollectionController from "./CollectionController";
 let $ = require('jquery');
 let _ = require('underscore');
 
-export default class Workspace extends Backbone.Router {
+export default class Workspace extends Router {
 
 	routes = {
 		"":             			"AppView",
@@ -38,7 +40,7 @@ export default class Workspace extends Backbone.Router {
 	summaryPage: SummaryView;
 	historyPage: HistoryView;
 
-	currentPage: Backbone.View;
+	currentPage: Controller<any> | CollectionController<Expenses>;
 
 	constructor(options?: RouterOptions) {
 		super(options);

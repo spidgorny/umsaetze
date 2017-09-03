@@ -1,11 +1,18 @@
-/// <reference path="../../typings/index.d.ts" />
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+/// <reference path="../../typings/index.d.ts" />
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
 var CategoryCount_1 = require("./CategoryCount");
+var backbone_1 = require("backbone");
 var elapse = require('elapse');
 elapse.configure({
     debug: true
@@ -17,11 +24,10 @@ var _ = require('underscore');
  * Depends on Expenses to parse them
  * and retrieve the total values for each category
  */
-var CategoryCollection = (function (_super) {
+var CategoryCollection = /** @class */ (function (_super) {
     __extends(CategoryCollection, _super);
     function CategoryCollection(options) {
-        var _this = this;
-        _super.call(this, options);
+        var _this = _super.call(this, options) || this;
         var ls = new bbls('Categories');
         //this.colors = simpleStorage.get('CategoryColors');
         var models = ls.findAll();
@@ -31,15 +37,18 @@ var CategoryCollection = (function (_super) {
         //console.log('categories in LS', models);
         //this.add(models);	// makes Backbone.Model instances
         _.each(models, function (m) {
-            _this.add(new CategoryCount_1.default(m));
+            _this.add(new CategoryCount_1["default"](m));
         });
         // sort
-        this.models = _.uniq(this.models, function (el) {
+        _this.models = _.uniq(_this.models, function (el) {
             return el.getName();
         });
-        if (!this.size()) {
+        if (!_this.size()) {
+            //this.getCategoriesFromExpenses();
+            // this is not available yet
         }
-        this.listenTo(this, 'change', this.saveToLS);
+        _this.listenTo(_this, 'change', _this.saveToLS);
+        return _this;
     }
     CategoryCollection.prototype.setExpenses = function (ex) {
         this.expenses = ex;
@@ -108,14 +117,15 @@ var CategoryCollection = (function (_super) {
             var amountBefore = exists.get('amount');
             var amountAfter = transaction.get('amount');
             if (categoryName == 'Income') {
+                //console.log(amountBefore, amountAfter, amountBefore + amountAfter);
             }
             exists.set('amount', amountBefore + amountAfter, { silent: true });
         }
         else {
-            this.add(new CategoryCount_1.default({
+            this.add(new CategoryCount_1["default"]({
                 catName: categoryName,
                 count: 1,
-                amount: transaction.get('amount'),
+                amount: transaction.get('amount')
             }), { silent: true });
         }
     };
@@ -156,6 +166,7 @@ var CategoryCollection = (function (_super) {
         var category = this.findWhere({ catName: value });
         if (category) {
             color = category.get('color');
+            //console.log('color for', value, 'is', color);
         }
         else {
             color = '#AAAAAA';
@@ -164,13 +175,13 @@ var CategoryCollection = (function (_super) {
     };
     CategoryCollection.prototype.exists = function (newName) {
         return !!this.findWhere({
-            catName: newName,
+            catName: newName
         });
     };
     CategoryCollection.prototype.random = function () {
         return _.sample(this.models);
     };
     return CategoryCollection;
-}(Backbone.Collection));
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = CategoryCollection;
+}(backbone_1.Collection));
+exports["default"] = CategoryCollection;
+//# sourceMappingURL=CategoryCollection.js.map

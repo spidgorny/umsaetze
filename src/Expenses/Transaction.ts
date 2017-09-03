@@ -1,4 +1,5 @@
 ///<reference path="../../typings/index.d.ts"/>
+import {Model} from 'backbone';
 let md5 = require('md5');
 let bb = require('backbone');
 
@@ -15,7 +16,7 @@ let bb = require('backbone');
  "sign": ""
  */
 
-export default class Transaction extends bb.Model {
+export default class Transaction extends Model {
 
 	date: Date;
 	category: String;

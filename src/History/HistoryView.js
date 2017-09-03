@@ -1,11 +1,17 @@
+"use strict";
 ///<reference path="../../typings/index.d.ts"/>
 ///<reference path="../../node_modules/backbone-typings/backbone.d.ts"/>
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
 var MonthSelect_1 = require("../MonthSelect");
 var slTable_1 = require("../Util/slTable");
 var Handlebars = require('handlebars');
@@ -13,21 +19,22 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var Chart = require('chart.js');
 require('datejs');
-var HistoryView = (function (_super) {
+var HistoryView = /** @class */ (function (_super) {
     __extends(HistoryView, _super);
     function HistoryView(options) {
-        _super.call(this, options);
-        this.collection = options.collection;
-        this.setElement($('#app'));
-        this.ms = MonthSelect_1.default.getInstance();
-        this.ms.update(this.collection);
-        this.listenTo(this.ms, 'MonthSelect:change', this.monthChange.bind(this));
-        this.template = _.template('<canvas width="1500" height="512" ' +
+        var _this = _super.call(this, options) || this;
+        _this.collection = options.collection;
+        _this.setElement($('#app'));
+        _this.ms = MonthSelect_1["default"].getInstance();
+        _this.ms.update(_this.collection);
+        _this.listenTo(_this.ms, 'MonthSelect:change', _this.monthChange.bind(_this));
+        _this.template = _.template('<canvas width="1500" height="512" ' +
             'class="sparkline" ' +
             'style="width: 1500px; height: 512px" ' +
             'data-chart_StrokeColor="rgba(151,187,0,1)" ' +
             'data-average="<%= average %>" ' +
             '></canvas>');
+        return _this;
         // let nintendo = this.collection.findWhere({id: '6137a425c770c89cfd55d60f91448749'});
         // if (nintendo) {
         // 	nintendo.set('amount', 3714.69);
@@ -56,9 +63,9 @@ var HistoryView = (function (_super) {
         });
         var content = '';
         content += this.template({
-            average: onlyAmounts.average(),
+            average: onlyAmounts.average()
         });
-        content += new slTable_1.default(JSON.parse(JSON.stringify(dataThisMonth)));
+        content += new slTable_1["default"](JSON.parse(JSON.stringify(dataThisMonth)));
         //content += '<pre>' + JSON.stringify(dataThisMonth, null, 4) + '</pre>';
         this.$el.html(content);
         this.renderSparkLines(labels, onlyAmounts, cumulative);
@@ -89,7 +96,7 @@ var HistoryView = (function (_super) {
                 data: data,
                 borderColor: '#FF0000',
                 borderWidth: 1,
-                fill: false,
+                fill: false
             };
             // Add to data object
             var dataDesc = {};
@@ -110,13 +117,13 @@ var HistoryView = (function (_super) {
                     scaleFontSize: 1,
                     scaleFontColor: "rgba(0,0,0,0)",
                     legend: {
-                        display: false,
+                        display: false
                     },
                     maintainAspectRatio: true,
                     scales: {
                         yAxes: [{
                                 ticks: {
-                                    padding: 0,
+                                    padding: 0
                                 }
                             }]
                     },
@@ -146,5 +153,5 @@ var HistoryView = (function (_super) {
     };
     return HistoryView;
 }(Backbone.View));
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = HistoryView;
+exports["default"] = HistoryView;
+//# sourceMappingURL=HistoryView.js.map

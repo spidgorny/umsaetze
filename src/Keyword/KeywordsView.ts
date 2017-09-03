@@ -100,4 +100,8 @@ export default class KeywordsView extends Backbone.View {
 		this.render();
 	}
 
+	hide() {
+
+	}
+
 }

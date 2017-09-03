@@ -6,6 +6,7 @@ import MonthSelect from "./MonthSelect";
 import ViewOptions = Backbone.ViewOptions;
 import Transaction from "./Expenses/Transaction";
 import {debug} from "./umsaetze";
+import Controller from "./Controller";
 // import Backbone from 'backbone';
 let elapse = require('elapse');
 elapse.configure({
@@ -17,7 +18,7 @@ const _ = require('underscore');
 // const BS = require('bootstrap');
 // let bs = BS;
 
-export default class AppView extends Backbone.View<Expenses> {
+export default class AppView extends Controller<Expenses> {
 
 	model: Transaction;
 

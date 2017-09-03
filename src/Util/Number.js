@@ -1,4 +1,5 @@
 "use strict";
+exports.__esModule = true;
 var accounting = require('accounting-js');
 var _ = require('underscore');
 function detectFloat(source) {
@@ -25,3 +26,4 @@ exports.detectFloat = detectFloat;
 Number.prototype.clamp = function (min, max) {
     return Math.min(Math.max(this, min), max);
 };
+//# sourceMappingURL=Number.js.map

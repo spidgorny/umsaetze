@@ -1,18 +1,15 @@
-/// <reference path="../../typings/index.d.ts" />
-/// <reference path="../../node_modules/backbone-typings/backbone.d.ts" />
-/// <reference path="../umsaetze.ts" />
-/// <reference path="../Papa.d.ts" />
-
 import Transaction from './Transaction';
 import CollectionFetchOptions = Backbone.CollectionFetchOptions;
 import PersistenceOptions = Backbone.PersistenceOptions;
-import KeywordCollection from "./KeywordCollection";
-import Keyword from "./.";
-import CategoryCount from "../Category/CategoryCount";
-import {debug} from "../umsaetze";
-import MonthSelect from "../MonthSelect";
+import KeywordCollection from '../Keyword/KeywordCollection';
+import Keyword from '../Keyword/Keyword';
+import CategoryCount from '../Category/CategoryCount';
+import {debug} from '../umsaetze';
+import MonthSelect from '../MonthSelect';
+import Collection = Backbone.Collection;
+import FakeJQueryXHR from "../FakeJQueryXHR";
 const bb = require('backbone');
-let BackboneLocalStorage = require("backbone.localstorage");
+let BackboneLocalStorage = require('backbone.localstorage');
 require('datejs');
 let elapse = require('elapse');
 elapse.configure({
@@ -20,19 +17,21 @@ elapse.configure({
 });
 let _ = require('underscore');
 
-export default class Expenses extends bb.Collection<Transaction> {
+export default class Expenses extends Collection<Transaction> {
 
-	model: Transaction;
+	model: typeof Transaction;
 
 	localStorage: Backbone.LocalStorage;
 
 	selectedMonth: Date;
 
-	comparator: 'date';
+	comparator(compare: Transaction, to?: Transaction) {
+		return compare.date > to.date
+			? 0 : (compare.date > to.date ? 1 : -1);
+	}
 
 	constructor(models?: Transaction[] | Object[], options?: any) {
 		super(models, options);
-		this.model = Transaction;
 		this.localStorage = new BackboneLocalStorage("Expenses");
 		this.listenTo(this, 'change', () => {
 			console.log('Expenses changed event');
@@ -44,7 +43,7 @@ export default class Expenses extends bb.Collection<Transaction> {
 	/**
 	 * Should be called after constructor to read data from LS
 	 * @param options
-	 * @returns {JQueryXHR}
+	 * @return JQueryXHR
 	 */
 	fetch(options: CollectionFetchOptions = {}) {
 		let models = this.localStorage.findAll();
@@ -56,6 +55,7 @@ export default class Expenses extends bb.Collection<Transaction> {
 			//this.unserializeDate();
 			this.trigger('change');
 		}
+		return new FakeJQueryXHR();
 	}
 
 	/**
@@ -232,7 +232,6 @@ export default class Expenses extends bb.Collection<Transaction> {
 	}
 
 	getSorted() {
-		this.comparator = 'date';
 		this.sort();
 		let visible = this.getVisible();
 		// return _.sortBy(visible, 'attributes.date');
@@ -272,7 +271,7 @@ export default class Expenses extends bb.Collection<Transaction> {
 		let count = 0;
 		for (let month = from; month.compareTo(till) == -1; month.addMonths(1)) {
 			let month1 = month.clone();
-			month1.addMonths(1).add(-1).minutes();
+			month1.addMonths(1).add(<IDateJSLiteral>{minutes: -1});
 			// console.log({
 			// 	month: month.toString('yyyy-MM-dd HH:mm'),
 			// 	month1: month1.toString('yyyy-MM-dd HH:mm'),

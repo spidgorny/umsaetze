@@ -1,9 +1,10 @@
 /// <reference path="../node_modules/backbone-typings/backbone.d.ts" />
 
-import Expenses from "./Expenses/Expenses";
-import Transaction from "./Expenses/Transaction";
-import CategoryCollection from "./Category/CategoryCollection";
-import CategoryCount from "./Category/CategoryCount";
+import Expenses from './Expenses/Expenses';
+import Transaction from './Expenses/Transaction';
+import CategoryCollection from './Category/CategoryCollection';
+import CategoryCount from './Category/CategoryCount';
+import Controller from './Controller';
 const Handlebars = require('handlebars');
 const Backbone = require('backbone');
 const $ = require('jquery');
@@ -11,7 +12,7 @@ const _ = require('underscore');
 const Chart = require('chart.js');
 const toastr = require('toastr');
 
-export default class CatPage extends Backbone.View<Transaction> {
+export default class CatPage extends Controller {
 
 	$el = $('#app');
 
@@ -79,7 +80,7 @@ export default class CatPage extends Backbone.View<Transaction> {
 			}
 			this.$el.on('change', 'input[type="color"]', this.selectColor.bind(this));
 			this.$('button.close').on('click', this.deleteCategory.bind(this));
-			this.$('#categoryCount').html(this.categoryList.size());
+			this.$('#categoryCount').html(this.categoryList.size().toString());
 			this.$('.inlineEdit').data('callback', this.renameCategory.bind(this));
 			setTimeout(() => {
 				this.renderSparkLines();

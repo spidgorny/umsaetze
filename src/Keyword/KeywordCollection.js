@@ -1,20 +1,27 @@
-///<reference path="../../typings/index.d.ts"/>
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var Collection_1 = require('./Collection');
-var Keyword_1 = require('./Keyword');
-var KeywordCollection = (function (_super) {
+///<reference path="../../typings/index.d.ts"/>
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
+var Collection_1 = require("./Collection");
+var Keyword_1 = require("./Keyword");
+var KeywordCollection = /** @class */ (function (_super) {
     __extends(KeywordCollection, _super);
     function KeywordCollection() {
-        _super.call(this);
-        this.modelClass = Keyword_1.default;
-        this.fetch();
+        var _this = _super.call(this) || this;
+        _this.modelClass = Keyword_1["default"];
+        _this.fetch();
+        return _this;
     }
     return KeywordCollection;
-}(Collection_1.default));
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = KeywordCollection;
+}(Collection_1["default"]));
+exports["default"] = KeywordCollection;
+//# sourceMappingURL=KeywordCollection.js.map

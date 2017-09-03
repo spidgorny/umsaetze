@@ -11,6 +11,8 @@ import ParseCSV from "./ParseCSV";
 import Table from "./Table";
 import MonthSelect from "../MonthSelect";
 import {detectFloat} from '../Util/Number';
+import Controller from "../Controller";
+import CollectionController from "../CollectionController";
 
 console.log(detectFloat('3.141528'));
 
@@ -28,7 +30,7 @@ const bbls = require('backbone.localstorage');
 const $ = require('jquery');
 const _ = require('underscore');
 
-export default class Sync extends Backbone.View<any> {
+export default class Sync extends CollectionController<Expenses> {
 
 	$el = $('#app');
 

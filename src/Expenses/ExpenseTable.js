@@ -1,10 +1,16 @@
-///<reference path="../../node_modules/backbone-typings/backbone.d.ts"/>
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+///<reference path="../../node_modules/backbone-typings/backbone.d.ts"/>
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
 var Keyword_1 = require("../Keyword/Keyword");
 var umsaetze_1 = require("../umsaetze");
 var Table_1 = require("../Sync/Table");
@@ -16,21 +22,22 @@ var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
 var handlebars = require('handlebars');
-var ExpenseTable = (function (_super) {
+var ExpenseTable = /** @class */ (function (_super) {
     __extends(ExpenseTable, _super);
     function ExpenseTable(options) {
-        _super.call(this, options);
-        this.template = _.template($('#rowTemplate').html());
-        console.log(this.keywords);
+        var _this = _super.call(this, options) || this;
+        _this.template = _.template($('#rowTemplate').html());
+        console.log(_this.keywords);
         // in case we started with Sync page the table is not visible
         if (!$('#expenseTable').length) {
             var template = _.template($('#AppView').html());
             $('#app').html(template());
         }
-        this.setElement($('#expenseTable'));
+        _this.setElement($('#expenseTable'));
         // slow re-rendering of the whole table when collection changes
         //this.listenTo(this.collection, 'update', this.render);
-        this.on("all", umsaetze_1.debug("ExpenseTable"));
+        _this.on("all", umsaetze_1.debug("ExpenseTable"));
+        return _this;
     }
     ExpenseTable.prototype.setCategoryList = function (list) {
         this.categoryList = list;
@@ -65,7 +72,7 @@ var ExpenseTable = (function (_super) {
     ExpenseTable.prototype.getTransactionAttributesTable = function () {
         var _this = this;
         var visible = this.model.getVisible();
-        var table = new Table_1.default();
+        var table = new Table_1["default"]();
         _.each(visible, function (transaction) {
             var attributes = transaction.toJSON();
             attributes.sDate = transaction.getDate().toString('yyyy-MM-dd');
@@ -132,6 +139,8 @@ var ExpenseTable = (function (_super) {
         if (transaction) {
             // console.log('Transaction id=', id);
             transaction.setCategory($select.val());
+            // console.log(transaction.toJSON());
+            //this.categoryList.trigger('change');
         }
         else {
             console.error('Transaction with id=', id, 'not found');
@@ -146,7 +155,7 @@ var ExpenseTable = (function (_super) {
             if (!$contextMenu.length) {
                 var template = handlebars.compile($('#categoryMenu').html());
                 var menuHTML = template({
-                    catlist: this.categoryList.getOptions(),
+                    catlist: this.categoryList.getOptions()
                 });
                 $('body').append(menuHTML);
                 $contextMenu = $('#contextMenu'); // after append
@@ -214,9 +223,9 @@ var ExpenseTable = (function (_super) {
         console.log('scrollTop', scrollTop);
         var categoryName = menu.text().trim();
         console.log(text, 'to be', categoryName);
-        this.keywords.add(new Keyword_1.default({
+        this.keywords.add(new Keyword_1["default"]({
             word: text,
-            category: categoryName,
+            category: categoryName
         }));
         this.model.setCategories(this.keywords);
         this.render();
@@ -244,5 +253,5 @@ var ExpenseTable = (function (_super) {
     };
     return ExpenseTable;
 }(Backbone.View));
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = ExpenseTable;
+exports["default"] = ExpenseTable;
+//# sourceMappingURL=ExpenseTable.js.map
