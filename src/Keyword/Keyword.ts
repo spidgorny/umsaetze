@@ -5,7 +5,7 @@ export default class Keyword {
 
 	category: string;
 
-	constructor(attributes: Object) {
+	constructor(attributes: Keyword) {
 		if (!attributes.word) {
 			throw new Error('no word in keyword');
 		}

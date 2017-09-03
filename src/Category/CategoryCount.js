@@ -11,10 +11,9 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Backbone = require('backbone');
-var Model = Backbone.Model;
+var backbone_1 = require("backbone");
 // const bbls = require('backbone.localstorage');
-Object.values = function (obj) { return Object.keys(obj).map(function (key) { return obj[key]; }); };
+var object = require('../Util/Object');
 var CategoryCount = /** @class */ (function (_super) {
     __extends(CategoryCount, _super);
     function CategoryCount() {
@@ -73,13 +72,13 @@ var CategoryCount = /** @class */ (function (_super) {
         this.set('amount', this.get('amount') + by, { silent: true });
     };
     CategoryCount.prototype.getAverageAmountPerMonth = function (totalsPerMonth) {
-        var totals = Object.values(totalsPerMonth);
+        var totals = object.values(totalsPerMonth);
         var sum = totals.reduce(function (a, b) { return parseFloat(a) + parseFloat(b); });
         var avg = sum / totals.length;
         //console.log(totals, sum, avg);
         return avg.toFixed(2);
     };
     return CategoryCount;
-}(Model));
+}(backbone_1.Model));
 exports["default"] = CategoryCount;
 //# sourceMappingURL=CategoryCount.js.map

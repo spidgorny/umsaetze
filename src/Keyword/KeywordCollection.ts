@@ -1,9 +1,9 @@
 ///<reference path="../../typings/index.d.ts"/>
 
-import Collection from './Collection';
+import CollectionArray from './CollectionArray';
 import Keyword from './Keyword';
 
-export default class KeywordCollection extends Collection {
+export default class KeywordCollection extends CollectionArray {
 
 	constructor() {
 		super();

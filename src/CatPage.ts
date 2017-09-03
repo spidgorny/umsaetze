@@ -5,14 +5,16 @@ import Transaction from './Expenses/Transaction';
 import CategoryCollection from './Category/CategoryCollection';
 import CategoryCount from './Category/CategoryCount';
 import Controller from './Controller';
+import CollectionController from "./CollectionController";
 const Handlebars = require('handlebars');
 const Backbone = require('backbone');
 const $ = require('jquery');
 const _ = require('underscore');
 const Chart = require('chart.js');
 const toastr = require('toastr');
+const object = require('../Util/Object');
 
-export default class CatPage extends Controller {
+export default class CatPage extends CollectionController<Expenses> {
 
 	$el = $('#app');
 
@@ -141,7 +143,7 @@ export default class CatPage extends Controller {
 			let average = self.attr('data-average');
 
 			// Build the data object
-			let data = Object.values(chartData);
+			let data = object.values(chartData);
 			let labels = Object.keys(chartData);
 			//console.log(data, labels);
 			let datasets = {};
@@ -150,10 +152,10 @@ export default class CatPage extends Controller {
 			datasets['strokeColor'] = self.attr('data-chart_StrokeColor');
 			datasets['data'] = data;
 
-			let lineset = {
+			let lineSet = {
 				type: 'line',
 				label: 'Average per month',
-				data: Array(data.length).fill(average),
+				data: [].fill(average, 0, data.length),
 				borderColor: '#FF0000',
 				borderWidth: 1,
 				fill: false,
@@ -162,7 +164,7 @@ export default class CatPage extends Controller {
 			// Add to data object
 			let dataDesc = {};
 			dataDesc['labels'] = labels;
-			dataDesc['datasets'] = Array(datasets, lineset);
+			dataDesc['datasets'] = Array(datasets, lineSet);
 
 			let catPage = this;
 			let chart = new Chart.Line(ctx, {
@@ -236,7 +238,7 @@ export default class CatPage extends Controller {
 			} else {
 				category.set('catName', newName);
 				this.collection.replaceCategory(oldName, newName);
-				this.collection.saveToLS();
+				this.categoryList.saveToLS();
 			}
 		}
 	}

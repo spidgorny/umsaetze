@@ -1,11 +1,9 @@
 /// <reference path="../../typings/index.d.ts" />
 
 import Expenses from "../Expenses/Expenses";
-let Backbone = require('backbone');
-import Model = Backbone.Model;
+import {Model} from 'backbone';
 // const bbls = require('backbone.localstorage');
-
-Object.values = obj => Object.keys(obj).map(key => obj[key]);
+const object = require('../Util/Object');
 
 export default class CategoryCount extends Model {
 
@@ -78,7 +76,7 @@ export default class CategoryCount extends Model {
 	}
 
 	getAverageAmountPerMonth(totalsPerMonth: Object) {
-		let totals = Object.values(totalsPerMonth);
+		let totals = object.values(totalsPerMonth);
 		let sum = totals.reduce(function(a, b) { return parseFloat(a) + parseFloat(b); });
 		let avg = sum / totals.length;
 		//console.log(totals, sum, avg);

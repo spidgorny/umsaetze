@@ -1,6 +1,6 @@
 import CategoryCollection from "./CategoryCollection";
 
-class CategoryCollectionModel extends Backbone.Model {
+export default class CategoryCollectionModel extends Backbone.Model {
 
 	constructor(collection: CategoryCollection, options?: any) {
 		super();

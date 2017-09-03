@@ -10,8 +10,8 @@ export default class CollectionArray extends Array {
 
 	modelClass: any;
 
-	constructor() {
-		super(arguments);
+	constructor(...arguments2) {
+		super(...arguments2);
 		this.name = this.constructor.name;
 	}
 

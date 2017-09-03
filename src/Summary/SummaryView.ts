@@ -5,6 +5,9 @@ import CategoryCollection from "../Category/CategoryCollection";
 import CategoryCount from "../Category/CategoryCount";
 import Expenses from "../Expenses/Expenses";
 import SummaryLine from "./SummaryLine";
+import CategoryCollectionModel from "../Category/CategoryCollectionModel";
+import {ViewOptions} from "backbone";
+
 const Handlebars = require('handlebars');
 const Backbone: any = require('backbone');
 const _ = require('underscore');
@@ -17,7 +20,7 @@ export default class SummaryView extends Backbone.View<CategoryCollectionModel> 
 
 	template: any;
 
-	constructor(options, expenses: Expenses) {
+	constructor(options: ViewOptions<CategoryCollectionModel>, expenses: Expenses) {
 		super(options);
 		this.expenses = expenses;
 		this.setElement($('#app'));
@@ -79,10 +82,11 @@ export default class SummaryView extends Backbone.View<CategoryCollectionModel> 
 		return categoryOptions;
 	}
 
-	private setPerCent(categoryOptions: Array) {
+	private setPerCent(categoryOptions: SummaryLine[]) {
 		let sumAverages = categoryOptions.reduce(function (current, b) {
 			//console.log(current, b);
-			return current + parseFloat(b.average);
+			return current + (typeof b.average == 'number'
+				? b.average : parseFloat(b.average));
 		}, 0);
 		console.log('sumAverages', sumAverages);
 		_.each(categoryOptions, (el) => {
@@ -92,7 +96,7 @@ export default class SummaryView extends Backbone.View<CategoryCollectionModel> 
 		return categoryOptions;
 	}
 
-	private addCategoryTotals(categoryOptions: Array) {
+	private addCategoryTotals(categoryOptions: SummaryLine[]) {
 		let groupByCategory = {};
 		_.each(categoryOptions, el => {
 			if (!el.catName) {
@@ -119,8 +123,10 @@ export default class SummaryView extends Backbone.View<CategoryCollectionModel> 
 				_.each(set, (el) => {
 					newCat.combine(el);
 				});
-				newCat.average = newCat.average.toFixed(2);
-				newCat.perCent = newCat.perCent.toFixed(2);
+				newCat.average = typeof newCat.average == 'number'
+					? newCat.average.toFixed(2) : newCat.average;
+				newCat.perCent = typeof newCat.perCent == 'number'
+					? newCat.perCent.toFixed(2) : newCat.perCent;
 				categoryOptions.push(newCat);
 			}
 		});

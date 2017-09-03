@@ -81,7 +81,8 @@ var SummaryView = /** @class */ (function (_super) {
     SummaryView.prototype.setPerCent = function (categoryOptions) {
         var sumAverages = categoryOptions.reduce(function (current, b) {
             //console.log(current, b);
-            return current + parseFloat(b.average);
+            return current + (typeof b.average == 'number'
+                ? b.average : parseFloat(b.average));
         }, 0);
         console.log('sumAverages', sumAverages);
         _.each(categoryOptions, function (el) {
@@ -116,8 +117,10 @@ var SummaryView = /** @class */ (function (_super) {
                 _.each(set, function (el) {
                     newCat_1.combine(el);
                 });
-                newCat_1.average = newCat_1.average.toFixed(2);
-                newCat_1.perCent = newCat_1.perCent.toFixed(2);
+                newCat_1.average = typeof newCat_1.average == 'number'
+                    ? newCat_1.average.toFixed(2) : newCat_1.average;
+                newCat_1.perCent = typeof newCat_1.perCent == 'number'
+                    ? newCat_1.perCent.toFixed(2) : newCat_1.perCent;
                 categoryOptions.push(newCat_1);
             }
         });

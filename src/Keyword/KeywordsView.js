@@ -11,11 +11,11 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Backbone = require("backbone");
 var $ = require("jquery");
 var _ = require('underscore');
 var RecursiveArrayOfStrings_1 = require("../RecursiveArrayOfStrings");
 var toastr = require("toastr");
+var CollectionController_1 = require("../CollectionController");
 var KeywordsView = /** @class */ (function (_super) {
     __extends(KeywordsView, _super);
     function KeywordsView() {
@@ -80,6 +80,6 @@ var KeywordsView = /** @class */ (function (_super) {
     KeywordsView.prototype.hide = function () {
     };
     return KeywordsView;
-}(Backbone.View));
+}(CollectionController_1["default"]));
 exports["default"] = KeywordsView;
 //# sourceMappingURL=KeywordsView.js.map

@@ -7,6 +7,8 @@ import ViewOptions = Backbone.ViewOptions;
 import Transaction from "./Expenses/Transaction";
 import {debug} from "./umsaetze";
 import Controller from "./Controller";
+import CollectionController from "./CollectionController";
+import {Collection, Model} from "backbone";
 // import Backbone from 'backbone';
 let elapse = require('elapse');
 elapse.configure({
@@ -18,9 +20,13 @@ const _ = require('underscore');
 // const BS = require('bootstrap');
 // let bs = BS;
 
-export default class AppView extends Controller<Expenses> {
+interface ViewOptionsExpenses<T extends Model> extends ViewOptions<T> {
+	collection: Expenses;
+}
 
-	model: Transaction;
+export default class AppView extends CollectionController<Expenses> {
+
+	model: typeof Transaction;
 
 	collection: Expenses;
 
@@ -38,8 +44,9 @@ export default class AppView extends Controller<Expenses> {
 	 * Make sure to provide collection: Expenses in options
 	 * and this.categoryList as well
 	 * @param options
+	 * @param categoryList
 	 */
-	constructor(options?: ViewOptions<Transaction>, categoryList: CategoryCollection) {
+	constructor(options: ViewOptionsExpenses<Transaction>, categoryList: CategoryCollection) {
 		super(options);
 		console.log('construct AppView');
 		this.collection = options.collection;

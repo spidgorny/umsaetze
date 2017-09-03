@@ -6,9 +6,9 @@ export default class SummaryLine {
 
 	catName: string;
 
-	average: number = 0;
+	average: number|string = 0;
 
-	perCent: number = 0;
+	perCent: number|string = 0;
 
 	background: string;
 

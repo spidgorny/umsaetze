@@ -16,7 +16,11 @@ var _ = require('underscore');
 var CollectionArray = /** @class */ (function (_super) {
     __extends(CollectionArray, _super);
     function CollectionArray() {
-        var _this = _super.call(this, arguments) || this;
+        var arguments2 = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            arguments2[_i] = arguments[_i];
+        }
+        var _this = _super.apply(this, arguments2) || this;
         _this.models = [];
         _this.name = _this.constructor.name;
         return _this;

@@ -11,7 +11,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Collection_1 = require("./Collection");
+var CollectionArray_1 = require("./CollectionArray");
 var Keyword_1 = require("./Keyword");
 var KeywordCollection = /** @class */ (function (_super) {
     __extends(KeywordCollection, _super);
@@ -22,6 +22,6 @@ var KeywordCollection = /** @class */ (function (_super) {
         return _this;
     }
     return KeywordCollection;
-}(Collection_1["default"]));
+}(CollectionArray_1["default"]));
 exports["default"] = KeywordCollection;
 //# sourceMappingURL=KeywordCollection.js.map

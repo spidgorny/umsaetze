@@ -7,8 +7,10 @@ import KeywordCollection from "./KeywordCollection";
 import RecursiveArrayOfStrings from '../RecursiveArrayOfStrings'
 import Keyword from "./Keyword";
 import toastr = require('toastr');
+import Controller from "../Controller";
+import CollectionController from "../CollectionController";
 
-export default class KeywordsView extends Backbone.View {
+export default class KeywordsView extends CollectionController<KeywordCollection> {
 
 	$el = $('#app');
 
@@ -23,7 +25,7 @@ export default class KeywordsView extends Backbone.View {
 
 	render() {
 		console.time('KeywordsView::render');
-		let content = ['<table class="table">',
+		let content: string[] = ['<table class="table">',
 			'<thead>',
 			'<tr>',
 				'<th>Keyword</th>',

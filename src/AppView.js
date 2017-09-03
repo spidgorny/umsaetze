@@ -14,7 +14,7 @@ var ExpenseTable_1 = require("./Expenses/ExpenseTable");
 var CategoryView_1 = require("./Category/CategoryView");
 var MonthSelect_1 = require("./MonthSelect");
 var umsaetze_1 = require("./umsaetze");
-var Controller_1 = require("./Controller");
+var CollectionController_1 = require("./CollectionController");
 // import Backbone from 'backbone';
 var elapse = require('elapse');
 elapse.configure({
@@ -23,14 +23,13 @@ elapse.configure({
 var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
-// const BS = require('bootstrap');
-// let bs = BS;
 var AppView = /** @class */ (function (_super) {
     __extends(AppView, _super);
     /**
      * Make sure to provide collection: Expenses in options
      * and this.categoryList as well
      * @param options
+     * @param categoryList
      */
     function AppView(options, categoryList) {
         var _this = _super.call(this, options) || this;
@@ -132,6 +131,6 @@ var AppView = /** @class */ (function (_super) {
         this.table.model.setCategories(this.table.keywords);
     };
     return AppView;
-}(Controller_1["default"]));
+}(CollectionController_1["default"]));
 exports["default"] = AppView;
 //# sourceMappingURL=AppView.js.map

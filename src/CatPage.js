@@ -12,13 +12,14 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var CategoryCount_1 = require("./Category/CategoryCount");
-var Controller_1 = require("./Controller");
+var CollectionController_1 = require("./CollectionController");
 var Handlebars = require('handlebars');
 var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
 var Chart = require('chart.js');
 var toastr = require('toastr');
+var object = require('../Util/Object');
 var CatPage = /** @class */ (function (_super) {
     __extends(CatPage, _super);
     function CatPage(expenses, categoryList) {
@@ -135,17 +136,17 @@ var CatPage = /** @class */ (function (_super) {
             var chartData = JSON.parse(self.attr('data-chart_values'));
             var average = self.attr('data-average');
             // Build the data object
-            var data = Object.values(chartData);
+            var data = object.values(chartData);
             var labels = Object.keys(chartData);
             //console.log(data, labels);
             var datasets = {};
             // Create the dataset
             datasets['strokeColor'] = self.attr('data-chart_StrokeColor');
             datasets['data'] = data;
-            var lineset = {
+            var lineSet = {
                 type: 'line',
                 label: 'Average per month',
-                data: Array(data.length).fill(average),
+                data: [].fill(average, 0, data.length),
                 borderColor: '#FF0000',
                 borderWidth: 1,
                 fill: false
@@ -153,7 +154,7 @@ var CatPage = /** @class */ (function (_super) {
             // Add to data object
             var dataDesc = {};
             dataDesc['labels'] = labels;
-            dataDesc['datasets'] = Array(datasets, lineset);
+            dataDesc['datasets'] = Array(datasets, lineSet);
             var catPage = _this;
             var chart = new Chart.Line(ctx, {
                 data: dataDesc,
@@ -227,11 +228,11 @@ var CatPage = /** @class */ (function (_super) {
             else {
                 category.set('catName', newName);
                 this.collection.replaceCategory(oldName, newName);
-                this.collection.saveToLS();
+                this.categoryList.saveToLS();
             }
         }
     };
     return CatPage;
-}(Controller_1["default"]));
+}(CollectionController_1["default"]));
 exports["default"] = CatPage;
 //# sourceMappingURL=CatPage.js.map

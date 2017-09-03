@@ -1,1 +1,1 @@
-console.error("Error: Cannot find module './Collection' from 'C:\\wamp\\vdrive\\web\\umsaetze\\src\\Keyword'");
+console.error("Error: Cannot find module '../Util/Object' from 'C:\\wamp\\vdrive\\web\\umsaetze\\src'");
