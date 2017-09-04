@@ -22,4 +22,3 @@ var MockStorage = /** @class */ (function () {
     return MockStorage;
 }());
 exports["default"] = MockStorage;
-//# sourceMappingURL=MockStorage.js.map

@@ -137,4 +137,3 @@ var SummaryView = /** @class */ (function (_super) {
     return SummaryView;
 }(Backbone.View));
 exports["default"] = SummaryView;
-//# sourceMappingURL=SummaryView.js.map

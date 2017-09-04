@@ -4,8 +4,7 @@ import Expenses from './Expenses/Expenses';
 import Transaction from './Expenses/Transaction';
 import CategoryCollection from './Category/CategoryCollection';
 import CategoryCount from './Category/CategoryCount';
-import Controller from './Controller';
-import CollectionController from "./CollectionController";
+import {CollectionController} from "./CollectionController";
 const Handlebars = require('handlebars');
 const Backbone = require('backbone');
 const $ = require('jquery');
@@ -14,7 +13,7 @@ const Chart = require('chart.js');
 const toastr = require('toastr');
 const object = require('./Util/Object');
 
-export default class CatPage extends CollectionController<Expenses> {
+export class CatPage extends CollectionController<Expenses> {
 
 	$el = $('#app');
 
@@ -41,7 +40,7 @@ export default class CatPage extends CollectionController<Expenses> {
 				Handlebars.compile(result)
 			);
 		});
-		//console.log(this);
+		console.log(this);
 		this.listenTo(this.categoryList, 'change', this.render);
 		this.listenTo(this.categoryList, 'add', this.render);
 		this.listenTo(this.categoryList, 'update', this.render);

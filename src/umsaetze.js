@@ -102,4 +102,3 @@ $(function () {
 // only run this once
 // import ImportKeywords from './ImportKeywords';
 // let i = new ImportKeywords();
-//# sourceMappingURL=umsaetze.js.map

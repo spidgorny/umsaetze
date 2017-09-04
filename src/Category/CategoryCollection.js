@@ -184,4 +184,3 @@ var CategoryCollection = /** @class */ (function (_super) {
     return CategoryCollection;
 }(backbone_1.Collection));
 exports["default"] = CategoryCollection;
-//# sourceMappingURL=CategoryCollection.js.map

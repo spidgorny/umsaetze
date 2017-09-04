@@ -20,4 +20,3 @@ var MyView = /** @class */ (function (_super) {
     return MyView;
 }(Backbone.View));
 exports["default"] = MyView;
-//# sourceMappingURL=MyView.js.map

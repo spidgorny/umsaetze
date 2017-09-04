@@ -3,26 +3,20 @@ import ExpenseTable from "./Expenses/ExpenseTable";
 import CategoryCollection from "./Category/CategoryCollection";
 import CategoryView from "./Category/CategoryView";
 import MonthSelect from "./MonthSelect";
-import ViewOptions = Backbone.ViewOptions;
 import Transaction from "./Expenses/Transaction";
 import {debug} from "./umsaetze";
-import Controller from "./Controller";
-import CollectionController from "./CollectionController";
-import {Collection, Model} from "backbone";
+import {CollectionController} from "./CollectionController";
+import {Collection, Model, ViewOptions} from "backbone";
+import {ViewOptionsExpenses} from "./ViewOptionsExpenses";
 // import Backbone from 'backbone';
 let elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
-const Backbone = require('backbone');
 const $ = require('jquery');
 const _ = require('underscore');
 // const BS = require('bootstrap');
 // let bs = BS;
-
-interface ViewOptionsExpenses<T extends Model> extends ViewOptions<T> {
-	collection: Expenses;
-}
 
 export default class AppView extends CollectionController<Expenses> {
 

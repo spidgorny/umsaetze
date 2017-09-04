@@ -9,6 +9,7 @@
     "get-filereader": "git clone https://github.com/bgrins/filereader.js docs/filereader.js",
     "compile": "node_modules/.bin/browserify src/umsaetze.js -o docs/web/bundle.js",
     "watch": "node_modules/.bin/watchify src/umsaetze.js -o docs/web/bundle.js -d -v",
+    "w": "node_modules/.bin/watchify src/umsaetze.js -o docs/web/bundle.js -d -v --poll=1",
     "FIXFIX": "webpack --progress --profile --colors --display-error-details --display-cached src/umsaetze.js -o docs/web/bundle.js",
     "serve": "node_modules/.bin/webpack-dev-server ./docs/web/ --hot --inline --module-bind \"css=style\\!css\"",
     "jasmine": "cd jasmine && jasmine"

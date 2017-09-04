@@ -96,4 +96,3 @@ var Transaction = /** @class */ (function (_super) {
     return Transaction;
 }(backbone_1.Model));
 exports["default"] = Transaction;
-//# sourceMappingURL=Transaction.js.map

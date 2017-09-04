@@ -172,4 +172,3 @@ var Workspace = /** @class */ (function (_super) {
     return Workspace;
 }(backbone_1.Router));
 exports["default"] = Workspace;
-//# sourceMappingURL=Workspace.js.map

@@ -49,4 +49,3 @@ var SLTable = /** @class */ (function () {
     return SLTable;
 }());
 exports["default"] = SLTable;
-//# sourceMappingURL=SLTable.js.map

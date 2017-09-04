@@ -20,9 +20,10 @@ var elapse = require('elapse');
 elapse.configure({
     debug: true
 });
-var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
+// const BS = require('bootstrap');
+// let bs = BS;
 var AppView = /** @class */ (function (_super) {
     __extends(AppView, _super);
     /**
@@ -131,6 +132,5 @@ var AppView = /** @class */ (function (_super) {
         this.table.model.setCategories(this.table.keywords);
     };
     return AppView;
-}(CollectionController_1["default"]));
+}(CollectionController_1.CollectionController));
 exports["default"] = AppView;
-//# sourceMappingURL=AppView.js.map

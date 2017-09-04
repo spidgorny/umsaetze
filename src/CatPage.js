@@ -37,7 +37,7 @@ var CatPage = /** @class */ (function (_super) {
             //_.template( result )
             Handlebars.compile(result));
         });
-        //console.log(this);
+        console.log(_this);
         _this.listenTo(_this.categoryList, 'change', _this.render);
         _this.listenTo(_this.categoryList, 'add', _this.render);
         _this.listenTo(_this.categoryList, 'update', _this.render);
@@ -233,6 +233,5 @@ var CatPage = /** @class */ (function (_super) {
         }
     };
     return CatPage;
-}(CollectionController_1["default"]));
-exports["default"] = CatPage;
-//# sourceMappingURL=CatPage.js.map
+}(CollectionController_1.CollectionController));
+exports.CatPage = CatPage;

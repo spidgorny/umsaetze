@@ -24,4 +24,3 @@ var CategoryCollectionModel = /** @class */ (function (_super) {
     return CategoryCollectionModel;
 }(Backbone.Model));
 exports["default"] = CategoryCollectionModel;
-//# sourceMappingURL=CategoryCollectionModel.js.map

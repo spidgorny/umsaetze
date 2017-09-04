@@ -227,4 +227,3 @@ var MonthSelect = /** @class */ (function (_super) {
     return MonthSelect;
 }(Backbone.View));
 exports["default"] = MonthSelect;
-//# sourceMappingURL=MonthSelect.js.map

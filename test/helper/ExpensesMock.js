@@ -48,4 +48,3 @@ var ExpensesMock = /** @class */ (function (_super) {
     return ExpensesMock;
 }(Expenses_1["default"]));
 exports["default"] = ExpensesMock;
-//# sourceMappingURL=ExpensesMock.js.map

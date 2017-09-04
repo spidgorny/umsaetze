@@ -18,10 +18,10 @@ var CollectionController_1 = require("../CollectionController");
 var KeywordsView = /** @class */ (function (_super) {
     __extends(KeywordsView, _super);
     function KeywordsView(options) {
-        var _this = this;
+        var _this = _super.call(this, options) || this;
         _this.$el = $('#app');
         console.log(_this);
-        _this = _super.call(this, options) || this;
+        //console.log(super);
         console.log('new KeywordsView()', _this.cid);
         return _this;
     }
@@ -82,6 +82,5 @@ var KeywordsView = /** @class */ (function (_super) {
     KeywordsView.prototype.hide = function () {
     };
     return KeywordsView;
-}(CollectionController_1["default"]));
-exports["default"] = KeywordsView;
-//# sourceMappingURL=KeywordsView.js.map
+}(CollectionController_1.CollectionController));
+exports.KeywordsView = KeywordsView;

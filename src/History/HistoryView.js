@@ -157,4 +157,3 @@ var HistoryView = /** @class */ (function (_super) {
     return HistoryView;
 }(Backbone.View));
 exports["default"] = HistoryView;
-//# sourceMappingURL=HistoryView.js.map

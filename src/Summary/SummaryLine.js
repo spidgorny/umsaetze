@@ -31,4 +31,3 @@ var SummaryLine = /** @class */ (function () {
     return SummaryLine;
 }());
 exports["default"] = SummaryLine;
-//# sourceMappingURL=SummaryLine.js.map

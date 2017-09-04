@@ -171,4 +171,3 @@ var CategoryView = /** @class */ (function (_super) {
     return CategoryView;
 }(Backbone.View));
 exports["default"] = CategoryView;
-//# sourceMappingURL=CategoryView.js.map

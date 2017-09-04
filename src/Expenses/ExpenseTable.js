@@ -254,4 +254,3 @@ var ExpenseTable = /** @class */ (function (_super) {
     return ExpenseTable;
 }(Backbone.View));
 exports["default"] = ExpenseTable;
-//# sourceMappingURL=ExpenseTable.js.map

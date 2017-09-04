@@ -75,4 +75,3 @@ var CollectionArray = /** @class */ (function (_super) {
     return CollectionArray;
 }(Array));
 exports["default"] = CollectionArray;
-//# sourceMappingURL=CollectionArray.js.map

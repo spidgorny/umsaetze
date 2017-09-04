@@ -21,4 +21,3 @@ var Controller = /** @class */ (function (_super) {
     return Controller;
 }(Backbone.View));
 exports["default"] = Controller;
-//# sourceMappingURL=Controller.js.map

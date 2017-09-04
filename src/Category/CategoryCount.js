@@ -81,4 +81,3 @@ var CategoryCount = /** @class */ (function (_super) {
     return CategoryCount;
 }(backbone_1.Model));
 exports["default"] = CategoryCount;
-//# sourceMappingURL=CategoryCount.js.map

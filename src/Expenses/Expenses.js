@@ -336,4 +336,3 @@ var Expenses = /** @class */ (function (_super) {
     return Expenses;
 }(backbone_1.Collection));
 exports["default"] = Expenses;
-//# sourceMappingURL=Expenses.js.map

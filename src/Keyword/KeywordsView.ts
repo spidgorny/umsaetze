@@ -4,9 +4,9 @@ import KeywordCollection from "./KeywordCollection";
 import RecursiveArrayOfStrings from '../RecursiveArrayOfStrings'
 import Keyword from "./Keyword";
 import toastr = require('toastr');
-import CollectionController from "../CollectionController";
+import {CollectionController} from '../CollectionController';
 
-export default class KeywordsView extends CollectionController<KeywordCollection> {
+export class KeywordsView extends CollectionController<KeywordCollection> {
 
 	$el = $('#app');
 
@@ -16,8 +16,9 @@ export default class KeywordsView extends CollectionController<KeywordCollection
 	keywords: KeywordCollection;
 
 	constructor(options?) {
-		console.log(this);
 		super(options);
+		console.log(this);
+		//console.log(super);
 		console.log('new KeywordsView()', this.cid);
 	}
 

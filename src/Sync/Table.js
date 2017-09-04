@@ -195,4 +195,3 @@ var Table = /** @class */ (function (_super) {
     return Table;
 }(ArrayPlus_1["default"]));
 exports["default"] = Table;
-//# sourceMappingURL=Table.js.map

@@ -72,4 +72,3 @@ var FakeJQueryXHR = /** @class */ (function () {
     return FakeJQueryXHR;
 }());
 exports["default"] = FakeJQueryXHR;
-//# sourceMappingURL=FakeJQueryXHR.js.map

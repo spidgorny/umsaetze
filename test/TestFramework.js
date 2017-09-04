@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var TestFramework = /** @class */ (function () {
     function TestFramework() {
     }
@@ -26,5 +26,4 @@ var TestFramework = /** @class */ (function () {
     };
     return TestFramework;
 }());
-exports["default"] = TestFramework;
-//# sourceMappingURL=TestFramework.js.map
+exports.default = TestFramework;
