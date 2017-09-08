@@ -1,14 +1,11 @@
-/// <reference path="../typings/index.d.ts" />
-
-import CollectionFetchOptions = Backbone.CollectionFetchOptions;
 import Workspace from "./Workspace";
-// var bootstrap = require('bootstrap');
 const _ = require('underscore');
 const Backbone = require('backbone');
 
 interface Window {
 	__backboneAgent: any;
 }
+declare let window: Window;
 
 if (window.__backboneAgent) {
 	window.__backboneAgent.handleBackbone(Backbone);
@@ -35,10 +32,8 @@ export function asyncLoop(arr: Array<any>, callback: Function, done?: Function) 
 	}(0));                                         //start with 0
 }
 
-export function debug(name) {
-	return function() {
-		//console.warn(name + ":", arguments);
-	};
+export function debug(name, ...args) {
+	console.warn(typeof name, ":", ...args);
 }
 
 class Umsaetze {

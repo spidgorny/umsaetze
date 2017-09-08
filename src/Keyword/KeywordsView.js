@@ -44,11 +44,11 @@ var KeywordsView = /** @class */ (function (_super) {
         content.push('</table>');
         // console.log(content);
         content = [
-            "<div class=\"panel panel-default\">\n\t\t\t\t<div class=\"panel-heading\">\n\t\t\t\t\t<div class=\"pull-right\">\n\t\t\t\t\t\t<button class=\"btn btn-default btn-xs\" id=\"removeDuplicates\">\n\t\t\t\t\t\t\t<span class=\"glyphicon glyphicon-filter\"></span>\n\t\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t\tKeywords \n\t\t\t\t<span class=\"badge\">" + this.keywords.size() + "</span>\n\t\t\t</div>\n\t\t\t<div class=\"panel-body\">",
-            content,
+            "<div class=\"panel panel-default\">\n\t\t\t\t<div class=\"panel-heading\">\n\t\t\t\t\t<div class=\"pull-right\">\n\t\t\t\t\t\t<button class=\"btn btn-default btn-xs\" id=\"removeDuplicates\">\n\t\t\t\t\t\t\t<span class=\"glyphicon glyphicon-filter\"></span>\n\t\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t\tKeywords \n\t\t\t\t<span class=\"badge\">" + this.keywords.size() + "</span>\n\t\t\t</div>\n\t\t\t<div class=\"panel-body\">"
+        ].concat(content, [
             '</div>',
             '</div>',
-        ];
+        ]);
         this.$el.html(RecursiveArrayOfStrings_1["default"].merge(content));
         this.$('#removeDuplicates').off().on('click', this.removeDuplicates.bind(this));
         this.$el.off('click', 'button.close').on('click', 'button.close', this.deleteRow.bind(this));

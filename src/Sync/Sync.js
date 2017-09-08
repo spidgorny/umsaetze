@@ -1,6 +1,4 @@
 "use strict";
-///<reference path="../../typings/index.d.ts"/>
-/// <reference path="Table.ts" />
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -19,6 +17,8 @@ var MonthSelect_1 = require("../MonthSelect");
 var Number_1 = require("../Util/Number");
 var CollectionController_1 = require("../CollectionController");
 console.log(Number_1.detectFloat('3.141528'));
+console.debug(Number_1.detectFloat('3.141528'));
+//debug(detectFloat('3.141528'));
 require('file-saver');
 var elapse = require('elapse');
 elapse.configure({
@@ -27,7 +27,7 @@ elapse.configure({
 var toastr = require('toastr');
 var chance = require('chance').Chance();
 var Backbone = require('backbone');
-var bbls = require('backbone.localstorage');
+require('backbone.localstorage');
 var $ = require('jquery');
 var _ = require('underscore');
 var Sync = /** @class */ (function (_super) {
@@ -35,7 +35,7 @@ var Sync = /** @class */ (function (_super) {
     function Sync(expenses) {
         var _this = _super.call(this) || this;
         _this.$el = $('#app');
-        _this.localStorage = new bbls("Expenses");
+        _this.localStorage = new Backbone.LocalStorage("Expenses");
         _this.model = expenses;
         _this.listenTo(_this.model, 'change', _this.render);
         _this.slowUpdateLoadingBar = _.throttle(_this.updateLoadingBar, 128);
@@ -226,5 +226,5 @@ var Sync = /** @class */ (function (_super) {
     Sync.prototype.hide = function () {
     };
     return Sync;
-}(CollectionController_1["default"]));
+}(CollectionController_1.CollectionController));
 exports["default"] = Sync;

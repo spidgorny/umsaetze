@@ -22,8 +22,6 @@ elapse.configure({
 });
 var $ = require('jquery');
 var _ = require('underscore');
-// const BS = require('bootstrap');
-// let bs = BS;
 var AppView = /** @class */ (function (_super) {
     __extends(AppView, _super);
     /**

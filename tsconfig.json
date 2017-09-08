@@ -1,11 +1,15 @@
 {
 	"compileOnSave": true,
 	"compilerOptions": {
+		"rootDir": "src",
 		"moduleResolution": "node",
-		"module": "commonjs",
+		"module": "es6",
 		"removeComments": true,
 		"preserveConstEnums": true,
 		"sourceMap": true
 	},
-	"lib": ["es2016", "dom"]
+	"lib": ["es2016", "dom"],
+	"include": [
+		"src/*.ts"
+	]
 }

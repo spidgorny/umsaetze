@@ -6,7 +6,7 @@ import Keyword from '../Keyword/Keyword';
 import CategoryCount from '../Category/CategoryCount';
 import {debug} from '../umsaetze';
 import MonthSelect from '../MonthSelect';
-import {Collection} from 'backbone';
+const Backbone = require('backbone');
 import FakeJQueryXHR from "../FakeJQueryXHR";
 
 const Backbone = require('backbone');
@@ -20,7 +20,7 @@ elapse.configure({
 });
 let _ = require('underscore');
 
-export default class Expenses extends Collection<Transaction> {
+export default class Expenses extends Backbone.Collection<Transaction> {
 
 	model: typeof Transaction;
 

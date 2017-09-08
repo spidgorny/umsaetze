@@ -1,15 +1,12 @@
-/// <reference path="../../typings/index.d.ts" />
-
 import Transaction from "../Expenses/Transaction";
 import CategoryCount from "./CategoryCount";
 import Expenses from "../Expenses/Expenses";
-import {Collection} from 'backbone';
+const Backbone = require('backbone');
 
 const elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
-const Backbone = require('backbone');
 require('backbone.localstorage');
 const _ = require('underscore');
 
@@ -17,7 +14,7 @@ const _ = require('underscore');
  * Depends on Expenses to parse them
  * and retrieve the total values for each category
  */
-export default class CategoryCollection extends Collection<CategoryCount> {
+export default class CategoryCollection extends Backbone.Collection<CategoryCount> {
 
 	model: CategoryCount|any;
 

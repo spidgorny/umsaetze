@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var backbone_1 = require("backbone");
+var _ = require('underscore');
 var CollectionController = /** @class */ (function () {
     function CollectionController(options) {
         // Regular expression used to split event strings.
@@ -11,7 +11,7 @@ var CollectionController = /** @class */ (function () {
         this._listeners = {};
         this.delegateEventSplitter = /^(\S+)\s*(.*)$/;
         this.viewOptions = ['model', 'collection', 'el', 'id', 'attributes', 'className', 'tagName', 'events'];
-        applyMixins(this, [backbone_1.Events]);
+        // applyMixins(this, [Events]);
         //su per(); // it has no constructor
         this.cid = _.uniqueId('view');
         _.extend(this, _.pick(options, this.viewOptions));
@@ -342,3 +342,4 @@ function applyMixins(derivedCtor, baseCtors) {
         });
     });
 }
+// applyMixins(CollectionController, [Events]);

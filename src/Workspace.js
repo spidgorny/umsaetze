@@ -1,5 +1,4 @@
 "use strict";
-///<reference path="../typings/index.d.ts"/>
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -107,7 +106,7 @@ var Workspace = /** @class */ (function (_super) {
         this.activateMenu();
         this.hideCurrentPage();
         if (!this.catPage) {
-            this.catPage = new CatPage_1["default"](this.model, this.categoryList);
+            this.catPage = new CatPage_1.CatPage(this.model, this.categoryList);
         }
         this.catPage.render();
         this.currentPage = this.catPage;
@@ -117,7 +116,7 @@ var Workspace = /** @class */ (function (_super) {
         this.activateMenu();
         this.hideCurrentPage();
         if (!this.keywordsPage) {
-            this.keywordsPage = new KeywordsView_1["default"]();
+            this.keywordsPage = new KeywordsView_1.KeywordsView();
             this.keywordsPage.keywords = this.keywords;
         }
         this.keywordsPage.render();

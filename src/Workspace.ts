@@ -1,22 +1,22 @@
-///<reference path="../typings/index.d.ts"/>
-
 import AppView from './AppView';
 import Sync from './Sync/Sync';
 import Expenses from "./Expenses/Expenses";
-import CatPage from "./CatPage";
-import KeywordsView from "./Keyword/KeywordsView";
+import {CatPage} from "./CatPage";
+import {KeywordsView} from "./Keyword/KeywordsView";
 import CategoryCollection from "./Category/CategoryCollection";
 import RouterOptions = Backbone.RouterOptions;
 import KeywordCollection from "./Keyword/KeywordCollection";
 import SummaryView from "./Summary/SummaryView";
 import HistoryView from "./History/HistoryView";
-import {View, Router} from 'backbone';
+// import Backbone from 'backbone';
+// const Router = Backbone.Router;
+const Backbone = require('backbone');
 import Controller from "./Controller";
-import CollectionController from "./CollectionController";
-let $ = require('jquery');
-let _ = require('underscore');
+import {CollectionController} from "./CollectionController";
+const $ = require('jquery');
+const _ = require('underscore');
 
-export default class Workspace extends Router {
+export default class Workspace extends Backbone.Router {
 
 	routes = {
 		"":             			"AppView",

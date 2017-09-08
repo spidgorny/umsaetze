@@ -1,11 +1,9 @@
-/// <reference path="../../typings/index.d.ts" />
-
 import Expenses from "../Expenses/Expenses";
-import {Model} from 'backbone';
+const Backbone = require('backbone');
 // const bbls = require('backbone.localstorage');
 const object = require('../Util/Object');
 
-export default class CategoryCount extends Model {
+export default class CategoryCount extends Backbone.Model {
 
 	catName: string;
 

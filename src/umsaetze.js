@@ -30,9 +30,11 @@ function asyncLoop(arr, callback, done) {
 }
 exports.asyncLoop = asyncLoop;
 function debug(name) {
-    return function () {
-        //console.warn(name + ":", arguments);
-    };
+    var args = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        args[_i - 1] = arguments[_i];
+    }
+    console.warn.apply(console, [typeof name, ":"].concat(args));
 }
 exports.debug = debug;
 var Umsaetze = /** @class */ (function () {

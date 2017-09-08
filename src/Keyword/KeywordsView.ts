@@ -1,8 +1,8 @@
 import $ = require('jquery');
 const _ = require('underscore');
-import KeywordCollection from "./KeywordCollection";
+import KeywordCollection from './KeywordCollection';
 import RecursiveArrayOfStrings from '../RecursiveArrayOfStrings'
-import Keyword from "./Keyword";
+import Keyword from './Keyword';
 import toastr = require('toastr');
 import {CollectionController} from '../CollectionController';
 
@@ -64,7 +64,7 @@ export class KeywordsView extends CollectionController<KeywordCollection> {
 				<span class="badge">${this.keywords.size()}</span>
 			</div>
 			<div class="panel-body">`,
-			content,
+			...content,
 			'</div>',
 			'</div>',
 		];

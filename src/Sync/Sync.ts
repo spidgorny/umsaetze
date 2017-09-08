@@ -1,23 +1,20 @@
-///<reference path="../../typings/index.d.ts"/>
-/// <reference path="Table.ts" />
-
 import Expenses from "../Expenses/Expenses";
 import Transaction from "../Expenses/Transaction";
-import CollectionFetchOptions = Backbone.CollectionFetchOptions;
-import {asyncLoop} from "../umsaetze";
+import {asyncLoop, debug} from "../umsaetze";
 import PersistenceOptions = Backbone.PersistenceOptions;
 import Workspace from "../Workspace";
-import ParseCSV from "./ParseCSV";
+import ParseCSV from './ParseCSV';
 import Table from "./Table";
-import MonthSelect from "../MonthSelect";
+import MonthSelect from '../MonthSelect';
 import {detectFloat} from '../Util/Number';
-import Controller from "../Controller";
-import CollectionController from "../CollectionController";
+import {CollectionController} from '../CollectionController';
 
 console.log(detectFloat('3.141528'));
+console.debug(detectFloat('3.141528'));
+//debug(detectFloat('3.141528'));
 
 require('file-saver');
-function saveAs(a: any, b: any);
+declare function saveAs(a: any, b: any);
 
 let elapse = require('elapse');
 elapse.configure({
@@ -26,7 +23,7 @@ elapse.configure({
 const toastr = require('toastr');
 const chance = require('chance').Chance();
 const Backbone = require('backbone');
-const bbls = require('backbone.localstorage');
+require('backbone.localstorage');
 const $ = require('jquery');
 const _ = require('underscore');
 
@@ -40,7 +37,7 @@ export default class Sync extends CollectionController<Expenses> {
 
 	slowUpdateLoadingBar: Function;
 
-	localStorage = new bbls("Expenses");
+	localStorage = new Backbone.LocalStorage("Expenses");
 
 	prevPercent: number;
 

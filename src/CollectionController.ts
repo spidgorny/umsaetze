@@ -1,10 +1,11 @@
-import Transaction from "./Expenses/Transaction";
-import {Collection, Model, Events} from "backbone";
+const Backbone = require('backbone');
+console.log(Backbone);
 import Expenses from "./Expenses/Expenses";
 import CollectionArray from "./Keyword/CollectionArray";
 import EventsHash = Backbone.EventsHash;
+const _ = require('underscore');
 
-export class CollectionController<T extends Expenses|CollectionArray> implements Events {
+export class CollectionController<T extends Expenses|CollectionArray> implements Backbone.Events {
 
 	// Regular expression used to split event strings.
 	eventSplitter = /\s+/;
@@ -283,7 +284,7 @@ export class CollectionController<T extends Expenses|CollectionArray> implements
 	collection: Expenses;
 
 	constructor(options?) {
-		applyMixins(this, [Events]);
+		// applyMixins(this, [Events]);
 		//su per(); // it has no constructor
 		this.cid = _.uniqueId('view');
 		_.extend(this, _.pick(options, this.viewOptions));
@@ -369,3 +370,4 @@ function applyMixins(derivedCtor: any, baseCtors: any[]) {
 	});
 }
 
+// applyMixins(CollectionController, [Events]);
