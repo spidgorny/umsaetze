@@ -1,11 +1,8 @@
-/// <reference path="../../typings/index.d.ts" />
-
 import ArrayPlus from "./ArrayPlus";
 import Table from "./Table";
-const _ = require('underscore');
-const accounting = require('accounting-js');
-// const _isNumeric = require('underscore.isnumeric');
-require('../Util/String');
+import _ from 'underscore';
+import accounting from 'accounting-js';
+import '../Util/String';
 import {detectFloat} from "../Util/Number";
 
 export default class Row extends ArrayPlus {

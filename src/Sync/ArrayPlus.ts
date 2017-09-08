@@ -1,7 +1,5 @@
-/// <reference path="../../typings/index.d.ts" />
-
-const _ = require('underscore');
-const naturalSort = require('javascript-natural-sort');
+import {_} from 'underscore';
+import naturalSort from 'javascript-natural-sort';
 
 export default class ArrayPlus extends Array<any> {
 

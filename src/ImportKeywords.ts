@@ -3,6 +3,7 @@
 import {_} from 'underscore';
 import Keyword from "./Keyword";
 import KeywordCollection from "./KeywordCollection";
+import Excel from 'exceljs';
 
 export default class ImportKeywords {
 
@@ -86,7 +87,6 @@ export default class ImportKeywords {
 
 	readExcelFile() {
 		return new Promise((resolve, reject) => {
-			var Excel = require('exceljs');
 			var workbook = new Excel.Workbook();
 			workbook.xlsx.readFile(this.keywordFile)
 				.then(() => {

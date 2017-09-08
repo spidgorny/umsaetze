@@ -1,16 +1,12 @@
-///<reference path="../../typings/index.d.ts"/>
-///<reference path="../../node_modules/backbone-typings/backbone.d.ts"/>
-
 import CategoryCollection from "../Category/CategoryCollection";
 import CategoryCount from "../Category/CategoryCount";
 import Expenses from "../Expenses/Expenses";
 import SummaryLine from "./SummaryLine";
 import CategoryCollectionModel from "../Category/CategoryCollectionModel";
 import {ViewOptions} from "backbone";
-
-const Handlebars = require('handlebars');
-const Backbone = require('backbone');
-const _ = require('underscore');
+import Handlebars from 'handlebars';
+import Backbone from 'backbone';
+import _ from 'underscore';
 
 export default class SummaryView extends Backbone.View<CategoryCollectionModel> {
 

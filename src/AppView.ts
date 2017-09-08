@@ -1,20 +1,20 @@
-import Expenses from "./Expenses/Expenses";
-import ExpenseTable from "./Expenses/ExpenseTable";
-import CategoryCollection from "./Category/CategoryCollection";
-import CategoryView from "./Category/CategoryView";
-import MonthSelect from "./MonthSelect";
-import Transaction from "./Expenses/Transaction";
-import {debug} from "./umsaetze";
-import {CollectionController} from "./CollectionController";
-import {ViewOptionsExpenses} from "./ViewOptionsExpenses";
+import Expenses from './Expenses/Expenses';
+import ExpenseTable from './Expenses/ExpenseTable';
+import CategoryCollection from './Category/CategoryCollection';
+import CategoryView from './Category/CategoryView';
+import MonthSelect from './MonthSelect';
+import Transaction from './Expenses/Transaction';
+import {debug} from './umsaetze';
+import { CollectionController } from './CollectionController';
+import { ViewOptionsExpenses } from './ViewOptionsExpenses';
 // import Backbone from 'backbone';
-let elapse = require('elapse');
+import elapse from 'elapse';
+import $ from 'jquery';
+import { _ } from 'underscore';
+
 elapse.configure({
 	debug: true
 });
-const $ = require('jquery');
-const _ = require('underscore');
-
 export default class AppView extends CollectionController<Expenses> {
 
 	model: typeof Transaction;
@@ -53,7 +53,7 @@ export default class AppView extends CollectionController<Expenses> {
 		this.table.setCategoryList(this.categoryList);
 
 		this.categories = new CategoryView({
-			model: this.categoryList,
+			model: this.categoryList
 		});
 		this.categories.setExpenses(this.collection);
 		//console.log('category view collection', this.categories.model);
@@ -66,12 +66,12 @@ export default class AppView extends CollectionController<Expenses> {
 
 		this.collection.selectedMonth = this.ms.getSelected();	// for filtering to know which month we're in
 
-		this.listenTo(this.collection, "change", this.render);
+		this.listenTo(this.collection, 'change', this.render);
 		//this.listenTo(this.collection, "change", this.table.render);
 		//this.listenTo(this.collection, "change", this.categories.change); // wrong collection inside ? wft?!
 		$('.custom-search-form input').on('keyup',
 			_.debounce(this.onSearch.bind(this), 300));
-		this.on("all", debug("AppView"));
+		this.on('all', debug('AppView'));
 	}
 
 	render() {

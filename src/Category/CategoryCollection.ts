@@ -1,14 +1,14 @@
 import Transaction from "../Expenses/Transaction";
 import CategoryCount from "./CategoryCount";
 import Expenses from "../Expenses/Expenses";
-const Backbone = require('backbone');
+import Backbone from 'backbone';
+import elapse from 'elapse';
+import LocalStorage from 'backbone.localstorage';
+import _ from 'underscore';
 
-const elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
-require('backbone.localstorage');
-const _ = require('underscore');
 
 /**
  * Depends on Expenses to parse them

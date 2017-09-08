@@ -1,7 +1,6 @@
 import Expenses from "../Expenses/Expenses";
-const Backbone = require('backbone');
-// const bbls = require('backbone.localstorage');
-const object = require('../Util/Object');
+import Backbone from 'backbone-es6/src/Backbone.js';
+import object from '../Util/Object';
 
 export default class CategoryCount extends Backbone.Model {
 

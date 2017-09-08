@@ -1,7 +1,6 @@
-import Row from "./Row";
-import ArrayPlus from "./ArrayPlus";
-
-const _ = require('underscore');
+import Row from './Row';
+import ArrayPlus from './ArrayPlus';
+import { _ } from "underscore";
 
 export default class Table extends ArrayPlus {
 

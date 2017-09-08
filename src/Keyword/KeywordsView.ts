@@ -1,9 +1,9 @@
-import $ = require('jquery');
-const _ = require('underscore');
+import $ from 'jquery';
+import _ from 'underscore';
 import KeywordCollection from './KeywordCollection';
 import RecursiveArrayOfStrings from '../RecursiveArrayOfStrings'
 import Keyword from './Keyword';
-import toastr = require('toastr');
+import toastr from 'toastr';
 import {CollectionController} from '../CollectionController';
 
 export class KeywordsView extends CollectionController<KeywordCollection> {

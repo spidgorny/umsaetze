@@ -1,17 +1,17 @@
-import Workspace from "./Workspace";
-const _ = require('underscore');
-const Backbone = require('backbone');
+import Workspace from './Workspace';
+import Backbone from 'backbone-es6/src/Backbone.js';
+// import {_} from 'underscore';
+import $ from 'jquery';
+import Tour from 'bootstrap-tour';
 
 interface Window {
 	__backboneAgent: any;
 }
 declare let window: Window;
 
-if (window.__backboneAgent) {
+if (typeof windows == 'object' && window.__backboneAgent) {
 	window.__backboneAgent.handleBackbone(Backbone);
 }
-const $ = require('jquery');
-// const _ = require('underscore');
 
 export function asyncLoop(arr: Array<any>, callback: Function, done?: Function) {
 	(function loop(i) {
@@ -83,7 +83,6 @@ class Umsaetze {
 	}
 
 	tour() {
-		const Tour = require('bootstrap-tour');
 		let tour = new Tour({
 			steps: [
 				{

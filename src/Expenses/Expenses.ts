@@ -6,19 +6,16 @@ import Keyword from '../Keyword/Keyword';
 import CategoryCount from '../Category/CategoryCount';
 import {debug} from '../umsaetze';
 import MonthSelect from '../MonthSelect';
-const Backbone = require('backbone');
 import FakeJQueryXHR from "../FakeJQueryXHR";
+import Backbone from 'backbone';
+import {LocalStorage} from 'backbone.localstorage';
+import datejs from 'datejs';
+import elapse from 'elapse';
+import { _ } from 'underscore';
 
-const Backbone = require('backbone');
-//let BackboneLocalStorage = require('backbone.localstorage');
-require('backbone.localstorage');
-// import {LocalStorage} from 'backbone.localstorage';
-require('datejs');
-let elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
-let _ = require('underscore');
 
 export default class Expenses extends Backbone.Collection<Transaction> {
 

@@ -8,24 +8,24 @@ import Table from "./Table";
 import MonthSelect from '../MonthSelect';
 import {detectFloat} from '../Util/Number';
 import {CollectionController} from '../CollectionController';
+import elapse from 'elapse';
+import 'file-saver';
+import toastr from 'toastr';
+import chance from 'chance').Chance(;
+import Backbone from 'backbone';
+import LocalStorage from backbone.localstorage';
+import $ from 'jquery';
+import _ from 'underscore';
 
 console.log(detectFloat('3.141528'));
 console.debug(detectFloat('3.141528'));
 //debug(detectFloat('3.141528'));
 
-require('file-saver');
 declare function saveAs(a: any, b: any);
 
-let elapse = require('elapse');
 elapse.configure({
 	debug: true
 });
-const toastr = require('toastr');
-const chance = require('chance').Chance();
-const Backbone = require('backbone');
-require('backbone.localstorage');
-const $ = require('jquery');
-const _ = require('underscore');
 
 export default class Sync extends CollectionController<Expenses> {
 

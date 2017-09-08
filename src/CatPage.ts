@@ -1,17 +1,15 @@
-/// <reference path="../node_modules/backbone-typings/backbone.d.ts" />
-
 import Expenses from './Expenses/Expenses';
 import Transaction from './Expenses/Transaction';
 import CategoryCollection from './Category/CategoryCollection';
 import CategoryCount from './Category/CategoryCount';
 import {CollectionController} from "./CollectionController";
-const Handlebars = require('handlebars');
-const Backbone = require('backbone');
-const $ = require('jquery');
-const _ = require('underscore');
-const Chart = require('chart.js');
-const toastr = require('toastr');
-const object = require('./Util/Object');
+import Handlebars from 'handlebars';
+import Backbone from 'backbone';
+import $ from 'jquery';
+import { _ } from 'underscore';
+import Chart from 'chart.js';
+import toastr from 'toastr';
+import object from './Util/Object';
 
 export class CatPage extends CollectionController<Expenses> {
 

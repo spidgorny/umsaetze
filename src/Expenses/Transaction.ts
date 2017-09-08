@@ -1,6 +1,5 @@
-const Backbone = require('backbone');
-let md5 = require('md5');
-let bb = require('backbone');
+import Backbone from 'backbone';
+import md5 from 'md5';
 
 /*
  {"account":"SpardaSlawa",

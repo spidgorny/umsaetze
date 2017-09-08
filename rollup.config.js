@@ -14,6 +14,9 @@ export default {
 		file: 'docs/web/bundle.js',
 		format: 'iife'
 	},
+	globals: {
+		jquery: '$'
+	},
 	sourcemap: true,
 	plugins: [
 		typescript({
@@ -30,7 +33,9 @@ export default {
 			include: 'node_modules/**',
 			sourceMap: true,
 			namedExports: {
-				'./node_modules/backbone/backbone.js': ['View', 'history', 'Collection', 'Model', 'Router']
+				'./node_modules/backbone/backbone.js': ['View', 'history', 'Collection', 'Model', 'Router'],
+				'./node_modules/jquery/dist/jquery.js': ['jquery'],
+				'./node_modules/jquery/dist/jquery.min.js': ['jquery']
 			}
 		})
 	]

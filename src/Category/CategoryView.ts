@@ -1,18 +1,16 @@
-///<reference path="../../typings/index.d.ts"/>
-///<reference path="../../node_modules/backbone-typings/backbone.d.ts"/>
-
 import CategoryCollection from "./CategoryCollection";
 import CategoryCount from "./CategoryCount";
 import Expenses from "../Expenses/Expenses";
-let elapse = require('elapse');
+import elapse from 'elapse';
+import Backbone from 'backbone';
+import _ from 'underscore';
+import $ from 'jquery';
+import Chart from 'chart.js';
+import {debug} from '../umsaetze';
+
 elapse.configure({
 	debug: true
 });
-const Backbone = require('backbone');
-const _ = require('underscore');
-const $ = require('jquery');
-const Chart = require('chart.js');
-import {debug} from '../umsaetze';
 
 export default class CategoryView extends Backbone.View<CategoryCollection> {
 

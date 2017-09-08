@@ -1,6 +1,4 @@
-/// <reference path="../../typings/index.d.ts" />
-
-const _ = require('underscore');
+import { _ } from "underscore";
 
 export default class SummaryLine {
 

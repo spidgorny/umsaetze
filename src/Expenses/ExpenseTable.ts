@@ -1,5 +1,3 @@
-///<reference path="../../node_modules/backbone-typings/backbone.d.ts"/>
-
 import Expenses from "./Expenses";
 import Transaction from "./Transaction";
 import CategoryCollection from "../Category/CategoryCollection";
@@ -7,14 +5,15 @@ import KeywordCollection from "../Keyword/KeywordCollection";
 import Keyword from "../Keyword/Keyword";
 import {debug} from "../umsaetze";
 import Table from "../Sync/Table";
-const elapse = require('elapse');
+import elapse from 'elapse';
+import Backbone from 'backbone';
+import $ from 'jquery';
+import _ from 'underscore';
+import handlebars from 'handlebars';
+
 elapse.configure({
 	debug: true
 });
-const Backbone = require('backbone');
-const $ = require('jquery');
-const _ = require('underscore');
-const handlebars = require('handlebars');
 
 export default class ExpenseTable extends Backbone.View<any> {
 

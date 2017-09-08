@@ -1,9 +1,9 @@
-const Backbone = require('backbone');
+import Backbone from 'backbone-es6/src/Backbone.js';
 console.log(Backbone);
 import Expenses from "./Expenses/Expenses";
 import CollectionArray from "./Keyword/CollectionArray";
 import EventsHash = Backbone.EventsHash;
-const _ = require('underscore');
+import _ from 'underscore';
 
 export class CollectionController<T extends Expenses|CollectionArray> implements Backbone.Events {
 

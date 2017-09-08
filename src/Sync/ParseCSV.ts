@@ -2,10 +2,10 @@
 
 // import {start} from "repl";
 import {detectFloat} from '../Util/Number';
-const Papa = require('papaparse');
+import Papa from 'papaparse';
 import Table from './Table';
 import Row from './Row';
-require('datejs');
+import 'datejs';
 
 /**
  * http://stackoverflow.com/questions/3115982/how-to-check-if-two-arrays-are-equal-with-javascript

@@ -1,6 +1,5 @@
-/// <reference path="../../typings/index.d.ts"/>
-const simpleStorage = require('simpleStorage.js');
-const _ = require('underscore');
+import simpleStorage from 'simpleStorage.js';
+import _ from 'underscore';
 
 export default class CollectionArray extends Array {
 

@@ -1,13 +1,13 @@
 ///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
 ///<reference path="../typings/index.d.ts"/>
 
-import Backbone = require('backbone');
+import Backbone from 'backbone';
 import Expenses from "./Expenses/Expenses";
 import LocalStorage = Backbone.LocalStorage;
 import ExpensesMock from "../test/helper/ExpensesMock";
-const $ = require('jquery');
-require('datejs');
-const _ = require('underscore');
+import { $ } from 'jquery';
+import 'datejs';
+import { _ } import 'underscore';
 import {detectFloat} from "./Util/Number";
 import {Number} from "./Util/Number";
 

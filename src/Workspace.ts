@@ -1,32 +1,30 @@
 import AppView from './AppView';
 import Sync from './Sync/Sync';
-import Expenses from "./Expenses/Expenses";
-import {CatPage} from "./CatPage";
-import {KeywordsView} from "./Keyword/KeywordsView";
-import CategoryCollection from "./Category/CategoryCollection";
+import Expenses from './Expenses/Expenses';
+import { CatPage } from './CatPage';
+import { KeywordsView } from './Keyword/KeywordsView';
+import CategoryCollection from './Category/CategoryCollection';
 import RouterOptions = Backbone.RouterOptions;
-import KeywordCollection from "./Keyword/KeywordCollection";
-import SummaryView from "./Summary/SummaryView";
-import HistoryView from "./History/HistoryView";
-// import Backbone from 'backbone';
-// const Router = Backbone.Router;
-const Backbone = require('backbone');
-import Controller from "./Controller";
-import {CollectionController} from "./CollectionController";
-const $ = require('jquery');
-const _ = require('underscore');
+import KeywordCollection from './Keyword/KeywordCollection';
+import SummaryView from './Summary/SummaryView';
+import HistoryView from './History/HistoryView';
+import Backbone from 'backbone-es6/src/Backbone.js';
+import Controller from './Controller';
+import { CollectionController } from './CollectionController';
+import $ from 'jquery';
+import _ from 'underscore';
 
 export default class Workspace extends Backbone.Router {
 
 	routes = {
-		"":             			"AppView",
-		":year/:month":				"MonthSelect",
-		":year/:month/:category":	"MonthSelectCategory",
-		"CatPage":					"CatPage",
-		"Sync":         			"Sync",
-		"Keywords":     			"Keywords",
-		"Summary": 	    			"Summary",
-		"History": 	    			"History",
+		'': 'AppView',
+		':year/:month': 'MonthSelect',
+		':year/:month/:category': 'MonthSelectCategory',
+		'CatPage': 'CatPage',
+		'Sync': 'Sync',
+		'Keywords': 'Keywords',
+		'Summary': 'Summary',
+		'History': 'History'
 	};
 
 	model: Expenses;
@@ -44,7 +42,7 @@ export default class Workspace extends Backbone.Router {
 
 	constructor(options?: RouterOptions) {
 		super(options);
-		(<any>this)._bindRoutes();
+		(this as any)._bindRoutes();
 		this.model = new Expenses();
 		this.model.fetch();
 		this.categoryList = new CategoryCollection();
@@ -58,7 +56,7 @@ export default class Workspace extends Backbone.Router {
 		// }).addClass('active').parent().parent().addClass('in').parent();
 		let element = $('ul.nav#side-menu a')
 			.removeClass('active')
-			.filter(function() {
+			.filter(function () {
 				return this.href == url;
 			})
 			.addClass('active')
@@ -86,7 +84,7 @@ export default class Workspace extends Backbone.Router {
 		this.hideCurrentPage();
 		if (!this.appPage) {
 			this.appPage = new AppView({
-				collection: this.model,
+				collection: this.model
 			}, this.categoryList);
 			this.appPage.table.keywords = this.keywords;
 		}

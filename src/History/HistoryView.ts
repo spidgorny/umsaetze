@@ -1,17 +1,14 @@
-///<reference path="../../typings/index.d.ts"/>
-///<reference path="../../node_modules/backbone-typings/backbone.d.ts"/>
-
 import MyView from "./MyView";
 import Expenses from "../Expenses/Expenses";
 import MonthSelect from "../MonthSelect";
 import Transaction from "../Expenses/Transaction";
 import {default as SLTable} from "../Util/SLTable";
-const Handlebars = require('handlebars');
-const Backbone: any = require('backbone');
-const _ = require('underscore');
-const Chart = require('chart.js');
-require('datejs');
-require('../Util/Array');
+import Handlebars from 'handlebars';
+import Backbone from 'backbone';
+import _ from 'underscore';
+import Chart from 'chart.js';
+import datejs from 'datejs';
+import from '../Util/Array';
 
 export default class HistoryView extends Backbone.View<Backbone.Model> {
 

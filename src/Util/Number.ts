@@ -1,5 +1,5 @@
-const accounting = require('accounting-js');
-const _ = require('underscore');
+import { accounting } from 'accounting-js';
+import { _ } from 'underscore';
 
 export function detectFloat(source: String) {
 	if (_.isUndefined(source)) return NaN;
@@ -21,9 +21,9 @@ export function detectFloat(source: String) {
 }
 
 export interface Number {
-	clamp(min: Number, max: Number): number;
+	clamp (min: Number, max: Number): number;
 }
 
-Number.prototype.clamp = function(min: number, max: number) {
+Number.prototype.clamp = function (min: number, max: number) {
 	return Math.min(Math.max(this, min), max);
 };
