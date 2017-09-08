@@ -5,17 +5,17 @@ import KeywordCollection from "../Keyword/KeywordCollection";
 import Keyword from "../Keyword/Keyword";
 import {debug} from "../main";
 import Table from "../Sync/Table";
-// import elapse from 'elapse';
-import Backbone from 'backbone-es6/src/Backbone.js';
+import View from 'backbone-es6/src/View.js';
 import $ from 'jquery';
 import _ from 'underscore';
 import handlebars from 'handlebars';
+// import elapse from 'elapse';
 
 // elapse.configure({
 // 	debug: true
 // });
 
-export default class ExpenseTable extends Backbone.View<any> {
+export default class ExpenseTable extends View<any> {
 
 	model: Expenses;
 
@@ -32,12 +32,13 @@ export default class ExpenseTable extends Backbone.View<any> {
 		console.log(this.keywords);
 
 		// in case we started with Sync page the table is not visible
-		if (!$('#expenseTable').length) {
-			var template = _.template($('#AppView').html());
+		let $expenseTable = $('#expenseTable');
+		if (!$expenseTable.length) {
+			const template = _.template($('#AppView').html());
 			$('#app').html(template());
 		}
 
-		this.setElement($('#expenseTable'));
+		this.setElement($expenseTable);
 
 		// slow re-rendering of the whole table when collection changes
 		//this.listenTo(this.collection, 'update', this.render);

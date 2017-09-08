@@ -59,6 +59,7 @@
     "stream-to-promise": "^2.2.0",
     "toastr": "^2.1.2",
     "typescript": "^2",
+    "typhonjs-core-backbone-events": "git+https://github.com/typhonjs-backbone/typhonjs-core-backbone-events.git",
     "underscore": "^1.8.3",
     "underscore.isnumeric": "^1.0.5",
     "utf8": "^2.1.1",

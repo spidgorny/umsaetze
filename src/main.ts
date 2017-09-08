@@ -14,6 +14,15 @@ if (typeof window == 'object' && window.__backboneAgent) {
 	window.__backboneAgent.handleBackbone(Backbone);
 }
 
+$(() => {
+	// setTimeout(() => {
+	// const u = new Umsaetze();
+	// }, 1);
+});
+
+const u = new Umsaetze();
+
+
 export function asyncLoop(arr: Array<any>, callback: Function, done?: Function) {
 	(function loop(i) {
 		//callback when the loop goes on
@@ -36,12 +45,6 @@ export function asyncLoop(arr: Array<any>, callback: Function, done?: Function) 
 export function debug(name, ...args) {
 	console.warn(typeof name, ":", ...args);
 }
-
-$(() => {
-	// setTimeout(() => {
-		const u = new Umsaetze();
-	// }, 1);
-});
 
 // only run this once
 // import ImportKeywords from './ImportKeywords';

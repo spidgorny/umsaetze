@@ -72,7 +72,9 @@ export default class AppView extends CollectionController<Expenses> {
 		//this.listenTo(this.collection, "change", this.categories.change); // wrong collection inside ? wft?!
 		$('.custom-search-form input').on('keyup',
 			_.debounce(this.onSearch.bind(this), 300));
-		this.on('all', debug('AppView'));
+		this.on('all', () => {
+			debug('AppView')
+		});
 	}
 
 	render() {

@@ -10,8 +10,8 @@ import FakeJQueryXHR from '../FakeJQueryXHR';
 import Backbone from 'backbone-es6/src/Backbone.js';
 import {LocalStorage} from 'backbone.localstorage';
 import datejs from 'datejs';
-// import Timer from 'elapse';
 import { _ } from 'underscore';
+// import Timer from 'elapse';
 
 // Timer.configure({
 // 	debug: true
