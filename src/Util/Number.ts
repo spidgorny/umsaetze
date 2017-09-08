@@ -1,4 +1,4 @@
-import { accounting } from 'accounting-js';
+import { unformat } from 'accounting-js';
 import { _ } from 'underscore';
 
 export function detectFloat(source: String) {

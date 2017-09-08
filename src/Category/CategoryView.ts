@@ -1,16 +1,16 @@
 import CategoryCollection from "./CategoryCollection";
 import CategoryCount from "./CategoryCount";
 import Expenses from "../Expenses/Expenses";
-import elapse from 'elapse';
+// import elapse from 'elapse';
 import Backbone from 'backbone';
 import _ from 'underscore';
 import $ from 'jquery';
 import Chart from 'chart.js';
-import {debug} from '../umsaetze';
+import {debug} from '../main';
 
-elapse.configure({
-	debug: true
-});
+// elapse.configure({
+// 	debug: true
+// });
 
 export default class CategoryView extends Backbone.View<CategoryCollection> {
 
@@ -42,7 +42,7 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 	}
 
 	render() {
-		elapse.time('CategoryView.render');
+		console.profile('CategoryView.render');
 		let categoryCount = this.model.toJSON();
 
 		// remove income from %
@@ -85,7 +85,7 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 
 		this.showPieChart(Math.abs(sum));
 
-		elapse.timeEnd('CategoryView.render');
+		console.profileEnd('CategoryView.render');
 		return this;
 	}
 

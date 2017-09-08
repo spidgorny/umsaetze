@@ -1,4 +1,4 @@
-import Backbone from 'backbone';
+import Backbone from 'backbone-es6/src/Backbone.js';
 import md5 from 'md5';
 
 /*

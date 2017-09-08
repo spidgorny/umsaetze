@@ -4,18 +4,18 @@ import PersistenceOptions = Backbone.PersistenceOptions;
 import KeywordCollection from '../Keyword/KeywordCollection';
 import Keyword from '../Keyword/Keyword';
 import CategoryCount from '../Category/CategoryCount';
-import {debug} from '../umsaetze';
+import {debug} from '../main';
 import MonthSelect from '../MonthSelect';
-import FakeJQueryXHR from "../FakeJQueryXHR";
-import Backbone from 'backbone';
+import FakeJQueryXHR from '../FakeJQueryXHR';
+import Backbone from 'backbone-es6/src/Backbone.js';
 import {LocalStorage} from 'backbone.localstorage';
 import datejs from 'datejs';
-import elapse from 'elapse';
+// import Timer from 'elapse';
 import { _ } from 'underscore';
 
-elapse.configure({
-	debug: true
-});
+// Timer.configure({
+// 	debug: true
+// });
 
 export default class Expenses extends Backbone.Collection<Transaction> {
 
@@ -135,14 +135,14 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	 */
 	filterVisible(q: string) {
 		if (!q.length) return;
-		elapse.time('Expense.filterVisible');
+		console.profile('Expense.filterVisible');
 		let lowQ = q.toLowerCase();
 		this.each((row: Transaction) => {
 			if (row.get('note').toLowerCase().indexOf(lowQ) == -1) {
 				row.set('visible', false, { silent: true });
 			}
 		});
-		elapse.timeEnd('Expense.filterVisible');
+		console.profileEnd();
 		this.saveAll();
 	}
 
@@ -151,7 +151,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	 * @param selectedMonth
 	 */
 	filterByMonth(selectedMonth?: Date) {
-		elapse.time('Expense.filterByMonth');
+		console.profile('Expense.filterByMonth');
 		if (selectedMonth) {
 			this.selectedMonth = selectedMonth;
 		} else if (this.selectedMonth) {
@@ -171,7 +171,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 			});
 			this.saveAll();
 		}
-		elapse.timeEnd('Expense.filterByMonth');
+		console.profileEnd('Expense.filterByMonth');
 	}
 
 	whereMonth(selectedMonth: Date) {
@@ -188,7 +188,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	}
 
 	filterByCategory(category: CategoryCount) {
-		elapse.time('Expense.filterByCategory');
+		console.profile('Expense.filterByCategory');
 		this.each((row: Transaction) => {
 			if (row.isVisible()) {
 				let rowCat: string = row.get('category');
@@ -198,30 +198,30 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 			}
 		});
 		this.saveAll();
-		elapse.timeEnd('Expense.filterByCategory');
+		console.profileEnd('Expense.filterByCategory');
 	}
 
 	saveAll() {
-		elapse.time('Expense.saveAll');
+		console.profile('Expense.saveAll');
 		this.localStorage._clear();
 		this.each((model: Transaction) => {
 			this.localStorage.update(model);
 		});
-		elapse.timeEnd('Expense.saveAll');
+		console.profileEnd('Expense.saveAll');
 	}
 
 	/**
 	 * @deprecated
 	 */
 	unserializeDate() {
-		elapse.time('Expense.unserializeDate');
+		console.profile('Expense.unserializeDate');
 		this.each((model: Transaction) => {
 			let sDate = model.get('date');
 			let dateObject = new Date(sDate);
 			console.log(sDate, dateObject);
 			model.set('date', dateObject);
 		});
-		elapse.timeEnd('Expense.unserializeDate');
+		console.profileEnd('Expense.unserializeDate');
 	}
 
 	getVisible() {

@@ -3,17 +3,17 @@ import Transaction from "./Transaction";
 import CategoryCollection from "../Category/CategoryCollection";
 import KeywordCollection from "../Keyword/KeywordCollection";
 import Keyword from "../Keyword/Keyword";
-import {debug} from "../umsaetze";
+import {debug} from "../main";
 import Table from "../Sync/Table";
-import elapse from 'elapse';
-import Backbone from 'backbone';
+// import elapse from 'elapse';
+import Backbone from 'backbone-es6/src/Backbone.js';
 import $ from 'jquery';
 import _ from 'underscore';
 import handlebars from 'handlebars';
 
-elapse.configure({
-	debug: true
-});
+// elapse.configure({
+// 	debug: true
+// });
 
 export default class ExpenseTable extends Backbone.View<any> {
 
@@ -54,7 +54,7 @@ export default class ExpenseTable extends Backbone.View<any> {
 			console.log('ExpenseTable.noRender');
 			return;
 		}
-		elapse.time('ExpenseTable.render');
+		console.profile('ExpenseTable.render');
 		console.log('ExpenseTable.render()', this.model.size());
 
 		let table = this.getTransactionAttributesTable();
@@ -76,7 +76,7 @@ export default class ExpenseTable extends Backbone.View<any> {
 		this.$el.off('click', 'button.close').on('click', 'button.close', this.deleteRow.bind(this));
 		this.$el.on('click', 'input.checkedDone', this.onCheck.bind(this));
 
-		elapse.timeEnd('ExpenseTable.render');
+		console.profileEnd('ExpenseTable.render');
 		return this;
 	}
 

@@ -1,14 +1,14 @@
 import Transaction from "../Expenses/Transaction";
 import CategoryCount from "./CategoryCount";
 import Expenses from "../Expenses/Expenses";
-import Backbone from 'backbone';
-import elapse from 'elapse';
+import Backbone from 'backbone-es6/src/Backbone.js';
+// import elapse from 'elapse';
 import LocalStorage from 'backbone.localstorage';
 import _ from 'underscore';
 
-elapse.configure({
-	debug: true
-});
+// elapse.configure({
+// 	debug: true
+// });
 
 /**
  * Depends on Expenses to parse them
@@ -96,7 +96,7 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 	}
 
 	getCategoriesFromExpenses() {
-		elapse.time('getCategoriesFromExpenses');
+		console.profile('getCategoriesFromExpenses');
 		// this.reset();	// don't reset - loosing colors
 		this.resetCounters();
 		let visible = this.expenses.getVisible();
@@ -109,7 +109,7 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 		});
 		//console.log(this.categoryCount);
 		this.sortBy('amount');
-		elapse.timeEnd('getCategoriesFromExpenses');
+		console.profileEnd('getCategoriesFromExpenses');
 
 		// when we recalculated the data we trigger the view render
 		this.trigger('change'); // commented because of infinite loop

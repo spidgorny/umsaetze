@@ -4,11 +4,11 @@ import MonthSelect from "../MonthSelect";
 import Transaction from "../Expenses/Transaction";
 import {default as SLTable} from "../Util/SLTable";
 import Handlebars from 'handlebars';
-import Backbone from 'backbone';
+import Backbone from 'backbone-es6/src/Backbone.js';
 import _ from 'underscore';
 import Chart from 'chart.js';
 import datejs from 'datejs';
-import from '../Util/Array';
+import array from '../Util/Array';
 
 export default class HistoryView extends Backbone.View<Backbone.Model> {
 

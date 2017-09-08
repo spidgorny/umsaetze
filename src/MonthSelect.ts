@@ -1,15 +1,12 @@
-///<reference path="../node_modules/backbone-typings/backbone.d.ts"/>
-///<reference path="../typings/index.d.ts"/>
-
-import Backbone from 'backbone';
-import Expenses from "./Expenses/Expenses";
+import Backbone from 'backbone-es6/src/Backbone.js';
+import Expenses from './Expenses/Expenses';
 import LocalStorage = Backbone.LocalStorage;
-import ExpensesMock from "../test/helper/ExpensesMock";
-import { $ } from 'jquery';
-import 'datejs';
-import { _ } import 'underscore';
-import {detectFloat} from "./Util/Number";
-import {Number} from "./Util/Number";
+import ExpensesMock from '../test/helper/ExpensesMock';
+import $ from 'jquery';
+import datejs from 'datejs';
+import { _ } from 'underscore';
+import {detectFloat} from './Util/Number';
+import {Number} from './Util/Number';
 
 export default class MonthSelect extends Backbone.View<any> {
 
@@ -19,7 +16,7 @@ export default class MonthSelect extends Backbone.View<any> {
 
 	monthOptions: JQuery = this.$('button');
 
-	selectedYear = parseInt(this.yearSelect.val()) || new Date().getFullYear();
+	selectedYear = parseInt(this.yearSelect.val()+'') || new Date().getFullYear();
 
 	selectedMonth = 'Feb';
 

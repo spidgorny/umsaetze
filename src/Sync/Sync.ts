@@ -1,19 +1,19 @@
-import Expenses from "../Expenses/Expenses";
-import Transaction from "../Expenses/Transaction";
-import {asyncLoop, debug} from "../umsaetze";
+import Expenses from '../Expenses/Expenses';
+import Transaction from '../Expenses/Transaction';
+import {asyncLoop, debug} from '../main';
 import PersistenceOptions = Backbone.PersistenceOptions;
-import Workspace from "../Workspace";
+import Workspace from '../Workspace';
 import ParseCSV from './ParseCSV';
 import Table from "./Table";
 import MonthSelect from '../MonthSelect';
 import {detectFloat} from '../Util/Number';
 import {CollectionController} from '../CollectionController';
-import elapse from 'elapse';
-import 'file-saver';
+// import elapse from 'elapse';
+import { saveAs } from  'file-saver';
 import toastr from 'toastr';
-import chance from 'chance').Chance(;
-import Backbone from 'backbone';
-import LocalStorage from backbone.localstorage';
+import chance from 'chance';
+import Backbone from 'backbone-es6/src/Backbone.js';
+import LocalStorage from 'backbone.localstorage';
 import $ from 'jquery';
 import _ from 'underscore';
 
@@ -23,9 +23,9 @@ console.debug(detectFloat('3.141528'));
 
 declare function saveAs(a: any, b: any);
 
-elapse.configure({
-	debug: true
-});
+// elapse.configure({
+// 	debug: true
+// });
 
 export default class Sync extends CollectionController<Expenses> {
 
@@ -109,12 +109,12 @@ export default class Sync extends CollectionController<Expenses> {
 
 		return this.fetchCSV(csv, {
 			success: () => {
-				elapse.time('Expense.saveModels2LS');
+				console.profile('Expense.saveModels2LS');
 				console.log('models loaded, saving to LS');
 				this.model.each((model: Transaction) => {
 					this.localStorage.create(model);
 				});
-				elapse.timeEnd('Expense.saveModels2LS');
+				console.profileEnd('Expense.saveModels2LS');
 			}
 		});
 	}

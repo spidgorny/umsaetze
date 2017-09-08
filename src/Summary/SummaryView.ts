@@ -5,7 +5,7 @@ import SummaryLine from "./SummaryLine";
 import CategoryCollectionModel from "../Category/CategoryCollectionModel";
 import {ViewOptions} from "backbone";
 import Handlebars from 'handlebars';
-import Backbone from 'backbone';
+import Backbone from 'backbone-es6/src/Backbone.js';
 import _ from 'underscore';
 
 export default class SummaryView extends Backbone.View<CategoryCollectionModel> {

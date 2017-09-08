@@ -4,17 +4,18 @@ import CategoryCollection from './Category/CategoryCollection';
 import CategoryView from './Category/CategoryView';
 import MonthSelect from './MonthSelect';
 import Transaction from './Expenses/Transaction';
-import {debug} from './umsaetze';
+import {debug} from './main';
 import { CollectionController } from './CollectionController';
 import { ViewOptionsExpenses } from './ViewOptionsExpenses';
-// import Backbone from 'backbone';
-import elapse from 'elapse';
+import Backbone from 'backbone-es6/src/Backbone.js';
+// import elapse from 'elapse';
 import $ from 'jquery';
 import { _ } from 'underscore';
 
-elapse.configure({
-	debug: true
-});
+// elapse.configure({
+// 	debug: true
+// });
+
 export default class AppView extends CollectionController<Expenses> {
 
 	model: typeof Transaction;
@@ -105,7 +106,7 @@ export default class AppView extends CollectionController<Expenses> {
 	}
 
 	monthChange() {
-		elapse.time('AppView.monthChange');
+		console.profile('AppView.monthChange');
 		this.collection.setAllVisible();						// silent
 		this.collection.filterByMonth(this.ms.getSelected());	// silent
 		this.collection.filterVisible(this.q);					// silent
@@ -116,7 +117,7 @@ export default class AppView extends CollectionController<Expenses> {
 		// wrong. this is called by this.render()
 
 		this.categoryList.getCategoriesFromExpenses();
-		elapse.timeEnd('AppView.monthChange');
+		console.profileEnd('AppView.monthChange');
 	}
 
 	onSearch(event) {
@@ -128,7 +129,7 @@ export default class AppView extends CollectionController<Expenses> {
 	}
 
 	show() {
-		elapse.time('AppView.show');
+		console.profile('AppView.show');
 
 		this.ms.earliest = this.collection.getEarliest();
 		this.ms.latest = this.collection.getLatest();
@@ -139,17 +140,17 @@ export default class AppView extends CollectionController<Expenses> {
 
 		this.render();
 		this.categories.show();
-		elapse.timeEnd('AppView.show');
+		console.profileEnd('AppView.show');
 	}
 
 	hide() {
-		elapse.time('AppView.hide');
+		console.profile('AppView.hide');
 		//this.ms.hide();	// this may be needed for History
 		if (this.$('#expenseTable').length
 			&& this.$('#expenseTable').is(':visible')) {
 		}
 		this.categories.hide();
-		elapse.timeEnd('AppView.hide');
+		console.profileEnd('AppView.hide');
 	}
 
 	applyKeywords(event: MouseEvent) {

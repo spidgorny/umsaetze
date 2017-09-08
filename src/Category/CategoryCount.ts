@@ -1,6 +1,6 @@
 import Expenses from "../Expenses/Expenses";
 import Backbone from 'backbone-es6/src/Backbone.js';
-import object from '../Util/Object';
+import '../Util/Object';
 
 export default class CategoryCount extends Backbone.Model {
 

@@ -2,14 +2,14 @@ import Expenses from './Expenses/Expenses';
 import Transaction from './Expenses/Transaction';
 import CategoryCollection from './Category/CategoryCollection';
 import CategoryCount from './Category/CategoryCount';
-import {CollectionController} from "./CollectionController";
+import {CollectionController} from './CollectionController';
 import Handlebars from 'handlebars';
-import Backbone from 'backbone';
+import Backbone from 'backbone-es6/src/Backbone.js';
 import $ from 'jquery';
 import { _ } from 'underscore';
 import Chart from 'chart.js';
 import toastr from 'toastr';
-import object from './Util/Object';
+import './Util/Object';
 
 export class CatPage extends CollectionController<Expenses> {
 
