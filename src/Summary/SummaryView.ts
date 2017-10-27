@@ -5,12 +5,16 @@ import SummaryLine from "./SummaryLine";
 import CategoryCollectionModel from "../Category/CategoryCollectionModel";
 import {ViewOptions} from "backbone";
 import Handlebars from 'handlebars';
-import Backbone from 'backbone-es6/src/Backbone.js';
-import _ from 'underscore';
+// import Backbone from 'backbone-es6/src/Backbone.js';
+import Backbone = require('backbone');
+import * as _ from 'underscore';
 
 export default class SummaryView extends Backbone.View<CategoryCollectionModel> {
 
-	collection: CategoryCollection;
+	/**
+	 * CategoryCollection
+	 */
+	collection: Backbone.Collection<any>;
 
 	expenses: Expenses;
 
@@ -98,7 +102,7 @@ export default class SummaryView extends Backbone.View<CategoryCollectionModel> 
 
 	private addCategoryTotals(categoryOptions: SummaryLine[]) {
 		let groupByCategory = {};
-		_.each(categoryOptions, el => {
+		_.each(categoryOptions, (el: SummaryLine) => {
 			if (!el.catName) {
 				console.log(el);
 				//throw new Error('addCategoryTotals has element without catName');
@@ -114,17 +118,17 @@ export default class SummaryView extends Backbone.View<CategoryCollectionModel> 
 		console.log(groupByCategory);
 
 		// step 2
-		_.each(groupByCategory, (set, setName) => {
+		_.each(groupByCategory,
+			(set: Array<SummaryLine>, setName) => {
 			if (set.length > 1) {
 				let newCat = new SummaryLine({
 					catName: setName + ' [' + set.length + ']',
 					background: '#FF8800',
 				});
-				_.each(set, (el) => {
+				_.each(set, (el: SummaryLine) => {
 					newCat.combine(el);
 				});
-				newCat.average = typeof newCat.average == 'number'
-					? newCat.average.toFixed(2) : newCat.average;
+				newCat.sAverage = newCat.average.toFixed(2);
 				newCat.perCent = typeof newCat.perCent == 'number'
 					? newCat.perCent.toFixed(2) : newCat.perCent;
 				categoryOptions.push(newCat);

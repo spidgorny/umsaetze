@@ -1,7 +1,9 @@
 import Workspace from './Workspace';
-import Backbone from 'backbone-es6/src/Backbone.js';
+console.log(Workspace);
+// import Backbone from 'backbone-es6/src/Backbone.js';
+import Backbone = require('backbone');
 import * as $ from "jquery";
-import Tour from 'bootstrap-tour';
+// import Tour from 'bootstrap-tour';
 
 export class Umsaetze {
 
@@ -16,7 +18,7 @@ export class Umsaetze {
 		});
 		console.log('history.start', ok);
 		if (!ok) {
-			console.log(Backbone.history.routes);
+			console.log(this.router.routes);
 		}
 
 		this.inlineEdit();

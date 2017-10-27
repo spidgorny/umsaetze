@@ -1,4 +1,5 @@
 import CategoryCollection from "./CategoryCollection";
+import Backbone = require('backbone');
 
 export default class CategoryCollectionModel extends Backbone.Model {
 

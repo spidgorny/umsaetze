@@ -1,10 +1,12 @@
-import { _ } from "underscore";
+import * as _ from "underscore";
 
 export default class SummaryLine {
 
 	catName: string;
 
-	average: number|string = 0;
+	average: number = 0;
+
+	sAverage: string;
 
 	perCent: number|string = 0;
 
@@ -22,6 +24,7 @@ export default class SummaryLine {
 
 	combine(sl2: SummaryLine) {
 		this.average += parseFloat(<any>sl2.average);
+		this.sAverage = this.average.toString();
 		this.perCent = parseFloat(<any>this.perCent) + parseFloat(<any>sl2.perCent);
 		if (this.perMonth.length) {
 			this.perMonth = _.map(this.perMonth, (el, index) => {

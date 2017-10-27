@@ -1,13 +1,29 @@
-import Events from 'typhonjs-core-backbone-events/src/Events.js';
+// import Events from 'typhonjs-core-backbone-events/src/Events.js';
+import Backbone = require('backbone');
 import Expenses from "./Expenses/Expenses";
 import CollectionArray from "./Keyword/CollectionArray";
 
-export class CollectionController<T extends Expenses|CollectionArray> extends Events {
+export class CollectionController<T extends Expenses|CollectionArray> extends Backbone.Events {
+
+	cid: string;
 
 	$el: JQuery;
 
+	constructor(options: any) {
+		super();
+		this.cid = Math.random().toString();
+	}
+
+	setElement(el: JQuery) {
+		this.$el = el;
+	}
+
 	hide() {
 		this.$el.hide();
+	}
+
+	$(selector: string) {
+		return $(selector);
 	}
 
 }

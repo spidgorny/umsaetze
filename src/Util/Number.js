@@ -1,19 +1,22 @@
-import { _ } from 'underscore';
-export function detectFloat(source) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const accounting_js_1 = require("accounting-js");
+const _ = require("underscore");
+function detectFloat(source) {
     if (_.isUndefined(source))
         return NaN;
-    var float = accounting.unformat(source);
-    var posComma = source.indexOf(',');
+    let float = accounting_js_1.unformat(source);
+    let posComma = source.indexOf(',');
     if (posComma > -1) {
-        var posDot = source.indexOf('.');
+        let posDot = source.indexOf('.');
         if (posDot > -1 && posComma > posDot) {
-            var germanFloat = accounting.unformat(source, ',');
+            let germanFloat = accounting_js_1.unformat(source, ',');
             if (Math.abs(germanFloat) > Math.abs(float)) {
                 float = germanFloat;
             }
         }
         else {
-            float = accounting.unformat(source, ',');
+            float = accounting_js_1.unformat(source, ',');
         }
     }
     return float;

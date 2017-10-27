@@ -1,10 +1,11 @@
 import Transaction from "../Expenses/Transaction";
 import CategoryCount from "./CategoryCount";
 import Expenses from "../Expenses/Expenses";
-import Backbone from 'backbone-es6/src/Backbone.js';
+// import Backbone from 'backbone-es6/src/Backbone.js';
+import Backbone = require('backbone');
 // import elapse from 'elapse';
 import LocalStorage from 'backbone.localstorage';
-import _ from 'underscore';
+import * as _ from 'underscore';
 
 // elapse.configure({
 // 	debug: true
@@ -18,16 +19,18 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 
 	model: CategoryCount|any;
 
+	models: CategoryCount[];
+
 	//collection: Backbone.Collection<CategoryCount>;
 
 	expenses: Expenses;
 
 	constructor(options?) {
 		super(options);
-		let ls = new Backbone.LocalStorage('Categories');
+		let ls = new LocalStorage('Categories');
 		//this.colors = simpleStorage.get('CategoryColors');
 		let models = ls.findAll();
-		models = _.uniq(models, false, (e1) => {
+		models = _.uniq(models, false, (e1: CategoryCount) => {
 			return e1.catName;
 		});
 		//console.log('categories in LS', models);
@@ -65,7 +68,7 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 	}
 
 	saveToLS() {
-		let ls = new Backbone.LocalStorage('Categories');
+		let ls = new LocalStorage('Categories');
 		let deleteMe = ls.findAll();
 		// console.log('saveToLS', deleteMe.length);
 		this.each((model: CategoryCount) => {
@@ -109,7 +112,7 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 		});
 		//console.log(this.categoryCount);
 		this.sortBy('amount');
-		console.profileEnd('getCategoriesFromExpenses');
+		console.profileEnd();
 
 		// when we recalculated the data we trigger the view render
 		this.trigger('change'); // commented because of infinite loop
@@ -186,6 +189,9 @@ export default class CategoryCollection extends Backbone.Collection<CategoryCoun
 		});
 	}
 
+	/**
+	 * @returns CategoryCount
+	 */
 	random() {
 		return _.sample(this.models);
 	}

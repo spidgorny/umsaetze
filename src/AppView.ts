@@ -1,3 +1,4 @@
+///<reference path="../node_modules/@types/backbone/index.d.ts" />
 import Expenses from './Expenses/Expenses';
 import ExpenseTable from './Expenses/ExpenseTable';
 import CategoryCollection from './Category/CategoryCollection';
@@ -7,7 +8,7 @@ import Transaction from './Expenses/Transaction';
 import {debug} from './main';
 import { CollectionController } from './CollectionController';
 import { ViewOptionsExpenses } from './ViewOptionsExpenses';
-import Backbone from 'backbone-es6/src/Backbone.js';
+// import Backbone from 'backbone-es6/src/Backbone.js';
 // import elapse from 'elapse';
 import * as $ from "jquery";
 import * as _ from 'underscore';
@@ -119,11 +120,11 @@ export default class AppView extends CollectionController<Expenses> {
 		// wrong. this is called by this.render()
 
 		this.categoryList.getCategoriesFromExpenses();
-		console.profileEnd('AppView.monthChange');
+		console.profileEnd();
 	}
 
 	onSearch(event) {
-		this.q = $(event.target).val();
+		this.q = $(event.target).val().toString();
 		console.log('Searching: ', this.q);
 		this.monthChange();	// reuse
 		// trigger manually since filterVisible is silent
@@ -142,7 +143,7 @@ export default class AppView extends CollectionController<Expenses> {
 
 		this.render();
 		this.categories.show();
-		console.profileEnd('AppView.show');
+		console.profileEnd();
 	}
 
 	hide() {
@@ -152,7 +153,7 @@ export default class AppView extends CollectionController<Expenses> {
 			&& this.$('#expenseTable').is(':visible')) {
 		}
 		this.categories.hide();
-		console.profileEnd('AppView.hide');
+		console.profileEnd();
 	}
 
 	applyKeywords(event: MouseEvent) {

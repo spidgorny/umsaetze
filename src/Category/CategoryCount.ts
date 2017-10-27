@@ -1,5 +1,6 @@
 import Expenses from "../Expenses/Expenses";
-import Backbone from 'backbone-es6/src/Backbone.js';
+// import Backbone from 'backbone-es6/src/Backbone.js';
+import Backbone = require('backbone');
 import '../Util/Object';
 
 export default class CategoryCount extends Backbone.Model {
@@ -73,7 +74,7 @@ export default class CategoryCount extends Backbone.Model {
 	}
 
 	getAverageAmountPerMonth(totalsPerMonth: Object) {
-		let totals = object.values(totalsPerMonth);
+		let totals = Object.values(totalsPerMonth);
 		let sum = totals.reduce(function(a, b) { return parseFloat(a) + parseFloat(b); });
 		let avg = sum / totals.length;
 		//console.log(totals, sum, avg);

@@ -1,9 +1,11 @@
-import { _ } from 'underscore';
-import Keyword from "./Keyword";
-import KeywordCollection from "./KeywordCollection";
-import Excel from 'exceljs';
-var ImportKeywords = (function () {
-    function ImportKeywords() {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const underscore_1 = require("underscore");
+const Keyword_1 = require("./Keyword");
+const KeywordCollection_1 = require("./KeywordCollection");
+const exceljs_1 = require("exceljs");
+class ImportKeywords {
+    constructor() {
         this.keywordFile = 'keywords.xlsx';
         this.keywords = {
             "1u1": "Internet",
@@ -61,41 +63,38 @@ var ImportKeywords = (function () {
             "WOOLWORTH": "Einkauf",
             "ZEEMAN": "Kleidung"
         };
-        var kc = new KeywordCollection();
-        _.each(this.keywords, function (val, key) {
+        let kc = new KeywordCollection_1.default();
+        underscore_1._.each(this.keywords, (val, key) => {
             console.log(key, val);
-            var kw = new Keyword({
+            let kw = new Keyword_1.default({
                 word: key,
                 category: val,
             });
             kc.add(kw);
         });
     }
-    ImportKeywords.prototype.readExcelFile = function () {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            var workbook = new Excel.Workbook();
-            workbook.xlsx.readFile(_this.keywordFile)
-                .then(function () {
+    readExcelFile() {
+        return new Promise((resolve, reject) => {
+            var workbook = new exceljs_1.default.Workbook();
+            workbook.xlsx.readFile(this.keywordFile)
+                .then(() => {
                 var sheet = workbook.getWorksheet(1);
-                var keyWords = _this.dumpSheet(sheet);
+                var keyWords = this.dumpSheet(sheet);
                 resolve(keyWords);
             });
         });
-    };
-    ImportKeywords.prototype.dumpSheet = function (sheet) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            sheet.eachRow(function (row, rowNumber) {
+    }
+    dumpSheet(sheet) {
+        return new Promise((resolve, reject) => {
+            sheet.eachRow((row, rowNumber) => {
                 var cells = row.values;
                 var key = cells[1];
                 var category = cells[2];
-                _this.keyWords[key] = category;
+                this.keyWords[key] = category;
             });
-            resolve(_this.keyWords);
+            resolve(this.keyWords);
         });
-    };
-    return ImportKeywords;
-}());
-export default ImportKeywords;
+    }
+}
+exports.default = ImportKeywords;
 //# sourceMappingURL=ImportKeywords.js.map

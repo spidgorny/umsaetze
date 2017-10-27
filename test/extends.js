@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -9,15 +8,19 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
-var Controller = /** @class */ (function (_super) {
-    __extends(Controller, _super);
-    function Controller() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var A = /** @class */ (function () {
+    function A() {
     }
-    Controller.prototype.hide = function () {
-        this.$el.hide();
-    };
-    return Controller;
-}(Backbone.View));
-exports.default = Controller;
+    return A;
+}());
+var B = /** @class */ (function (_super) {
+    __extends(B, _super);
+    function B() {
+        var _this = _super.call(this) || this;
+        _this.defaults = {};
+        _this.a = new A();
+        return _this;
+    }
+    return B;
+}(A));
+new B();

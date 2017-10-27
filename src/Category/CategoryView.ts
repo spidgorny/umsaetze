@@ -2,19 +2,20 @@ import CategoryCollection from "./CategoryCollection";
 import CategoryCount from "./CategoryCount";
 import Expenses from "../Expenses/Expenses";
 // import elapse from 'elapse';
-import Backbone from 'backbone';
-import _ from 'underscore';
-import $ from 'jquery';
+import Backbone = require('backbone');
+import * as _ from 'underscore';
+import * as $ from 'jquery';
 import Chart from 'chart.js';
 import {debug} from '../main';
+import CategoryCollectionModel from "./CategoryCollectionModel";
 
 // elapse.configure({
 // 	debug: true
 // });
 
-export default class CategoryView extends Backbone.View<CategoryCollection> {
+export default class CategoryView extends Backbone.View<CategoryCollectionModel> {
 
-	model: CategoryCollection;
+	model: CategoryCollectionModel;
 
 	expenses: Expenses;
 
@@ -27,7 +28,9 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 		this.setElement($('#categories'));
 		this.listenTo(this.model, 'change', this.render);
 		this.$el.on('click', 'a.filterByCategory', this.filterByCategory.bind(this));
-		this.on("all", debug("CategoryView"));
+		this.on("all", () => {
+			debug("CategoryView")
+		});
 	}
 
 	setExpenses(expenses) {
@@ -37,7 +40,7 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 
 	recalculate() {
 		console.warn('CategoryView.recalculate');
-		this.model.getCategoriesFromExpenses();
+		this.model.getCollection().getCategoriesFromExpenses();
 		// should call render?
 	}
 
@@ -46,7 +49,7 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 		let categoryCount = this.model.toJSON();
 
 		// remove income from %
-		let incomeRow = _.findWhere(categoryCount, {
+		let incomeRow: any = _.findWhere(categoryCount, {
 			catName: 'Income',
 		});
 		categoryCount = _.without(categoryCount, incomeRow);
@@ -85,7 +88,7 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 
 		this.showPieChart(Math.abs(sum));
 
-		console.profileEnd('CategoryView.render');
+		console.profileEnd();
 		return this;
 	}
 
@@ -94,7 +97,7 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 	 * @private
 	 */
 	_change() {
-		console.log('CategoryView changed', this.model.size());
+		console.log('CategoryView changed', this.model.getCollection().size());
 		if (this.model) {
 			//console.log('Calling CategoryCollection.change()');
 			//this.model.change();	// called automagically
@@ -108,13 +111,13 @@ export default class CategoryView extends Backbone.View<CategoryCollection> {
 		let labels = [];
 		let colors = [];
 		let dataSet1 = [];
-		this.model.comparator = function (el: CategoryCount) {
+		this.model.getCollection().comparator = function (el: CategoryCount) {
 			return -Math.abs(el.getAmount());
 		};
-		this.model.sort();
+		this.model.getCollection().sort();
 
 		let rest = 0;
-		this.model.each((cat: CategoryCount) => {
+		this.model.getCollection().each((cat: CategoryCount) => {
 			if (cat.getName() != 'Income') {
 				let amount = Math.abs(cat.getAmount());
 				let perCent = 100 * amount / sum;

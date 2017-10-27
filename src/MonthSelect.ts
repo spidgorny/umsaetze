@@ -1,10 +1,11 @@
-import Backbone from 'backbone-es6/src/Backbone.js';
+// import Backbone from 'backbone-es6/src/Backbone.js';
+import Backbone = require('backbone');
 import Expenses from './Expenses/Expenses';
-import LocalStorage = Backbone.LocalStorage;
+import {LocalStorage} from 'backbone.localstorage';
 import ExpensesMock from '../test/helper/ExpensesMock';
-import $ from 'jquery';
+import * as $ from 'jquery';
 import datejs from 'datejs';
-import { _ } from 'underscore';
+import * as _ from 'underscore';
 import {detectFloat} from './Util/Number';
 import {Number} from './Util/Number';
 

@@ -1,26 +1,26 @@
 import { unformat } from 'accounting-js';
-import { _ } from 'underscore';
+import * as _ from 'underscore';
 
-export function detectFloat(source: String) {
+function detectFloat(source: String) {
 	if (_.isUndefined(source)) return NaN;
-	let float = accounting.unformat(source);
+	let float = unformat(source);
 	let posComma = source.indexOf(',');
 	if (posComma > -1) {
 		let posDot = source.indexOf('.');
 		if (posDot > -1 && posComma > posDot) {
-			let germanFloat = accounting.unformat(source, ',');
+			let germanFloat = unformat(source, ',');
 			if (Math.abs(germanFloat) > Math.abs(float)) {
 				float = germanFloat;
 			}
 		} else {
 			// source = source.replace(/,/g, '.');
-			float = accounting.unformat(source, ',');
+			float = unformat(source, ',');
 		}
 	}
 	return float;
 }
 
-export interface Number {
+declare interface Number {
 	clamp (min: Number, max: Number): number;
 }
 

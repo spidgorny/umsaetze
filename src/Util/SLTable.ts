@@ -1,4 +1,4 @@
-import { _ } from "underscore";
+import * as _ from "underscore";
 
 export default class SLTable {
 

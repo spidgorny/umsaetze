@@ -1,4 +1,7 @@
+///<reference path="../../node_modules/@types/backbone/index.d.ts" />
+///<reference path="../../node_modules/@types/datejs/index.d.ts" />
 import Transaction from './Transaction';
+import Backbone = require('backbone');
 import CollectionFetchOptions = Backbone.CollectionFetchOptions;
 import PersistenceOptions = Backbone.PersistenceOptions;
 import KeywordCollection from '../Keyword/KeywordCollection';
@@ -7,10 +10,9 @@ import CategoryCount from '../Category/CategoryCount';
 import {debug} from '../main';
 import MonthSelect from '../MonthSelect';
 import FakeJQueryXHR from '../FakeJQueryXHR';
-import Backbone from 'backbone-es6/src/Backbone.js';
 import {LocalStorage} from 'backbone.localstorage';
-import datejs from 'datejs';
-import { _ } from 'underscore';
+// import * as Date from 'datejs';
+import * as _ from 'underscore';
 // import Timer from 'elapse';
 
 // Timer.configure({
@@ -21,23 +23,27 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 
 	model: typeof Transaction;
 
-	localStorage: Backbone.LocalStorage;
+	localStorage: LocalStorage;
 
 	selectedMonth: Date;
 
-	comparator(compare: Transaction, to?: Transaction) {
+	comparator = Expenses.comparatorFunction;
+
+	static comparatorFunction(compare: Transaction, to?: Transaction) {
 		return compare.date == to.date
 			? 0 : (compare.date > to.date ? 1 : -1);
 	}
 
 	constructor(models?: Transaction[] | Object[], options?: any) {
 		super(models, options);
-		this.localStorage = new Backbone.LocalStorage("Expenses");
+		this.localStorage = new LocalStorage("Expenses");
 		this.listenTo(this, 'change', () => {
 			console.log('Expenses changed event');
 			this.saveAll();
 		});
-		this.on("all", debug("Expenses"));
+		this.on("all", () => {
+			debug("Expenses");
+		});
 	}
 
 	/**
@@ -171,7 +177,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 			});
 			this.saveAll();
 		}
-		console.profileEnd('Expense.filterByMonth');
+		console.profileEnd();
 	}
 
 	whereMonth(selectedMonth: Date) {
@@ -198,7 +204,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 			}
 		});
 		this.saveAll();
-		console.profileEnd('Expense.filterByCategory');
+		console.profileEnd();
 	}
 
 	saveAll() {
@@ -207,7 +213,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		this.each((model: Transaction) => {
 			this.localStorage.update(model);
 		});
-		console.profileEnd('Expense.saveAll');
+		console.profileEnd();
 	}
 
 	/**
@@ -221,7 +227,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 			console.log(sDate, dateObject);
 			model.set('date', dateObject);
 		});
-		console.profileEnd('Expense.unserializeDate');
+		console.profileEnd();
 	}
 
 	getVisible() {
@@ -316,9 +322,9 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		this.reset(null);
 	}
 
-	map(fn: Function) {
-		return _.map(this.models, fn);
-	}
+	// map(fn: Function) {
+	// 	return _.map(this.models, fn);
+	// }
 
 	/**
 	 * This is supposed to be used after this.filterByMonth()

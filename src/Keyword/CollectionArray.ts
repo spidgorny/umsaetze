@@ -1,5 +1,5 @@
 import simpleStorage from 'simpleStorage.js';
-import _ from 'underscore';
+import * as _ from 'underscore';
 
 export default class CollectionArray extends Array {
 
@@ -10,8 +10,7 @@ export default class CollectionArray extends Array {
 	modelClass: any;
 
 	constructor(...arguments2) {
-		//super(...arguments2);
-
+		super(...arguments2);
 		this.name = this.constructor.prototype.name;
 	}
 

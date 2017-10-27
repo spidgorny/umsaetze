@@ -1,16 +1,30 @@
-import { detectFloat } from '../Util/Number';
-import Papa from 'papaparse';
-import Table from './Table';
-import Row from './Row';
-import 'datejs';
-var ParseCSV = (function () {
+"use strict";
+/// <reference path="../../typings/index.d.ts" />
+Object.defineProperty(exports, "__esModule", { value: true });
+// import {start} from "repl";
+var Number_1 = require("../Util/Number");
+var papaparse_1 = require("papaparse");
+var Table_1 = require("./Table");
+var Row_1 = require("./Row");
+require("datejs");
+/**
+ * http://stackoverflow.com/questions/3115982/how-to-check-if-two-arrays-are-equal-with-javascript
+ * @param array
+ * @returns {boolean}
+ */
+/*Array.prototype.equals = function( array ) {
+    return this.length == array.length &&
+        this.every( function(this_i,i) { return this_i == array[i] } )
+};
+*/
+var ParseCSV = /** @class */ (function () {
     function ParseCSV(data) {
         this.data = data;
     }
     ParseCSV.prototype.parseAndNormalize = function () {
         var csv;
         if (typeof document == "this code is commented") {
-            var csvObj = Papa.parse(this.data, {
+            var csvObj = papaparse_1.default.parse(this.data, {
                 header: true,
                 dynamicTyping: true,
                 skipEmptyLines: true,
@@ -19,11 +33,12 @@ var ParseCSV = (function () {
             csv = csvObj.data;
         }
         else {
-            csv = Table.fromText(this.data);
+            csv = Table_1.default.fromText(this.data);
         }
-        this.data = null;
+        this.data = null; // save RAM
         console.log('rows after parse', csv.length);
         csv = csv.trim();
+        // csv = csv.trimAll(); // prevents analyzeCSV from working
         console.log('rows after trim', csv.length);
         csv = this.analyzeCSV(csv);
         console.log('rows after analyze', csv.length);
@@ -33,7 +48,12 @@ var ParseCSV = (function () {
         console.log('rows after convertDataTypes', csv.length);
         return csv;
     };
+    /**
+     * Some CSV files contain random data in the header
+     * @public for tests
+     */
     ParseCSV.prototype.analyzeCSV = function (data) {
+        // console.log('last row', data[data.length-1]);
         var startIndex = 0;
         data.forEach(function (row, i) {
             if (!row.length || (row.length == 1 && row[0] == '')) {
@@ -42,29 +62,41 @@ var ParseCSV = (function () {
         });
         console.log('slicing ', startIndex, 'first rows');
         var sliced = data.slice(startIndex);
-        return new Table(sliced);
+        return new Table_1.default(sliced);
     };
+    /**
+     * We got pure data with headers here
+     */
     ParseCSV.prototype.normalizeCSV = function (data) {
+        //console.log(data);
         var typeSet = data.getRowTypesForSomeRows();
         typeSet = typeSet.filterMostlyNull();
+        // console.log(typeSet, 'typeSet');
         var aCommon = typeSet.mode();
-        var common = new Row(aCommon);
+        var common = new Row_1.default(aCommon);
         console.log(JSON.stringify(common), 'common');
         data = common.filterByCommon(data);
         console.log('rows after filterByCommon', data.length);
-        var dataWithHeader = new Table();
+        var dataWithHeader = new Table_1.default();
         data.forEach(function (row, i) {
             var header = common.getHeaderFromTypes(row, i);
             if (i == 0) {
-                Row.peek(row, common);
+                Row_1.default.peek(row, common);
                 console.log(JSON.stringify(header), 'header');
             }
             dataWithHeader.push(header);
         });
+        //console.log(dataWithHeader[0], 'dataWithHeader line 0');
         return dataWithHeader;
     };
+    /**
+     * http://stackoverflow.com/questions/1117916/merge-keys-array-and-values-array-into-an-object-in-javascript
+     * @param names
+     * @param values
+     * @returns Row
+     */
     ParseCSV.prototype.zip = function (names, values) {
-        var result = new Row();
+        var result = new Row_1.default();
         for (var i = 0; i < names.length; i++) {
             result[names[i]] = values[i];
         }
@@ -73,7 +105,7 @@ var ParseCSV = (function () {
     ParseCSV.prototype.convertDataTypes = function (csv) {
         csv.forEach(function (row, i) {
             if (row.amount) {
-                row.amount = detectFloat(row.amount);
+                row.amount = Number_1.detectFloat(row.amount);
                 var date = Date.parseExact(row.date, 'dd.MM.yyyy');
                 if (!date) {
                     date = Date.parseExact(row.date, 'dd.MM.yy');
@@ -86,6 +118,7 @@ var ParseCSV = (function () {
                 }
             }
             else {
+                //console.warn('convertDataTypes', row);
                 delete csv[i];
             }
         });
@@ -93,5 +126,4 @@ var ParseCSV = (function () {
     };
     return ParseCSV;
 }());
-export default ParseCSV;
-//# sourceMappingURL=ParseCSV.js.map
+exports.default = ParseCSV;

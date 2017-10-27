@@ -12,10 +12,13 @@ import {CollectionController} from '../CollectionController';
 import { saveAs } from  'file-saver';
 import toastr from 'toastr';
 import chance from 'chance';
-import Backbone from 'backbone-es6/src/Backbone.js';
+// import Backbone from 'backbone-es6/src/Backbone.js';
+import Backbone = require('backbone');
 import LocalStorage from 'backbone.localstorage';
-import $ from 'jquery';
-import _ from 'underscore';
+import * as $ from 'jquery';
+import * as _ from 'underscore';
+// import FileReaderJS = require('filereader.js');
+import CategoryCount from "../Category/CategoryCount";
 
 console.log(detectFloat('3.141528'));
 console.debug(detectFloat('3.141528'));
@@ -37,14 +40,14 @@ export default class Sync extends CollectionController<Expenses> {
 
 	slowUpdateLoadingBar: Function;
 
-	localStorage = new Backbone.LocalStorage("Expenses");
+	localStorage = new LocalStorage("Expenses");
 
 	prevPercent: number;
 
 	router: Workspace;
 
 	constructor(expenses: Expenses) {
-		super();
+		super({});
 		this.model = expenses;
 		this.listenTo(this.model, 'change', this.render);
 		this.slowUpdateLoadingBar = _.throttle(this.updateLoadingBar, 128);
@@ -114,7 +117,7 @@ export default class Sync extends CollectionController<Expenses> {
 				this.model.each((model: Transaction) => {
 					this.localStorage.create(model);
 				});
-				console.profileEnd('Expense.saveModels2LS');
+				console.profileEnd();
 			}
 		});
 	}
@@ -210,7 +213,7 @@ export default class Sync extends CollectionController<Expenses> {
 	clear() {
 		console.log('clear');
 		if (confirm('Delete *ALL* entries from Local Storage? Make sure you have exported data first.')) {
-			let localStorage = new Backbone.LocalStorage("Expenses");
+			let localStorage = new LocalStorage("Expenses");
 			localStorage._clear();
 			if (this.model) {
 				this.model.clear();
@@ -225,7 +228,7 @@ export default class Sync extends CollectionController<Expenses> {
 		let account = chance.word();
 		let categories = this.router.categoryList;
 		for (let i of _.range(amount)) {
-			let category = categories.random();
+			let category: CategoryCount = <CategoryCount>categories.random();
 			this.model.add(new Transaction({
 				account: account,
 				category: category.get('catName') || "Default",

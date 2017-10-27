@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -8,28 +9,45 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import Transaction from './Transaction';
-import { debug } from '../main';
-import MonthSelect from '../MonthSelect';
-import FakeJQueryXHR from '../FakeJQueryXHR';
-import Backbone from 'backbone-es6/src/Backbone.js';
-import { _ } from 'underscore';
-var Expenses = (function (_super) {
+Object.defineProperty(exports, "__esModule", { value: true });
+///<reference path="../../node_modules/@types/backbone/index.d.ts" />
+///<reference path="../../node_modules/@types/datejs/index.d.ts" />
+var Transaction_1 = require("./Transaction");
+var Backbone = require("backbone");
+var main_1 = require("../main");
+var MonthSelect_1 = require("../MonthSelect");
+var FakeJQueryXHR_1 = require("../FakeJQueryXHR");
+var backbone_localstorage_1 = require("backbone.localstorage");
+// import * as Date from 'datejs';
+var _ = require("underscore");
+// import Timer from 'elapse';
+// Timer.configure({
+// 	debug: true
+// });
+var Expenses = /** @class */ (function (_super) {
     __extends(Expenses, _super);
     function Expenses(models, options) {
         var _this = _super.call(this, models, options) || this;
-        _this.localStorage = new Backbone.LocalStorage("Expenses");
+        _this.comparator = Expenses.comparatorFunction;
+        _this.localStorage = new backbone_localstorage_1.LocalStorage("Expenses");
         _this.listenTo(_this, 'change', function () {
             console.log('Expenses changed event');
             _this.saveAll();
         });
-        _this.on("all", debug("Expenses"));
+        _this.on("all", function () {
+            main_1.debug("Expenses");
+        });
         return _this;
     }
-    Expenses.prototype.comparator = function (compare, to) {
+    Expenses.comparatorFunction = function (compare, to) {
         return compare.date == to.date
             ? 0 : (compare.date > to.date ? 1 : -1);
     };
+    /**
+     * Should be called after constructor to read data from LS
+     * @param options
+     * @return JQueryXHR
+     */
     Expenses.prototype.fetch = function (options) {
         var _this = this;
         if (options === void 0) { options = {}; }
@@ -37,13 +55,18 @@ var Expenses = (function (_super) {
         console.log('models from LS', models.length);
         if (models.length) {
             _.each(models, function (el) {
-                _this.add(new Transaction(el));
+                _this.add(new Transaction_1.default(el));
             });
+            //this.unserializeDate();
             this.trigger('change');
         }
         console.log('read', this.length);
-        return new FakeJQueryXHR();
+        return new FakeJQueryXHR_1.default();
     };
+    /**
+     * Only visible
+     * @returns {Date}
+     */
     Expenses.prototype.getDateFrom = function () {
         var visible = this.getVisible();
         var min = new Date().addYears(10).valueOf();
@@ -55,6 +78,10 @@ var Expenses = (function (_super) {
         });
         return new Date(min);
     };
+    /**
+     * Only visible
+     * @returns {Date}
+     */
     Expenses.prototype.getDateTill = function () {
         var visible = this.getVisible();
         var min = new Date('1970-01-01').valueOf();
@@ -93,11 +120,18 @@ var Expenses = (function (_super) {
         });
         return new Date(min);
     };
+    /**
+     * show everything by default, then filters will hide
+     */
     Expenses.prototype.setAllVisible = function () {
         this.each(function (model) {
             model.set('visible', true, { silent: true });
         });
     };
+    /**
+     * Will hide some visible
+     * @param q
+     */
     Expenses.prototype.filterVisible = function (q) {
         if (!q.length)
             return;
@@ -111,6 +145,10 @@ var Expenses = (function (_super) {
         console.profileEnd();
         this.saveAll();
     };
+    /**
+     * Will hide some visible
+     * @param selectedMonth
+     */
     Expenses.prototype.filterByMonth = function (selectedMonth) {
         console.profile('Expense.filterByMonth');
         if (selectedMonth) {
@@ -120,7 +158,8 @@ var Expenses = (function (_super) {
             selectedMonth = this.selectedMonth;
         }
         else {
-            var ms = MonthSelect.getInstance();
+            //throw new Error('filterByMonth no month defined');
+            var ms = MonthSelect_1.default.getInstance();
             selectedMonth = ms.getSelected();
         }
         console.log('filterMyMonth', selectedMonth);
@@ -132,7 +171,7 @@ var Expenses = (function (_super) {
             });
             this.saveAll();
         }
-        console.profileEnd('Expense.filterByMonth');
+        console.profileEnd();
     };
     Expenses.prototype.whereMonth = function (selectedMonth) {
         var filtered = [];
@@ -152,11 +191,12 @@ var Expenses = (function (_super) {
             if (row.isVisible()) {
                 var rowCat = row.get('category');
                 var isVisible = category.getName() == rowCat;
+                //console.log('set visible', isVisible);
                 row.set('visible', isVisible, { silent: true });
             }
         });
         this.saveAll();
-        console.profileEnd('Expense.filterByCategory');
+        console.profileEnd();
     };
     Expenses.prototype.saveAll = function () {
         var _this = this;
@@ -165,8 +205,11 @@ var Expenses = (function (_super) {
         this.each(function (model) {
             _this.localStorage.update(model);
         });
-        console.profileEnd('Expense.saveAll');
+        console.profileEnd();
     };
+    /**
+     * @deprecated
+     */
     Expenses.prototype.unserializeDate = function () {
         console.profile('Expense.unserializeDate');
         this.each(function (model) {
@@ -175,7 +218,7 @@ var Expenses = (function (_super) {
             console.log(sDate, dateObject);
             model.set('date', dateObject);
         });
-        console.profileEnd('Expense.unserializeDate');
+        console.profileEnd();
     };
     Expenses.prototype.getVisible = function () {
         return this.where({ visible: true });
@@ -186,12 +229,14 @@ var Expenses = (function (_super) {
     Expenses.prototype.getSorted = function () {
         this.sort();
         var visible = this.getVisible();
+        // return _.sortBy(visible, 'attributes.date');
         return visible;
     };
     Expenses.prototype.setCategories = function (keywords) {
         this.each(function (row) {
             if (row.get('category') == 'Default') {
                 keywords.each(function (key) {
+                    //console.log(key);
                     var note = row.get('note');
                     if (note.indexOf(key.word) > -1) {
                         console.log(note, 'contains', key.word, 'gets', key.category);
@@ -202,22 +247,46 @@ var Expenses = (function (_super) {
         });
         this.trigger('change');
     };
+    /**
+     * TODO: generate matrix separately and then return only the value in a grid.
+     * JavaScript is so fast it's tempting to ignore this
+     * @param category
+     * @returns {{}}
+     */
     Expenses.prototype.getMonthlyTotalsFor = function (category) {
         var sparks = {};
         var from = this.getEarliest().moveToFirstDayOfMonth();
         var till = this.getLatest().moveToLastDayOfMonth();
+        // console.log({
+        // 	from: from.toString('yyyy-MM-dd HH:mm'),
+        // 	till: till.toString('yyyy-MM-dd HH:mm'),
+        // });
         var count = 0;
         var _loop_1 = function (month) {
             var month1 = month.clone();
             month1.addMonths(1).add({ minutes: -1 });
+            // console.log({
+            // 	month: month.toString('yyyy-MM-dd HH:mm'),
+            // 	month1: month1.toString('yyyy-MM-dd HH:mm'),
+            // 	today_is_between: Date.today().between(month, month1)
+            // });
             var sum = 0;
             this_1.each(function (transaction) {
                 var sameCategory = transaction.get('category') == category.getName();
                 var sameMonth = transaction.getDate().between(month, month1);
                 if (sameCategory && sameMonth) {
+                    // if (category.getName() == 'Darlehen' && month.toString('yyyy-MM-dd') == '2014-09-01') {
+                    // 	console.log({
+                    // 		transDate: transaction.getDate().toString('yyyy-MM-dd HH:mm'),
+                    // 		transAmount: transaction.getAmount(),
+                    // 		month: month.toString('yyyy-MM-dd HH:mm'),
+                    // 		month1: month1.toString('yyyy-MM-dd HH:mm'),
+                    // 	});
+                    // }
                     sum += transaction.getAmount();
                     count++;
                     category.incrementCount();
+                    //category.incrementAmountBy(transaction.getAmount());	// spoils CategoryView
                 }
             });
             sparks[month.toString('yyyy-MM')] = Math.abs(sum).toFixed(2);
@@ -226,6 +295,7 @@ var Expenses = (function (_super) {
         for (var month = from; month.compareTo(till) == -1; month.addMonths(1)) {
             _loop_1(month);
         }
+        //console.log(category.getName(), count);
         category.set('count', count, { silent: true });
         return sparks;
     };
@@ -239,9 +309,12 @@ var Expenses = (function (_super) {
     Expenses.prototype.clear = function () {
         this.reset(null);
     };
-    Expenses.prototype.map = function (fn) {
-        return _.map(this.models, fn);
-    };
+    // map(fn: Function) {
+    // 	return _.map(this.models, fn);
+    // }
+    /**
+     * This is supposed to be used after this.filterByMonth()
+     */
     Expenses.prototype.stepBackTillSalary = function (ms) {
         var selectedMonth = ms.getSelected();
         if (selectedMonth) {
@@ -250,6 +323,7 @@ var Expenses = (function (_super) {
             var max_1 = _.reduce(prevMonth, function (acc, row) {
                 return Math.max(acc, row.get('amount'));
             }, 0);
+            //console.log(selectedMonthMinus1.toString('yyyy-MM-dd'), prevMonth.length, max);
             var doAppend_1 = false;
             prevMonth.forEach(function (row) {
                 if (row.get('amount') == max_1) {
@@ -263,5 +337,4 @@ var Expenses = (function (_super) {
     };
     return Expenses;
 }(Backbone.Collection));
-export default Expenses;
-//# sourceMappingURL=Expenses.js.map
+exports.default = Expenses;

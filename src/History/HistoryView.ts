@@ -1,14 +1,16 @@
+///<reference path="../Util/Array.ts" />
 import MyView from "./MyView";
 import Expenses from "../Expenses/Expenses";
 import MonthSelect from "../MonthSelect";
 import Transaction from "../Expenses/Transaction";
 import {default as SLTable} from "../Util/SLTable";
 import Handlebars from 'handlebars';
-import Backbone from 'backbone-es6/src/Backbone.js';
-import _ from 'underscore';
+// import Backbone from 'backbone-es6/src/Backbone.js';
+import Backbone = require('backbone');
+import * as _ from 'underscore';
 import Chart from 'chart.js';
-import datejs from 'datejs';
-import array from '../Util/Array';
+// import datejs from 'datejs';
+// import array from '../Util/Array';
 
 export default class HistoryView extends Backbone.View<Backbone.Model> {
 

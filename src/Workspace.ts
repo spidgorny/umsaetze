@@ -8,11 +8,12 @@ import RouterOptions = Backbone.RouterOptions;
 import KeywordCollection from './Keyword/KeywordCollection';
 import SummaryView from './Summary/SummaryView';
 import HistoryView from './History/HistoryView';
-import Backbone from 'backbone-es6/src/Backbone.js';
+// import Backbone from 'backbone-es6/src/Backbone.js';
+import Backbone = require('backbone');
 import Controller from './Controller';
 import { CollectionController } from './CollectionController';
-import $ from 'jquery';
-import _ from 'underscore';
+import * as $ from 'jquery';
+import * as _ from 'underscore';
 
 export default class Workspace extends Backbone.Router {
 
@@ -50,22 +51,24 @@ export default class Workspace extends Backbone.Router {
 	}
 
 	activateMenu() {
-		let url = window.location;
+		let url = window.location.href;
 		// var element = $('ul.nav a').filter(function() {
 		//     return this.href == url;
 		// }).addClass('active').parent().parent().addClass('in').parent();
-		let element = $('ul.nav#side-menu a')
+		let element: JQuery =
+			$('ul.nav#side-menu a')
 			.removeClass('active')
 			.filter(function () {
-				return this.href == url;
+				return $(this).attr('href') == url;
 			})
-			.addClass('active')
+			.addClass('active');
+		let liElement = element
 			.parent()
 			.removeClass('in');
 
 		while (true) {
-			if (element.is('li')) {
-				element = element.parent().addClass('in').parent();
+			if (liElement.is('li')) {
+				element = liElement.parent().addClass('in').parent();
 			} else {
 				break;
 			}

@@ -1,5 +1,10 @@
-import Backbone from 'backbone-es6/src/Backbone.js';
+///<reference path="../../node_modules/@types/backbone/index.d.ts" />
+///<reference path="../Util/Date.ts" />
+import Backbone = require('backbone');
+// import * as Backbone from 'backbone-ts';
 import md5 from 'md5';
+// import * as Date from 'datejs';
+import Expenses from "./Expenses";
 
 /*
  {"account":"SpardaSlawa",
@@ -20,6 +25,7 @@ export default class Transaction extends Backbone.Model {
 	category: String;
 	amount: Number;
 	note: String;
+	collection: Backbone.Collection<any>;
 
 	constructor(attributes: Object, options?: Object) {
 		super(attributes, options);
@@ -74,7 +80,7 @@ export default class Transaction extends Backbone.Model {
 
 	setCategory(category) {
 		this.set('category', category);
-		this.collection.localStorage.update(this);
+		(<Expenses>this.collection).localStorage.update(this);
 	}
 
 	/**

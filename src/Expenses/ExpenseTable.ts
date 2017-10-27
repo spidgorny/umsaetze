@@ -1,3 +1,4 @@
+///<reference path="../../node_modules/@types/backbone/index.d.ts" />
 import Expenses from "./Expenses";
 import Transaction from "./Transaction";
 import CategoryCollection from "../Category/CategoryCollection";
@@ -5,17 +6,18 @@ import KeywordCollection from "../Keyword/KeywordCollection";
 import Keyword from "../Keyword/Keyword";
 import {debug} from "../main";
 import Table from "../Sync/Table";
-import View from 'backbone-es6/src/View.js';
-import $ from 'jquery';
-import _ from 'underscore';
+// import View from 'backbone-es6/src/View.js';
+import * as $ from 'jquery';
+import * as _ from 'underscore';
 import handlebars from 'handlebars';
 // import elapse from 'elapse';
+import Backbone = require('backbone');
 
 // elapse.configure({
 // 	debug: true
 // });
 
-export default class ExpenseTable extends View<any> {
+export default class ExpenseTable extends Backbone.View<any> {
 
 	model: Expenses;
 
@@ -42,7 +44,9 @@ export default class ExpenseTable extends View<any> {
 
 		// slow re-rendering of the whole table when collection changes
 		//this.listenTo(this.collection, 'update', this.render);
-		this.on("all", debug("ExpenseTable"));
+		this.on("all", () => {
+			debug("ExpenseTable")
+		});
 	}
 
 	setCategoryList(list: CategoryCollection) {
@@ -77,7 +81,7 @@ export default class ExpenseTable extends View<any> {
 		this.$el.off('click', 'button.close').on('click', 'button.close', this.deleteRow.bind(this));
 		this.$el.on('click', 'input.checkedDone', this.onCheck.bind(this));
 
-		console.profileEnd('ExpenseTable.render');
+		console.profileEnd();
 		return this;
 	}
 
@@ -97,7 +101,7 @@ export default class ExpenseTable extends View<any> {
 			table.push(attributes);
 		});
 		// sortBy only works with direct attributes (not Model)
-		table = _.sortBy(table, 'date');
+		table = new Table(_.sortBy(table, 'date'));
 		return table;
 	}
 
@@ -183,8 +187,8 @@ export default class ExpenseTable extends View<any> {
 	static getSelectedText() {
 		if (window.getSelection) {
 			return window.getSelection().toString();
-		} else if (document.selection) {
-			return document.selection.createRange().text;
+		} else if (typeof document['selection'] != 'undefined') {
+			return document['selection'].createRange().text;
 		}
 		return '';
 	}

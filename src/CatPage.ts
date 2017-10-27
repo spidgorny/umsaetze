@@ -4,9 +4,10 @@ import CategoryCollection from './Category/CategoryCollection';
 import CategoryCount from './Category/CategoryCount';
 import {CollectionController} from './CollectionController';
 import Handlebars from 'handlebars';
-import Backbone from 'backbone-es6/src/Backbone.js';
-import $ from 'jquery';
-import { _ } from 'underscore';
+// import Backbone from 'backbone-es6/src/Backbone.js';
+import Backbone = require('backbone');
+import * as $ from 'jquery';
+import * as _ from 'underscore';
 import Chart from 'chart.js';
 import toastr from 'toastr';
 import './Util/Object';
@@ -24,7 +25,7 @@ export class CatPage extends CollectionController<Expenses> {
 	template;
 
 	constructor(expenses: Expenses, categoryList: CategoryCollection) {
-		super();
+		super({});
 		console.log('CatPage.constructor');
 		this.collection = expenses;
 		this.categoryList = categoryList;
@@ -131,22 +132,23 @@ export class CatPage extends CollectionController<Expenses> {
 		let $sparkline = $('.sparkline');
 		$sparkline.each((index, self) => {
 			//console.log(self);
-			self = $(self);
+			const $self = $(self);
 			//Get context with jQuery - using jQuery's .get() method.
-			let ctx = self.get(0).getContext("2d");
+			const canvas: HTMLCanvasElement = <HTMLCanvasElement>$self.get(0);
+			let ctx = canvas.getContext("2d");
 
 			// Get the chart data and convert it to an array
-			let chartData = JSON.parse(self.attr('data-chart_values'));
-			let average = self.attr('data-average');
+			let chartData = JSON.parse($self.attr('data-chart_values'));
+			let average = $self.attr('data-average');
 
 			// Build the data object
-			let data = object.values(chartData);
+			let data = Object.values(chartData);
 			let labels = Object.keys(chartData);
 			//console.log(data, labels);
 			let datasets = {};
 
 			// Create the dataset
-			datasets['strokeColor'] = self.attr('data-chart_StrokeColor');
+			datasets['strokeColor'] = $self.attr('data-chart_StrokeColor');
 			datasets['data'] = data;
 
 			let lineSet = {
@@ -193,7 +195,7 @@ export class CatPage extends CollectionController<Expenses> {
 					}
 				}
 			});
-			self.prop('chart', chart);
+			$self.prop('chart', chart);
 		});
 	}
 

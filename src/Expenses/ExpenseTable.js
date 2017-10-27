@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -8,26 +9,37 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import Keyword from "../Keyword/Keyword";
-import { debug } from "../main";
-import Table from "../Sync/Table";
-import View from 'backbone-es6/src/View.js';
-import $ from 'jquery';
-import _ from 'underscore';
-import handlebars from 'handlebars';
-var ExpenseTable = (function (_super) {
+Object.defineProperty(exports, "__esModule", { value: true });
+var Keyword_1 = require("../Keyword/Keyword");
+var main_1 = require("../main");
+var Table_1 = require("../Sync/Table");
+// import View from 'backbone-es6/src/View.js';
+var $ = require("jquery");
+var _ = require("underscore");
+var handlebars_1 = require("handlebars");
+// import elapse from 'elapse';
+var Backbone = require("backbone");
+// elapse.configure({
+// 	debug: true
+// });
+var ExpenseTable = /** @class */ (function (_super) {
     __extends(ExpenseTable, _super);
     function ExpenseTable(options) {
         var _this = _super.call(this, options) || this;
         _this.template = _.template($('#rowTemplate').html());
         console.log(_this.keywords);
+        // in case we started with Sync page the table is not visible
         var $expenseTable = $('#expenseTable');
         if (!$expenseTable.length) {
             var template = _.template($('#AppView').html());
             $('#app').html(template());
         }
         _this.setElement($expenseTable);
-        _this.on("all", debug("ExpenseTable"));
+        // slow re-rendering of the whole table when collection changes
+        //this.listenTo(this.collection, 'update', this.render);
+        _this.on("all", function () {
+            main_1.debug("ExpenseTable");
+        });
         return _this;
     }
     ExpenseTable.prototype.setCategoryList = function (list) {
@@ -49,6 +61,7 @@ var ExpenseTable = (function (_super) {
         });
         console.log('rendering', rows.length, 'rows');
         this.$el.html(rows.join('\n'));
+        //console.log(this.$el);
         $('#dateFrom').html(this.model.getDateFrom().toString('yyyy-MM-dd'));
         $('#dateTill').html(this.model.getDateTill().toString('yyyy-MM-dd'));
         $('#numRows').html(this.model.getVisibleCount().toString());
@@ -56,13 +69,13 @@ var ExpenseTable = (function (_super) {
         this.$el.on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
         this.$el.off('click', 'button.close').on('click', 'button.close', this.deleteRow.bind(this));
         this.$el.on('click', 'input.checkedDone', this.onCheck.bind(this));
-        console.profileEnd('ExpenseTable.render');
+        console.profileEnd();
         return this;
     };
     ExpenseTable.prototype.getTransactionAttributesTable = function () {
         var _this = this;
         var visible = this.model.getVisible();
-        var table = new Table();
+        var table = new Table_1.default();
         _.each(visible, function (transaction) {
             var attributes = transaction.toJSON();
             attributes.sDate = transaction.getDate().toString('yyyy-MM-dd');
@@ -74,15 +87,23 @@ var ExpenseTable = (function (_super) {
             attributes.amount = attributes.amount.toFixed(2);
             table.push(attributes);
         });
-        table = _.sortBy(table, 'date');
+        // sortBy only works with direct attributes (not Model)
+        table = new Table_1.default(_.sortBy(table, 'date'));
         return table;
     };
+    /**
+     * @deprecated - not working in Chrome
+     * @param event
+     */
     ExpenseTable.prototype.openSelect = function (event) {
+        //console.log('openSelect', this, event);
         var $select = $(event.target);
+        //if ($select.find('option').length == 1) {
         {
             var defVal_1 = $select.find('option').html();
             $select.find('option').remove();
             var options = this.categoryList.getOptions();
+            //console.log(options);
             $.each(options, function (key, value) {
                 if (value != defVal_1) {
                     $select
@@ -98,6 +119,7 @@ var ExpenseTable = (function (_super) {
         var selected = transaction.get('category');
         var sOptions = [];
         var options = this.categoryList.getOptions();
+        // console.log('options', options);
         $.each(options, function (key, value) {
             if (value == selected) {
                 sOptions.push('<option selected>' + value + '</option>');
@@ -106,31 +128,40 @@ var ExpenseTable = (function (_super) {
                 sOptions.push('<option>' + value + '</option>');
             }
         });
+        // console.log('sOptions', sOptions);
         return sOptions.join('\n');
     };
     ExpenseTable.prototype.newCategory = function (event) {
         console.log('newCategory');
         var $select = $(event.target);
+        //console.log('selected', $select.val());
         var id = $select.closest('tr').attr('data-id');
+        //console.log(id);
         var transaction = this.model.get(id);
+        // console.log(transaction);
         if (transaction) {
+            // console.log('Transaction id=', id);
             transaction.setCategory($select.val());
+            // console.log(transaction.toJSON());
+            //this.categoryList.trigger('change');
         }
         else {
             console.error('Transaction with id=', id, 'not found');
         }
     };
     ExpenseTable.prototype.textSelectedEvent = function (event) {
+        // console.log('textSelectedEvent');
         var text = ExpenseTable.getSelectedText().trim();
         if (text) {
+            //console.log(text);
             var $contextMenu = $('#contextMenu');
             if (!$contextMenu.length) {
-                var template = handlebars.compile($('#categoryMenu').html());
+                var template = handlebars_1.default.compile($('#categoryMenu').html());
                 var menuHTML = template({
                     catlist: this.categoryList.getOptions(),
                 });
                 $('body').append(menuHTML);
-                $contextMenu = $('#contextMenu');
+                $contextMenu = $('#contextMenu'); // after append
                 console.log($contextMenu, event.clientX, event.clientY);
             }
             this.openMenu($contextMenu, event.clientX, event.clientY, this.applyFilter.bind(this, text));
@@ -140,11 +171,18 @@ var ExpenseTable = (function (_super) {
         if (window.getSelection) {
             return window.getSelection().toString();
         }
-        else if (document.selection) {
-            return document.selection.createRange().text;
+        else if (typeof document['selection'] != 'undefined') {
+            return document['selection'].createRange().text;
         }
         return '';
     };
+    /**
+     * Opens a popup menu at the specified position
+     * @param menuSelector
+     * @param clientX
+     * @param clientY
+     * @param callback
+     */
     ExpenseTable.prototype.openMenu = function (menuSelector, clientX, clientY, callback) {
         var $menu = $(menuSelector)
             .show()
@@ -161,25 +199,34 @@ var ExpenseTable = (function (_super) {
                 callback.call(this, $selectedMenu);
             }
         });
+        //console.log($menu);
+        // make sure menu closes on any click
+        // since we use onmouseup we can't immediately close the popup
         setTimeout(function () {
             $('body').click(function () {
                 $(menuSelector).hide();
-                $('body').off('click');
+                $('body').off('click'); // once
             });
         }, 0);
     };
     ExpenseTable.prototype.getMenuPosition = function (mouse, direction, scrollDir, menuSelector) {
         var win = $(window)[direction](), scroll = $(window)[scrollDir](), menu = $(menuSelector)[direction](), position = mouse + scroll;
+        // opening menu would pass the side of the page
         if (mouse + menu > win && menu < mouse)
             position -= menu;
         return position;
     };
+    /**
+     * When clicking on the category item from the popup menu
+     * @param text
+     * @param menu
+     */
     ExpenseTable.prototype.applyFilter = function (text, menu) {
         var scrollTop = document.body.scrollTop;
         console.log('scrollTop', scrollTop);
         var categoryName = menu.text().trim();
         console.log(text, 'to be', categoryName);
-        this.keywords.add(new Keyword({
+        this.keywords.add(new Keyword_1.default({
             word: text,
             category: categoryName,
         }));
@@ -202,11 +249,11 @@ var ExpenseTable = (function (_super) {
         var checkbox = $(event.target);
         var id = checkbox.closest('tr').attr('data-id');
         var transaction = this.model.get(id);
+        //console.log(checkbox, id, transaction);
         if (transaction) {
             transaction.set('done', true);
         }
     };
     return ExpenseTable;
-}(View));
-export default ExpenseTable;
-//# sourceMappingURL=ExpenseTable.js.map
+}(Backbone.View));
+exports.default = ExpenseTable;

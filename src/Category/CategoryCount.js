@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -8,9 +9,11 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import Backbone from 'backbone-es6/src/Backbone.js';
-import '../Util/Object';
-var CategoryCount = (function (_super) {
+Object.defineProperty(exports, "__esModule", { value: true });
+// import Backbone from 'backbone-es6/src/Backbone.js';
+var Backbone = require("backbone");
+require("../Util/Object");
+var CategoryCount = /** @class */ (function (_super) {
     __extends(CategoryCount, _super);
     function CategoryCount() {
         var args = [];
@@ -18,11 +21,12 @@ var CategoryCount = (function (_super) {
             args[_i] = arguments[_i];
         }
         var _this = _super.call(this) || this;
-        _this.set('catName', args[0].catName);
-        _this.set('color', args[0].color);
-        _this.set('count', args[0].count);
-        _this.set('amount', args[0].amount);
-        _this.set('id', args[0].id);
+        _this.set('catName', args[0].catName); // this should not be necessary but it is
+        _this.set('color', args[0].color); // this should not be necessary but it is
+        _this.set('count', args[0].count); // this should not be necessary but it is
+        _this.set('amount', args[0].amount); // this should not be necessary but it is
+        _this.set('id', args[0].id); // this should not be necessary but it is
+        //this.listenTo(this, 'change', this.saveToLS);
         var color = _this.get('color');
         if (!color) {
             _this.set('color', _this.pastelColor());
@@ -54,20 +58,25 @@ var CategoryCount = (function (_super) {
     };
     CategoryCount.prototype.resetCounters = function () {
         this.set('count', 0, { silent: true });
+        // this.set('amount', 0, { silent: true });
     };
     CategoryCount.prototype.incrementCount = function () {
         this.set('count', this.get('count') + 1, { silent: true });
     };
+    /**
+     * @deprecated - spoils CategoryView
+     * @param by
+     */
     CategoryCount.prototype.incrementAmountBy = function (by) {
         this.set('amount', this.get('amount') + by, { silent: true });
     };
     CategoryCount.prototype.getAverageAmountPerMonth = function (totalsPerMonth) {
-        var totals = object.values(totalsPerMonth);
+        var totals = Object.values(totalsPerMonth);
         var sum = totals.reduce(function (a, b) { return parseFloat(a) + parseFloat(b); });
         var avg = sum / totals.length;
+        //console.log(totals, sum, avg);
         return avg.toFixed(2);
     };
     return CategoryCount;
 }(Backbone.Model));
-export default CategoryCount;
-//# sourceMappingURL=CategoryCount.js.map
+exports.default = CategoryCount;

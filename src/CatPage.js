@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -8,19 +9,21 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import CategoryCount from './Category/CategoryCount';
-import { CollectionController } from './CollectionController';
-import Handlebars from 'handlebars';
-import Backbone from 'backbone-es6/src/Backbone.js';
-import $ from 'jquery';
-import { _ } from 'underscore';
-import Chart from 'chart.js';
-import toastr from 'toastr';
-import './Util/Object';
-var CatPage = (function (_super) {
+Object.defineProperty(exports, "__esModule", { value: true });
+var CategoryCount_1 = require("./Category/CategoryCount");
+var CollectionController_1 = require("./CollectionController");
+var handlebars_1 = require("handlebars");
+// import Backbone from 'backbone-es6/src/Backbone.js';
+var Backbone = require("backbone");
+var $ = require("jquery");
+var _ = require("underscore");
+var chart_js_1 = require("chart.js");
+var toastr_1 = require("toastr");
+require("./Util/Object");
+var CatPage = /** @class */ (function (_super) {
     __extends(CatPage, _super);
     function CatPage(expenses, categoryList) {
-        var _this = _super.call(this) || this;
+        var _this = _super.call(this, {}) || this;
         _this.$el = $('#app');
         console.log('CatPage.constructor');
         _this.collection = expenses;
@@ -29,7 +32,10 @@ var CatPage = (function (_super) {
         var href = importTag.prop('href');
         console.log(importTag, href);
         $.get(href).then(function (result) {
-            _this.setTemplate(Handlebars.compile(result));
+            //console.log(result);
+            _this.setTemplate(
+            //_.template( result )
+            handlebars_1.default.compile(result));
         });
         console.log(_this);
         _this.listenTo(_this.categoryList, 'change', _this.render);
@@ -49,6 +55,7 @@ var CatPage = (function (_super) {
         if (this.template) {
             var categoryOptions_1 = [];
             this.categoryList.each(function (category) {
+                //console.log(category);
                 var monthlyTotals = _this.collection.getMonthlyTotalsFor(category);
                 category.resetCounters();
                 var averageAmountPerMonth = category.getAverageAmountPerMonth(monthlyTotals);
@@ -88,7 +95,7 @@ var CatPage = (function (_super) {
         var $form = $(event.target);
         var newName = $form.find('input').val();
         console.log('newName', newName);
-        var categoryObject = new CategoryCount({
+        var categoryObject = new CategoryCount_1.default({
             catName: newName,
         });
         console.log('get', categoryObject.get('catName'));
@@ -103,6 +110,7 @@ var CatPage = (function (_super) {
         var category = this.categoryList.get(id);
         console.log('category by id', category);
         if (category) {
+            //console.log('color', event.target.value);
             category.set('color', event.target.value);
         }
     };
@@ -113,18 +121,28 @@ var CatPage = (function (_super) {
         console.log('deleteCategory', id);
         this.categoryList.remove(id);
     };
+    /**
+     * https://codepen.io/ojame/pen/HpKvx
+     */
     CatPage.prototype.renderSparkLines = function () {
         var _this = this;
         var $sparkline = $('.sparkline');
         $sparkline.each(function (index, self) {
-            self = $(self);
-            var ctx = self.get(0).getContext("2d");
-            var chartData = JSON.parse(self.attr('data-chart_values'));
-            var average = self.attr('data-average');
-            var data = object.values(chartData);
+            //console.log(self);
+            var $self = $(self);
+            //Get context with jQuery - using jQuery's .get() method.
+            var canvas = $self.get(0);
+            var ctx = canvas.getContext("2d");
+            // Get the chart data and convert it to an array
+            var chartData = JSON.parse($self.attr('data-chart_values'));
+            var average = $self.attr('data-average');
+            // Build the data object
+            var data = Object.values(chartData);
             var labels = Object.keys(chartData);
+            //console.log(data, labels);
             var datasets = {};
-            datasets['strokeColor'] = self.attr('data-chart_StrokeColor');
+            // Create the dataset
+            datasets['strokeColor'] = $self.attr('data-chart_StrokeColor');
             datasets['data'] = data;
             var lineSet = {
                 type: 'line',
@@ -134,11 +152,12 @@ var CatPage = (function (_super) {
                 borderWidth: 1,
                 fill: false,
             };
+            // Add to data object
             var dataDesc = {};
             dataDesc['labels'] = labels;
             dataDesc['datasets'] = Array(datasets, lineSet);
             var catPage = _this;
-            var chart = new Chart.Line(ctx, {
+            var chart = new chart_js_1.default.Line(ctx, {
                 data: dataDesc,
                 options: {
                     responsive: true,
@@ -147,6 +166,8 @@ var CatPage = (function (_super) {
                     scaleShowGridLines: false,
                     pointDot: false,
                     datasetFill: false,
+                    // Sadly if you set scaleFontSize to 0, chartjs crashes
+                    // Instead we'll set it as small as possible and make it transparent
                     scaleFontSize: 1,
                     scaleFontColor: "rgba(0,0,0,0)",
                     legend: {
@@ -165,7 +186,7 @@ var CatPage = (function (_super) {
                     }
                 }
             });
-            self.prop('chart', chart);
+            $self.prop('chart', chart);
         });
     };
     CatPage.prototype.clickOnChart = function (labels, event, aChartElement, chart) {
@@ -202,7 +223,7 @@ var CatPage = (function (_super) {
         if (category) {
             var oldName = category.getName();
             if (this.categoryList.exists(newName)) {
-                toastr.error('This category name is duplicate');
+                toastr_1.default.error('This category name is duplicate');
                 container.find('span').text(oldName);
             }
             else {
@@ -213,6 +234,5 @@ var CatPage = (function (_super) {
         }
     };
     return CatPage;
-}(CollectionController));
-export { CatPage };
-//# sourceMappingURL=CatPage.js.map
+}(CollectionController_1.CollectionController));
+exports.CatPage = CatPage;

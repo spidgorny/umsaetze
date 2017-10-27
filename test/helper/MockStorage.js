@@ -1,4 +1,6 @@
-var MockStorage = (function () {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var MockStorage = /** @class */ (function () {
     function MockStorage() {
         this.length = 0;
     }
@@ -19,5 +21,4 @@ var MockStorage = (function () {
     };
     return MockStorage;
 }());
-export default MockStorage;
-//# sourceMappingURL=MockStorage.js.map
+exports.default = MockStorage;

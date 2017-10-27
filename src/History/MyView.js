@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -8,13 +9,14 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import Backbone from 'backbone-es6/src/Backbone.js';
-var MyView = (function (_super) {
+Object.defineProperty(exports, "__esModule", { value: true });
+// import Backbone from 'backbone-es6/src/Backbone.js';
+var Backbone = require("backbone");
+var MyView = /** @class */ (function (_super) {
     __extends(MyView, _super);
     function MyView() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     return MyView;
 }(Backbone.View));
-export default MyView;
-//# sourceMappingURL=MyView.js.map
+exports.default = MyView;

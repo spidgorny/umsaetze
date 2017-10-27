@@ -1,6 +1,6 @@
 import ArrayPlus from "./ArrayPlus";
 import Table from "./Table";
-import _ from 'underscore';
+import * as _ from 'underscore';
 import accounting from 'accounting-js';
 import '../Util/String';
 import {detectFloat} from "../Util/Number";

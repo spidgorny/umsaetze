@@ -1,5 +1,7 @@
-import { _ } from "underscore";
-var SLTable = (function () {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var _ = require("underscore");
+var SLTable = /** @class */ (function () {
     function SLTable(data) {
         if (data === void 0) { data = []; }
         this.data = data;
@@ -25,6 +27,7 @@ var SLTable = (function () {
             thes = thes.concat(Object.keys(row));
         });
         thes = _.uniq(thes);
+        //console.log(thes);
         var cols = [];
         thes.forEach(function (name) {
             cols.push({ name: name });
@@ -45,5 +48,4 @@ var SLTable = (function () {
     };
     return SLTable;
 }());
-export default SLTable;
-//# sourceMappingURL=SLTable.js.map
+exports.default = SLTable;

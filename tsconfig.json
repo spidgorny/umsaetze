@@ -2,8 +2,7 @@
 	"compileOnSave": true,
 	"compilerOptions": {
 		"rootDir": "src",
-		"moduleResolution1": "node",
-		"moduleResolution": "classic",
+		"moduleResolution": "node",
 		"module": "commonjs",
 		"removeComments": true,
 		"preserveConstEnums": true,

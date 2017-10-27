@@ -1,4 +1,6 @@
-var FakeJQueryXHR = (function () {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var FakeJQueryXHR = /** @class */ (function () {
     function FakeJQueryXHR() {
     }
     FakeJQueryXHR.prototype.state = function () {
@@ -69,5 +71,4 @@ var FakeJQueryXHR = (function () {
     };
     return FakeJQueryXHR;
 }());
-export default FakeJQueryXHR;
-//# sourceMappingURL=FakeJQueryXHR.js.map
+exports.default = FakeJQueryXHR;

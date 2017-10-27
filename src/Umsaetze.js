@@ -1,48 +1,50 @@
-import Workspace from './Workspace';
-import Backbone from 'backbone-es6/src/Backbone.js';
-import * as $ from "jquery";
-import Tour from 'bootstrap-tour';
-var Umsaetze = (function () {
-    function Umsaetze() {
-        this.router = new Workspace();
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Workspace_1 = require("./Workspace");
+console.log(Workspace_1.default);
+const Backbone = require("backbone");
+const $ = require("jquery");
+class Umsaetze {
+    constructor() {
+        this.router = new Workspace_1.default();
         console.log('Umsaetze.router', this.router);
-        var ok = Backbone.history.start({
+        const ok = Backbone.history.start({
             root: '/umsaetze/docs/web/'
         });
         console.log('history.start', ok);
         if (!ok) {
-            console.log(Backbone.history.routes);
+            console.log(this.router.routes);
         }
         this.inlineEdit();
         this.tour();
         console.log('Umsaetze.constructor() done');
     }
-    Umsaetze.prototype.inlineEdit = function () {
-        $(document).on('click', '.inlineEdit span', function (event) {
-            var span = $(event.target);
-            var container = span.parent();
-            var input = container.find('input').show();
+    inlineEdit() {
+        $(document).on('click', '.inlineEdit span', (event) => {
+            let span = $(event.target);
+            let container = span.parent();
+            let input = container.find('input').show();
             span.hide();
             input.focus().val(span.text().trim());
-            input.keyup(function (event) {
+            input.keyup((event) => {
                 console.log(event.key);
                 if (event.keyCode === 13) {
                     $(event.target).blur();
                 }
             });
-            input.blur(function (event) {
+            input.blur((event) => {
                 span.html(input.val().toString().trim());
                 input.hide();
                 span.show();
-                var callback = container.data('callback');
+                let callback = container.data('callback');
                 if (typeof callback == 'function') {
                     callback(event, container, container.text().trim());
                 }
             });
         });
-    };
-    Umsaetze.prototype.tour = function () {
-        var tour = new Tour({
+    }
+    tour() {
+        let tour = new Tour({
             steps: [
                 {
                     element: "#app",
@@ -51,10 +53,9 @@ var Umsaetze = (function () {
                 },
             ]
         });
-        setTimeout(function () {
+        setTimeout(() => {
         }, 5);
-    };
-    return Umsaetze;
-}());
-export { Umsaetze };
+    }
+}
+exports.Umsaetze = Umsaetze;
 //# sourceMappingURL=Umsaetze.js.map

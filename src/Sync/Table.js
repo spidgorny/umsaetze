@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -8,15 +9,17 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import Row from './Row';
-import ArrayPlus from './ArrayPlus';
-var Table = (function (_super) {
+Object.defineProperty(exports, "__esModule", { value: true });
+var Row_1 = require("./Row");
+var ArrayPlus_1 = require("./ArrayPlus");
+var Table = /** @class */ (function (_super) {
     __extends(Table, _super);
     function Table(rows) {
         var _this = _super.call(this) || this;
         if (rows) {
+            //console.log('ArrayPlus', rows.length);
             rows.forEach(function (el, i) {
-                _this[i] = new Row(el);
+                _this[i] = new Row_1.default(el);
             });
         }
         return _this;
@@ -38,6 +41,7 @@ var Table = (function (_super) {
             colsC.push(linesC[i].length);
             colsS.push(linesS[i].length);
         }
+        // console.log(colsC, colsS);
         var sumC = colsC.reduce(function (a, b) { return a + b; });
         var sumS = colsS.reduce(function (a, b) { return a + b; });
         console.log(', => ', sumC, '; => ', sumS);
@@ -50,34 +54,76 @@ var Table = (function (_super) {
         }
         return lines;
     };
+    /**
+     * http://stackoverflow.com/questions/1293147/javascript-code-to-parse-csv-data
+     * @param strData
+     * @param strDelimiter
+     * @returns {Array[]}
+     * @constructor
+     */
     Table.CSVToArray = function (strData, strDelimiter) {
+        // Check to see if the delimiter is defined. If not,
+        // then default to comma.
         strDelimiter = (strDelimiter || ",");
-        var objPattern = new RegExp(("(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+        // Create a regular expression to parse the CSV values.
+        var objPattern = new RegExp((
+        // Delimiters.
+        "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+            // Quoted fields.
             "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+            // Standard fields.
             "([^\"\\" + strDelimiter + "\\r\\n]*))"), "gi");
+        // Create an array to hold our data. Give the array
+        // a default empty first row.
         var arrData = [[]];
+        // Create an array to hold our individual pattern
+        // matching groups.
         var arrMatches = null;
+        // Keep looping over the regular expression matches
+        // until we can no longer find a match.
         while (arrMatches = objPattern.exec(strData)) {
+            // Get the delimiter that was found.
             var strMatchedDelimiter = arrMatches[1];
+            // Check to see if the given delimiter has a length
+            // (is not the start of string) and if it matches
+            // field delimiter. If id does not, then we know
+            // that this delimiter is a row delimiter.
             if (strMatchedDelimiter.length &&
                 strMatchedDelimiter !== strDelimiter) {
+                // Since we have reached a new row of data,
+                // add an empty row to our data array.
                 arrData.push([]);
             }
             var strMatchedValue = void 0;
+            // Now that we have our delimiter out of the way,
+            // let's check to see which kind of value we
+            // captured (quoted or unquoted).
             if (arrMatches[2]) {
+                // We found a quoted value. When we capture
+                // this value, unescape any double quotes.
                 strMatchedValue = arrMatches[2].replace(new RegExp("\"\"", "g"), "\"");
             }
             else {
+                // We found a non-quoted value.
                 strMatchedValue = arrMatches[3];
             }
+            // Now that we have our value string, let's add
+            // it to the data array.
             arrData[arrData.length - 1].push(strMatchedValue);
         }
+        // Return the parsed data.
         return (arrData);
     };
+    /**
+     * Remove empty lines from the bottom of the file.
+     * This is required for analyzeCSV() to work.
+     * @returns {Row[]}
+     */
     Table.prototype.trim = function () {
-        var rev = this.reverse();
+        var rev = this.reverse(); // start at the bottom of the file
         var startIndex = null;
         rev.forEach(function (row, i) {
+            // first row with real data
             if (startIndex == null
                 && row.length && row[0] != '') {
                 startIndex = i;
@@ -85,16 +131,22 @@ var Table = (function (_super) {
             }
         });
         var data = rev.slice(startIndex);
+        // console.log(data[0]);
         data = data.reverse();
         return new Table(data);
     };
+    /**
+     * Remove empty lines from anywhere in the file.
+     * This prevents analyzeCSV() from working since it needs empty lines in the middle of the file.
+     * @returns {Row[]}
+     */
     Table.prototype.trimAll = function () {
         var data = new Table();
         this.forEach(function (row, i) {
-            var rowObj = new Row(row);
+            var rowObj = new Row_1.default(row);
             var rowTrimmed = rowObj.trim();
             if (rowTrimmed.length) {
-                data.push(rowObj);
+                data.push(rowObj); // original non trimmed row
             }
         });
         return data;
@@ -104,8 +156,9 @@ var Table = (function (_super) {
         console.log('getRowTypesForSomeRows', this.length);
         var iter = 0;
         this.forEach(function (row0, i) {
-            var row = new Row(row0);
+            var row = new Row_1.default(row0);
             var types = row.getRowTypes();
+            //console.log(i, row, types);
             typeSet.push(types);
             iter++;
             if (iter > 100) {
@@ -119,6 +172,7 @@ var Table = (function (_super) {
             var countNull = row.filter(function (type) {
                 return type == 'null';
             }).length;
+            // console.log(countNull, row);
             return countNull < row.length / 2;
         });
         return new Table(notNull);
@@ -138,6 +192,5 @@ var Table = (function (_super) {
         return copy;
     };
     return Table;
-}(ArrayPlus));
-export default Table;
-//# sourceMappingURL=Table.js.map
+}(ArrayPlus_1.default));
+exports.default = Table;

@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -8,20 +9,25 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import SummaryLine from "./SummaryLine";
-import Handlebars from 'handlebars';
-import Backbone from 'backbone-es6/src/Backbone.js';
-import _ from 'underscore';
-var SummaryView = (function (_super) {
+Object.defineProperty(exports, "__esModule", { value: true });
+var SummaryLine_1 = require("./SummaryLine");
+var handlebars_1 = require("handlebars");
+// import Backbone from 'backbone-es6/src/Backbone.js';
+var Backbone = require("backbone");
+var _ = require("underscore");
+var SummaryView = /** @class */ (function (_super) {
     __extends(SummaryView, _super);
     function SummaryView(options, expenses) {
         var _this = _super.call(this, options) || this;
         _this.expenses = expenses;
         _this.setElement($('#app'));
-        var importTag = $('#SummaryPage');
+        var importTag = $('#SummaryPage'); // <import>
         var href = importTag.prop('href');
+        //console.log(importTag, href);
         $.get(href).then(function (result) {
-            _this.template = Handlebars.compile(result);
+            //console.log(result);
+            _this.template = handlebars_1.default.compile(result);
+            //console.log(this.template);
             _this.render();
         });
         return _this;
@@ -54,6 +60,7 @@ var SummaryView = (function (_super) {
             var averageAmountPerMonth = category.getAverageAmountPerMonth(monthlyTotals);
             monthlyTotals = _.map(monthlyTotals, function (el, key) {
                 var _a = key.split('-'), year = _a[0], month = _a[1];
+                // console.log(key, year, month);
                 return {
                     'year-month': year + '-' + month,
                     year: year,
@@ -62,7 +69,7 @@ var SummaryView = (function (_super) {
                     value: el,
                 };
             });
-            categoryOptions.push(new SummaryLine({
+            categoryOptions.push(new SummaryLine_1.default({
                 catName: category.getName(),
                 background: category.get('color'),
                 id: category.cid,
@@ -74,12 +81,14 @@ var SummaryView = (function (_super) {
     };
     SummaryView.prototype.setPerCent = function (categoryOptions) {
         var sumAverages = categoryOptions.reduce(function (current, b) {
+            //console.log(current, b);
             return current + (typeof b.average == 'number'
                 ? b.average : parseFloat(b.average));
         }, 0);
         console.log('sumAverages', sumAverages);
         _.each(categoryOptions, function (el) {
             el.perCent = (el.average / sumAverages * 100).toFixed(2);
+            //console.log(el.catName, el.perCent);
         });
         return categoryOptions;
     };
@@ -88,7 +97,8 @@ var SummaryView = (function (_super) {
         _.each(categoryOptions, function (el) {
             if (!el.catName) {
                 console.log(el);
-                return;
+                //throw new Error('addCategoryTotals has element without catName');
+                return; // ignore
             }
             var _a = el.catName.split(':'), category = _a[0], specifics = _a[1];
             category = category.trim();
@@ -98,17 +108,17 @@ var SummaryView = (function (_super) {
             groupByCategory[category].push(el);
         });
         console.log(groupByCategory);
+        // step 2
         _.each(groupByCategory, function (set, setName) {
             if (set.length > 1) {
-                var newCat_1 = new SummaryLine({
+                var newCat_1 = new SummaryLine_1.default({
                     catName: setName + ' [' + set.length + ']',
                     background: '#FF8800',
                 });
                 _.each(set, function (el) {
                     newCat_1.combine(el);
                 });
-                newCat_1.average = typeof newCat_1.average == 'number'
-                    ? newCat_1.average.toFixed(2) : newCat_1.average;
+                newCat_1.sAverage = newCat_1.average.toFixed(2);
                 newCat_1.perCent = typeof newCat_1.perCent == 'number'
                     ? newCat_1.perCent.toFixed(2) : newCat_1.perCent;
                 categoryOptions.push(newCat_1);
@@ -117,9 +127,11 @@ var SummaryView = (function (_super) {
         categoryOptions = _.sortBy(categoryOptions, 'catName');
         return categoryOptions;
     };
+    /**
+     * For Workspace
+     */
     SummaryView.prototype.hide = function () {
     };
     return SummaryView;
 }(Backbone.View));
-export default SummaryView;
-//# sourceMappingURL=SummaryView.js.map
+exports.default = SummaryView;
