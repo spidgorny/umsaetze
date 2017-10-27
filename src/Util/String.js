@@ -5,3 +5,4 @@ String.prototype.repeat = function (count) {
     }
     return accu;
 };
+//# sourceMappingURL=String.js.map

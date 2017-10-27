@@ -1,6 +1,4 @@
-"use strict";
-exports.__esModule = true;
-var Keyword = /** @class */ (function () {
+var Keyword = (function () {
     function Keyword(attributes) {
         if (!attributes.word) {
             throw new Error('no word in keyword');
@@ -13,4 +11,5 @@ var Keyword = /** @class */ (function () {
     }
     return Keyword;
 }());
-exports["default"] = Keyword;
+export default Keyword;
+//# sourceMappingURL=Keyword.js.map

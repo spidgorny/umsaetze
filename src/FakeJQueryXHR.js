@@ -1,6 +1,4 @@
-"use strict";
-exports.__esModule = true;
-var FakeJQueryXHR = /** @class */ (function () {
+var FakeJQueryXHR = (function () {
     function FakeJQueryXHR() {
     }
     FakeJQueryXHR.prototype.state = function () {
@@ -38,7 +36,7 @@ var FakeJQueryXHR = /** @class */ (function () {
     };
     FakeJQueryXHR.prototype.then = function (doneFilter, failFilter, progressFilter) {
     };
-    FakeJQueryXHR.prototype["catch"] = function (failFilter) {
+    FakeJQueryXHR.prototype.catch = function (failFilter) {
     };
     FakeJQueryXHR.prototype.overrideMimeType = function (mimeType) {
         return undefined;
@@ -71,4 +69,5 @@ var FakeJQueryXHR = /** @class */ (function () {
     };
     return FakeJQueryXHR;
 }());
-exports["default"] = FakeJQueryXHR;
+export default FakeJQueryXHR;
+//# sourceMappingURL=FakeJQueryXHR.js.map

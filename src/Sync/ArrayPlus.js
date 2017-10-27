@@ -1,5 +1,3 @@
-"use strict";
-/// <reference path="../../typings/index.d.ts" />
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -10,26 +8,20 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
-var _ = require('underscore');
-var naturalSort = require('javascript-natural-sort');
-var ArrayPlus = /** @class */ (function (_super) {
+import { _ } from 'underscore';
+import naturalSort from 'javascript-natural-sort';
+var ArrayPlus = (function (_super) {
     __extends(ArrayPlus, _super);
     function ArrayPlus(rows) {
         var _this = _super.call(this) || this;
         if (rows) {
-            //console.log('ArrayPlus', rows.length);
             rows.forEach(function (el, i) {
                 _this[i] = el;
             });
         }
         return _this;
     }
-    /**
-     * @param callback
-     */
     ArrayPlus.prototype.forEach = function (callback) {
-        // super.forEach((row, i) => {
         var sorted_keys = Object.keys(this).sort(naturalSort);
         for (var i = 0; i < sorted_keys.length; i++) {
             var key = sorted_keys[i];
@@ -66,11 +58,6 @@ var ArrayPlus = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    /**
-     * http://stackoverflow.com/questions/1053843/get-the-element-with-the-highest-occurrence-in-an-array
-     * @param arr
-     * @returns {T|_ChainSingle<T>|TModel}
-     */
     ArrayPlus.prototype.mode = function () {
         var _this = this;
         return this.sort(function (a, b) {
@@ -80,4 +67,5 @@ var ArrayPlus = /** @class */ (function (_super) {
     };
     return ArrayPlus;
 }(Array));
-exports["default"] = ArrayPlus;
+export default ArrayPlus;
+//# sourceMappingURL=ArrayPlus.js.map

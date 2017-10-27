@@ -9,8 +9,8 @@ import { CollectionController } from './CollectionController';
 import { ViewOptionsExpenses } from './ViewOptionsExpenses';
 import Backbone from 'backbone-es6/src/Backbone.js';
 // import elapse from 'elapse';
-import $ from 'jquery';
-import { _ } from 'underscore';
+import * as $ from "jquery";
+import * as _ from 'underscore';
 
 // elapse.configure({
 // 	debug: true

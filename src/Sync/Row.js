@@ -1,5 +1,3 @@
-"use strict";
-/// <reference path="../../typings/index.d.ts" />
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -10,15 +8,12 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
-var ArrayPlus_1 = require("./ArrayPlus");
-var Table_1 = require("./Table");
-var _ = require('underscore');
-var accounting = require('accounting-js');
-// const _isNumeric = require('underscore.isnumeric');
-require('../Util/String');
-var Number_1 = require("../Util/Number");
-var Row = /** @class */ (function (_super) {
+import ArrayPlus from "./ArrayPlus";
+import Table from "./Table";
+import _ from 'underscore';
+import '../Util/String';
+import { detectFloat } from "../Util/Number";
+var Row = (function (_super) {
     __extends(Row, _super);
     function Row(rawData) {
         return _super.call(this, rawData) || this;
@@ -36,11 +31,9 @@ var Row = /** @class */ (function (_super) {
     Row.prototype.getRowTypes = function () {
         var types = [];
         this.forEach(function (el) {
-            // console.log('getRowTypes', el);
-            // let float = parseFloat(el);	// does not handle 1.000,12 well
-            var float = Number_1.detectFloat(el);
+            var float = detectFloat(el);
             var date = Date.parse(el);
-            var isDate = !!date && el.indexOf(',') == -1; // dates are without ","
+            var isDate = !!date && el.indexOf(',') == -1;
             var isEmpty = _.isNull(el)
                 || _.isUndefined(el)
                 || el == '';
@@ -63,7 +56,6 @@ var Row = /** @class */ (function (_super) {
                 types.push('string');
             }
         });
-        //Row.peek(this, types);
         return new Row(types);
     };
     Row.peek = function (a, b, c) {
@@ -97,14 +89,13 @@ var Row = /** @class */ (function (_super) {
             var match = rowTypes.similar(_this);
             var matchPercent = rowTypes.similarPercent(_this);
             console.log(i + 1, match, '/', _this.length, '=', matchPercent, '%', row.length);
-            // let firstMatch100 = matchNumber == 0 && matchPercent == 100;
             var restMatch80 = matchPercent >= 80;
             var sameLength = row.length == _this.length;
             var bReturn = restMatch80 && sameLength;
             matchNumber += bReturn ? 1 : 0;
             return bReturn;
         });
-        return new Table_1["default"](filtered);
+        return new Table(filtered);
     };
     Row.prototype.getHeaderFromTypes = function (dataRow, rowNr) {
         var header = new Row();
@@ -120,15 +111,8 @@ var Row = /** @class */ (function (_super) {
                 strings.push(dataRow[i].trim());
             }
         });
-        // http://stackoverflow.com/questions/6521245/finding-longest-string-in-array
-        //let longest = strings.reduce(function (a, b) { return a.length > b.length ? a : b; });
-        //header.note = longest.trim();
         header.note = strings.join(' ');
         if (!rowNr) {
-            // console.log(this, 'common');
-            // console.log(strings, 'strings');
-            // console.log(dataRow, 'dataRow');
-            // console.log(header, 'header');
         }
         return header;
     };
@@ -148,5 +132,6 @@ var Row = /** @class */ (function (_super) {
         return JSON.parse(JSON.stringify(this));
     };
     return Row;
-}(ArrayPlus_1["default"]));
-exports["default"] = Row;
+}(ArrayPlus));
+export default Row;
+//# sourceMappingURL=Row.js.map

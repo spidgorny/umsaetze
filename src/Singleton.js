@@ -11,6 +11,6 @@ var Backbone;
         };
         return Singleton;
     }());
-    exports["default"] = Singleton;
+    Backbone.Singleton = Singleton;
 })(Backbone || (Backbone = {}));
 //# sourceMappingURL=Singleton.js.map

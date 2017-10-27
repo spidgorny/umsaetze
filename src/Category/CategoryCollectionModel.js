@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -9,8 +8,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
-var CategoryCollectionModel = /** @class */ (function (_super) {
+var CategoryCollectionModel = (function (_super) {
     __extends(CategoryCollectionModel, _super);
     function CategoryCollectionModel(collection, options) {
         var _this = _super.call(this) || this;
@@ -23,4 +21,5 @@ var CategoryCollectionModel = /** @class */ (function (_super) {
     };
     return CategoryCollectionModel;
 }(Backbone.Model));
-exports["default"] = CategoryCollectionModel;
+export default CategoryCollectionModel;
+//# sourceMappingURL=CategoryCollectionModel.js.map

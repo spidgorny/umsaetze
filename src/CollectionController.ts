@@ -4,6 +4,8 @@ import CollectionArray from "./Keyword/CollectionArray";
 
 export class CollectionController<T extends Expenses|CollectionArray> extends Events {
 
+	$el: JQuery;
+
 	hide() {
 		this.$el.hide();
 	}

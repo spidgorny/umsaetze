@@ -1,6 +1,4 @@
-"use strict";
-exports.__esModule = true;
-var MockStorage = /** @class */ (function () {
+var MockStorage = (function () {
     function MockStorage() {
         this.length = 0;
     }
@@ -21,4 +19,5 @@ var MockStorage = /** @class */ (function () {
     };
     return MockStorage;
 }());
-exports["default"] = MockStorage;
+export default MockStorage;
+//# sourceMappingURL=MockStorage.js.map

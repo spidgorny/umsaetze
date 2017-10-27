@@ -1,9 +1,9 @@
 import Workspace from './Workspace';
 import Backbone from 'backbone-es6/src/Backbone.js';
-import $ from 'jquery';
+import * as $ from "jquery";
 import Tour from 'bootstrap-tour';
 
-export default class Umsaetze {
+export class Umsaetze {
 
 	router: Workspace;
 
@@ -38,7 +38,7 @@ export default class Umsaetze {
 				}
 			});
 			input.blur((event) => {
-				span.html(input.val().trim());
+				span.html(input.val().toString().trim());
 				input.hide();
 				span.show();
 				let callback = container.data('callback');

@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -9,29 +8,14 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
-///<reference path="../../typings/index.d.ts"/>
-var backbone_1 = require("backbone");
-var md5 = require('md5');
-var bb = require('backbone');
-/*
- {"account":"SpardaSlawa",
- "category":"Einkauf",
- "currency":"EUR",
- "amount":-23.99,
- "payment_type":"DEBIT_CARD",
- "date": "",
- "note": "",
- "id": "",
- "visible": false,
- "sign": ""
- */
-var Transaction = /** @class */ (function (_super) {
+import Backbone from 'backbone-es6/src/Backbone.js';
+import md5 from 'md5';
+var Transaction = (function (_super) {
     __extends(Transaction, _super);
     function Transaction(attributes, options) {
         var _this = _super.call(this, attributes, options) || this;
         _this.defaults = {
-            visible: true
+            visible: true,
         };
         var dDate;
         var sDate = _this.get('date');
@@ -40,26 +24,21 @@ var Transaction = /** @class */ (function (_super) {
             sDate = dDate.toString('d.M.yyyy');
         }
         else {
-            dDate = new Date(sDate); // to parse from JSON
+            dDate = new Date(sDate);
             var dDateValid = !isNaN(dDate.getTime());
             if (!dDate || !dDateValid) {
                 dDate = Date.parseExact(sDate, "d.M.yyyy");
             }
             _this.set('date', dDate);
         }
-        //console.log(sDate, dDate);
-        // this prevents duplicates
         if (!_this.get('id')) {
             _this.set('id', md5(sDate + _this.get('amount')));
         }
-        // number
         _this.set('amount', parseFloat(_this.get('amount')));
         if (!_this.has('visible')) {
             _this.set('visible', true);
         }
-        // make sure it's defined
         _this.set('category', _this.get('category') || 'Default');
-        // should be set
         _this.set('note', _this.get('note'));
         _this.set('done', _this.get('done'));
         return _this;
@@ -77,9 +56,6 @@ var Transaction = /** @class */ (function (_super) {
         this.set('category', category);
         this.collection.localStorage.update(this);
     };
-    /**
-     * This will return Date object any time
-     */
     Transaction.prototype.getDate = function () {
         var date = this.get('date');
         if (!(date instanceof Date)) {
@@ -94,5 +70,6 @@ var Transaction = /** @class */ (function (_super) {
         return this.get('amount');
     };
     return Transaction;
-}(backbone_1.Model));
-exports["default"] = Transaction;
+}(Backbone.Model));
+export default Transaction;
+//# sourceMappingURL=Transaction.js.map

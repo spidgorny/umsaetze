@@ -1,46 +1,11 @@
-"use strict";
-/// <reference path="../typings/index.d.ts" />
-exports.__esModule = true;
-var Workspace_1 = require("./Workspace");
-// var bootstrap = require('bootstrap');
-var _ = require('underscore');
-var Backbone = require('backbone');
-if (window.__backboneAgent) {
-    window.__backboneAgent.handleBackbone(Backbone);
-}
-var $ = require('jquery');
-// const _ = require('underscore');
-function asyncLoop(arr, callback, done) {
-    (function loop(i) {
-        //callback when the loop goes on
-        callback(arr[i], i, arr.length);
-        //the condition
-        if (i < arr.length) {
-            setTimeout(function () {
-                loop(++i);
-            }, 0); //rerun when condition is true
-        }
-        else {
-            if (done) {
-                //callback when the loop ends
-                done();
-            }
-        }
-    }(0)); //start with 0
-}
-exports.asyncLoop = asyncLoop;
-function debug(name) {
-    var args = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        args[_i - 1] = arguments[_i];
-    }
-    console.warn.apply(console, [typeof name, ":"].concat(args));
-}
-exports.debug = debug;
-var Umsaetze = /** @class */ (function () {
+import Workspace from './Workspace';
+import Backbone from 'backbone-es6/src/Backbone.js';
+import * as $ from "jquery";
+import Tour from 'bootstrap-tour';
+var Umsaetze = (function () {
     function Umsaetze() {
-        this.router = new Workspace_1["default"]();
-        // console.log(ws);
+        this.router = new Workspace();
+        console.log('Umsaetze.router', this.router);
         var ok = Backbone.history.start({
             root: '/umsaetze/docs/web/'
         });
@@ -66,7 +31,7 @@ var Umsaetze = /** @class */ (function () {
                 }
             });
             input.blur(function (event) {
-                span.html(input.val().trim());
+                span.html(input.val().toString().trim());
                 input.hide();
                 span.show();
                 var callback = container.data('callback');
@@ -77,7 +42,6 @@ var Umsaetze = /** @class */ (function () {
         });
     };
     Umsaetze.prototype.tour = function () {
-        var Tour = require('bootstrap-tour');
         var tour = new Tour({
             steps: [
                 {
@@ -88,19 +52,9 @@ var Umsaetze = /** @class */ (function () {
             ]
         });
         setTimeout(function () {
-            // Initialize the tour
-            // tour.init();
-            // Start the tour
-            // tour.start();
         }, 5);
     };
     return Umsaetze;
 }());
-$(function () {
-    setTimeout(function () {
-        new Umsaetze();
-    }, 1 * 1000);
-});
-// only run this once
-// import ImportKeywords from './ImportKeywords';
-// let i = new ImportKeywords();
+export { Umsaetze };
+//# sourceMappingURL=Umsaetze.js.map

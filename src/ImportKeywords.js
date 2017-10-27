@@ -1,16 +1,9 @@
-/// <reference path="../typings/index.d.ts" />
-"use strict";
-var underscore_1 = require('underscore');
-var Keyword_1 = require("./Keyword");
-var KeywordCollection_1 = require("./KeywordCollection");
+import { _ } from 'underscore';
+import Keyword from "./Keyword";
+import KeywordCollection from "./KeywordCollection";
+import Excel from 'exceljs';
 var ImportKeywords = (function () {
     function ImportKeywords() {
-        // fs is not working on the client
-        // this.readExcelFile().then((categoryList) => {
-        // 	console.log('categoryList', categoryList);
-        // }).catch(e => {
-        // 	console.log('promise error', e);
-        // });
         this.keywordFile = 'keywords.xlsx';
         this.keywords = {
             "1u1": "Internet",
@@ -68,12 +61,12 @@ var ImportKeywords = (function () {
             "WOOLWORTH": "Einkauf",
             "ZEEMAN": "Kleidung"
         };
-        var kc = new KeywordCollection_1["default"]();
-        underscore_1._.each(this.keywords, function (val, key) {
+        var kc = new KeywordCollection();
+        _.each(this.keywords, function (val, key) {
             console.log(key, val);
-            var kw = new Keyword_1["default"]({
+            var kw = new Keyword({
                 word: key,
-                category: val
+                category: val,
             });
             kc.add(kw);
         });
@@ -81,7 +74,6 @@ var ImportKeywords = (function () {
     ImportKeywords.prototype.readExcelFile = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            var Excel = require('exceljs');
             var workbook = new Excel.Workbook();
             workbook.xlsx.readFile(_this.keywordFile)
                 .then(function () {
@@ -96,21 +88,14 @@ var ImportKeywords = (function () {
         return new Promise(function (resolve, reject) {
             sheet.eachRow(function (row, rowNumber) {
                 var cells = row.values;
-                // not sure why this is needed
-                // var cells = row.values.slice(0, 2);
-                //console.log(cells.join('\t'));
-                //console.log(JSON.stringify(cells));
                 var key = cells[1];
                 var category = cells[2];
-                //console.log(key, category);
                 _this.keyWords[key] = category;
             });
-            //console.log(this.keyWords);
             resolve(_this.keyWords);
         });
     };
     return ImportKeywords;
 }());
-exports.__esModule = true;
-exports["default"] = ImportKeywords;
+export default ImportKeywords;
 //# sourceMappingURL=ImportKeywords.js.map

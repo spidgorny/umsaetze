@@ -1,8 +1,5 @@
-import jquery from 'jquery';
-import Umsaetze from './Umsaetze';
-
-const $ = jquery;
-// console.log('jQuery', $);
+import * as $ from "jquery";
+import {Umsaetze} from './Umsaetze';
 console.log('Umsaetze', Umsaetze);
 
 interface Window {

@@ -1,5 +1,3 @@
-"use strict";
-///<reference path="../../typings/index.d.ts"/>
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -10,17 +8,16 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
-var Expenses_1 = require("../../src/Expenses/Expenses");
-var Transaction_1 = require("../../src/Expenses/Transaction");
-var MockStorage_1 = require("./MockStorage");
+import Expenses from "../../src/Expenses/Expenses";
+import Transaction from "../../src/Expenses/Transaction";
+import MockStorage from "./MockStorage";
 var fs = require('fs');
 var Backbone = require('backbone');
-var ExpensesMock = /** @class */ (function (_super) {
+var ExpensesMock = (function (_super) {
     __extends(ExpensesMock, _super);
     function ExpensesMock() {
         var _this = this;
-        _this.localStorage = new MockStorage_1["default"]();
+        _this.localStorage = new MockStorage();
         _this.models = [];
         return _this;
     }
@@ -29,7 +26,7 @@ var ExpensesMock = /** @class */ (function (_super) {
         var json = fs.readFileSync(file);
         var data = JSON.parse(json);
         data.forEach(function (row) {
-            _this.models.push(new Transaction_1["default"](row));
+            _this.models.push(new Transaction(row));
         });
     };
     ExpensesMock.prototype.size = function () {
@@ -46,5 +43,6 @@ var ExpensesMock = /** @class */ (function (_super) {
         console.log('visible', content.join(''));
     };
     return ExpensesMock;
-}(Expenses_1["default"]));
-exports["default"] = ExpensesMock;
+}(Expenses));
+export default ExpensesMock;
+//# sourceMappingURL=ExpensesMock.js.map

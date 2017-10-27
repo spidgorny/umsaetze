@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -9,14 +8,11 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
-/// <reference path="../../typings/index.d.ts"/>
-var simpleStorage = require('simpleStorage.js');
-var _ = require('underscore');
-var CollectionArray = /** @class */ (function (_super) {
+import simpleStorage from 'simpleStorage.js';
+import _ from 'underscore';
+var CollectionArray = (function (_super) {
     __extends(CollectionArray, _super);
     function CollectionArray() {
-        //super(...arguments2);
         var arguments2 = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             arguments2[_i] = arguments[_i];
@@ -26,9 +22,6 @@ var CollectionArray = /** @class */ (function (_super) {
         _this.name = _this.constructor.prototype.name;
         return _this;
     }
-    /**
-     * Call this after setting this.modelClass
-     */
     CollectionArray.prototype.fetch = function () {
         var _this = this;
         var models = simpleStorage.get(this.name) || [];
@@ -45,11 +38,9 @@ var CollectionArray = /** @class */ (function (_super) {
     };
     CollectionArray.prototype.save = function () {
         simpleStorage.set(this.name, this.models);
-        //console.log(this.name+' saved '+this.size()+' records');
     };
     CollectionArray.prototype.each = function (callback) {
         this.models.forEach(function (el) {
-            //console.log('each', el);
             callback(el);
         });
     };
@@ -74,4 +65,5 @@ var CollectionArray = /** @class */ (function (_super) {
     };
     return CollectionArray;
 }(Array));
-exports["default"] = CollectionArray;
+export default CollectionArray;
+//# sourceMappingURL=CollectionArray.js.map

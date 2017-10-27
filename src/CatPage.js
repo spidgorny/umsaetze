@@ -1,5 +1,3 @@
-"use strict";
-/// <reference path="../node_modules/backbone-typings/backbone.d.ts" />
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -10,17 +8,16 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
-var CategoryCount_1 = require("./Category/CategoryCount");
-var CollectionController_1 = require("./CollectionController");
-var Handlebars = require('handlebars');
-var Backbone = require('backbone');
-var $ = require('jquery');
-var _ = require('underscore');
-var Chart = require('chart.js');
-var toastr = require('toastr');
-var object = require('./Util/Object');
-var CatPage = /** @class */ (function (_super) {
+import CategoryCount from './Category/CategoryCount';
+import { CollectionController } from './CollectionController';
+import Handlebars from 'handlebars';
+import Backbone from 'backbone-es6/src/Backbone.js';
+import $ from 'jquery';
+import { _ } from 'underscore';
+import Chart from 'chart.js';
+import toastr from 'toastr';
+import './Util/Object';
+var CatPage = (function (_super) {
     __extends(CatPage, _super);
     function CatPage(expenses, categoryList) {
         var _this = _super.call(this) || this;
@@ -32,10 +29,7 @@ var CatPage = /** @class */ (function (_super) {
         var href = importTag.prop('href');
         console.log(importTag, href);
         $.get(href).then(function (result) {
-            //console.log(result);
-            _this.setTemplate(
-            //_.template( result )
-            Handlebars.compile(result));
+            _this.setTemplate(Handlebars.compile(result));
         });
         console.log(_this);
         _this.listenTo(_this.categoryList, 'change', _this.render);
@@ -55,7 +49,6 @@ var CatPage = /** @class */ (function (_super) {
         if (this.template) {
             var categoryOptions_1 = [];
             this.categoryList.each(function (category) {
-                //console.log(category);
                 var monthlyTotals = _this.collection.getMonthlyTotalsFor(category);
                 category.resetCounters();
                 var averageAmountPerMonth = category.getAverageAmountPerMonth(monthlyTotals);
@@ -66,12 +59,12 @@ var CatPage = /** @class */ (function (_super) {
                     used: category.get('count'),
                     amount: averageAmountPerMonth,
                     average: averageAmountPerMonth,
-                    sparkline: JSON.stringify(monthlyTotals)
+                    sparkline: JSON.stringify(monthlyTotals),
                 });
             });
             categoryOptions_1 = _.sortBy(categoryOptions_1, 'catName');
             this.$el.html(this.template({
-                categoryOptions: categoryOptions_1
+                categoryOptions: categoryOptions_1,
             }));
             this.$('#addCategoryForm').on('submit', this.addCategory.bind(this));
             if ($(document).scrollTop() < 1) {
@@ -95,8 +88,8 @@ var CatPage = /** @class */ (function (_super) {
         var $form = $(event.target);
         var newName = $form.find('input').val();
         console.log('newName', newName);
-        var categoryObject = new CategoryCount_1["default"]({
-            catName: newName
+        var categoryObject = new CategoryCount({
+            catName: newName,
         });
         console.log('get', categoryObject.get('catName'));
         console.log('get', categoryObject.get('color'));
@@ -110,7 +103,6 @@ var CatPage = /** @class */ (function (_super) {
         var category = this.categoryList.get(id);
         console.log('category by id', category);
         if (category) {
-            //console.log('color', event.target.value);
             category.set('color', event.target.value);
         }
     };
@@ -121,26 +113,17 @@ var CatPage = /** @class */ (function (_super) {
         console.log('deleteCategory', id);
         this.categoryList.remove(id);
     };
-    /**
-     * https://codepen.io/ojame/pen/HpKvx
-     */
     CatPage.prototype.renderSparkLines = function () {
         var _this = this;
         var $sparkline = $('.sparkline');
         $sparkline.each(function (index, self) {
-            //console.log(self);
             self = $(self);
-            //Get context with jQuery - using jQuery's .get() method.
             var ctx = self.get(0).getContext("2d");
-            // Get the chart data and convert it to an array
             var chartData = JSON.parse(self.attr('data-chart_values'));
             var average = self.attr('data-average');
-            // Build the data object
             var data = object.values(chartData);
             var labels = Object.keys(chartData);
-            //console.log(data, labels);
             var datasets = {};
-            // Create the dataset
             datasets['strokeColor'] = self.attr('data-chart_StrokeColor');
             datasets['data'] = data;
             var lineSet = {
@@ -149,9 +132,8 @@ var CatPage = /** @class */ (function (_super) {
                 data: [].fill(average, 0, data.length),
                 borderColor: '#FF0000',
                 borderWidth: 1,
-                fill: false
+                fill: false,
             };
-            // Add to data object
             var dataDesc = {};
             dataDesc['labels'] = labels;
             dataDesc['datasets'] = Array(datasets, lineSet);
@@ -165,18 +147,16 @@ var CatPage = /** @class */ (function (_super) {
                     scaleShowGridLines: false,
                     pointDot: false,
                     datasetFill: false,
-                    // Sadly if you set scaleFontSize to 0, chartjs crashes
-                    // Instead we'll set it as small as possible and make it transparent
                     scaleFontSize: 1,
                     scaleFontColor: "rgba(0,0,0,0)",
                     legend: {
-                        display: false
+                        display: false,
                     },
                     maintainAspectRatio: false,
                     scales: {
                         yAxes: [{
                                 ticks: {
-                                    padding: 0
+                                    padding: 0,
                                 }
                             }]
                     },
@@ -233,5 +213,6 @@ var CatPage = /** @class */ (function (_super) {
         }
     };
     return CatPage;
-}(CollectionController_1.CollectionController));
-exports.CatPage = CatPage;
+}(CollectionController));
+export { CatPage };
+//# sourceMappingURL=CatPage.js.map

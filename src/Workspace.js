@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -9,46 +8,41 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
-var AppView_1 = require("./AppView");
-var Sync_1 = require("./Sync/Sync");
-var Expenses_1 = require("./Expenses/Expenses");
-var CatPage_1 = require("./CatPage");
-var KeywordsView_1 = require("./Keyword/KeywordsView");
-var CategoryCollection_1 = require("./Category/CategoryCollection");
-var KeywordCollection_1 = require("./Keyword/KeywordCollection");
-var SummaryView_1 = require("./Summary/SummaryView");
-var HistoryView_1 = require("./History/HistoryView");
-var backbone_1 = require("backbone");
-var $ = require('jquery');
-var _ = require('underscore');
-var Workspace = /** @class */ (function (_super) {
+import AppView from './AppView';
+import Sync from './Sync/Sync';
+import Expenses from './Expenses/Expenses';
+import { CatPage } from './CatPage';
+import { KeywordsView } from './Keyword/KeywordsView';
+import CategoryCollection from './Category/CategoryCollection';
+import KeywordCollection from './Keyword/KeywordCollection';
+import SummaryView from './Summary/SummaryView';
+import HistoryView from './History/HistoryView';
+import Backbone from 'backbone-es6/src/Backbone.js';
+import $ from 'jquery';
+var Workspace = (function (_super) {
     __extends(Workspace, _super);
     function Workspace(options) {
         var _this = _super.call(this, options) || this;
         _this.routes = {
-            "": "AppView",
-            ":year/:month": "MonthSelect",
-            ":year/:month/:category": "MonthSelectCategory",
-            "CatPage": "CatPage",
-            "Sync": "Sync",
-            "Keywords": "Keywords",
-            "Summary": "Summary",
-            "History": "History"
+            '': 'AppView',
+            ':year/:month': 'MonthSelect',
+            ':year/:month/:category': 'MonthSelectCategory',
+            'CatPage': 'CatPage',
+            'Sync': 'Sync',
+            'Keywords': 'Keywords',
+            'Summary': 'Summary',
+            'History': 'History'
         };
-        _this.keywords = new KeywordCollection_1["default"]();
+        _this.keywords = new KeywordCollection();
         _this._bindRoutes();
-        _this.model = new Expenses_1["default"]();
+        _this.model = new Expenses();
         _this.model.fetch();
-        _this.categoryList = new CategoryCollection_1["default"]();
+        _this.categoryList = new CategoryCollection();
         _this.categoryList.setExpenses(_this.model);
         return _this;
     }
     Workspace.prototype.activateMenu = function () {
         var url = window.location;
-        // var element = $('ul.nav a').filter(function() {
-        //     return this.href == url;
-        // }).addClass('active').parent().parent().addClass('in').parent();
         var element = $('ul.nav#side-menu a')
             .removeClass('active')
             .filter(function () {
@@ -76,7 +70,7 @@ var Workspace = /** @class */ (function (_super) {
         this.activateMenu();
         this.hideCurrentPage();
         if (!this.appPage) {
-            this.appPage = new AppView_1["default"]({
+            this.appPage = new AppView({
                 collection: this.model
             }, this.categoryList);
             this.appPage.table.keywords = this.keywords;
@@ -92,10 +86,10 @@ var Workspace = /** @class */ (function (_super) {
             this.appPage.hide();
         }
         else {
-            $('#MonthSelect').hide(); // for consistency
+            $('#MonthSelect').hide();
         }
         if (!this.syncPage) {
-            this.syncPage = new Sync_1["default"](this.model);
+            this.syncPage = new Sync(this.model);
             this.syncPage.router = this;
         }
         this.syncPage.render();
@@ -106,7 +100,7 @@ var Workspace = /** @class */ (function (_super) {
         this.activateMenu();
         this.hideCurrentPage();
         if (!this.catPage) {
-            this.catPage = new CatPage_1.CatPage(this.model, this.categoryList);
+            this.catPage = new CatPage(this.model, this.categoryList);
         }
         this.catPage.render();
         this.currentPage = this.catPage;
@@ -116,7 +110,7 @@ var Workspace = /** @class */ (function (_super) {
         this.activateMenu();
         this.hideCurrentPage();
         if (!this.keywordsPage) {
-            this.keywordsPage = new KeywordsView_1.KeywordsView();
+            this.keywordsPage = new KeywordsView();
             this.keywordsPage.keywords = this.keywords;
         }
         this.keywordsPage.render();
@@ -137,7 +131,7 @@ var Workspace = /** @class */ (function (_super) {
             var cat = this.categoryList.findWhere({ catName: category });
             console.log('MonthSelectCategory cat', cat);
             this.appPage.collection.filterByCategory(cat);
-            this.appPage.collection.trigger('change'); // slow!
+            this.appPage.collection.trigger('change');
         }
     };
     Workspace.prototype.Summary = function () {
@@ -145,7 +139,7 @@ var Workspace = /** @class */ (function (_super) {
         this.activateMenu();
         this.hideCurrentPage();
         if (!this.summaryPage) {
-            this.summaryPage = new SummaryView_1["default"]({
+            this.summaryPage = new SummaryView({
                 collection: this.categoryList
             }, this.model);
         }
@@ -159,7 +153,7 @@ var Workspace = /** @class */ (function (_super) {
         this.activateMenu();
         this.hideCurrentPage();
         if (!this.historyPage) {
-            this.historyPage = new HistoryView_1["default"]({
+            this.historyPage = new HistoryView({
                 collection: this.model
             });
         }
@@ -169,5 +163,6 @@ var Workspace = /** @class */ (function (_super) {
         this.currentPage = this.historyPage;
     };
     return Workspace;
-}(backbone_1.Router));
-exports["default"] = Workspace;
+}(Backbone.Router));
+export default Workspace;
+//# sourceMappingURL=Workspace.js.map

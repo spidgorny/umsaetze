@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -9,8 +8,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
-var Controller = /** @class */ (function (_super) {
+var Controller = (function (_super) {
     __extends(Controller, _super);
     function Controller() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -20,4 +18,5 @@ var Controller = /** @class */ (function (_super) {
     };
     return Controller;
 }(Backbone.View));
-exports["default"] = Controller;
+export default Controller;
+//# sourceMappingURL=Controller.js.map

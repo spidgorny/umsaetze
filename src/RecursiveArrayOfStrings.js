@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -9,8 +8,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
-var RecursiveArrayOfStrings = /** @class */ (function (_super) {
+var RecursiveArrayOfStrings = (function (_super) {
     __extends(RecursiveArrayOfStrings, _super);
     function RecursiveArrayOfStrings() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -30,4 +28,5 @@ var RecursiveArrayOfStrings = /** @class */ (function (_super) {
     };
     return RecursiveArrayOfStrings;
 }(Array));
-exports["default"] = RecursiveArrayOfStrings;
+export default RecursiveArrayOfStrings;
+//# sourceMappingURL=RecursiveArrayOfStrings.js.map
