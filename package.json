@@ -2,20 +2,20 @@
   "name": "umsaetze",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/main.ts",
   "scripts": {
     "test": "nodeunit",
     "clone-theme": "git clone https://github.com/BlackrockDigital/startbootstrap-sb-admin-2.git",
     "get-filereader": "git clone https://github.com/bgrins/filereader.js docs/filereader.js",
-    "compile": "node_modules/.bin/browserify src/umsaetze.js -o docs/web/bundle.js",
-    "watch": "node_modules/.bin/watchify src/umsaetze.js -o docs/web/bundle.js -d -v",
-    "w": "node_modules/.bin/watchify src/umsaetze.js -o docs/web/bundle.js -d -v --poll=1",
-    "FIXFIX": "webpack --progress --profile --colors --display-error-details --display-cached src/umsaetze.js -o docs/web/bundle.js",
-    "serve": "node_modules/.bin/webpack-dev-server ./docs/web/ --hot --inline --module-bind \"css=style\\!css\"",
+    "compile": "node_modules/.bin/browserify src/main.js -o docs/web/bundle.js",
+    "watch": "node_modules/.bin/watchify src/main.js -o docs/web/bundle.js -d -v",
+    "w": "node_modules/.bin/watchify src/main.js -o docs/web/bundle.js -d -v --poll=1",
+    "FIXFIX": "webpack --progress --profile --colors --display-error-details --display-cached src/main.js docs/web/bundle.js",
+    "serve": "node_modules/.bin/webpack-dev-server ./docs/web/ --hot --no-inline --module-bind \"css=style\\!css\" -w -d",
     "jasmine": "cd jasmine && jasmine",
     "build": "rollup -c"
   },
-  "author": "",
+  "author": "Slawa Pidgorny <spidgorny@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "@types/backbone": "^1.3.38",
@@ -27,7 +27,7 @@
     "backbone-typings": "^1.0.3",
     "backbone.localstorage": "^2.0.2",
     "bootstrap": "^3.3.7",
-    "bootstrap-tour": "^0.11.0",
+    "bootstrap-tour": "^0.12.0",
     "browserify": "^14.5.0",
     "chalk": "^2.3.0",
     "chance": "^1.0.12",
@@ -42,6 +42,7 @@
     "exceljs": "^0.5.1",
     "expect": "^1.20.2",
     "file-saver": "^1.3.2",
+    "filereader.js": "https://github.com/arnabk/filereader.js",
     "handlebars": "^4.0.11",
     "hexo": "^3.3.9",
     "iconv-lite": "^0.4.19",
@@ -71,8 +72,12 @@
   },
   "devDependencies": {
     "@types/node": "^8.0.47",
+    "awesome-typescript-loader": "^3.4.1",
+    "css-loader": "^0.28.7",
     "rollup": "^0.49.3",
     "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-typescript": "^0.8.1"
-  }
+    "rollup-plugin-typescript": "^0.8.1",
+    "source-map-loader": "^0.2.3"
+  },
+  "repository": "https://github.com/spidgorny/umsaetze.git"
 }

@@ -42,7 +42,7 @@ export default class AppView extends CollectionController<Expenses> {
 	constructor(options: ViewOptionsExpenses<Transaction>, categoryList: CategoryCollection) {
 		super(options);
 		console.log('construct AppView');
-		this.collection = options.collection;
+		this.collection = options.viewCollection;
 		this.setElement($('#app'));
 		this.setTemplate();
 
@@ -89,7 +89,7 @@ export default class AppView extends CollectionController<Expenses> {
 
 		this.table.render();
 		this.categories.render();
-		this.$('#applyKeywords').on('click', this.applyKeywords.bind(this));
+		CollectionController.$('#applyKeywords').on('click', this.applyKeywords.bind(this));
 		// let popover = $('[data-toggle="popover"]').popover();
 		// console.log(popover);
 		return this;
@@ -97,7 +97,7 @@ export default class AppView extends CollectionController<Expenses> {
 
 	setTemplate() {
 		// if no table in DOM, reset it
-		if (!this.$('#expenseTable').length) {
+		if (!CollectionController.$('#expenseTable').length) {
 			let template = _.template($('#AppView').html());
 			this.$el.html(template());
 
@@ -149,8 +149,8 @@ export default class AppView extends CollectionController<Expenses> {
 	hide() {
 		console.profile('AppView.hide');
 		//this.ms.hide();	// this may be needed for History
-		if (this.$('#expenseTable').length
-			&& this.$('#expenseTable').is(':visible')) {
+		if (CollectionController.$('#expenseTable').length
+			&& CollectionController.$('#expenseTable').is(':visible')) {
 		}
 		this.categories.hide();
 		console.profileEnd();

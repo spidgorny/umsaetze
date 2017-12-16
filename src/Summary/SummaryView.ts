@@ -8,6 +8,7 @@ import Handlebars from 'handlebars';
 // import Backbone from 'backbone-es6/src/Backbone.js';
 import Backbone = require('backbone');
 import * as _ from 'underscore';
+import * as $ from 'jquery';
 
 export default class SummaryView extends Backbone.View<CategoryCollectionModel> {
 

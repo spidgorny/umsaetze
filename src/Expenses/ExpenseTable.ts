@@ -205,8 +205,8 @@ export default class ExpenseTable extends Backbone.View<any> {
 			.show()
 			.css({
 				position: "absolute",
-				left: this.getMenuPosition(clientX, 'width', 'scrollLeft', menuSelector),
-				top: this.getMenuPosition(clientY, 'height', 'scrollTop', menuSelector)
+				left: ExpenseTable.getMenuPosition(clientX, 'width', 'scrollLeft', menuSelector),
+				top: ExpenseTable.getMenuPosition(clientY, 'height', 'scrollTop', menuSelector)
 			})
 			.off('click')
 			.on('click', 'a', function (e) {
@@ -228,10 +228,11 @@ export default class ExpenseTable extends Backbone.View<any> {
 		}, 0);
 	}
 
-	getMenuPosition(mouse, direction, scrollDir, menuSelector) {
-		let win = $(window)[direction](),
-			scroll = $(window)[scrollDir](),
-			menu = $(menuSelector)[direction](),
+	static getMenuPosition(mouse, direction, scrollDir, menuSelector) {
+		let $win: any = $(window);
+		let win = $win[direction](),
+			scroll = $win[scrollDir](),
+			menu = (<any>$(menuSelector))[direction](),
 			position = mouse + scroll;
 
 		// opening menu would pass the side of the page

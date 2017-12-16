@@ -1,17 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var _ = require("underscore");
-var SLTable = /** @class */ (function () {
-    function SLTable(data) {
-        if (data === void 0) { data = []; }
+const _ = require("underscore");
+class SLTable {
+    constructor(data = []) {
         this.data = data;
         console.log('SLTable', this.data.length);
     }
-    SLTable.prototype.toString = function () {
-        var content = [];
+    toString() {
+        let content = [];
         content.push('<table class="table">');
         content.push('<thead><tr>');
-        this.getColumns().forEach(function (col) {
+        this.getColumns().forEach(col => {
             content.push('<th>' + col.name + '</th>');
         });
         content.push('</tr></thead>');
@@ -20,32 +19,31 @@ var SLTable = /** @class */ (function () {
         content.push('</tbody>');
         content.push('</table>');
         return content.join("\n");
-    };
-    SLTable.prototype.getColumns = function () {
-        var thes = [];
-        this.data.forEach(function (row) {
+    }
+    getColumns() {
+        let thes = [];
+        this.data.forEach(row => {
             thes = thes.concat(Object.keys(row));
         });
         thes = _.uniq(thes);
-        //console.log(thes);
-        var cols = [];
-        thes.forEach(function (name) {
+        let cols = [];
+        thes.forEach(name => {
             cols.push({ name: name });
         });
         return cols;
-    };
-    SLTable.prototype.getRowsToString = function () {
-        var content = [];
-        var columns = this.getColumns();
-        this.data.forEach(function (row) {
+    }
+    getRowsToString() {
+        let content = [];
+        const columns = this.getColumns();
+        this.data.forEach(row => {
             content.push('<tr>');
-            columns.forEach(function (col) {
+            columns.forEach(col => {
                 content.push('<td>' + row[col.name] + '</td>');
             });
             content.push('</tr>');
         });
         return content.join("\n");
-    };
-    return SLTable;
-}());
+    }
+}
 exports.default = SLTable;
+//# sourceMappingURL=SLTable.js.map

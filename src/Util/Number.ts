@@ -1,7 +1,7 @@
 import { unformat } from 'accounting-js';
 import * as _ from 'underscore';
 
-function detectFloat(source: String) {
+export function detectFloat(source: String) {
 	if (_.isUndefined(source)) return NaN;
 	let float = unformat(source);
 	let posComma = source.indexOf(',');
@@ -20,8 +20,10 @@ function detectFloat(source: String) {
 	return float;
 }
 
-declare interface Number {
-	clamp (min: Number, max: Number): number;
+declare global {
+	interface Number {
+		clamp (min: Number, max: Number): number;
+	}
 }
 
 Number.prototype.clamp = function (min: number, max: number) {

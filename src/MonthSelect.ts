@@ -4,10 +4,10 @@ import Expenses from './Expenses/Expenses';
 import {LocalStorage} from 'backbone.localstorage';
 import ExpensesMock from '../test/helper/ExpensesMock';
 import * as $ from 'jquery';
-import datejs from 'datejs';
-import * as _ from 'underscore';
-import {detectFloat} from './Util/Number';
-import {Number} from './Util/Number';
+// import datejs from 'datejs';
+// import * as _ from 'underscore';
+// import {detectFloat} from './Util/Number';
+// import {Number} from './Util/Number';
 
 export default class MonthSelect extends Backbone.View<any> {
 
@@ -198,10 +198,9 @@ export default class MonthSelect extends Backbone.View<any> {
 
 		this.selectedYear = year;
 		//console.log(this.selectedYear);
-		this.storageProvider.setItem('MonthSelect.year', this.selectedYear);
+		this.storageProvider.setItem('MonthSelect.year', this.selectedYear.toString());
 
-		let monthName = this.getMonthNameFor(month);
-		this.selectedMonth = monthName;
+		this.selectedMonth = this.getMonthNameFor(month);
 		this.storageProvider.setItem('MonthSelect.month', this.selectedMonth);
 
 		this.render();		// repaint months as available or not
@@ -228,9 +227,9 @@ export default class MonthSelect extends Backbone.View<any> {
 	 * @deprecated
 	 * @returns {string|string|string|string|string|string|string|string|string|string|string|string}
 	 */
-	getMonthName() {
+	static getMonthName() {
 		throw new Error('getMonthName called when selectedMonth is a string already');
-		return this.monthNames[this.selectedMonth];
+		//return this.monthNames[this.selectedMonth];
 	}
 
 	/**
@@ -238,7 +237,7 @@ export default class MonthSelect extends Backbone.View<any> {
 	 * @returns {string}
 	 */
 	getShortMonthName() {
-		return this.getMonthName().substr(0, 3);
+		// return MonthSelect.getMonthName().substr(0, 3);
 	}
 
 	getShortMonthNameFor(index) {

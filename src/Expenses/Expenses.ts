@@ -1,5 +1,6 @@
 ///<reference path="../../node_modules/@types/backbone/index.d.ts" />
 ///<reference path="../../node_modules/@types/datejs/index.d.ts" />
+
 import Transaction from './Transaction';
 import Backbone = require('backbone');
 import CollectionFetchOptions = Backbone.CollectionFetchOptions;
@@ -9,7 +10,7 @@ import Keyword from '../Keyword/Keyword';
 import CategoryCount from '../Category/CategoryCount';
 import {debug} from '../main';
 import MonthSelect from '../MonthSelect';
-import FakeJQueryXHR from '../FakeJQueryXHR';
+// import FakeJQueryXHR from '../FakeJQueryXHR';
 import {LocalStorage} from 'backbone.localstorage';
 // import * as Date from 'datejs';
 import * as _ from 'underscore';
@@ -49,7 +50,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	/**
 	 * Should be called after constructor to read data from LS
 	 * @param options
-	 * @return JQueryXHR
+	 // * @return JQueryXHR
 	 */
 	fetch(options: CollectionFetchOptions = {}) {
 		let models = this.localStorage.findAll();
@@ -62,7 +63,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 			this.trigger('change');
 		}
 		console.log('read', this.length);
-		return new FakeJQueryXHR();
+		// return new FakeJQueryXHR();
 	}
 
 	/**

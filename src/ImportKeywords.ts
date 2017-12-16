@@ -1,8 +1,6 @@
-/// <reference path="../typings/index.d.ts" />
-
-import {_} from 'underscore';
-import Keyword from "./Keyword";
-import KeywordCollection from "./KeywordCollection";
+import * as _ from 'underscore';
+import Keyword from "./Keyword/Keyword";
+import KeywordCollection from "./Keyword/KeywordCollection";
 import Excel from 'exceljs';
 
 export default class ImportKeywords {
@@ -100,19 +98,19 @@ export default class ImportKeywords {
 	dumpSheet(sheet) {
 		return new Promise((resolve, reject) => {
 			sheet.eachRow((row, rowNumber) => {
-				var cells = row.values;
+				let cells = row.values;
 				// not sure why this is needed
 				// var cells = row.values.slice(0, 2);
 
 				//console.log(cells.join('\t'));
 				//console.log(JSON.stringify(cells));
-				var key = cells[1];
-				var category = cells[2];
+				let key = cells[1];
+				let category = cells[2];
 				//console.log(key, category);
-				this.keyWords[key] = category;
+				this.keywords[key] = category;
 			});
 			//console.log(this.keyWords);
-			resolve(this.keyWords);
+			resolve(this.keywords);
 		});
 	}
 

@@ -17,8 +17,8 @@ import Backbone = require('backbone');
 import LocalStorage from 'backbone.localstorage';
 import * as $ from 'jquery';
 import * as _ from 'underscore';
-// import FileReaderJS = require('filereader.js');
 import CategoryCount from "../Category/CategoryCount";
+const FileReaderJS = require('filereader.js');
 
 console.log(detectFloat('3.141528'));
 console.debug(detectFloat('3.141528'));
@@ -65,8 +65,8 @@ export default class Sync extends CollectionController<Expenses> {
 				memoryRows: this.model.size(),
 				lsRows: this.localStorage.findAll().length,
 			}));
-			this.$('#Refresh').on('click', this.refresh.bind(this));
-			this.$('#Generate').on('click', this.generate.bind(this));
+			CollectionController.$('#Refresh').on('click', this.refresh.bind(this));
+			CollectionController.$('#Generate').on('click', this.generate.bind(this));
 
 			//this.$('#Load').on('click', this.load.bind(this));
 			FileReaderJS.setupInput(document.getElementById('file-input-csv'), {
@@ -84,9 +84,9 @@ export default class Sync extends CollectionController<Expenses> {
 				}
 			});
 
-			this.$('#Save').on('click', this.save.bind(this));
-			this.$('#Clear').on('click', this.clear.bind(this));
-			this.$('#saveToLS').on('click', this.saveToLS.bind(this));
+			CollectionController.$('#Save').on('click', this.save.bind(this));
+			CollectionController.$('#Clear').on('click', this.clear.bind(this));
+			CollectionController.$('#saveToLS').on('click', this.saveToLS.bind(this));
 		} else {
 			this.$el.html('Loading ...');
 		}
@@ -138,7 +138,7 @@ export default class Sync extends CollectionController<Expenses> {
 		console.log('startLoading');
 		this.prevPercent = 0;
 		let template = _.template($('#loadingBarTemplate').html());
-		this.$('.panel-footer').html(template());
+		CollectionController.$('.panel-footer').html(template());
 	}
 
 	processRow(row: any, i: number, length: number) {

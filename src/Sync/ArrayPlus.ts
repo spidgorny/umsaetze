@@ -1,4 +1,4 @@
-import {_} from 'underscore';
+import * as _ from 'underscore';
 import naturalSort from 'javascript-natural-sort';
 
 export default class ArrayPlus extends Array<any> {

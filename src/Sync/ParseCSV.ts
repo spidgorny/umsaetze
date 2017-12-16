@@ -1,5 +1,3 @@
-/// <reference path="../../typings/index.d.ts" />
-
 // import {start} from "repl";
 import {detectFloat} from '../Util/Number';
 import Papa from 'papaparse';
@@ -28,7 +26,7 @@ export default class ParseCSV {
 
 	parseAndNormalize() {
 		let csv;
-		if (typeof document == "this code is commented") {
+		if (typeof document == "boolean") {	// "boolean" is for false
 			let csvObj = Papa.parse(this.data, {
 				header: true,
 				dynamicTyping: true,

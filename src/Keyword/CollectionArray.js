@@ -1,75 +1,52 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var simpleStorage_js_1 = require("simpleStorage.js");
-var _ = require("underscore");
-var CollectionArray = /** @class */ (function (_super) {
-    __extends(CollectionArray, _super);
-    function CollectionArray() {
-        var arguments2 = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            arguments2[_i] = arguments[_i];
-        }
-        var _this = _super.apply(this, arguments2) || this;
-        _this.models = [];
-        _this.name = _this.constructor.prototype.name;
-        return _this;
+const simplestorage_js_1 = require("simplestorage.js");
+const _ = require("underscore");
+class CollectionArray extends Array {
+    constructor(...arguments2) {
+        super(...arguments2);
+        this.models = [];
+        this.name = this.constructor.prototype.name;
     }
-    /**
-     * Call this after setting this.modelClass
-     */
-    CollectionArray.prototype.fetch = function () {
-        var _this = this;
-        var models = simpleStorage_js_1.default.get(this.name) || [];
-        models.forEach(function (row) {
+    fetch() {
+        let models = simplestorage_js_1.simplestorage.get(this.name) || [];
+        models.forEach((row) => {
             if (row) {
-                var model = new _this.modelClass(row);
-                _this.add(model);
+                let model = new this.modelClass(row);
+                this.add(model);
             }
         });
-    };
-    CollectionArray.prototype.add = function (model) {
+    }
+    add(model) {
         this.models.push(model);
         this.save();
-    };
-    CollectionArray.prototype.save = function () {
-        simpleStorage_js_1.default.set(this.name, this.models);
-        //console.log(this.name+' saved '+this.size()+' records');
-    };
-    CollectionArray.prototype.each = function (callback) {
-        this.models.forEach(function (el) {
-            //console.log('each', el);
+    }
+    save() {
+        simplestorage_js_1.simplestorage.set(this.name, this.models);
+    }
+    each(callback) {
+        this.models.forEach((el) => {
             callback(el);
         });
-    };
-    CollectionArray.prototype.getJSON = function () {
+    }
+    getJSON() {
         return JSON.stringify(this.models, null, '\t');
-    };
-    CollectionArray.prototype.size = function () {
+    }
+    size() {
         return this.models.length;
-    };
-    CollectionArray.prototype.random = function () {
+    }
+    random() {
         return _.sample(this.models);
-    };
-    CollectionArray.prototype.remove = function (id, idField) {
-        if (idField === void 0) { idField = 'id'; }
-        var index = _.findIndex(this.models, function (el) {
+    }
+    remove(id, idField = 'id') {
+        let index = _.findIndex(this.models, el => {
             return el[idField] == id;
         });
         console.log(index, id, idField);
         if (index > -1) {
             delete this.models[index];
         }
-    };
-    return CollectionArray;
-}(Array));
+    }
+}
 exports.default = CollectionArray;
+//# sourceMappingURL=CollectionArray.js.map

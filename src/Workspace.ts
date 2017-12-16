@@ -13,7 +13,7 @@ import Backbone = require('backbone');
 import Controller from './Controller';
 import { CollectionController } from './CollectionController';
 import * as $ from 'jquery';
-import * as _ from 'underscore';
+// import * as _ from 'underscore';
 
 export default class Workspace extends Backbone.Router {
 
@@ -87,7 +87,7 @@ export default class Workspace extends Backbone.Router {
 		this.hideCurrentPage();
 		if (!this.appPage) {
 			this.appPage = new AppView({
-				collection: this.model
+				viewCollection: this.model
 			}, this.categoryList);
 			this.appPage.table.keywords = this.keywords;
 		}

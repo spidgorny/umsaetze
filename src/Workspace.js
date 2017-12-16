@@ -62,7 +62,7 @@ class Workspace extends Backbone.Router {
         this.hideCurrentPage();
         if (!this.appPage) {
             this.appPage = new AppView_1.default({
-                collection: this.model
+                viewCollection: this.model
             }, this.categoryList);
             this.appPage.table.keywords = this.keywords;
         }

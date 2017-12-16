@@ -1,5 +1,7 @@
 import * as $ from "jquery";
 import {Umsaetze} from './Umsaetze';
+import 'toastr/build/toastr.css';
+
 console.log('Umsaetze', Umsaetze);
 
 interface Window {

@@ -3,7 +3,7 @@ console.log(Workspace);
 // import Backbone from 'backbone-es6/src/Backbone.js';
 import Backbone = require('backbone');
 import * as $ from "jquery";
-// import Tour from 'bootstrap-tour';
+import Tour from 'bootstrap-tour';
 
 export class Umsaetze {
 

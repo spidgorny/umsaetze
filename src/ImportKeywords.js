@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const underscore_1 = require("underscore");
-const Keyword_1 = require("./Keyword");
-const KeywordCollection_1 = require("./KeywordCollection");
+const _ = require("underscore");
+const Keyword_1 = require("./Keyword/Keyword");
+const KeywordCollection_1 = require("./Keyword/KeywordCollection");
 const exceljs_1 = require("exceljs");
 class ImportKeywords {
     constructor() {
@@ -64,7 +64,7 @@ class ImportKeywords {
             "ZEEMAN": "Kleidung"
         };
         let kc = new KeywordCollection_1.default();
-        underscore_1._.each(this.keywords, (val, key) => {
+        _.each(this.keywords, (val, key) => {
             console.log(key, val);
             let kw = new Keyword_1.default({
                 word: key,
@@ -87,12 +87,12 @@ class ImportKeywords {
     dumpSheet(sheet) {
         return new Promise((resolve, reject) => {
             sheet.eachRow((row, rowNumber) => {
-                var cells = row.values;
-                var key = cells[1];
-                var category = cells[2];
-                this.keyWords[key] = category;
+                let cells = row.values;
+                let key = cells[1];
+                let category = cells[2];
+                this.keywords[key] = category;
             });
-            resolve(this.keyWords);
+            resolve(this.keywords);
         });
     }
 }

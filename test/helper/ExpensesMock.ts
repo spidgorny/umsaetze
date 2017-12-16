@@ -1,5 +1,3 @@
-///<reference path="../../typings/index.d.ts"/>
-
 import Expenses from "../../src/Expenses/Expenses";
 import Transaction from "../../src/Expenses/Transaction";
 import MockStorage from "./MockStorage";
@@ -13,7 +11,7 @@ export default class ExpensesMock extends Expenses {
 	models: Transaction[] = [];
 
 	constructor() {
-
+		super();
 	}
 
 	load(file) {
@@ -29,7 +27,9 @@ export default class ExpensesMock extends Expenses {
 	}
 
 	each(cb: Function) {
-		return this.models.forEach(cb);
+		return <Transaction[]> <any>this.models.forEach((value, index) =>
+			cb(value, index)
+		);
 	}
 
 	dumpVisible() {

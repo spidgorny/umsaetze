@@ -1,68 +1,46 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-// import elapse from 'elapse';
-var Backbone = require("backbone");
-var _ = require("underscore");
-var $ = require("jquery");
-var chart_js_1 = require("chart.js");
-var main_1 = require("../main");
-// elapse.configure({
-// 	debug: true
-// });
-var CategoryView = /** @class */ (function (_super) {
-    __extends(CategoryView, _super);
-    function CategoryView(options) {
-        var _this = _super.call(this, options) || this;
-        _this.template = _.template($('#categoryTemplate').html());
-        _this.setElement($('#categories'));
-        _this.listenTo(_this.model, 'change', _this.render);
-        _this.$el.on('click', 'a.filterByCategory', _this.filterByCategory.bind(_this));
-        _this.on("all", function () {
+const Backbone = require("backbone");
+const _ = require("underscore");
+const $ = require("jquery");
+const chart_js_1 = require("chart.js");
+const main_1 = require("../main");
+class CategoryView extends Backbone.View {
+    constructor(options) {
+        super(options);
+        this.template = _.template($('#categoryTemplate').html());
+        this.setElement($('#categories'));
+        this.listenTo(this.model, 'change', this.render);
+        this.$el.on('click', 'a.filterByCategory', this.filterByCategory.bind(this));
+        this.on("all", () => {
             main_1.debug("CategoryView");
         });
-        return _this;
     }
-    CategoryView.prototype.setExpenses = function (expenses) {
+    setExpenses(expenses) {
         this.expenses = expenses;
         this.listenTo(this.expenses, 'change', this.recalculate);
-    };
-    CategoryView.prototype.recalculate = function () {
+    }
+    recalculate() {
         console.warn('CategoryView.recalculate');
         this.model.getCollection().getCategoriesFromExpenses();
-        // should call render?
-    };
-    CategoryView.prototype.render = function () {
-        var _this = this;
+    }
+    render() {
         console.profile('CategoryView.render');
-        var categoryCount = this.model.toJSON();
-        // remove income from %
-        var incomeRow = _.findWhere(categoryCount, {
+        let categoryCount = this.model.toJSON();
+        let incomeRow = _.findWhere(categoryCount, {
             catName: 'Income',
         });
         categoryCount = _.without(categoryCount, incomeRow);
-        var sum = _.reduce(categoryCount, function (memo, item) {
-            // only expenses
+        let sum = _.reduce(categoryCount, (memo, item) => {
             return memo + Math.abs(item.amount);
         }, 0);
-        //console.log('sum', sum);
-        categoryCount = _.sortBy(categoryCount, function (el) {
+        categoryCount = _.sortBy(categoryCount, (el) => {
             return Math.abs(el.amount);
         }).reverse();
-        var content = [];
-        _.each(categoryCount, function (catCount) {
-            var width = Math.round(100 * Math.abs(catCount.amount) / Math.abs(sum)) + '%';
-            //console.log(catCount.catName, width, catCount.count, catCount.amount);
-            content.push(_this.template(_.extend(catCount, {
+        let content = [];
+        _.each(categoryCount, (catCount) => {
+            let width = Math.round(100 * Math.abs(catCount.amount) / Math.abs(sum)) + '%';
+            content.push(this.template(_.extend(catCount, {
                 width: width,
                 amount: Math.round(catCount.amount),
                 sign: catCount.amount >= 0 ? 'positive' : 'negative',
@@ -77,35 +55,29 @@ var CategoryView = /** @class */ (function (_super) {
         this.showPieChart(Math.abs(sum));
         console.profileEnd();
         return this;
-    };
-    /**
-     * @deprecated
-     * @private
-     */
-    CategoryView.prototype._change = function () {
+    }
+    _change() {
         console.log('CategoryView changed', this.model.getCollection().size());
         if (this.model) {
-            //console.log('Calling CategoryCollection.change()');
-            //this.model.change();	// called automagically
             this.render();
         }
         else {
             console.error('Not rendering since this.model is undefined');
         }
-    };
-    CategoryView.prototype.showPieChart = function (sum) {
-        var labels = [];
-        var colors = [];
-        var dataSet1 = [];
+    }
+    showPieChart(sum) {
+        let labels = [];
+        let colors = [];
+        let dataSet1 = [];
         this.model.getCollection().comparator = function (el) {
             return -Math.abs(el.getAmount());
         };
         this.model.getCollection().sort();
-        var rest = 0;
-        this.model.getCollection().each(function (cat) {
+        let rest = 0;
+        this.model.getCollection().each((cat) => {
             if (cat.getName() != 'Income') {
-                var amount = Math.abs(cat.getAmount());
-                var perCent = 100 * amount / sum;
+                let amount = Math.abs(cat.getAmount());
+                let perCent = 100 * amount / sum;
                 if (perCent > 3) {
                     labels.push(cat.get('catName'));
                     dataSet1.push(amount);
@@ -118,7 +90,7 @@ var CategoryView = /** @class */ (function (_super) {
         });
         labels.push('Rest');
         dataSet1.push(rest.toFixed(2));
-        var data = {
+        let data = {
             labels: labels,
             datasets: [
                 {
@@ -140,15 +112,13 @@ var CategoryView = /** @class */ (function (_super) {
                 }
             }
         });
-    };
-    CategoryView.prototype.filterByCategory = function (event) {
+    }
+    filterByCategory(event) {
         event.preventDefault();
-        var link = $(event.target);
-        var id = link.attr('data-id');
+        let link = $(event.target);
+        let id = link.attr('data-id');
         console.log('filterByCategory', id);
-        var cat = this.model.get(id);
-        //console.log(cat);
-        //this.expenses.filterByMonth();
+        let cat = this.model.get(id);
         if (cat) {
             this.expenses.setAllVisible();
             this.expenses.filterByMonth();
@@ -158,16 +128,16 @@ var CategoryView = /** @class */ (function (_super) {
             this.expenses.setAllVisible();
             this.expenses.filterByMonth();
         }
-        this.expenses.trigger('change'); // slow!
-    };
-    CategoryView.prototype.hide = function () {
+        this.expenses.trigger('change');
+    }
+    hide() {
         this.$el.hide();
         $('#pieChart').hide();
-    };
-    CategoryView.prototype.show = function () {
+    }
+    show() {
         this.$el.show();
         $('#pieChart').show();
-    };
-    return CategoryView;
-}(Backbone.View));
+    }
+}
 exports.default = CategoryView;
+//# sourceMappingURL=CategoryView.js.map

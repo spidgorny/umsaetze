@@ -1,5 +1,3 @@
-///<reference path="../../typings/index.d.ts"/>
-
 import CollectionArray from './CollectionArray';
 import Keyword from './Keyword';
 

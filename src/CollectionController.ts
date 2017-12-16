@@ -1,5 +1,9 @@
+/// <reference path="../node_modules/@types/backbone/index.d.ts" />
+
 // import Events from 'typhonjs-core-backbone-events/src/Events.js';
-import Backbone = require('backbone');
+// import Backbone = require('backbone');
+const Backbone = require('backbone');
+import * as JQuery from 'jquery';
 import Expenses from "./Expenses/Expenses";
 import CollectionArray from "./Keyword/CollectionArray";
 
@@ -9,8 +13,11 @@ export class CollectionController<T extends Expenses|CollectionArray> extends Ba
 
 	$el: JQuery;
 
-	constructor(options: any) {
-		super();
+	/**
+	 * It has no constructor
+	 * @param options
+	 */
+	init(options: any) {
 		this.cid = Math.random().toString();
 	}
 
@@ -22,7 +29,7 @@ export class CollectionController<T extends Expenses|CollectionArray> extends Ba
 		this.$el.hide();
 	}
 
-	$(selector: string) {
+	static $(selector: string) {
 		return $(selector);
 	}
 

@@ -74,14 +74,14 @@ export class CatPage extends CollectionController<Expenses> {
 			this.$el.html(this.template({
 				categoryOptions: categoryOptions,
 			}));
-			this.$('#addCategoryForm').on('submit', this.addCategory.bind(this));
+			CollectionController.$('#addCategoryForm').on('submit', this.addCategory.bind(this));
 			if ($(document).scrollTop() < 1) {
-				this.$('input[name="newName"]').focus();
+				CollectionController.$('input[name="newName"]').focus();
 			}
 			this.$el.on('change', 'input[type="color"]', this.selectColor.bind(this));
-			this.$('button.close').on('click', this.deleteCategory.bind(this));
-			this.$('#categoryCount').html(this.categoryList.size().toString());
-			this.$('.inlineEdit').data('callback', this.renameCategory.bind(this));
+			CollectionController.$('button.close').on('click', this.deleteCategory.bind(this));
+			CollectionController.$('#categoryCount').html(this.categoryList.size().toString());
+			CollectionController.$('.inlineEdit').data('callback', this.renameCategory.bind(this));
 			setTimeout(() => {
 				this.renderSparkLines();
 			}, 5000);

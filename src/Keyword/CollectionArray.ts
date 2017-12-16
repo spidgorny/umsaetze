@@ -1,4 +1,4 @@
-import simpleStorage from 'simpleStorage.js';
+import {simplestorage as simpleStorage} from 'simplestorage.js';
 import * as _ from 'underscore';
 
 export default class CollectionArray extends Array {

@@ -1,7 +1,7 @@
 import * as $ from 'jquery';
 import * as _ from 'underscore';
 import KeywordCollection from './KeywordCollection';
-import RecursiveArrayOfStrings from '../RecursiveArrayOfStrings'
+import RecursiveArrayOfStrings from '../Util/RecursiveArrayOfStrings'
 import Keyword from './Keyword';
 import toastr from 'toastr';
 import {CollectionController} from '../CollectionController';
@@ -70,7 +70,7 @@ export class KeywordsView extends CollectionController<KeywordCollection> {
 		];
 
 		this.$el.html(RecursiveArrayOfStrings.merge(content));
-		this.$('#removeDuplicates').off().on('click', this.removeDuplicates.bind(this));
+		CollectionController.$('#removeDuplicates').off().on('click', this.removeDuplicates.bind(this));
 		this.$el.off('click', 'button.close').on('click', 'button.close', this.deleteRow.bind(this));
 		console.timeEnd('KeywordsView::render');
 	}
