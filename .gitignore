@@ -1,7 +1,6 @@
 .idea
 node_modules
 typings
-test/data/
 /docs/themes/
 /docs/.deploy_git/
 /docs/filereader.js/

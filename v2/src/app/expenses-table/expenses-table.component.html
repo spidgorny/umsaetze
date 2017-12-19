@@ -1,0 +1,21 @@
+<div *ngIf="data">
+  Count:
+   {{data.length}}
+
+  <table border="1">
+    <tbody>
+      <tr *ngFor="let transaction of data.data">
+        <td>{{transaction}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ul>
+    <li *ngFor="let transaction of items">
+      {{transaction}}
+    </li>
+  </ul>
+</div>
+<div *ngElse="">
+  Loading data...
+</div>

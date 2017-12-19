@@ -1,24 +1,24 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class MockStorage {
-    constructor() {
+var MockStorage = (function () {
+    function MockStorage() {
         this.length = 0;
     }
-    getItem($name) {
+    MockStorage.prototype.getItem = function ($name) {
         return this[name];
-    }
-    setItem(name, value) {
+    };
+    MockStorage.prototype.setItem = function (name, value) {
         this[name] = value;
         this.length++;
-    }
-    _clear() {
-        for (let i in Object.getOwnPropertyNames(this)) {
+    };
+    MockStorage.prototype._clear = function () {
+        for (var i in Object.getOwnPropertyNames(this)) {
             delete this[i];
         }
         this.length = 0;
-    }
-    update(object) {
-    }
-}
+    };
+    MockStorage.prototype.update = function (object) {
+    };
+    return MockStorage;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = MockStorage;
-//# sourceMappingURL=MockStorage.js.map

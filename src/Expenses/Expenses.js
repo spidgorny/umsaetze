@@ -1,107 +1,149 @@
+///<reference path="../../node_modules/@types/backbone/index.d.ts" />
+///<reference path="../../node_modules/@types/datejs/index.d.ts" />
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Transaction_1 = require("./Transaction");
-const Backbone = require("backbone");
-const main_1 = require("../main");
-const MonthSelect_1 = require("../MonthSelect");
-const backbone_localstorage_1 = require("backbone.localstorage");
-const _ = require("underscore");
-class Expenses extends Backbone.Collection {
-    constructor(models, options) {
-        super(models, options);
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Transaction_1 = require('./Transaction');
+var Backbone = require('backbone');
+var main_1 = require('../main');
+var MonthSelect_1 = require('../MonthSelect');
+// import FakeJQueryXHR from '../FakeJQueryXHR';
+var backbone_localstorage_1 = require('backbone.localstorage');
+// import * as Date from 'datejs';
+var _ = require('underscore');
+// import Timer from 'elapse';
+// Timer.configure({
+// 	debug: true
+// });
+var Expenses = (function (_super) {
+    __extends(Expenses, _super);
+    function Expenses(models, options) {
+        var _this = this;
+        _super.call(this, models, options);
         this.comparator = Expenses.comparatorFunction;
         this.localStorage = new backbone_localstorage_1.LocalStorage("Expenses");
-        this.listenTo(this, 'change', () => {
+        this.listenTo(this, 'change', function () {
             console.log('Expenses changed event');
-            this.saveAll();
+            _this.saveAll();
         });
-        this.on("all", () => {
+        this.on("all", function () {
             main_1.debug("Expenses");
         });
     }
-    static comparatorFunction(compare, to) {
+    Expenses.comparatorFunction = function (compare, to) {
         return compare.date == to.date
             ? 0 : (compare.date > to.date ? 1 : -1);
-    }
-    fetch(options = {}) {
-        let models = this.localStorage.findAll();
+    };
+    /**
+     * Should be called after constructor to read data from LS
+     * @param options
+     // * @return JQueryXHR
+     */
+    Expenses.prototype.fetch = function (options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        var models = this.localStorage.findAll();
         console.log('models from LS', models.length);
         if (models.length) {
-            _.each(models, (el) => {
-                this.add(new Transaction_1.default(el));
+            _.each(models, function (el) {
+                _this.add(new Transaction_1.default(el));
             });
+            //this.unserializeDate();
             this.trigger('change');
         }
         console.log('read', this.length);
-    }
-    getDateFrom() {
-        let visible = this.getVisible();
-        let min = new Date().addYears(10).valueOf();
-        _.each(visible, (row) => {
-            let date = row.getDate().valueOf();
+        // return new FakeJQueryXHR();
+    };
+    /**
+     * Only visible
+     * @returns {Date}
+     */
+    Expenses.prototype.getDateFrom = function () {
+        var visible = this.getVisible();
+        var min = new Date().addYears(10).valueOf();
+        _.each(visible, function (row) {
+            var date = row.getDate().valueOf();
             if (date < min) {
                 min = date;
             }
         });
         return new Date(min);
-    }
-    getDateTill() {
-        let visible = this.getVisible();
-        let min = new Date('1970-01-01').valueOf();
-        _.each(visible, (row) => {
-            let date = row.getDate().valueOf();
+    };
+    /**
+     * Only visible
+     * @returns {Date}
+     */
+    Expenses.prototype.getDateTill = function () {
+        var visible = this.getVisible();
+        var min = new Date('1970-01-01').valueOf();
+        _.each(visible, function (row) {
+            var date = row.getDate().valueOf();
             if (date > min) {
                 min = date;
             }
         });
         return new Date(min);
-    }
-    getEarliest() {
+    };
+    Expenses.prototype.getEarliest = function () {
         if (!this.size()) {
             return new Date();
         }
-        let min = new Date().addYears(10).valueOf();
-        this.each((row) => {
-            let dDate = row.getDate();
-            let date = dDate.valueOf();
+        var min = new Date().addYears(10).valueOf();
+        this.each(function (row) {
+            var dDate = row.getDate();
+            var date = dDate.valueOf();
             if (date < min) {
                 min = date;
             }
         });
         return new Date(min);
-    }
-    getLatest() {
+    };
+    Expenses.prototype.getLatest = function () {
         if (!this.size()) {
             return new Date();
         }
-        let min = new Date('1970-01-01').valueOf();
-        this.each((row) => {
-            let date = row.getDate().valueOf();
+        var min = new Date('1970-01-01').valueOf();
+        this.each(function (row) {
+            var date = row.getDate().valueOf();
             if (date > min) {
                 min = date;
             }
         });
         return new Date(min);
-    }
-    setAllVisible() {
-        this.each((model) => {
+    };
+    /**
+     * show everything by default, then filters will hide
+     */
+    Expenses.prototype.setAllVisible = function () {
+        this.each(function (model) {
             model.set('visible', true, { silent: true });
         });
-    }
-    filterVisible(q) {
+    };
+    /**
+     * Will hide some visible
+     * @param q
+     */
+    Expenses.prototype.filterVisible = function (q) {
         if (!q.length)
             return;
         console.profile('Expense.filterVisible');
-        let lowQ = q.toLowerCase();
-        this.each((row) => {
+        var lowQ = q.toLowerCase();
+        this.each(function (row) {
             if (row.get('note').toLowerCase().indexOf(lowQ) == -1) {
                 row.set('visible', false, { silent: true });
             }
         });
         console.profileEnd();
         this.saveAll();
-    }
-    filterByMonth(selectedMonth) {
+    };
+    /**
+     * Will hide some visible
+     * @param selectedMonth
+     */
+    Expenses.prototype.filterByMonth = function (selectedMonth) {
         console.profile('Expense.filterByMonth');
         if (selectedMonth) {
             this.selectedMonth = selectedMonth;
@@ -110,78 +152,86 @@ class Expenses extends Backbone.Collection {
             selectedMonth = this.selectedMonth;
         }
         else {
-            let ms = MonthSelect_1.default.getInstance();
+            //throw new Error('filterByMonth no month defined');
+            var ms = MonthSelect_1.default.getInstance();
             selectedMonth = ms.getSelected();
         }
         console.log('filterMyMonth', selectedMonth);
         if (selectedMonth) {
-            let inThisMonth = this.whereMonth(selectedMonth);
-            let allOthers = _.difference(this.models, inThisMonth);
-            allOthers.forEach((row) => {
+            var inThisMonth = this.whereMonth(selectedMonth);
+            var allOthers = _.difference(this.models, inThisMonth);
+            allOthers.forEach(function (row) {
                 row.set('visible', false, { silent: true });
             });
             this.saveAll();
         }
         console.profileEnd();
-    }
-    whereMonth(selectedMonth) {
-        let filtered = [];
-        this.each((row) => {
-            let tDate = row.get('date');
-            let sameYear = tDate.getFullYear() == selectedMonth.getFullYear();
-            let sameMonth = tDate.getMonth() == selectedMonth.getMonth();
+    };
+    Expenses.prototype.whereMonth = function (selectedMonth) {
+        var filtered = [];
+        this.each(function (row) {
+            var tDate = row.get('date');
+            var sameYear = tDate.getFullYear() == selectedMonth.getFullYear();
+            var sameMonth = tDate.getMonth() == selectedMonth.getMonth();
             if (sameYear && sameMonth) {
                 filtered.push(row);
             }
         });
         return filtered;
-    }
-    filterByCategory(category) {
+    };
+    Expenses.prototype.filterByCategory = function (category) {
         console.profile('Expense.filterByCategory');
-        this.each((row) => {
+        this.each(function (row) {
             if (row.isVisible()) {
-                let rowCat = row.get('category');
-                let isVisible = category.getName() == rowCat;
+                var rowCat = row.get('category');
+                var isVisible = category.getName() == rowCat;
+                //console.log('set visible', isVisible);
                 row.set('visible', isVisible, { silent: true });
             }
         });
         this.saveAll();
         console.profileEnd();
-    }
-    saveAll() {
+    };
+    Expenses.prototype.saveAll = function () {
+        var _this = this;
         console.profile('Expense.saveAll');
         this.localStorage._clear();
-        this.each((model) => {
-            this.localStorage.update(model);
+        this.each(function (model) {
+            _this.localStorage.update(model);
         });
         console.profileEnd();
-    }
-    unserializeDate() {
+    };
+    /**
+     * @deprecated
+     */
+    Expenses.prototype.unserializeDate = function () {
         console.profile('Expense.unserializeDate');
-        this.each((model) => {
-            let sDate = model.get('date');
-            let dateObject = new Date(sDate);
+        this.each(function (model) {
+            var sDate = model.get('date');
+            var dateObject = new Date(sDate);
             console.log(sDate, dateObject);
             model.set('date', dateObject);
         });
         console.profileEnd();
-    }
-    getVisible() {
+    };
+    Expenses.prototype.getVisible = function () {
         return this.where({ visible: true });
-    }
-    getVisibleCount() {
+    };
+    Expenses.prototype.getVisibleCount = function () {
         return this.getVisible().length;
-    }
-    getSorted() {
+    };
+    Expenses.prototype.getSorted = function () {
         this.sort();
-        let visible = this.getVisible();
+        var visible = this.getVisible();
+        // return _.sortBy(visible, 'attributes.date');
         return visible;
-    }
-    setCategories(keywords) {
-        this.each((row) => {
+    };
+    Expenses.prototype.setCategories = function (keywords) {
+        this.each(function (row) {
             if (row.get('category') == 'Default') {
-                keywords.each((key) => {
-                    let note = row.get('note');
+                keywords.each(function (key) {
+                    //console.log(key);
+                    var note = row.get('note');
                     if (note.indexOf(key.word) > -1) {
                         console.log(note, 'contains', key.word, 'gets', key.category);
                         row.set('category', key.category, { silent: true });
@@ -190,59 +240,95 @@ class Expenses extends Backbone.Collection {
             }
         });
         this.trigger('change');
-    }
-    getMonthlyTotalsFor(category) {
-        let sparks = {};
-        let from = this.getEarliest().moveToFirstDayOfMonth();
-        let till = this.getLatest().moveToLastDayOfMonth();
-        let count = 0;
-        for (let month = from; month.compareTo(till) == -1; month.addMonths(1)) {
-            let month1 = month.clone();
+    };
+    /**
+     * TODO: generate matrix separately and then return only the value in a grid.
+     * JavaScript is so fast it's tempting to ignore this
+     * @param category
+     * @returns {{}}
+     */
+    Expenses.prototype.getMonthlyTotalsFor = function (category) {
+        var sparks = {};
+        var from = this.getEarliest().moveToFirstDayOfMonth();
+        var till = this.getLatest().moveToLastDayOfMonth();
+        // console.log({
+        // 	from: from.toString('yyyy-MM-dd HH:mm'),
+        // 	till: till.toString('yyyy-MM-dd HH:mm'),
+        // });
+        var count = 0;
+        var _loop_1 = function(month) {
+            var month1 = month.clone();
             month1.addMonths(1).add({ minutes: -1 });
-            let sum = 0;
-            this.each((transaction) => {
-                let sameCategory = transaction.get('category') == category.getName();
-                let sameMonth = transaction.getDate().between(month, month1);
+            // console.log({
+            // 	month: month.toString('yyyy-MM-dd HH:mm'),
+            // 	month1: month1.toString('yyyy-MM-dd HH:mm'),
+            // 	today_is_between: Date.today().between(month, month1)
+            // });
+            var sum = 0;
+            this_1.each(function (transaction) {
+                var sameCategory = transaction.get('category') == category.getName();
+                var sameMonth = transaction.getDate().between(month, month1);
                 if (sameCategory && sameMonth) {
+                    // if (category.getName() == 'Darlehen' && month.toString('yyyy-MM-dd') == '2014-09-01') {
+                    // 	console.log({
+                    // 		transDate: transaction.getDate().toString('yyyy-MM-dd HH:mm'),
+                    // 		transAmount: transaction.getAmount(),
+                    // 		month: month.toString('yyyy-MM-dd HH:mm'),
+                    // 		month1: month1.toString('yyyy-MM-dd HH:mm'),
+                    // 	});
+                    // }
                     sum += transaction.getAmount();
                     count++;
                     category.incrementCount();
                 }
             });
             sparks[month.toString('yyyy-MM')] = Math.abs(sum).toFixed(2);
+        };
+        var this_1 = this;
+        for (var month = from; month.compareTo(till) == -1; month.addMonths(1)) {
+            _loop_1(month);
         }
+        //console.log(category.getName(), count);
         category.set('count', count, { silent: true });
         return sparks;
-    }
-    replaceCategory(oldName, newName) {
-        this.each((transaction) => {
+    };
+    Expenses.prototype.replaceCategory = function (oldName, newName) {
+        this.each(function (transaction) {
             if (transaction.get('category') == oldName) {
                 transaction.set('category', newName, { silent: true });
             }
         });
-    }
-    clear() {
+    };
+    Expenses.prototype.clear = function () {
         this.reset(null);
-    }
-    stepBackTillSalary(ms) {
-        let selectedMonth = ms.getSelected();
+    };
+    // map(fn: Function) {
+    // 	return _.map(this.models, fn);
+    // }
+    /**
+     * This is supposed to be used after this.filterByMonth()
+     */
+    Expenses.prototype.stepBackTillSalary = function (ms) {
+        var selectedMonth = ms.getSelected();
         if (selectedMonth) {
-            let selectedMonthMinus1 = selectedMonth.clone().addMonths(-1);
-            let prevMonth = this.whereMonth(selectedMonthMinus1);
-            let max = _.reduce(prevMonth, (acc, row) => {
+            var selectedMonthMinus1 = selectedMonth.clone().addMonths(-1);
+            var prevMonth = this.whereMonth(selectedMonthMinus1);
+            var max_1 = _.reduce(prevMonth, function (acc, row) {
                 return Math.max(acc, row.get('amount'));
             }, 0);
-            let doAppend = false;
-            prevMonth.forEach((row) => {
-                if (row.get('amount') == max) {
-                    doAppend = true;
+            //console.log(selectedMonthMinus1.toString('yyyy-MM-dd'), prevMonth.length, max);
+            var doAppend_1 = false;
+            prevMonth.forEach(function (row) {
+                if (row.get('amount') == max_1) {
+                    doAppend_1 = true;
                 }
-                if (doAppend) {
+                if (doAppend_1) {
                     row.set('visible', true, { silent: true });
                 }
             });
         }
-    }
-}
+    };
+    return Expenses;
+}(Backbone.Collection));
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Expenses;
-//# sourceMappingURL=Expenses.js.map

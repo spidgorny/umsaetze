@@ -1,10 +1,20 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Backbone = require("backbone");
-const $ = require("jquery");
-class MonthSelect extends Backbone.View {
-    constructor() {
-        super();
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+// import Backbone from 'backbone-es6/src/Backbone.js';
+var Backbone = require('backbone');
+var $ = require('jquery');
+// import datejs from 'datejs';
+// import * as _ from 'underscore';
+// import {detectFloat} from './Util/Number';
+// import {Number} from './Util/Number';
+var MonthSelect = (function (_super) {
+    __extends(MonthSelect, _super);
+    function MonthSelect() {
+        _super.call(this);
         this.$el = $('#MonthSelect');
         this.yearSelect = this.$('select');
         this.monthOptions = this.$('button');
@@ -12,6 +22,10 @@ class MonthSelect extends Backbone.View {
         this.selectedMonth = 'Feb';
         this.earliest = new Date();
         this.latest = new Date();
+        /**
+         * http://stackoverflow.com/questions/1643320/get-month-name-from-date
+         * @type {[string,string,string,string,string,string,string,string,string,string,string,string]}
+         */
         this.monthNames = [
             "January", "February", "March",
             "April", "May", "June",
@@ -21,144 +35,189 @@ class MonthSelect extends Backbone.View {
         if (!this.storageProvider) {
             this.storageProvider = window.localStorage;
         }
+        // console.log(this.yearSelect);
+        // console.log(this.monthOptions);
+        // this is a problem for HistoryView because it switches to page type
+        // this.monthOptions.on('click', this.clickOnMonthAndNavigate.bind(this));
         this.monthOptions.on('click', this.clickOnMonth.bind(this));
         this.yearSelect.on('change', this.changeYear.bind(this));
-        let year = this.storageProvider.getItem('MonthSelect.year');
+        //this.localStorage = new Backbone.LocalStorage('MonthSelect');
+        var year = this.storageProvider.getItem('MonthSelect.year');
         if (year) {
             this.selectedYear = parseInt(year);
         }
-        let month = this.storageProvider.getItem('MonthSelect.month');
+        var month = this.storageProvider.getItem('MonthSelect.month');
         if (month) {
             this.selectedMonth = month;
         }
+        //console.log('MonthSelect', this.selectedYear, this.selectedMonth);
     }
-    static getInstance() {
+    MonthSelect.getInstance = function () {
         if (!MonthSelect.instance) {
             MonthSelect.instance = new MonthSelect();
         }
         return MonthSelect.instance;
-    }
-    render() {
+    };
+    MonthSelect.prototype.render = function () {
+        var _this = this;
+        //console.time('MonthSelect.render');
         this.earliest.moveToFirstDayOfMonth();
-        let selectedDate = this.getSelected();
-        let options = [];
-        let minYear = this.earliest.getFullYear();
-        let maxYear = this.latest.getFullYear();
-        for (let y = minYear; y <= maxYear; y++) {
-            let selected = selectedDate.getFullYear() == y ? 'selected' : '';
+        var selectedDate = this.getSelected();
+        // year
+        var options = [];
+        var minYear = this.earliest.getFullYear();
+        var maxYear = this.latest.getFullYear();
+        // console.log('minYear', minYear, 'maxYear', maxYear);
+        for (var y = minYear; y <= maxYear; y++) {
+            var selected = selectedDate.getFullYear() == y ? 'selected' : '';
             options.push('<option ' + selected + '>' + y + '</option>');
         }
         this.yearSelect.html(options.join("\n"));
-        this.monthOptions.each((i, button) => {
-            let monthNumber = i + 1;
-            let sDate = this.selectedYear + '-' + monthNumber + '-01';
-            let firstOfMonth = new Date(sDate);
-            let $button = $(button);
-            let isAfter = firstOfMonth.isAfter(this.earliest);
-            let isBefore = firstOfMonth.isBefore(this.latest);
+        // month
+        this.monthOptions.each(function (i, button) {
+            var monthNumber = i + 1;
+            //console.log(button);
+            var sDate = _this.selectedYear + '-' + monthNumber + '-01';
+            var firstOfMonth = new Date(sDate);
+            var $button = $(button);
+            var isAfter = firstOfMonth.isAfter(_this.earliest);
+            var isBefore = firstOfMonth.isBefore(_this.latest);
             if (isAfter && isBefore) {
                 $button.removeAttr('disabled');
             }
             else {
                 $button.attr('disabled', 'disabled');
             }
-            let equals = firstOfMonth.equals(selectedDate);
+            var equals = firstOfMonth.equals(selectedDate);
             if (equals) {
                 $button.addClass('btn-success').removeClass('btn-default');
             }
             else {
                 $button.removeClass('btn-success').addClass('btn-default');
             }
+            //console.log(sDate, firstOfMonth, isAfter, isBefore, equals);
         });
+        //console.timeEnd('MonthSelect.render');
         return this;
-    }
-    show() {
+    };
+    MonthSelect.prototype.show = function () {
+        //console.log('MonthSelect.show');
         this.$el.show();
-        this.render();
-    }
-    hide() {
+        this.render(); // required as data may have changed (all disabled bug)
+    };
+    MonthSelect.prototype.hide = function () {
         console.error('MonthSelect.hide');
         this.$el.hide();
-    }
-    getMonthIndex() {
-        let result = Date.getMonthNumberFromName(this.selectedMonth) + 1;
+    };
+    MonthSelect.prototype.getMonthIndex = function () {
+        var result = Date.getMonthNumberFromName(this.selectedMonth) + 1;
+        //console.log('getMonthIndex', this.selectedMonth, '=>', result);
         return result;
-    }
-    getMonthIndexFor(monthName) {
-        let result = Date.getMonthNumberFromName(monthName) + 1;
+    };
+    MonthSelect.prototype.getMonthIndexFor = function (monthName) {
+        var result = Date.getMonthNumberFromName(monthName) + 1;
+        //console.log('getMonthIndex', monthName, result);
         return result;
-    }
-    getMonthNameFor(index) {
+    };
+    MonthSelect.prototype.getMonthNameFor = function (index) {
         return this.getShortMonthNameFor(index);
-    }
-    changeYear(event) {
+    };
+    MonthSelect.prototype.changeYear = function (event) {
+        // this.selectedYear = this.yearSelect.val();	// don't set yet - URL will do
         Backbone.history.navigate('#/' + this.yearSelect.val() + '/' + this.getMonthIndex());
-    }
-    clickOnMonthAndNavigate(event) {
+    };
+    MonthSelect.prototype.clickOnMonthAndNavigate = function (event) {
         this.monthOptions.removeClass('btn-success').addClass('btn-default');
-        let $button = $(event.target);
+        var $button = $(event.target);
         $button.removeClass('btn-default');
         $button.addClass('btn-success');
-        let monthIndex = this.getMonthIndexFor($button.text());
+        //this.selectedMonth = $button.text();	// don't set yet - URL will do
+        var monthIndex = this.getMonthIndexFor($button.text());
         Backbone.history.navigate('#/' + this.selectedYear + '/' + monthIndex);
-    }
-    clickOnMonth(event) {
+    };
+    MonthSelect.prototype.clickOnMonth = function (event) {
         this.monthOptions.removeClass('btn-success').addClass('btn-default');
-        let $button = $(event.target);
+        var $button = $(event.target);
         $button.removeClass('btn-default');
         $button.addClass('btn-success');
         this.selectedMonth = $button.text();
         this.storageProvider.setItem('MonthSelect.month', this.selectedMonth);
         this.trigger('MonthSelect:change');
-    }
-    setYear(year) {
+    };
+    MonthSelect.prototype.setYear = function (year) {
+        // if (this.selectedYear == year) return;
         console.log('setYear', year);
         this.selectedYear = year;
+        //console.log(this.selectedYear);
         this.storageProvider.setItem('MonthSelect.year', this.selectedYear + '');
-        this.render();
+        this.render(); // repaint months as available or not
         this.trigger('MonthSelect:change');
-    }
-    setMonth(month) {
-        let monthName = this.getMonthNameFor(month);
+    };
+    MonthSelect.prototype.setMonth = function (month) {
+        var monthName = this.getMonthNameFor(month);
+        // if (this.selectedMonth == monthName) {
+        // 	console.warn('same month', this.selectedMonth, monthName);
+        // 	return;
+        // }
         console.log('setMonth', month);
         this.selectedMonth = monthName;
         this.storageProvider.setItem('MonthSelect.month', this.selectedMonth);
         this.trigger('MonthSelect:change');
-    }
-    setYearMonth(year, month) {
+    };
+    MonthSelect.prototype.setYearMonth = function (year, month) {
         console.log('setYearMonth', year, month);
         this.selectedYear = year;
+        //console.log(this.selectedYear);
         this.storageProvider.setItem('MonthSelect.year', this.selectedYear.toString());
         this.selectedMonth = this.getMonthNameFor(month);
         this.storageProvider.setItem('MonthSelect.month', this.selectedMonth);
-        this.render();
+        this.render(); // repaint months as available or not
         this.trigger('MonthSelect:change');
-    }
-    trigger(what) {
+    };
+    MonthSelect.prototype.trigger = function (what) {
         console.warn(what);
-        super.trigger(what);
-    }
-    getSelected() {
-        let sSelectedDate = this.selectedYear + '-' + this.getMonthIndex() + '-01';
-        let selectedDate = new Date(sSelectedDate);
+        _super.prototype.trigger.call(this, what);
+    };
+    /**
+     * @public
+     * @returns Date
+     */
+    MonthSelect.prototype.getSelected = function () {
+        var sSelectedDate = this.selectedYear + '-' + this.getMonthIndex() + '-01';
+        var selectedDate = new Date(sSelectedDate);
+        //console.log('selectedDate', sSelectedDate, selectedDate);
         return selectedDate;
-    }
-    static getMonthName() {
+    };
+    /**
+     * @deprecated
+     * @returns {string|string|string|string|string|string|string|string|string|string|string|string}
+     */
+    MonthSelect.getMonthName = function () {
         throw new Error('getMonthName called when selectedMonth is a string already');
-    }
-    getShortMonthName() {
-    }
-    getShortMonthNameFor(index) {
+        //return this.monthNames[this.selectedMonth];
+    };
+    /**
+     * @deprecated
+     * @returns {string}
+     */
+    MonthSelect.prototype.getShortMonthName = function () {
+        // return MonthSelect.getMonthName().substr(0, 3);
+    };
+    MonthSelect.prototype.getShortMonthNameFor = function (index) {
         return this.monthNames[index - 1].substr(0, 3);
-    }
-    update(collection) {
+    };
+    MonthSelect.prototype.update = function (collection) {
         this.earliest = collection.getEarliest();
         this.latest = collection.getLatest();
+        // console.log('MonthSelect.update',
+        // 	this.earliest.toString('yyyy-MM-dd'),
+        // 	this.latest.toString('yyyy-MM-dd'));
         this.selectedYear = this.selectedYear.clamp(this.earliest.getFullYear(), this.latest.getFullYear());
-        let selectedMonthIndex = this.getMonthIndex().clamp(this.earliest.getMonth(), this.latest.getMonth());
+        var selectedMonthIndex = this.getMonthIndex().clamp(this.earliest.getMonth(), this.latest.getMonth());
         this.selectedMonth = this.getShortMonthNameFor(selectedMonthIndex);
         this.show();
-    }
-}
+    };
+    return MonthSelect;
+}(Backbone.View));
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = MonthSelect;
-//# sourceMappingURL=MonthSelect.js.map

@@ -1,16 +1,16 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const _ = require("underscore");
-class SLTable {
-    constructor(data = []) {
+var _ = require("underscore");
+var SLTable = (function () {
+    function SLTable(data) {
+        if (data === void 0) { data = []; }
         this.data = data;
         console.log('SLTable', this.data.length);
     }
-    toString() {
-        let content = [];
+    SLTable.prototype.toString = function () {
+        var content = [];
         content.push('<table class="table">');
         content.push('<thead><tr>');
-        this.getColumns().forEach(col => {
+        this.getColumns().forEach(function (col) {
             content.push('<th>' + col.name + '</th>');
         });
         content.push('</tr></thead>');
@@ -19,31 +19,33 @@ class SLTable {
         content.push('</tbody>');
         content.push('</table>');
         return content.join("\n");
-    }
-    getColumns() {
-        let thes = [];
-        this.data.forEach(row => {
+    };
+    SLTable.prototype.getColumns = function () {
+        var thes = [];
+        this.data.forEach(function (row) {
             thes = thes.concat(Object.keys(row));
         });
         thes = _.uniq(thes);
-        let cols = [];
-        thes.forEach(name => {
+        //console.log(thes);
+        var cols = [];
+        thes.forEach(function (name) {
             cols.push({ name: name });
         });
         return cols;
-    }
-    getRowsToString() {
-        let content = [];
-        const columns = this.getColumns();
-        this.data.forEach(row => {
+    };
+    SLTable.prototype.getRowsToString = function () {
+        var content = [];
+        var columns = this.getColumns();
+        this.data.forEach(function (row) {
             content.push('<tr>');
-            columns.forEach(col => {
+            columns.forEach(function (col) {
                 content.push('<td>' + row[col.name] + '</td>');
             });
             content.push('</tr>');
         });
         return content.join("\n");
-    }
-}
+    };
+    return SLTable;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = SLTable;
-//# sourceMappingURL=SLTable.js.map
