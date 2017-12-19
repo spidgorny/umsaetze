@@ -17,7 +17,7 @@ export class ExpensesTableComponent implements OnInit {
 		console.log('etc constructor', this.data.data.length);
 		this.dateFrom = this.data.getEarliest();
 		this.dateTill = this.data.getLatest();
-		console.log(this.dateFrom, this.dateTill);
+		console.log('date extremes', this.dateFrom, this.dateTill);
 	}
 
 	ngOnInit() {
