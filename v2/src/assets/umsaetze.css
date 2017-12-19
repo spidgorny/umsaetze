@@ -1,0 +1,52 @@
+a{}
+.money {
+  text-align: right;
+  white-space: nowrap;
+}
+.money.positive {
+  color: green;
+}
+.money.negative {
+  color: red;
+}
+.category {
+  padding: 1px 15px;
+}
+.category .progress {
+  margin-top: 2px;
+}
+.note {
+  font-size: smaller;
+}
+.withProgress {
+  padding: 2px;
+  margin-bottom: 2px;
+}
+.withProgress .progress {
+  margin-bottom: 0;
+}
+canvas {
+  -webkit-transition: height 1s;
+  -moz-transition: height 1s;
+  -ms-transition: height 1s;
+  -o-transition: height 1s;
+  transition: height 1s;
+}
+/**
+http://stackoverflow.com/questions/26632713/show-delete-button-on-right-side-of-bootstrap-row-on-hover
+*/
+.hover-btn button {
+  visibility: hidden;
+  font-size: 18px;
+}
+tr:hover .hover-btn button {
+  visibility: visible;
+}
+#App {
+  min-height: 800px;
+}
+.footer {
+  background-color: #f5f5f5;
+  padding: 1em;
+  border-top: solid 1px #e7e7e7;
+}

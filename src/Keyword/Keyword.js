@@ -1,7 +1,6 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class Keyword {
-    constructor(attributes) {
+var Keyword = (function () {
+    function Keyword(attributes) {
         if (!attributes.word) {
             throw new Error('no word in keyword');
         }
@@ -11,6 +10,7 @@ class Keyword {
         }
         this.category = attributes.category;
     }
-}
+    return Keyword;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Keyword;
-//# sourceMappingURL=Keyword.js.map

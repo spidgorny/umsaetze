@@ -1,45 +1,60 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Keyword_1 = require("../Keyword/Keyword");
-const main_1 = require("../main");
-const Table_1 = require("../Sync/Table");
-const $ = require("jquery");
-const _ = require("underscore");
-const handlebars_1 = require("handlebars");
-const Backbone = require("backbone");
-class ExpenseTable extends Backbone.View {
-    constructor(options) {
-        super(options);
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Keyword_1 = require("../Keyword/Keyword");
+var main_1 = require("../main");
+var Table_1 = require("../Sync/Table");
+// import View from 'backbone-es6/src/View.js';
+var $ = require('jquery');
+var _ = require('underscore');
+var handlebars_1 = require('handlebars');
+// import elapse from 'elapse';
+var Backbone = require('backbone');
+// elapse.configure({
+// 	debug: true
+// });
+var ExpenseTable = (function (_super) {
+    __extends(ExpenseTable, _super);
+    function ExpenseTable(options) {
+        _super.call(this, options);
         this.template = _.template($('#rowTemplate').html());
         console.log(this.keywords);
-        let $expenseTable = $('#expenseTable');
+        // in case we started with Sync page the table is not visible
+        var $expenseTable = $('#expenseTable');
         if (!$expenseTable.length) {
-            const template = _.template($('#AppView').html());
+            var template = _.template($('#AppView').html());
             $('#app').html(template());
         }
         this.setElement($expenseTable);
-        this.on("all", () => {
+        // slow re-rendering of the whole table when collection changes
+        //this.listenTo(this.collection, 'update', this.render);
+        this.on("all", function () {
             main_1.debug("ExpenseTable");
         });
     }
-    setCategoryList(list) {
+    ExpenseTable.prototype.setCategoryList = function (list) {
         this.categoryList = list;
         this.listenTo(this.categoryList, 'change', this.render);
-    }
-    render(options) {
+    };
+    ExpenseTable.prototype.render = function (options) {
+        var _this = this;
         if (options && options.noRender) {
             console.log('ExpenseTable.noRender');
             return;
         }
         console.profile('ExpenseTable.render');
         console.log('ExpenseTable.render()', this.model.size());
-        let table = this.getTransactionAttributesTable();
-        let rows = [];
-        table.forEach((attributes) => {
-            rows.push(this.template(attributes));
+        var table = this.getTransactionAttributesTable();
+        var rows = [];
+        table.forEach(function (attributes) {
+            rows.push(_this.template(attributes));
         });
         console.log('rendering', rows.length, 'rows');
         this.$el.html(rows.join('\n'));
+        //console.log(this.$el);
         $('#dateFrom').html(this.model.getDateFrom().toString('yyyy-MM-dd'));
         $('#dateTill').html(this.model.getDateTill().toString('yyyy-MM-dd'));
         $('#numRows').html(this.model.getVisibleCount().toString());
@@ -49,32 +64,41 @@ class ExpenseTable extends Backbone.View {
         this.$el.on('click', 'input.checkedDone', this.onCheck.bind(this));
         console.profileEnd();
         return this;
-    }
-    getTransactionAttributesTable() {
-        let visible = this.model.getVisible();
-        let table = new Table_1.default();
-        _.each(visible, (transaction) => {
-            let attributes = transaction.toJSON();
+    };
+    ExpenseTable.prototype.getTransactionAttributesTable = function () {
+        var _this = this;
+        var visible = this.model.getVisible();
+        var table = new Table_1.default();
+        _.each(visible, function (transaction) {
+            var attributes = transaction.toJSON();
             attributes.sDate = transaction.getDate().toString('yyyy-MM-dd');
             attributes.cssClass = attributes.category == 'Default'
                 ? 'bg-warning' : '';
-            attributes.categoryOptions = this.getCategoryOptions(transaction);
-            attributes.background = this.categoryList.getColorFor(transaction.get('category'));
+            attributes.categoryOptions = _this.getCategoryOptions(transaction);
+            attributes.background = _this.categoryList.getColorFor(transaction.get('category'));
             attributes.checkedDone = transaction.get('done') ? 'checked' : '';
             attributes.amount = attributes.amount.toFixed(2);
             table.push(attributes);
         });
+        // sortBy only works with direct attributes (not Model)
         table = new Table_1.default(_.sortBy(table, 'date'));
         return table;
-    }
-    openSelect(event) {
-        let $select = $(event.target);
+    };
+    /**
+     * @deprecated - not working in Chrome
+     * @param event
+     */
+    ExpenseTable.prototype.openSelect = function (event) {
+        //console.log('openSelect', this, event);
+        var $select = $(event.target);
+        //if ($select.find('option').length == 1) {
         {
-            let defVal = $select.find('option').html();
+            var defVal_1 = $select.find('option').html();
             $select.find('option').remove();
-            let options = this.categoryList.getOptions();
-            $.each(options, (key, value) => {
-                if (value != defVal) {
+            var options = this.categoryList.getOptions();
+            //console.log(options);
+            $.each(options, function (key, value) {
+                if (value != defVal_1) {
                     $select
                         .append($("<option></option>")
                         .attr("value", value)
@@ -83,12 +107,13 @@ class ExpenseTable extends Backbone.View {
             });
             $select.on('change', this.newCategory.bind(this));
         }
-    }
-    getCategoryOptions(transaction) {
-        let selected = transaction.get('category');
-        let sOptions = [];
-        let options = this.categoryList.getOptions();
-        $.each(options, (key, value) => {
+    };
+    ExpenseTable.prototype.getCategoryOptions = function (transaction) {
+        var selected = transaction.get('category');
+        var sOptions = [];
+        var options = this.categoryList.getOptions();
+        // console.log('options', options);
+        $.each(options, function (key, value) {
             if (value == selected) {
                 sOptions.push('<option selected>' + value + '</option>');
             }
@@ -96,37 +121,44 @@ class ExpenseTable extends Backbone.View {
                 sOptions.push('<option>' + value + '</option>');
             }
         });
+        // console.log('sOptions', sOptions);
         return sOptions.join('\n');
-    }
-    newCategory(event) {
+    };
+    ExpenseTable.prototype.newCategory = function (event) {
         console.log('newCategory');
-        let $select = $(event.target);
-        let id = $select.closest('tr').attr('data-id');
-        let transaction = this.model.get(id);
+        var $select = $(event.target);
+        //console.log('selected', $select.val());
+        var id = $select.closest('tr').attr('data-id');
+        //console.log(id);
+        var transaction = this.model.get(id);
+        // console.log(transaction);
         if (transaction) {
+            // console.log('Transaction id=', id);
             transaction.setCategory($select.val());
         }
         else {
             console.error('Transaction with id=', id, 'not found');
         }
-    }
-    textSelectedEvent(event) {
-        let text = ExpenseTable.getSelectedText().trim();
+    };
+    ExpenseTable.prototype.textSelectedEvent = function (event) {
+        // console.log('textSelectedEvent');
+        var text = ExpenseTable.getSelectedText().trim();
         if (text) {
-            let $contextMenu = $('#contextMenu');
+            //console.log(text);
+            var $contextMenu = $('#contextMenu');
             if (!$contextMenu.length) {
-                let template = handlebars_1.default.compile($('#categoryMenu').html());
-                let menuHTML = template({
+                var template = handlebars_1.default.compile($('#categoryMenu').html());
+                var menuHTML = template({
                     catlist: this.categoryList.getOptions(),
                 });
                 $('body').append(menuHTML);
-                $contextMenu = $('#contextMenu');
+                $contextMenu = $('#contextMenu'); // after append
                 console.log($contextMenu, event.clientX, event.clientY);
             }
             this.openMenu($contextMenu, event.clientX, event.clientY, this.applyFilter.bind(this, text));
         }
-    }
-    static getSelectedText() {
+    };
+    ExpenseTable.getSelectedText = function () {
         if (window.getSelection) {
             return window.getSelection().toString();
         }
@@ -134,9 +166,16 @@ class ExpenseTable extends Backbone.View {
             return document['selection'].createRange().text;
         }
         return '';
-    }
-    openMenu(menuSelector, clientX, clientY, callback) {
-        let $menu = $(menuSelector)
+    };
+    /**
+     * Opens a popup menu at the specified position
+     * @param menuSelector
+     * @param clientX
+     * @param clientY
+     * @param callback
+     */
+    ExpenseTable.prototype.openMenu = function (menuSelector, clientX, clientY, callback) {
+        var $menu = $(menuSelector)
             .show()
             .css({
             position: "absolute",
@@ -145,30 +184,39 @@ class ExpenseTable extends Backbone.View {
         })
             .off('click')
             .on('click', 'a', function (e) {
-            let $selectedMenu = $(e.target);
+            var $selectedMenu = $(e.target);
             if ($selectedMenu.length) {
                 $menu.hide();
                 callback.call(this, $selectedMenu);
             }
         });
+        //console.log($menu);
+        // make sure menu closes on any click
+        // since we use onmouseup we can't immediately close the popup
         setTimeout(function () {
             $('body').click(function () {
                 $(menuSelector).hide();
-                $('body').off('click');
+                $('body').off('click'); // once
             });
         }, 0);
-    }
-    static getMenuPosition(mouse, direction, scrollDir, menuSelector) {
-        let $win = $(window);
-        let win = $win[direction](), scroll = $win[scrollDir](), menu = $(menuSelector)[direction](), position = mouse + scroll;
+    };
+    ExpenseTable.getMenuPosition = function (mouse, direction, scrollDir, menuSelector) {
+        var $win = $(window);
+        var win = $win[direction](), scroll = $win[scrollDir](), menu = $(menuSelector)[direction](), position = mouse + scroll;
+        // opening menu would pass the side of the page
         if (mouse + menu > win && menu < mouse)
             position -= menu;
         return position;
-    }
-    applyFilter(text, menu) {
-        let scrollTop = document.body.scrollTop;
+    };
+    /**
+     * When clicking on the category item from the popup menu
+     * @param text
+     * @param menu
+     */
+    ExpenseTable.prototype.applyFilter = function (text, menu) {
+        var scrollTop = document.body.scrollTop;
         console.log('scrollTop', scrollTop);
-        let categoryName = menu.text().trim();
+        var categoryName = menu.text().trim();
         console.log(text, 'to be', categoryName);
         this.keywords.add(new Keyword_1.default({
             word: text,
@@ -176,27 +224,29 @@ class ExpenseTable extends Backbone.View {
         }));
         this.model.setCategories(this.keywords);
         this.render();
-        setTimeout(() => {
+        setTimeout(function () {
             console.log('Scrolling', scrollTop);
             $('body').scrollTop(scrollTop);
         }, 0);
-    }
-    deleteRow(event) {
-        let button = $(event.target);
-        let dataID = button.closest('tr').attr('data-id');
+    };
+    ExpenseTable.prototype.deleteRow = function (event) {
+        var button = $(event.target);
+        var dataID = button.closest('tr').attr('data-id');
         console.log('deleteRow', dataID);
         this.model.remove(dataID);
         this.model.saveAll();
         this.render();
-    }
-    onCheck(event) {
-        let checkbox = $(event.target);
-        let id = checkbox.closest('tr').attr('data-id');
-        let transaction = this.model.get(id);
+    };
+    ExpenseTable.prototype.onCheck = function (event) {
+        var checkbox = $(event.target);
+        var id = checkbox.closest('tr').attr('data-id');
+        var transaction = this.model.get(id);
+        //console.log(checkbox, id, transaction);
         if (transaction) {
             transaction.set('done', true);
         }
-    }
-}
+    };
+    return ExpenseTable;
+}(Backbone.View));
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = ExpenseTable;
-//# sourceMappingURL=ExpenseTable.js.map

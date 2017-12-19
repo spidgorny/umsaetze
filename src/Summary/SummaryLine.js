@@ -1,8 +1,7 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const _ = require("underscore");
-class SummaryLine {
-    constructor(params) {
+var _ = require("underscore");
+var SummaryLine = (function () {
+    function SummaryLine(params) {
         this.average = 0;
         this.perCent = 0;
         this.perMonth = [];
@@ -10,21 +9,25 @@ class SummaryLine {
             _.extend(this, params);
         }
     }
-    combine(sl2) {
+    SummaryLine.prototype.combine = function (sl2) {
         this.average += parseFloat(sl2.average);
         this.sAverage = this.average.toString();
         this.perCent = parseFloat(this.perCent) + parseFloat(sl2.perCent);
         if (this.perMonth.length) {
-            this.perMonth = _.map(this.perMonth, (el, index) => {
+            this.perMonth = _.map(this.perMonth, function (el, index) {
+                // if (this.catName == 'Auto') console.log(el, sl2.perMonth[index]);
                 el.value = parseFloat(el.value) + parseFloat(sl2.perMonth[index].value);
+                // if (this.catName == 'Auto') console.log(el.value);
                 el.value = el.value.toFixed(2);
                 return el;
             });
         }
         else {
-            this.perMonth = _.map(sl2.perMonth, _.clone);
+            // http://stackoverflow.com/questions/21003059/how-do-you-clone-an-array-of-objects-using-underscore
+            this.perMonth = _.map(sl2.perMonth, _.clone); // deep clone
         }
-    }
-}
+    };
+    return SummaryLine;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = SummaryLine;
-//# sourceMappingURL=SummaryLine.js.map

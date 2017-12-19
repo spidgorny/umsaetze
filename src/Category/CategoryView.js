@@ -1,46 +1,61 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Backbone = require("backbone");
-const _ = require("underscore");
-const $ = require("jquery");
-const chart_js_1 = require("chart.js");
-const main_1 = require("../main");
-class CategoryView extends Backbone.View {
-    constructor(options) {
-        super(options);
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+// import elapse from 'elapse';
+var Backbone = require('backbone');
+var _ = require('underscore');
+var $ = require('jquery');
+var chart_js_1 = require('chart.js');
+var main_1 = require('../main');
+// elapse.configure({
+// 	debug: true
+// });
+var CategoryView = (function (_super) {
+    __extends(CategoryView, _super);
+    function CategoryView(options) {
+        _super.call(this, options);
         this.template = _.template($('#categoryTemplate').html());
         this.setElement($('#categories'));
         this.listenTo(this.model, 'change', this.render);
         this.$el.on('click', 'a.filterByCategory', this.filterByCategory.bind(this));
-        this.on("all", () => {
+        this.on("all", function () {
             main_1.debug("CategoryView");
         });
     }
-    setExpenses(expenses) {
+    CategoryView.prototype.setExpenses = function (expenses) {
         this.expenses = expenses;
         this.listenTo(this.expenses, 'change', this.recalculate);
-    }
-    recalculate() {
+    };
+    CategoryView.prototype.recalculate = function () {
         console.warn('CategoryView.recalculate');
         this.model.getCollection().getCategoriesFromExpenses();
-    }
-    render() {
+        // should call render?
+    };
+    CategoryView.prototype.render = function () {
+        var _this = this;
         console.profile('CategoryView.render');
-        let categoryCount = this.model.toJSON();
-        let incomeRow = _.findWhere(categoryCount, {
+        var categoryCount = this.model.toJSON();
+        // remove income from %
+        var incomeRow = _.findWhere(categoryCount, {
             catName: 'Income',
         });
         categoryCount = _.without(categoryCount, incomeRow);
-        let sum = _.reduce(categoryCount, (memo, item) => {
+        var sum = _.reduce(categoryCount, function (memo, item) {
+            // only expenses
             return memo + Math.abs(item.amount);
         }, 0);
-        categoryCount = _.sortBy(categoryCount, (el) => {
+        //console.log('sum', sum);
+        categoryCount = _.sortBy(categoryCount, function (el) {
             return Math.abs(el.amount);
         }).reverse();
-        let content = [];
-        _.each(categoryCount, (catCount) => {
-            let width = Math.round(100 * Math.abs(catCount.amount) / Math.abs(sum)) + '%';
-            content.push(this.template(_.extend(catCount, {
+        var content = [];
+        _.each(categoryCount, function (catCount) {
+            var width = Math.round(100 * Math.abs(catCount.amount) / Math.abs(sum)) + '%';
+            //console.log(catCount.catName, width, catCount.count, catCount.amount);
+            content.push(_this.template(_.extend(catCount, {
                 width: width,
                 amount: Math.round(catCount.amount),
                 sign: catCount.amount >= 0 ? 'positive' : 'negative',
@@ -55,29 +70,35 @@ class CategoryView extends Backbone.View {
         this.showPieChart(Math.abs(sum));
         console.profileEnd();
         return this;
-    }
-    _change() {
+    };
+    /**
+     * @deprecated
+     * @private
+     */
+    CategoryView.prototype._change = function () {
         console.log('CategoryView changed', this.model.getCollection().size());
         if (this.model) {
+            //console.log('Calling CategoryCollection.change()');
+            //this.model.change();	// called automagically
             this.render();
         }
         else {
             console.error('Not rendering since this.model is undefined');
         }
-    }
-    showPieChart(sum) {
-        let labels = [];
-        let colors = [];
-        let dataSet1 = [];
+    };
+    CategoryView.prototype.showPieChart = function (sum) {
+        var labels = [];
+        var colors = [];
+        var dataSet1 = [];
         this.model.getCollection().comparator = function (el) {
             return -Math.abs(el.getAmount());
         };
         this.model.getCollection().sort();
-        let rest = 0;
-        this.model.getCollection().each((cat) => {
+        var rest = 0;
+        this.model.getCollection().each(function (cat) {
             if (cat.getName() != 'Income') {
-                let amount = Math.abs(cat.getAmount());
-                let perCent = 100 * amount / sum;
+                var amount = Math.abs(cat.getAmount());
+                var perCent = 100 * amount / sum;
                 if (perCent > 3) {
                     labels.push(cat.get('catName'));
                     dataSet1.push(amount);
@@ -90,7 +111,7 @@ class CategoryView extends Backbone.View {
         });
         labels.push('Rest');
         dataSet1.push(rest.toFixed(2));
-        let data = {
+        var data = {
             labels: labels,
             datasets: [
                 {
@@ -112,13 +133,15 @@ class CategoryView extends Backbone.View {
                 }
             }
         });
-    }
-    filterByCategory(event) {
+    };
+    CategoryView.prototype.filterByCategory = function (event) {
         event.preventDefault();
-        let link = $(event.target);
-        let id = link.attr('data-id');
+        var link = $(event.target);
+        var id = link.attr('data-id');
         console.log('filterByCategory', id);
-        let cat = this.model.get(id);
+        var cat = this.model.get(id);
+        //console.log(cat);
+        //this.expenses.filterByMonth();
         if (cat) {
             this.expenses.setAllVisible();
             this.expenses.filterByMonth();
@@ -128,16 +151,17 @@ class CategoryView extends Backbone.View {
             this.expenses.setAllVisible();
             this.expenses.filterByMonth();
         }
-        this.expenses.trigger('change');
-    }
-    hide() {
+        this.expenses.trigger('change'); // slow!
+    };
+    CategoryView.prototype.hide = function () {
         this.$el.hide();
         $('#pieChart').hide();
-    }
-    show() {
+    };
+    CategoryView.prototype.show = function () {
         this.$el.show();
         $('#pieChart').show();
-    }
-}
+    };
+    return CategoryView;
+}(Backbone.View));
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = CategoryView;
-//# sourceMappingURL=CategoryView.js.map

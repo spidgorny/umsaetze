@@ -1,0 +1,307 @@
+<div id="wrapper">
+
+	<!-- Navigation -->
+	<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href=".">Umsaetze</a>
+		</div>
+		<!-- /.navbar-header -->
+
+		<div class="MonthSelect" id="MonthSelect">
+			<form class="navbar-form navbar-left" style="madrgin: 0;">
+				<div class="form-group" style="display: inline-block">
+					<select id="year" class="form-control" title="Year">
+						<option>2014</option>
+						<option>2015</option>
+						<option selected>2016</option>
+						<option>2017</option>
+					</select>
+				</div>
+				<ul id="month" class="nav navbar-top-links" style="display: inline-block">
+					<li>
+						<button class="btn btn-default" disabled>Jan</button>
+					</li>
+					<li>
+						<button class="btn btn-default" disabled>Feb</button>
+					</li>
+					<li>
+						<button class="btn btn-default" disabled>Mar</button>
+					</li>
+					<li>
+						<button class="btn btn-default" disabled>Apr</button>
+					</li>
+					<li>
+						<button class="btn btn-default" disabled>May</button>
+					</li>
+					<li>
+						<button class="btn btn-default" disabled>Jun</button>
+					</li>
+					<li>
+						<button class="btn btn-default" disabled>Jul</button>
+					</li>
+					<li>
+						<button class="btn btn-default" disabled>Aug</button>
+					</li>
+					<li>
+						<button class="btn btn-default" disabled>Sep</button>
+					</li>
+					<li>
+						<button class="btn btn-default" disabled>Oct</button>
+					</li>
+					<li>
+						<button class="btn btn-default" disabled>Nov</button>
+					</li>
+					<li>
+						<button class="btn btn-default" disabled>Dec</button>
+					</li>
+				</ul>
+			</form>
+		</div>
+
+		<ul class="nav navbar-top-links navbar-right">
+			<li class="dropdown">
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+					<i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+				</a>
+				<ul class="dropdown-menu dropdown-messages">
+					<li>
+						<a href="#">
+							<i class="fa fa-dashboard fa-fw"></i>
+							Dashboard
+						</a>
+					</li>
+					<li>
+						<a href="#Sync">
+							<i class="fa fa-save fa-fw"></i>
+							Sync
+						</a>
+					</li>
+					<li>
+						<a href="#CatPage">
+							<i class="fa fa-list fa-fw"></i>
+							Categories
+						</a>
+					</li>
+					<li>
+						<a href="#Keywords">
+							<span class="glyphicon glyphicon-filter"></span>
+							Keywords
+						</a>
+					</li>
+					<li>
+						<a href="#Summary">
+							<span class="glyphicon glyphicon-plus"></span>
+							Summary
+						</a>
+					</li>
+					<li>
+						<a href="#History">
+							<span class="glyphicon glyphicon-equalizer"></span>
+							History
+						</a>
+					</li>
+					<li class="divider"></li>
+					<li>
+						<a href="https://spidgorny.github.io/umsaetze/public/">
+							<i class="fa fa-book" aria-hidden="true"></i>
+							Documentation
+						</a>
+					</li>
+					<li>
+						<a href="https://github.com/spidgorny/umsaetze/">
+							<i class="fa fa-github" aria-hidden="true"></i>
+							GitHub
+						</a>
+					</li>
+				</ul>
+				<!-- /.dropdown-messages -->
+			</li>
+			<!-- /.dropdown -->
+		</ul>
+		<!-- /.navbar-top-links -->
+
+		<div class="navbar-default sidebar" role="navigation">
+			<div class="sidebar-nav navbar-collapse">
+				<ul class="nav" id="side-menu">
+					<li class="sidebar-search">
+						<div class="input-group custom-search-form">
+							<input type="text" class="form-control" placeholder="Search...">
+							<span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+						</div>
+						<!-- /input-group -->
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-dashboard fa-fw"></i>
+							Dashboard
+						</a>
+					</li>
+					<li>
+						<a href="#Sync">
+							<i class="fa fa-save fa-fw"></i>
+							Sync
+						</a>
+					</li>
+					<li>
+						<a href="#CatPage">
+							<i class="fa fa-list fa-fw"></i>
+							Categories
+						</a>
+					</li>
+					<li>
+						<a href="#Keywords">
+							<span class="glyphicon glyphicon-filter"></span>
+							Keywords
+						</a>
+					</li>
+					<li>
+						<a href="#Summary">
+							<span class="glyphicon glyphicon-plus"></span>
+							Summary
+						</a>
+					</li>
+					<li>
+						<a href="#History">
+							<span class="glyphicon glyphicon-equalizer"></span>
+							History
+						</a>
+					</li>
+				</ul>
+
+				<canvas id="pieChart" width="250" height="250">
+				</canvas>
+
+				<div id="categories">
+					<h4 class="category text-right">
+						Income: <span class="income"></span> &euro;
+					</h4>
+					<h4 class="category text-right">
+						<a href="#" class="filterByCategory">
+							Total per month</a>
+						: <span class="total"></span> &euro;
+					</h4>
+					<div id="catElements"></div>
+				</div>
+
+			</div>
+			<!-- /.sidebar-collapse -->
+		</div>
+		<!-- /.navbar-static-side -->
+	</nav>
+
+	<!--<app-header></app-header>-->
+	<div id="page-wrapper">
+		<!-- /.row -->
+		<div class="row" style="padding-top: 1em;">
+			<div class="col-lg-12">
+				<div id="app">
+					<app-expenses-table></app-expenses-table>
+				</div>
+			</div>
+			<!-- /.col-lg-6 -->
+		</div>
+		<!-- /.row -->
+	</div>
+	<!--<app-footer></app-footer>-->
+
+	<!-- /#page-wrapper -->
+	<footer class="footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+				</div>
+				<div class="col-md-3">
+					<ul class="list-unstyled">
+						<li>
+							<a href="#">
+								<i class="fa fa-dashboard fa-fw"></i>
+								Dashboard
+							</a>
+						</li>
+						<li>
+							<a href="#Sync">
+								<i class="fa fa-save fa-fw"></i>
+								Sync
+							</a>
+						</li>
+						<li>
+							<a href="#CatPage">
+								<i class="fa fa-list fa-fw"></i>
+								Categories
+							</a>
+						</li>
+						<li>
+							<a href="#Keywords">
+								<span class="glyphicon glyphicon-filter"></span>
+								Keywords
+							</a>
+						</li>
+						<li>
+							<a href="#Summary">
+								<span class="glyphicon glyphicon-plus"></span>
+								Summary
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-md-3">
+				</div>
+				<div class="col-md-3">
+					<ul class="list-unstyled">
+						<li>
+							<a href="https://spidgorny.github.io/umsaetze/public/">
+								<i class="fa fa-book" aria-hidden="true"></i>
+								Documentation
+							</a>
+						</li>
+						<li>
+							<a href="https://github.com/spidgorny/umsaetze/">
+								<i class="fa fa-github" aria-hidden="true"></i>
+								GitHub
+							</a>
+						</li>
+						<li>
+							<a href="https://github.com/spidgorny/umsaetze/issues">
+								<i class="fa fa-question-circle" aria-hidden="true"></i>
+								Contact
+							</a>
+						</li>
+						<li>
+							<a href="https://github.com/spidgorny/umsaetze/issues/new">
+								<i class="fa fa-bug" aria-hidden="true"></i>
+								Bug reporting
+							</a>
+						</li>
+						<li>
+							<a href="https://rechnung-plus.de/">
+								<i class="fa fa-clock-o" aria-hidden="true"></i>
+								Time-tracking with Rechnung+
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+</div>
+<!-- /#wrapper -->
+
+<!-- jQuery -->
+<script src="//blackrockdigital.github.io/startbootstrap-sb-admin-2/vendor/jquery/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="//blackrockdigital.github.io/startbootstrap-sb-admin-2/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<div ng-include="'googleAnalytics.html'"></div>
+

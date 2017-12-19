@@ -1,21 +1,21 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const accounting_js_1 = require("accounting-js");
-const _ = require("underscore");
+var accounting_js_1 = require('accounting-js');
+var _ = require('underscore');
 function detectFloat(source) {
     if (_.isUndefined(source))
         return NaN;
-    let float = accounting_js_1.unformat(source);
-    let posComma = source.indexOf(',');
+    var float = accounting_js_1.unformat(source);
+    var posComma = source.indexOf(',');
     if (posComma > -1) {
-        let posDot = source.indexOf('.');
+        var posDot = source.indexOf('.');
         if (posDot > -1 && posComma > posDot) {
-            let germanFloat = accounting_js_1.unformat(source, ',');
+            var germanFloat = accounting_js_1.unformat(source, ',');
             if (Math.abs(germanFloat) > Math.abs(float)) {
                 float = germanFloat;
             }
         }
         else {
+            // source = source.replace(/,/g, '.');
             float = accounting_js_1.unformat(source, ',');
         }
     }
@@ -25,4 +25,3 @@ exports.detectFloat = detectFloat;
 Number.prototype.clamp = function (min, max) {
     return Math.min(Math.max(this, min), max);
 };
-//# sourceMappingURL=Number.js.map
