@@ -7,7 +7,7 @@ const toastr_1 = require("toastr");
 const CollectionController_1 = require("../CollectionController");
 class KeywordsView extends CollectionController_1.CollectionController {
     constructor(options) {
-        super(options);
+        super();
         this.$el = $('#app');
         console.log(this);
         console.log('new KeywordsView()', this.cid);
@@ -47,7 +47,7 @@ class KeywordsView extends CollectionController_1.CollectionController {
 							<span class="glyphicon glyphicon-filter"></span>
 						</button>
 				</div>
-				Keywords 
+				Keywords
 				<span class="badge">${this.keywords.size()}</span>
 			</div>
 			<div class="panel-body">`,

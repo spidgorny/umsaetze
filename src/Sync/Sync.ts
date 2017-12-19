@@ -47,7 +47,7 @@ export default class Sync extends CollectionController<Expenses> {
 	router: Workspace;
 
 	constructor(expenses: Expenses) {
-		super({});
+		super();
 		this.model = expenses;
 		this.listenTo(this.model, 'change', this.render);
 		this.slowUpdateLoadingBar = _.throttle(this.updateLoadingBar, 128);

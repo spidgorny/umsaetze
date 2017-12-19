@@ -17,7 +17,7 @@ console.log(Number_1.detectFloat('3.141528'));
 console.debug(Number_1.detectFloat('3.141528'));
 class Sync extends CollectionController_1.CollectionController {
     constructor(expenses) {
-        super({});
+        super();
         this.$el = $('#app');
         this.localStorage = new backbone_localstorage_1.default("Expenses");
         this.model = expenses;

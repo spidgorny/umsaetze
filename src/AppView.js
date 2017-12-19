@@ -9,7 +9,7 @@ const $ = require("jquery");
 const _ = require("underscore");
 class AppView extends CollectionController_1.CollectionController {
     constructor(options, categoryList) {
-        super(options);
+        super();
         this.q = '';
         console.log('construct AppView');
         this.collection = options.viewCollection;

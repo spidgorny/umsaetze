@@ -7,9 +7,9 @@
 		"removeComments": true,
 		"preserveConstEnums": true,
 		"sourceMap": true,
-		"target1": "es6",
 		"target": "es2016",
-		"lib": ["es2016","dom"]
+		"lib": ["es2016","dom"],
+		"rootDir": "src/"
 	},
 	"lib": ["es2016", "dom"],
 	"include": [

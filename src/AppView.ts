@@ -40,7 +40,7 @@ export default class AppView extends CollectionController<Expenses> {
 	 * @param categoryList
 	 */
 	constructor(options: ViewOptionsExpenses<Transaction>, categoryList: CategoryCollection) {
-		super(options);
+		super();
 		console.log('construct AppView');
 		this.collection = options.viewCollection;
 		this.setElement($('#app'));

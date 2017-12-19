@@ -71,6 +71,7 @@
     "webpack-dev-server": "^2.9.3"
   },
   "devDependencies": {
+    "@angular/cli": "^1.6.1",
     "@types/node": "^8.0.47",
     "awesome-typescript-loader": "^3.4.1",
     "css-loader": "^0.28.7",

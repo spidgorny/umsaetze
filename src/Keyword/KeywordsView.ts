@@ -16,7 +16,7 @@ export class KeywordsView extends CollectionController<KeywordCollection> {
 	keywords: KeywordCollection;
 
 	constructor(options?) {
-		super(options);
+		super();
 		console.log(this);
 		//console.log(super);
 		console.log('new KeywordsView()', this.cid);
@@ -60,7 +60,7 @@ export class KeywordsView extends CollectionController<KeywordCollection> {
 							<span class="glyphicon glyphicon-filter"></span>
 						</button>
 				</div>
-				Keywords 
+				Keywords
 				<span class="badge">${this.keywords.size()}</span>
 			</div>
 			<div class="panel-body">`,

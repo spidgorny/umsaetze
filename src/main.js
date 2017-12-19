@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const $ = require("jquery");
 const Umsaetze_1 = require("./Umsaetze");
 require("toastr/build/toastr.css");
+const Backbone = require('backbone');
 console.log('Umsaetze', Umsaetze_1.Umsaetze);
 if (typeof window == 'object' && window.__backboneAgent) {
     window.__backboneAgent.handleBackbone(Backbone);

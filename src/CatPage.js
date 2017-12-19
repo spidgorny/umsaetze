@@ -11,7 +11,7 @@ const toastr_1 = require("toastr");
 require("./Util/Object");
 class CatPage extends CollectionController_1.CollectionController {
     constructor(expenses, categoryList) {
-        super({});
+        super();
         this.$el = $('#app');
         console.log('CatPage.constructor');
         this.collection = expenses;
