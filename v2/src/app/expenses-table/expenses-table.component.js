@@ -10,15 +10,14 @@ var json_data_source_service_1 = require("../json-data-source.service");
 var ExpensesTableComponent = (function () {
     function ExpensesTableComponent(data) {
         this.data = data;
-        this.items = [
-            'asd',
-            'qwe',
-        ];
         // console.log(data.file);
         console.log('etc constructor', this.data.data.length);
+        this.dateFrom = this.data.getEarliest();
+        this.dateTill = this.data.getLatest();
     }
     ExpensesTableComponent.prototype.ngOnInit = function () {
         console.log('etc ngOnInit', this.data.data.length);
+        console.log('first', this.data.data[0]);
     };
     ExpensesTableComponent = __decorate([
         core_1.Component({

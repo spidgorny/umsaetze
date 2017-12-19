@@ -1,20 +1,51 @@
 <div *ngIf="data">
-  Count:
-   {{data.length}}
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="pull-right">
+				<button class="btn btn-default btn-xs" id="applyKeywords" title="Apply keywords filter">
+					<span class="glyphicon glyphicon-filter"></span>
+				</button>
+			</div>
+			Raw Data
+			(<span id="dateFrom">
+			{{dateFrom}}
+		</span> - <span id="dateTill">
+			{{dateTill}}
+		</span>)
+			<span class="badge" id="numRows">
+				{{data.data.length}}
+			</span>
+		</div>
+		<!-- /.panel-heading -->
+		<div class="panel-body">
+			<table class="table">
+				<thead>
+				<tr>
+					<th>Date</th>
+					<th>Amount</th>
+					<th>Category</th>
+					<th>Note</th>
+					<th></th>
+				</tr>
+				</thead>
+				<tbody id="expenseTable">
 
-  <table border="1">
-    <tbody>
-      <tr *ngFor="let transaction of data.data">
-        <td>{{transaction}}</td>
-      </tr>
-    </tbody>
-  </table>
+				<tr *ngFor="let transaction of data.data" id="{{transaction.id}}">
+					<td>{{transaction.date | date:'yyyy-MM-dd' }}</td>
+					<td class="money {{transaction.sign}}">{{transaction.amount | number:'1.2-2'}}</td>
+					<td>{{transaction.category}}</td>
+					<td>{{transaction.note}}</td>
+				</tr>
 
-  <ul>
-    <li *ngFor="let transaction of items">
-      {{transaction}}
-    </li>
-  </ul>
+				</tbody>
+				<tfoot>
+
+				</tfoot>
+			</table>
+		</div>
+		<!-- /.panel-body -->
+	</div>
+
 </div>
 <div *ngElse="">
   Loading data...
