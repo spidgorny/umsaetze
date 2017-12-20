@@ -1,4 +1,4 @@
-a{}
+@import "../../../node_modules/toastr/build/toastr.css";
 .money {
   text-align: right;
   white-space: nowrap;
