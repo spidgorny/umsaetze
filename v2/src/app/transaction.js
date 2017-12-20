@@ -1,5 +1,6 @@
 "use strict";
-var Transaction = (function () {
+Object.defineProperty(exports, "__esModule", { value: true });
+var Transaction = /** @class */ (function () {
     function Transaction(json) {
         this.id = json.id;
         this.date = new Date(json.date);
@@ -14,6 +15,10 @@ var Transaction = (function () {
         enumerable: true,
         configurable: true
     });
+    Transaction.prototype.getDate = function () {
+        return this.date;
+    };
     return Transaction;
 }());
 exports.Transaction = Transaction;
+//# sourceMappingURL=transaction.js.map

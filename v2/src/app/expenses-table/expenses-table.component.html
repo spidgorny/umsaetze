@@ -8,9 +8,9 @@
 			</div>
 			Raw Data
 			(<span id="dateFrom">
-			{{dateFrom}}
+			{{dateFrom | date:'yyyy-MM-dd'}}
 		</span> - <span id="dateTill">
-			{{dateTill}}
+			{{dateTill | date:'yyyy-MM-dd'}}
 		</span>)
 			<span class="badge" id="numRows">
 				{{data.data.length}}
@@ -33,7 +33,7 @@
 				<tr *ngFor="let transaction of data.data" id="{{transaction.id}}">
 					<td>{{transaction.date | date:'yyyy-MM-dd' }}</td>
 					<td class="money {{transaction.sign}}">{{transaction.amount | number:'1.2-2'}}</td>
-					<td>{{transaction.category}}</td>
+					<td><app-category-selector selected="{{transaction.category}}"></app-category-selector></td>
 					<td>{{transaction.note}}</td>
 				</tr>
 

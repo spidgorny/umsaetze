@@ -1,5 +1,6 @@
 import {Transaction} from './app/transaction';
 import {JsonDataSourceService} from './app/json-data-source.service';
+import 'reflect-metadata';
 
 const t = new Transaction({
 	id: '123',
@@ -13,4 +14,4 @@ console.log('sign', t.sign);
 
 const dataService = new JsonDataSourceService();
 const from = dataService.getEarliest();
-console.log('from', from);
+console.log('from', from, dataService.getLatest());

@@ -6,11 +6,13 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { ExpensesTableComponent } from './expenses-table/expenses-table.component';
 import {JsonDataSourceService} from "./json-data-source.service";
+import { CategorySelectorComponent } from './category-selector/category-selector.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ExpensesTableComponent
+    ExpensesTableComponent,
+    CategorySelectorComponent
   ],
   imports: [
     BrowserModule,
