@@ -1,3 +1,4 @@
-<select>
-  <option>{{selected}}</option>
+<select #myself title="Category for this transaction" (change)="onChange(myself.value)">
+    <option>{{selected}}</option>
+    <option>2</option>
 </select>

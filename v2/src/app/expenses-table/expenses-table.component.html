@@ -30,12 +30,13 @@
 				</thead>
 				<tbody id="expenseTable">
 
-				<tr *ngFor="let transaction of data.data" id="{{transaction.id}}">
-					<td>{{transaction.date | date:'yyyy-MM-dd' }}</td>
-					<td class="money {{transaction.sign}}">{{transaction.amount | number:'1.2-2'}}</td>
-					<td><app-category-selector selected="{{transaction.category}}"></app-category-selector></td>
-					<td>{{transaction.note}}</td>
-				</tr>
+					<tr *ngFor="let transaction of data.data" id="{{transaction.id}}">
+						<td>{{transaction.date | date:'yyyy-MM-dd' }}</td>
+						<td class="money {{transaction.sign}}">{{transaction.amount | number:'1.2-2'}}</td>
+						<td><app-category-selector [selected]="transaction.category"
+												   [transaction]="transaction"></app-category-selector></td>
+						<td>{{transaction.note}}</td>
+					</tr>
 
 				</tbody>
 				<tfoot>

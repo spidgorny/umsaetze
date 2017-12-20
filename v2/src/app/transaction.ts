@@ -22,4 +22,8 @@ export class Transaction {
 		return this.date;
 	}
 
+	save() {
+
+	}
+
 }

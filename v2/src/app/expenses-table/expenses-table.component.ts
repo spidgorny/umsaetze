@@ -1,18 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {JsonDataSourceService} from "../json-data-source.service";
+import {ExpensesService} from '../expenses.service';
 
 @Component({
 	selector: 'app-expenses-table',
 	templateUrl: './expenses-table.component.html',
 	styleUrls: ['./expenses-table.component.css'],
-	providers: [JsonDataSourceService],
+	providers: [ExpensesService],
 })
 export class ExpensesTableComponent implements OnInit {
 
 	dateFrom: Date;
 	dateTill: Date;
 
-	constructor(public data: JsonDataSourceService) {
+	constructor(public data: ExpensesService) {
 		// console.log(data.file);
 		console.log('etc constructor', this.data.data.length);
 		this.dateFrom = this.data.getEarliest();
