@@ -25,7 +25,7 @@ export class CatPage extends CollectionController<Expenses> {
 	template;
 
 	constructor(expenses: Expenses, categoryList: CategoryCollection) {
-		super({});
+		super();
 		console.log('CatPage.constructor');
 		this.collection = expenses;
 		this.categoryList = categoryList;
