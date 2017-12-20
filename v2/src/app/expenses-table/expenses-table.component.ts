@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {JsonDataSourceService} from "../json-data-source.service";
 import {ExpensesService} from '../expenses.service';
+import {CurrentMonthService} from '../current-month.service';
+import {Transaction} from '../transaction';
+import 'datejs';
 
 @Component({
 	selector: 'app-expenses-table',
@@ -10,20 +13,40 @@ import {ExpensesService} from '../expenses.service';
 })
 export class ExpensesTableComponent implements OnInit {
 
-	dateFrom: Date;
-	dateTill: Date;
+	/**
+	 * This is not a getter, because we want to trigger re-render when this array changes.
+	 */
+	visible: Transaction[];
 
-	constructor(public data: ExpensesService) {
-		// console.log(data.file);
-		console.log('etc constructor', this.data.data.length);
-		this.dateFrom = this.data.getEarliest();
-		this.dateTill = this.data.getLatest();
-		console.log('date extremes', this.dateFrom, this.dateTill);
+	constructor(public expenses: ExpensesService, private currentMonth: CurrentMonthService) {
+		// console.log(expenses.file);
+		console.log('etc constructor', this.expenses.data.length);
+		console.log('date extremes', this.dateFrom.toString('yyyy-mm-dd'), this.dateTill.toString('yyyy-mm-dd'));
+	}
+
+	get dateFrom() {
+		return this.expenses.getEarliest();
+	}
+
+	get dateTill() {
+		return this.expenses.getLatest();
 	}
 
 	ngOnInit() {
-		console.log('etc ngOnInit', this.data.data.length);
-		console.log('first', this.data.data[0]);
+		console.log('etc ngOnInit', this.expenses.data.length);
+		console.log('first', this.expenses.data[0]);
+		this.currentMonth.value.subscribe(this.onMonthChanged.bind(this));
+	}
+
+	onMonthChanged(newDate: Date) {
+		console.log('emit catched', newDate);
+		this.visible = this.getVisible();
+		console.log('visible', this.visible.length);
+	}
+
+	getVisible() {
+		const visible = this.expenses.filterByMonth(this.currentMonth.messageSource.getValue());
+		return visible;
 	}
 
 }

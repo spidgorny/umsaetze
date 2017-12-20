@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ExpensesService} from '../expenses.service';
+import {CurrentMonthService} from '../current-month.service';
 
 @Component({
 	selector: 'app-month-selector',
@@ -10,13 +11,16 @@ export class MonthSelectorComponent implements OnInit {
 
 	public selected: Date;
 
-	constructor(protected expenses: ExpensesService) {
+	constructor(protected expenses: ExpensesService, private currentMonth: CurrentMonthService) {
 		const cached = window.localStorage.getItem('selectedMonth');
 		if (cached) {
 			this.selected = new Date(cached);
 		} else {
 			this.selected = this.expenses.getLatest();
 		}
+
+		// initial trigger to filter expense table
+		this.currentMonth.emitChange(this.selected);
 	}
 
 	get selectedMonth() {
@@ -28,6 +32,8 @@ export class MonthSelectorComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		// it will never change from outside, but anyway
+		this.currentMonth.value.subscribe(message => this.selected = message);
 	}
 
 	setSelected(date: Date) {
@@ -50,6 +56,7 @@ export class MonthSelectorComponent implements OnInit {
 
 	setMonth(monthID) {
 		this.selected = new Date(this.selectedYear, monthID);
+		this.currentMonth.emitChange(this.selected);
 	}
 
 	isSelected(monthID) {

@@ -8,11 +8,11 @@ export class ExpensesService {
 
 	constructor(public loader: LocalStorageDataSourceService, public saver: LocalStorageDataSourceService) {
 		console.log('ExpensesService', this.loader.data.length);
-		// this.saver.data = this.loader.data;
+		// this.saver.expenses = this.loader.expenses;
 	}
 
 	get data() {
-		//console.log('loader data', this.loader.data.length);
+		//console.log('loader expenses', this.loader.expenses.length);
 		return this.loader.data;
 	}
 
@@ -57,4 +57,9 @@ export class ExpensesService {
 		this.saver.save(tr);
 	}
 
+	filterByMonth(value: Date) {
+		return this.data.filter((tr: Transaction) => {
+			return tr.isMonth(value);
+		});
+	}
 }

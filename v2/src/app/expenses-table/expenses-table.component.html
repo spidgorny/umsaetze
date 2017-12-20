@@ -30,7 +30,7 @@
 				</thead>
 				<tbody id="expenseTable">
 
-					<tr *ngFor="let transaction of data.data" id="{{transaction.id}}"
+					<tr *ngFor="let transaction of visible" id="{{transaction.id}}"
 						title="id={{ transaction.id }}"
 						[class]="transaction.cssClass"
 						[style.background]="transaction.background">

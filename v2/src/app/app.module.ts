@@ -11,6 +11,7 @@ import {LocalStorageDataSourceService} from './local-storage-data-source.service
 import {ExpensesService} from './expenses.service';
 import {CategoryList} from './category-list';
 import { MonthSelectorComponent } from './month-selector/month-selector.component';
+import {CurrentMonthService} from './current-month.service';
 
 @NgModule({
 	declarations: [
@@ -28,7 +29,8 @@ import { MonthSelectorComponent } from './month-selector/month-selector.componen
 		JsonDataSourceService,
 		LocalStorageDataSourceService,
 		ExpensesService,
-		CategoryList
+		CategoryList,
+		CurrentMonthService
 	],
 	bootstrap: [AppComponent]
 })

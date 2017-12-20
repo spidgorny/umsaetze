@@ -10,7 +10,7 @@ import {CategoryList} from './category-list';
 @Injectable()
 export class JsonDataSourceService implements DataSourceInterface {
 
-	file = '../data/umsaetze-2017-04-20.json';
+	file = '../expenses/umsaetze-2017-04-20.json';
 
 	data: Transaction[] = [];
 

@@ -41,4 +41,8 @@ export class Transaction {
 
 	}
 
+	isMonth(value: Date) {
+		const nextMonth = value.addMonths(1);
+		return this.getDate() > value && this.getDate() < nextMonth;
+	}
 }
