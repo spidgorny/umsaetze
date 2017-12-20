@@ -1,0 +1,59 @@
+<div class="MonthSelect" id="MonthSelect">
+    <form class="navbar-form navbar-left" style="">
+        <div class="form-group" style="display: inline-block">
+            <select id="year" class="form-control" title="Year">
+                <option *ngFor="let year of years()" [selected]="year == selectedYear">{{year}}</option>
+            </select>
+        </div>
+        <ul id="month" class="nav navbar-top-links" style="display: inline-block">
+            <li>
+                <button class="btn btn-default" [class.btn-success]="isSelected(0)"
+                        [disabled]="isDisabled(0)" (click)="setMonth(0)">Jan</button>
+            </li>
+            <li>
+                <button class="btn btn-default" [class.btn-success]="isSelected(1)"
+                        [disabled]="isDisabled(1)" (click)="setMonth(1)">Feb</button>
+            </li>
+            <li>
+                <button class="btn btn-default" [class.btn-success]="isSelected(2)"
+                        [disabled]="isDisabled(2)" (click)="setMonth(2)">Mar</button>
+            </li>
+            <li>
+                <button class="btn btn-default" [class.btn-success]="isSelected(3)"
+                        [disabled]="isDisabled(3)" (click)="setMonth(3)">Apr</button>
+            </li>
+            <li>
+                <button class="btn btn-default" [class.btn-success]="isSelected(4)"
+                        [disabled]="isDisabled(4)" (click)="setMonth(4)">May</button>
+            </li>
+            <li>
+                <button class="btn btn-default" [class.btn-success]="isSelected(5)"
+                        [disabled]="isDisabled(5)" (click)="setMonth(5)">Jun</button>
+            </li>
+            <li>
+                <button class="btn btn-default" [class.btn-success]="isSelected(6)"
+                        [disabled]="isDisabled(6)" (click)="setMonth(6)">Jul</button>
+            </li>
+            <li>
+                <button class="btn btn-default" [class.btn-success]="isSelected(7)"
+                        [disabled]="isDisabled(7)" (click)="setMonth(7)">Aug</button>
+            </li>
+            <li>
+                <button class="btn btn-default" [class.btn-success]="isSelected(8)"
+                        [disabled]="isDisabled(8)" (click)="setMonth(8)">Sep</button>
+            </li>
+            <li>
+                <button class="btn btn-default" [class.btn-success]="isSelected(9)"
+                        [disabled]="isDisabled(9)" (click)="setMonth(9)">Oct</button>
+            </li>
+            <li>
+                <button class="btn btn-default" [class.btn-success]="isSelected(10)"
+                        [disabled]="isDisabled(10)" (click)="setMonth(10)">Nov</button>
+            </li>
+            <li>
+                <button class="btn btn-default" [class.btn-success]="isSelected(11)"
+                        [disabled]="isDisabled(11)" (click)="setMonth(11)">Dec</button>
+            </li>
+        </ul>
+    </form>
+</div>

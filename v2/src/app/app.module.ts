@@ -10,12 +10,14 @@ import {CategorySelectorComponent} from './category-selector/category-selector.c
 import {LocalStorageDataSourceService} from './local-storage-data-source.service';
 import {ExpensesService} from './expenses.service';
 import {CategoryList} from './category-list';
+import { MonthSelectorComponent } from './month-selector/month-selector.component';
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		ExpensesTableComponent,
-		CategorySelectorComponent
+		CategorySelectorComponent,
+		MonthSelectorComponent
 	],
 	imports: [
 		BrowserModule,
