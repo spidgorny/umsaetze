@@ -6,7 +6,7 @@ import {ExpensesService} from '../expenses.service';
 	selector: 'app-expenses-table',
 	templateUrl: './expenses-table.component.html',
 	styleUrls: ['./expenses-table.component.css'],
-	providers: [ExpensesService],
+	providers: [],
 })
 export class ExpensesTableComponent implements OnInit {
 

@@ -2,6 +2,7 @@
 var $ = require("jquery");
 var Umsaetze_1 = require('./Umsaetze');
 require('toastr/build/toastr.css');
+var Backbone = require('backbone');
 console.log('Umsaetze', Umsaetze_1.Umsaetze);
 if (typeof window == 'object' && window.__backboneAgent) {
     window.__backboneAgent.handleBackbone(Backbone);

@@ -30,7 +30,10 @@
 				</thead>
 				<tbody id="expenseTable">
 
-					<tr *ngFor="let transaction of data.data" id="{{transaction.id}}">
+					<tr *ngFor="let transaction of data.data" id="{{transaction.id}}"
+						title="id={{ transaction.id }}"
+						[class]="transaction.cssClass"
+						[style.background]="transaction.background">
 						<td>{{transaction.date | date:'yyyy-MM-dd' }}</td>
 						<td class="money {{transaction.sign}}">{{transaction.amount | number:'1.2-2'}}</td>
 						<td><app-category-selector [selected]="transaction.category"

@@ -12,7 +12,7 @@ export class ExpensesService {
 	}
 
 	get data() {
-		console.log('loader data', this.loader.data.length);
+		//console.log('loader data', this.loader.data.length);
 		return this.loader.data;
 	}
 
@@ -21,7 +21,7 @@ export class ExpensesService {
 	 * @returns {number}
 	 */
 	get size() {
-		return this.saver.data.length;
+		return this.loader.data.length;
 	}
 
 	getEarliest() {

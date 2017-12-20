@@ -25,7 +25,7 @@ var AppView = (function (_super) {
      * @param categoryList
      */
     function AppView(options, categoryList) {
-        _super.call(this, options);
+        _super.call(this);
         this.q = '';
         console.log('construct AppView');
         this.collection = options.viewCollection;

@@ -18,7 +18,7 @@ var CatPage = (function (_super) {
     __extends(CatPage, _super);
     function CatPage(expenses, categoryList) {
         var _this = this;
-        _super.call(this, {});
+        _super.call(this);
         this.$el = $('#app');
         console.log('CatPage.constructor');
         this.collection = expenses;
