@@ -1,5 +1,4 @@
 "use strict";
-/// <reference path="../custom_typings/json.d.ts" />
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -11,31 +10,31 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var JSONData = require("../data/umsaetze-2017-04-20.json");
 var transaction_1 = require("./transaction");
-require("datejs");
 var category_list_1 = require("./category-list");
-var JsonDataSourceService = /** @class */ (function () {
-    function JsonDataSourceService(categories) {
+var LocalStorageDataSourceService = /** @class */ (function () {
+    function LocalStorageDataSourceService(categories) {
         var _this = this;
         this.categories = categories;
-        this.file = '../expenses/umsaetze-2017-04-20.json';
         this.data = [];
-        JSONData.forEach(function (row) {
-            var tr = new transaction_1.Transaction(row, _this.categories);
-            // console.log(tr);
-            _this.data.push(tr);
-        });
-        console.log('jdss constructor', this.data.length);
+        var incoming = window.localStorage.getItem('expenses');
+        //console.log('incoming', incoming);
+        if (incoming) {
+            var json = JSON.parse(incoming);
+            json.forEach(function (el) {
+                _this.data.push(new transaction_1.Transaction(el, _this.categories));
+            });
+        }
     }
-    JsonDataSourceService.prototype.save = function (tr) {
-        console.error('JsonDataSourceService::save() is not implemented');
+    LocalStorageDataSourceService.prototype.save = function (tr) {
+        console.log('saving', this.data.length);
+        window.localStorage.setItem('expenses', JSON.stringify(this.data));
     };
-    JsonDataSourceService = __decorate([
+    LocalStorageDataSourceService = __decorate([
         core_1.Injectable(),
         __metadata("design:paramtypes", [category_list_1.CategoryList])
-    ], JsonDataSourceService);
-    return JsonDataSourceService;
+    ], LocalStorageDataSourceService);
+    return LocalStorageDataSourceService;
 }());
-exports.JsonDataSourceService = JsonDataSourceService;
-//# sourceMappingURL=json-data-source.service.js.map
+exports.LocalStorageDataSourceService = LocalStorageDataSourceService;
+//# sourceMappingURL=local-storage-data-source.service.js.map
