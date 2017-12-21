@@ -1,4 +1,4 @@
-<div *ngIf="data">
+<div *ngIf="visible">
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<div class="pull-right">
@@ -13,7 +13,7 @@
 			{{dateTill | date:'yyyy-MM-dd'}}
 		</span>)
 			<span class="badge" id="numRows">
-				{{data.data.length}}
+				{{visible.length}}
 			</span>
 		</div>
 		<!-- /.panel-heading -->
@@ -39,6 +39,9 @@
 						<td><app-category-selector [selected]="transaction.category"
 												   [transaction]="transaction"></app-category-selector></td>
 						<td>{{transaction.note}}</td>
+						<td>
+							<span class="close"></span>
+						</td>
 					</tr>
 
 				</tbody>
@@ -51,6 +54,6 @@
 	</div>
 
 </div>
-<div *ngElse="">
+<div #noData *ngIf="!visible">
   Loading data...
 </div>

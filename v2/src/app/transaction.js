@@ -37,8 +37,9 @@ var Transaction = /** @class */ (function () {
     Transaction.prototype.save = function () {
     };
     Transaction.prototype.isMonth = function (value) {
-        var nextMonth = value.addMonths(1);
-        return this.getDate() > value && this.getDate() < nextMonth;
+        var nextMonth = new Date(value.getTime());
+        nextMonth.addMonths(1);
+        return this.getDate() >= value && this.getDate() < nextMonth;
     };
     return Transaction;
 }());

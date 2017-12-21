@@ -58,6 +58,7 @@ export class ExpensesService {
 	}
 
 	filterByMonth(value: Date) {
+		value.setDate(1);	// make the beginning of the month
 		return this.data.filter((tr: Transaction) => {
 			return tr.isMonth(value);
 		});

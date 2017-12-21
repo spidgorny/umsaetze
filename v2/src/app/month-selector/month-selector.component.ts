@@ -13,11 +13,13 @@ export class MonthSelectorComponent implements OnInit {
 
 	constructor(protected expenses: ExpensesService, private currentMonth: CurrentMonthService) {
 		const cached = window.localStorage.getItem('selectedMonth');
+		console.log('Month Selector', cached, !!cached);
 		if (cached) {
 			this.selected = new Date(cached);
 		} else {
 			this.selected = this.expenses.getLatest();
 		}
+		console.log('Month', this.selected.toString('yyyy-MM-dd'));
 
 		// initial trigger to filter expense table
 		this.currentMonth.emitChange(this.selected);
@@ -55,7 +57,7 @@ export class MonthSelectorComponent implements OnInit {
 	}
 
 	setMonth(monthID) {
-		this.selected = new Date(this.selectedYear, monthID);
+		this.setSelected(new Date(this.selectedYear, monthID));
 		this.currentMonth.emitChange(this.selected);
 	}
 

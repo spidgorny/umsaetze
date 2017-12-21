@@ -10,11 +10,12 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var transaction_1 = require("./app/transaction");
-var json_data_source_service_1 = require("./app/json-data-source.service");
 require("reflect-metadata");
-var category_list_1 = require("./app/category-list");
-var expenses_service_1 = require("./app/expenses.service");
+var transaction_1 = require("../app/transaction");
+var json_data_source_service_1 = require("../app/json-data-source.service");
+var category_list_1 = require("../app/category-list");
+var expenses_service_1 = require("../app/expenses.service");
+require("datejs");
 var categories = new category_list_1.CategoryList();
 // categories.setCategoriesFromExpenses();
 var t = new transaction_1.Transaction({
@@ -39,4 +40,12 @@ var ExpensesService4Test = /** @class */ (function (_super) {
 var dataService = new ExpensesService4Test(jsonLoader, jsonLoader);
 var from = dataService.getEarliest();
 console.log('from', from, dataService.getLatest());
+var april = new Date(2017, 3);
+console.log('april', april);
+var visible = dataService.filterByMonth(april);
+console.log('visible', visible.length);
+var today = new Date();
+console.log('today is bigger than april', today > april);
+console.log('today is bigger than april by getTime()', today.getTime() > april.getTime());
+console.log(today.toString('yyyy-MM-dd'), today.getTime(), april.toString('yyyy-MM-dd'), april.getTime());
 //# sourceMappingURL=manual-test.js.map
