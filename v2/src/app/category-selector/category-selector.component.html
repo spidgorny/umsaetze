@@ -1,0 +1,4 @@
+<select #myself title="Category for this transaction" (change)="onChange(myself.value)">
+    <option>{{selected}}</option>
+    <option *ngFor="let cat of getOther()" value="{{cat.name}}" [style.background]="cat.color">{{cat.name}}</option>
+</select>

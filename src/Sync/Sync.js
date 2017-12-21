@@ -29,7 +29,7 @@ var Sync = (function (_super) {
     __extends(Sync, _super);
     function Sync(expenses) {
         var _this = this;
-        _super.call(this, {});
+        _super.call(this);
         this.$el = $('#app');
         this.localStorage = new backbone_localstorage_1.default("Expenses");
         this.model = expenses;
