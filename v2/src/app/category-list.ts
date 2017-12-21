@@ -27,10 +27,10 @@ export class CategoryList {
 	 * This must be called to initialize. Can not be DI because it leads to circular DI
 	 * @param {ExpensesService} expenses
 	 */
-	setCategoriesFromExpenses(expenses: ExpensesService) {
+	setCategoriesFromExpenses(expenses: Transaction[]) {
 		console.profile('getCategoriesFromExpenses');
 		this.resetCounters();
-		expenses.data.forEach((transaction: Transaction) => {
+		expenses.forEach((transaction: Transaction) => {
 			let categoryName = transaction.category;
 			this.incrementCategoryData(categoryName, transaction);
 		});

@@ -8,7 +8,7 @@ export class LocalStorageDataSourceService implements DataSourceInterface {
 
 	data: Transaction[] = [];
 
-	constructor(public categories: CategoryList) {
+	constructor(protected categories: CategoryList) {
 		const incoming = window.localStorage.getItem('expenses');
 		//console.log('incoming', incoming);
 		if (incoming) {

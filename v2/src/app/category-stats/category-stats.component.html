@@ -1,0 +1,30 @@
+<div id="categories">
+    <h4 class="category text-right">
+        Income: <span class="income">{{income}}</span> &euro;
+    </h4>
+    <h4 class="category text-right">
+        <a href="#" class="filterByCategory">
+            Total per month</a>
+        : <span class="total">{{total}}</span> &euro;
+    </h4>
+    <div id="catElements" *ngFor="let cat of data">
+        <div class="category">
+            <div class="row" [style.background]="cat.color">
+                <div class="col-md-8">
+                    <a href="#" class="filterByCategory" data-id="{{cat.id}}">{{cat.name}}</a>
+                    <span class="badge">{{cat.count}}</span>
+                </div>
+                <div class="col-md-4 money" [class.sign]="cat.sign">
+                    {{cat.amount}} &euro;
+                </div>
+            </div>
+            <div class="row withProgress" style="background-color: {{cat.color}}">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: {{cat.width}}">
+                        {{cat.width}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

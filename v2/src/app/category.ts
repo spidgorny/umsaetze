@@ -19,4 +19,12 @@ export class Category {
 		return '#' + r + g + b;
 	}
 
+	get sign() {
+		return this.amount >= 0 ? 'positive' : 'negative';
+	}
+
+	get width() {
+		return 50;
+	}
+
 }

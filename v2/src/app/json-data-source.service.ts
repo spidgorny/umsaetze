@@ -14,7 +14,7 @@ export class JsonDataSourceService implements DataSourceInterface {
 
 	data: Transaction[] = [];
 
-	constructor(public categories: CategoryList) {
+	constructor(protected categories: CategoryList) {
 		(<any[]><any>JSONData).forEach(row => {
 			const tr = new Transaction(row, this.categories);
 			// console.log(tr);

@@ -13,6 +13,7 @@ import { MonthSelectorComponent } from './month-selector/month-selector.componen
 import {CurrentMonthService} from './current-month.service';
 import { RouterModule, Routes } from '@angular/router';
 import {CategoryPageComponent} from './category-page/category-page.component';
+import { CategoryStatsComponent } from './category-stats/category-stats.component';
 
 const appRoutes: Routes = [
 	{ path: 'categories', component: CategoryPageComponent},
@@ -30,7 +31,8 @@ const appRoutes: Routes = [
 		ExpensesTableComponent,
 		CategorySelectorComponent,
 		MonthSelectorComponent,
-		CategoryPageComponent
+		CategoryPageComponent,
+		CategoryStatsComponent
 	],
 	imports: [
 		RouterModule.forRoot(
@@ -52,8 +54,10 @@ const appRoutes: Routes = [
 })
 export class AppModule {
 
-	constructor(public expenses: ExpensesService, public categories: CategoryList) {
-		this.categories.setCategoriesFromExpenses(expenses);
+	constructor(protected expenses: ExpensesService,
+				protected categories: CategoryList,
+				protected currentMonth: CurrentMonthService) {
+		this.categories.setCategoriesFromExpenses(expenses.getVisible(this.currentMonth));
 	}
 
 }

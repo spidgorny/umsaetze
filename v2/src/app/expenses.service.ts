@@ -2,11 +2,13 @@ import {Injectable} from '@angular/core';
 import {LocalStorageDataSourceService} from './local-storage-data-source.service';
 import {Transaction} from './transaction';
 import {JsonDataSourceService} from './json-data-source.service';
+import {CurrentMonthService} from './current-month.service';
 
 @Injectable()
 export class ExpensesService {
 
-	constructor(public loader: LocalStorageDataSourceService, public saver: LocalStorageDataSourceService) {
+	constructor(protected loader: LocalStorageDataSourceService,
+				protected saver: LocalStorageDataSourceService) {
 		console.log('ExpensesService', this.loader.data.length);
 		// this.saver.expenses = this.loader.expenses;
 	}
@@ -62,5 +64,9 @@ export class ExpensesService {
 		return this.data.filter((tr: Transaction) => {
 			return tr.isMonth(value);
 		});
+	}
+
+	getVisible(curMonth: CurrentMonthService) {
+		return this.filterByMonth(curMonth.getValue());
 	}
 }
