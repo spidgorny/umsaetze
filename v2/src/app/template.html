@@ -22,37 +22,37 @@
 				</a>
 				<ul class="dropdown-menu dropdown-messages">
 					<li>
-						<a href="#">
+						<a routerLink="/dashboard" routerLinkActive="active">
 							<i class="fa fa-dashboard fa-fw"></i>
 							Dashboard
 						</a>
 					</li>
 					<li>
-						<a href="#Sync">
+						<a routerLink="/sync" routerLinkActive="active">
 							<i class="fa fa-save fa-fw"></i>
 							Sync
 						</a>
 					</li>
 					<li>
-						<a href="#CatPage">
+						<a routerLink="/categories" routerLinkActive="active">
 							<i class="fa fa-list fa-fw"></i>
 							Categories
 						</a>
 					</li>
 					<li>
-						<a href="#Keywords">
+						<a routerLink="/keywords" routerLinkActive="active">
 							<span class="glyphicon glyphicon-filter"></span>
 							Keywords
 						</a>
 					</li>
 					<li>
-						<a href="#Summary">
+						<a routerLink="/summary" routerLinkActive="active">
 							<span class="glyphicon glyphicon-plus"></span>
 							Summary
 						</a>
 					</li>
 					<li>
-						<a href="#History">
+						<a routerLink="/history" routerLinkActive="active">
 							<span class="glyphicon glyphicon-equalizer"></span>
 							History
 						</a>
@@ -92,37 +92,37 @@
 						<!-- /input-group -->
 					</li>
 					<li>
-						<a href="#">
+						<a routerLink="/dashboard" routerLinkActive="active">
 							<i class="fa fa-dashboard fa-fw"></i>
 							Dashboard
 						</a>
 					</li>
 					<li>
-						<a href="#Sync">
+						<a routerLink="/sync" routerLinkActive="active">
 							<i class="fa fa-save fa-fw"></i>
 							Sync
 						</a>
 					</li>
 					<li>
-						<a href="#CatPage">
+						<a routerLink="/categories" routerLinkActive="active">
 							<i class="fa fa-list fa-fw"></i>
 							Categories
 						</a>
 					</li>
 					<li>
-						<a href="#Keywords">
+						<a routerLink="/keywords" routerLinkActive="active">
 							<span class="glyphicon glyphicon-filter"></span>
 							Keywords
 						</a>
 					</li>
 					<li>
-						<a href="#Summary">
+						<a routerLink="/summary" routerLinkActive="active">
 							<span class="glyphicon glyphicon-plus"></span>
 							Summary
 						</a>
 					</li>
 					<li>
-						<a href="#History">
+						<a routerLink="/history" routerLinkActive="active">
 							<span class="glyphicon glyphicon-equalizer"></span>
 							History
 						</a>
@@ -156,7 +156,7 @@
 		<div class="row" style="padding-top: 1em;">
 			<div class="col-lg-12">
 				<div id="app">
-					<app-expenses-table></app-expenses-table>
+					<router-outlet></router-outlet>
 				</div>
 			</div>
 			<!-- /.col-lg-6 -->
@@ -174,33 +174,39 @@
 				<div class="col-md-3">
 					<ul class="list-unstyled">
 						<li>
-							<a href="#">
+							<a routerLink="/dashboard" routerLinkActive="active">
 								<i class="fa fa-dashboard fa-fw"></i>
 								Dashboard
 							</a>
 						</li>
 						<li>
-							<a href="#Sync">
+							<a routerLink="/sync" routerLinkActive="active">
 								<i class="fa fa-save fa-fw"></i>
 								Sync
 							</a>
 						</li>
 						<li>
-							<a href="#CatPage">
+							<a routerLink="/categories" routerLinkActive="active">
 								<i class="fa fa-list fa-fw"></i>
 								Categories
 							</a>
 						</li>
 						<li>
-							<a href="#Keywords">
+							<a routerLink="/keywords" routerLinkActive="active">
 								<span class="glyphicon glyphicon-filter"></span>
 								Keywords
 							</a>
 						</li>
 						<li>
-							<a href="#Summary">
+							<a routerLink="/summary" routerLinkActive="active">
 								<span class="glyphicon glyphicon-plus"></span>
 								Summary
+							</a>
+						</li>
+						<li>
+							<a routerLink="/history" routerLinkActive="active">
+								<span class="glyphicon glyphicon-plus"></span>
+								History
 							</a>
 						</li>
 					</ul>
