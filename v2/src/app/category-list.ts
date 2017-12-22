@@ -13,6 +13,9 @@ export class CategoryList {
 		const stored = window.localStorage.getItem('categories');
 		if (stored) {
 			this.data = new Map(JSON.parse(stored));
+			this.data.forEach((json: any, key: string) => {
+				this.data.set(key, new Category(json));
+			});
 		}
 	}
 

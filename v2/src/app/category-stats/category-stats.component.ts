@@ -3,6 +3,7 @@ import {ExpensesService} from '../expenses.service';
 import {CategoryList} from '../category-list';
 import {CurrentMonthService} from '../current-month.service';
 import {Transaction} from '../transaction';
+import {Category} from '../category';
 
 @Component({
 	selector: 'app-category-stats',
@@ -29,7 +30,7 @@ export class CategoryStatsComponent implements OnInit {
 	get total() {
 		return this.visible.reduce((acc, tr: Transaction) => {
 			if (tr.category != this.INCOME) {
-				return acc + tr.amount;
+				return acc + Math.abs(tr.amount);
 			}
 			return acc;
 		}, 0).toFixed(2);
@@ -39,7 +40,11 @@ export class CategoryStatsComponent implements OnInit {
 	}
 
 	get data() {
-		return this.categories.getData();
+		return this.categories.getData().sort((c1: Category, c2: Category) => {
+			return c1.amount == c2.amount
+				? 0
+				: (c1.amount > c2.amount) ? 1 : -1;
+		});
 	}
 
 	/**
