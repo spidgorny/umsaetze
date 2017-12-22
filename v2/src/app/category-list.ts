@@ -10,6 +10,10 @@ export class CategoryList {
 	data: Map<string, Category> = new Map();
 
 	constructor() {
+		const stored = window.localStorage.getItem('categories');
+		if (stored) {
+			this.data = new Map(JSON.parse(stored));
+		}
 	}
 
 	getData() {
@@ -35,7 +39,8 @@ export class CategoryList {
 			this.incrementCategoryData(categoryName, transaction);
 		});
 		// this.sortBy('amount');
-		console.log(this.data);
+		console.log('category count', this.data.size);
+		this.save();
 		console.profileEnd();
 	}
 
@@ -56,12 +61,22 @@ export class CategoryList {
 	getColorFor(value: string) {
 		let color;
 		let category = this.data.get(value);
-		if (category) {
-			color = category.color;
-		} else {
-			color = '#AAAAAA';
-		}
+		color = category ? category.color : '#AAAAAA';
 		return color;
+	}
+
+	/**
+	 * Each category needs to calculate the percentage of it's value from the total
+	 * @param {number} total
+	 */
+	setTotal(total: number) {
+		this.data.forEach((cat: Category) => {
+			cat.total = total;
+		});
+	}
+
+	save() {
+		window.localStorage.setItem('categories', JSON.stringify(Array.from(this.data)));
 	}
 
 }

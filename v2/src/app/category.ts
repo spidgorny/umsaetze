@@ -4,6 +4,7 @@ export class Category {
 	count: number = 0;
 	amount: number = 0;
 	color: string = Category.pastelColor();
+	total: number = 1;
 
 	constructor(props: any) {
 		this.name = props.name;
@@ -19,12 +20,16 @@ export class Category {
 		return '#' + r + g + b;
 	}
 
+	get money() {
+		return (this.amount).toFixed(2);
+	}
+
 	get sign() {
 		return this.amount >= 0 ? 'positive' : 'negative';
 	}
 
 	get width() {
-		return 50;
+		return Math.abs(this.amount / this.total * 100).toFixed(2);
 	}
 
 }
