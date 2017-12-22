@@ -19,6 +19,7 @@
     "@angular/platform-browser-dynamic": "^2.3.1",
     "@angular/router": "^3.3.1",
     "@types/datejs": "0.0.30",
+    "chart.js": "^2.7.1",
     "core-js": "^2.4.1",
     "datejs": "^1.0.0-rc3",
     "reflect-metadata": "^0.1.10",

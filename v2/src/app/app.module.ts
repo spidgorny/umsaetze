@@ -14,6 +14,7 @@ import {CurrentMonthService} from './current-month.service';
 import { RouterModule, Routes } from '@angular/router';
 import {CategoryPageComponent} from './category-page/category-page.component';
 import { CategoryStatsComponent } from './category-stats/category-stats.component';
+import { CategoryChartComponent } from './category-chart/category-chart.component';
 
 const appRoutes: Routes = [
 	{ path: 'categories', component: CategoryPageComponent},
@@ -32,7 +33,8 @@ const appRoutes: Routes = [
 		CategorySelectorComponent,
 		MonthSelectorComponent,
 		CategoryPageComponent,
-		CategoryStatsComponent
+		CategoryStatsComponent,
+		CategoryChartComponent
 	],
 	imports: [
 		RouterModule.forRoot(

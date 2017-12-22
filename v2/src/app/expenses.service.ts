@@ -3,6 +3,7 @@ import {LocalStorageDataSourceService} from './local-storage-data-source.service
 import {Transaction} from './transaction';
 import {JsonDataSourceService} from './json-data-source.service';
 import {CurrentMonthService} from './current-month.service';
+import {CategoryList} from './category-list';
 
 @Injectable()
 export class ExpensesService {
@@ -69,4 +70,14 @@ export class ExpensesService {
 	getVisible(curMonth: CurrentMonthService) {
 		return this.filterByMonth(curMonth.getValue());
 	}
+
+	getTotal(visible: Transaction[]) {
+		return visible.reduce((acc, tr: Transaction) => {
+			if (tr.category != CategoryList.INCOME) {
+				return acc + Math.abs(tr.amount);
+			}
+			return acc;
+		}, 0).toFixed(2);
+	}
+
 }

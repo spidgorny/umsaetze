@@ -7,6 +7,8 @@ import {Injectable} from '@angular/core';
 @Injectable()
 export class CategoryList {
 
+	public static readonly INCOME = 'Income';
+
 	data: Map<string, Category> = new Map();
 
 	constructor() {
@@ -66,6 +68,15 @@ export class CategoryList {
 		let category = this.data.get(value);
 		color = category ? category.color : '#AAAAAA';
 		return color;
+	}
+
+	getTotal() {
+		return Array.from(this.data.values()).reduce((acc, cat: Category) => {
+			if (cat.name != CategoryList.INCOME) {
+				return acc + Math.abs(cat.amount);
+			}
+			return acc;
+		}, 0);
 	}
 
 	/**

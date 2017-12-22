@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ExpensesService} from '../expenses.service';
 import {CategoryList} from '../category-list';
 import {CurrentMonthService} from '../current-month.service';
 import {Transaction} from '../transaction';
 import {Category} from '../category';
+import {CategoryChartComponent} from '../category-chart/category-chart.component';
 
 @Component({
 	selector: 'app-category-stats',
@@ -12,9 +13,9 @@ import {Category} from '../category';
 })
 export class CategoryStatsComponent implements OnInit {
 
-	INCOME = 'Income';
-
 	visible: Transaction[];
+
+	@ViewChild('chart') chart: CategoryChartComponent;
 
 	constructor(protected categories: CategoryList,
 				protected expenses: ExpensesService,
@@ -23,17 +24,14 @@ export class CategoryStatsComponent implements OnInit {
 	}
 
 	get income() {
-		const income = this.categories.data[this.INCOME];
+		const income = this.categories.data.get(CategoryList.INCOME);
+		// console.log(this.categories.data.keys());
+		//console.log(CategoryList.INCOME, income);
 		return income ? income.amount : 0;
 	}
 
 	get total() {
-		return this.visible.reduce((acc, tr: Transaction) => {
-			if (tr.category != this.INCOME) {
-				return acc + Math.abs(tr.amount);
-			}
-			return acc;
-		}, 0).toFixed(2);
+		return this.expenses.getTotal(this.visible);
 	}
 
 	ngOnInit() {
@@ -54,6 +52,12 @@ export class CategoryStatsComponent implements OnInit {
 		this.visible = this.expenses.getVisible(this.currentMonth);
 		this.categories.setCategoriesFromExpenses(this.visible);
 		this.categories.setTotal(parseFloat(this.total));
+
+		if (this.chart) {
+			this.chart.rerender();
+		} else {
+			console.error('Chart not set');
+		}
 	}
 
 }
