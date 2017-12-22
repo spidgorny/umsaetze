@@ -37,16 +37,16 @@ export class CategoryList {
 	 * @param {ExpensesService} expenses
 	 */
 	setCategoriesFromExpenses(expenses: Transaction[]) {
-		console.profile('getCategoriesFromExpenses');
+		// console.profile('getCategoriesFromExpenses');
 		this.resetCounters();
 		expenses.forEach((transaction: Transaction) => {
 			let categoryName = transaction.category;
 			this.incrementCategoryData(categoryName, transaction);
 		});
 		// this.sortBy('amount');
-		console.log('category count', this.data.size);
+		// console.log('category count', this.data.size);
 		this.save();
-		console.profileEnd();
+		// console.profileEnd();
 	}
 
 	private incrementCategoryData(categoryName: any, transaction: Transaction) {

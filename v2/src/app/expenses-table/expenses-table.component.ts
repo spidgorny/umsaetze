@@ -20,8 +20,8 @@ export class ExpensesTableComponent implements OnInit {
 
 	constructor(public expenses: ExpensesService, private currentMonth: CurrentMonthService) {
 		// console.log(expenses.file);
-		console.log('etc constructor', this.expenses.data.length);
-		console.log('date extremes', this.dateFrom.toString('yyyy-MM-dd'), this.dateTill.toString('yyyy-MM-dd'));
+		// console.log('etc constructor', this.expenses.data.length);
+		// console.log('date extremes', this.dateFrom.toString('yyyy-MM-dd'), this.dateTill.toString('yyyy-MM-dd'));
 
 		// show at least something - to be removed
 		//this.visible = this.expenses.data;
@@ -36,15 +36,15 @@ export class ExpensesTableComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		console.log('etc ngOnInit', this.expenses.data.length);
-		console.log('first', this.expenses.data[0]);
+		// console.log('etc ngOnInit', this.expenses.data.length);
+		// console.log('first', this.expenses.data[0]);
 		this.currentMonth.subscribe(this.onMonthChanged.bind(this));
 	}
 
 	onMonthChanged(newDate: Date) {
-		console.log('emit catched', newDate.toString('yyyy-MM-dd'));
+		// console.log('emit catched', newDate.toString('yyyy-MM-dd'));
 		this.visible = this.getVisible();
-		console.log('visible', this.visible.length);
+		// console.log('visible', this.visible.length);
 	}
 
 	getVisible() {

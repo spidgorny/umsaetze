@@ -49,6 +49,7 @@ export class CategoryStatsComponent implements OnInit {
 	 * Re-render when something changes
 	 */
 	update() {
+		console.profile('CategoryStatsController::update()');
 		this.visible = this.expenses.getVisible(this.currentMonth);
 		this.categories.setCategoriesFromExpenses(this.visible);
 		this.categories.setTotal(parseFloat(this.total));
@@ -58,6 +59,7 @@ export class CategoryStatsComponent implements OnInit {
 		} else {
 			console.error('Chart not set');
 		}
+		console.profileEnd();
 	}
 
 }

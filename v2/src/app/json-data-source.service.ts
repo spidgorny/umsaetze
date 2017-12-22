@@ -20,7 +20,7 @@ export class JsonDataSourceService implements DataSourceInterface {
 			// console.log(tr);
 			this.data.push(tr);
 		});
-		console.log('jdss constructor', this.data.length);
+		// console.log('jdss constructor', this.data.length);
 	}
 
 	save(tr: Transaction) {

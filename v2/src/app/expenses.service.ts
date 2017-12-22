@@ -10,7 +10,7 @@ export class ExpensesService {
 
 	constructor(protected loader: LocalStorageDataSourceService,
 				protected saver: LocalStorageDataSourceService) {
-		console.log('ExpensesService', this.loader.data.length);
+		// console.log('ExpensesService', this.loader.data.length);
 		// this.saver.expenses = this.loader.expenses;
 	}
 

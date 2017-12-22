@@ -59,13 +59,13 @@ export class CategoryChartComponent implements OnInit {
 				}
 			]
 		};
-		console.log(labels, dataSet1);
+		// console.log(labels, dataSet1);
 		if (this.myPieChart) {
 			this.myPieChart.destroy();
 		}
 		let canvas = document.getElementById('pieChart');
-		console.log(canvas, canvas.style.display);
-		console.log(canvas.parentElement);
+		// console.log(canvas, canvas.style.display);
+		// console.log(canvas.parentElement);
 		canvas.style.display = 'block';
 		canvas.parentElement.style.display = 'block';
 		this.myPieChart = new Chart(canvas, {
