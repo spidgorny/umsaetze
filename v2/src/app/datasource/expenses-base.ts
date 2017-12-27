@@ -103,7 +103,8 @@ export class ExpensesBase {
 	getMonthPairs() {
 		return this.getMonths().map((month: Date) => {
 			const next = month.clone();
-			next.addMonths(1).add(<IDateJSLiteral>{seconds: -1});
+			next.addMonths(1)
+				.add(<IDateJSLiteral>{seconds: -1});
 			return {
 				month,
 				next,

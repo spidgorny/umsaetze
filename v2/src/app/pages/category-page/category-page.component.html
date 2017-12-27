@@ -37,11 +37,10 @@
             <input style="display: none"/>
         </td>
         <td>
-            <canvas width="100%" height="100" class="sparkline"
-                    [attr.data-chart_values]="JSON.stringify(category.sparkLine)"
-                    data-chart_StrokeColor="rgba(151,187,0,1)"
-                    [attr.data-average]="category.average"
-            ></canvas>
+            <app-sparkline
+                    [sparkLine]="category.sparkLine"
+                    [average]="category.average"
+            ></app-sparkline>
         </td>
         <td>{{category.count}}</td>
         <td class="text-right">{{category.amount | number:'1.2'}}</td>

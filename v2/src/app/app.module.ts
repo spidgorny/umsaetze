@@ -12,13 +12,16 @@ import {CategoryList} from './services/category-list';
 import { MonthSelectorComponent } from './components/month-selector/month-selector.component';
 import {CurrentMonthService} from './services/current-month.service';
 import { RouterModule, Routes } from '@angular/router';
-import {CategoryPageComponent} from './category-page/category-page.component';
+import {CategoryPageComponent} from './pages/category-page/category-page.component';
 import { CategoryStatsComponent } from './components/category-stats/category-stats.component';
 import { CategoryChartComponent } from './components/category-chart/category-chart.component';
+import { SparklineComponent } from './components/sparkline/sparkline.component';
+import { KeywordsPageComponent } from './pages/keywords-page/keywords-page.component';
 
 const appRoutes: Routes = [
 	{ path: 'categories', component: CategoryPageComponent},
 	{ path: 'dashboard', component: ExpensesTableComponent},
+	{ path: 'keywords', component: KeywordsPageComponent},
 	{ path: '',
 		redirectTo: '/dashboard',
 		pathMatch: 'full'
@@ -34,7 +37,9 @@ const appRoutes: Routes = [
 		MonthSelectorComponent,
 		CategoryPageComponent,
 		CategoryStatsComponent,
-		CategoryChartComponent
+		CategoryChartComponent,
+		SparklineComponent,
+		KeywordsPageComponent
 	],
 	imports: [
 		RouterModule.forRoot(

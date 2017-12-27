@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {CategoryList} from '../services/category-list';
-import {Category} from '../models/category';
-import {ExpensesService} from '../services/expenses.service';
+import {CategoryList} from '../../services/category-list';
+import {Category} from '../../models/category';
+import {ExpensesService} from '../../services/expenses.service';
 
 @Component({
 	selector: 'app-category-page',
