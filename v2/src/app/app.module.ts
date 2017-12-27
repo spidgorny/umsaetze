@@ -12,22 +12,18 @@ import {CategoryList} from './services/category-list';
 import { MonthSelectorComponent } from './components/month-selector/month-selector.component';
 import {CurrentMonthService} from './services/current-month.service';
 import { RouterModule, Routes } from '@angular/router';
+import { SparklineComponent } from './components/sparkline/sparkline.component';
+import { KeywordsPageComponent } from './pages/keywords-page/keywords-page.component';
 import {CategoryPageComponent} from './pages/category-page/category-page.component';
 import { CategoryStatsComponent } from './components/category-stats/category-stats.component';
 import { CategoryChartComponent } from './components/category-chart/category-chart.component';
-import { SparklineComponent } from './components/sparkline/sparkline.component';
-import { KeywordsPageComponent } from './pages/keywords-page/keywords-page.component';
-import {CategoryPageComponent} from './category-page/category-page.component';
-import { CategoryStatsComponent } from './category-stats/category-stats.component';
-import { CategoryChartComponent } from './category-chart/category-chart.component';
 import { SyncComponent } from './sync/sync.component';
 
 const appRoutes: Routes = [
-	{ path: 'categories', component: CategoryPageComponent},
 	{ path: 'dashboard', component: ExpensesTableComponent},
+	{ path: 'sync', component: SyncComponent},
+	{ path: 'categories', component: CategoryPageComponent},
 	{ path: 'keywords', component: KeywordsPageComponent},
-    { path: 'sync', component: SyncComponent},
-    { path: 'dashboard', component: ExpensesTableComponent},
 	{ path: '',
 		redirectTo: '/dashboard',
 		pathMatch: 'full'
@@ -45,7 +41,7 @@ const appRoutes: Routes = [
 		CategoryStatsComponent,
 		CategoryChartComponent,
 		SparklineComponent,
-		KeywordsPageComponent
+		KeywordsPageComponent,
 		CategoryChartComponent,
 		SyncComponent
 	],

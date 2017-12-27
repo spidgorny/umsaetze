@@ -6,5 +6,7 @@ export interface DataSourceInterface {
 
 	save(tr: Transaction);
 
+	saveAll();
+
 }
 

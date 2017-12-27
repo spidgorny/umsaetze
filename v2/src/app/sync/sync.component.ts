@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {ExpensesService} from '../expenses.service';
-import {Transaction} from '../transaction';
-import {Category} from '../category';
+import {ExpensesService} from '../services/expenses.service';
+import {Transaction} from '../models/transaction';
+import {Category} from '../models/category';
 import {Chance} from 'chance';
 const chance = new Chance();
-import {CategoryList} from '../category-list';
-import { saveAs } from  'file-saver';
+import {CategoryList} from '../services/category-list';
+import { saveAs } from 'file-saver';
 
 @Component({
 	selector: 'app-sync',

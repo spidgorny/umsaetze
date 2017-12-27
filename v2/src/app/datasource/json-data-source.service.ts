@@ -27,4 +27,8 @@ export class JsonDataSourceService implements DataSourceInterface {
 		console.error('JsonDataSourceService::save() is not implemented');
 	}
 
+	saveAll() {
+		console.error('JsonDataSourceService::saveAll() is not implemented');
+	}
+
 }
