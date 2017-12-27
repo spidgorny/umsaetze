@@ -6,11 +6,13 @@ import {CategoryList} from './category-list';
 @Injectable()
 export class LocalStorageDataSourceService implements DataSourceInterface {
 
+	public static readonly LS_KEY = 'expenses';
+
 	data: Transaction[] = [];
 
 	constructor(protected categories: CategoryList) {
-		const incoming = window.localStorage.getItem('expenses');
-		//console.log('incoming', incoming);
+		const incoming = window.localStorage.getItem(LocalStorageDataSourceService.LS_KEY);
+		// console.log('incoming', incoming);
 		if (incoming) {
 			const json = JSON.parse(incoming);
 			json.forEach(el => {
@@ -21,7 +23,10 @@ export class LocalStorageDataSourceService implements DataSourceInterface {
 
 	save(tr: Transaction) {
 		console.log('saving', this.data.length);
-		window.localStorage.setItem('expenses', JSON.stringify(this.data));
+		this.saveAll();
 	}
 
+	saveAll() {
+		window.localStorage.setItem(LocalStorageDataSourceService.LS_KEY, JSON.stringify(this.data));
+	}
 }

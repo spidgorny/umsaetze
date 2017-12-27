@@ -40,7 +40,7 @@ export class CategoryList {
 		// console.profile('getCategoriesFromExpenses');
 		this.resetCounters();
 		expenses.forEach((transaction: Transaction) => {
-			let categoryName = transaction.category;
+			const categoryName = transaction.category;
 			this.incrementCategoryData(categoryName, transaction);
 		});
 		// this.sortBy('amount');
@@ -50,7 +50,7 @@ export class CategoryList {
 	}
 
 	private incrementCategoryData(categoryName: any, transaction: Transaction) {
-		let exists = this.data.get(categoryName);
+		const exists = this.data.get(categoryName);
 		if (exists) {
 			exists.count  += 1;
 			exists.amount += transaction.amount;
@@ -64,15 +64,13 @@ export class CategoryList {
 	}
 
 	getColorFor(value: string) {
-		let color;
-		let category = this.data.get(value);
-		color = category ? category.color : '#AAAAAA';
-		return color;
+		const category = this.data.get(value);
+		return category ? category.color : '#AAAAAA';
 	}
 
 	getTotal() {
 		return Array.from(this.data.values()).reduce((acc, cat: Category) => {
-			if (cat.name != CategoryList.INCOME) {
+			if (cat.name !== CategoryList.INCOME) {
 				return acc + Math.abs(cat.amount);
 			}
 			return acc;
@@ -91,6 +89,14 @@ export class CategoryList {
 
 	save() {
 		window.localStorage.setItem('categories', JSON.stringify(Array.from(this.data)));
+	}
+
+	random() {
+		const index = Math.floor(Math.random() * this.data.size);
+		const keys = Array.from(this.data.keys());
+		const key = keys[index];
+		// console.log(index, keys, key);
+		return this.data[key];
 	}
 
 }

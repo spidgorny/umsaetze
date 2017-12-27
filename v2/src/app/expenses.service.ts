@@ -15,7 +15,7 @@ export class ExpensesService {
 	}
 
 	get data() {
-		//console.log('loader expenses', this.loader.expenses.length);
+		// console.log('loader expenses', this.loader.expenses.length);
 		return this.loader.data;
 	}
 
@@ -73,11 +73,14 @@ export class ExpensesService {
 
 	getTotal(visible: Transaction[]) {
 		return visible.reduce((acc, tr: Transaction) => {
-			if (tr.category != CategoryList.INCOME) {
+			if (tr.category !== CategoryList.INCOME) {
 				return acc + Math.abs(tr.amount);
 			}
 			return acc;
 		}, 0).toFixed(2);
 	}
 
+	saveAll() {
+		this.saver.saveAll();
+	}
 }

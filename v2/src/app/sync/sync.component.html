@@ -1,0 +1,36 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Sync
+    </div>
+    <!-- /.panel-heading -->
+    <div class="panel-body">
+
+        <form id="file-form" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Import CSV:
+                    <input type="file" id="file-input-csv" name="file-input">
+                </label>
+            </div>
+        </form>
+
+        <h2 style="text-align: center">{{ memoryRows }}</h2>
+
+        <button class="btn btn-default" (click)="generate()">
+            <span class="glyphicon glyphicon-equalizer"></span>
+            Generate random data (100 at a time)
+        </button>
+
+        <button class="btn btn-success" (click)="export()">
+            <span class="glyphicon glyphicon-download"></span>
+            Export JSON
+        </button>
+    </div>
+    <div class="panel-footer clearfix">
+        <div class="pull-right">
+            <button class="btn btn-danger btn-xs" (click)="deleteAll()">
+                <span class="glyphicon glyphicon-fire"></span>
+                Clear
+            </button>
+        </div>
+    </div>
+</div>

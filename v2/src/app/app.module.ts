@@ -15,10 +15,12 @@ import { RouterModule, Routes } from '@angular/router';
 import {CategoryPageComponent} from './category-page/category-page.component';
 import { CategoryStatsComponent } from './category-stats/category-stats.component';
 import { CategoryChartComponent } from './category-chart/category-chart.component';
+import { SyncComponent } from './sync/sync.component';
 
 const appRoutes: Routes = [
 	{ path: 'categories', component: CategoryPageComponent},
-	{ path: 'dashboard', component: ExpensesTableComponent},
+    { path: 'sync', component: SyncComponent},
+    { path: 'dashboard', component: ExpensesTableComponent},
 	{ path: '',
 		redirectTo: '/dashboard',
 		pathMatch: 'full'
@@ -34,7 +36,8 @@ const appRoutes: Routes = [
 		MonthSelectorComponent,
 		CategoryPageComponent,
 		CategoryStatsComponent,
-		CategoryChartComponent
+		CategoryChartComponent,
+		SyncComponent
 	],
 	imports: [
 		RouterModule.forRoot(
