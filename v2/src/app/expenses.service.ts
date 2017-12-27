@@ -15,7 +15,7 @@ export class ExpensesService {
 	}
 
 	get data() {
-		//console.log('loader expenses', this.loader.expenses.length);
+		// console.log('loader expenses', this.loader.expenses.length);
 		return this.loader.data;
 	}
 

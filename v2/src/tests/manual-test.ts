@@ -3,6 +3,7 @@ import {Transaction} from '../app/transaction';
 import {JsonDataSourceService} from '../app/json-data-source.service';
 import {CategoryList} from '../app/category-list';
 import {ExpensesService} from '../app/expenses.service';
+import {ExpensesService4Test} from './ExpensesService4Test';
 import 'datejs';
 
 const categories = new CategoryList();
@@ -20,13 +21,6 @@ console.log('sign', t.sign);
 
 const jsonLoader = new JsonDataSourceService(categories);
 
-class ExpensesService4Test extends ExpensesService {
-
-	constructor(public loader: JsonDataSourceService, public saver: JsonDataSourceService) {
-		super(loader, saver);
-	}
-
-}
 
 const dataService = new ExpensesService4Test(jsonLoader, jsonLoader);
 const from = dataService.getEarliest();

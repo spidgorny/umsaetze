@@ -26,7 +26,7 @@ export class CategoryStatsComponent implements OnInit {
 	get income() {
 		const income = this.categories.data.get(CategoryList.INCOME);
 		// console.log(this.categories.data.keys());
-		//console.log(CategoryList.INCOME, income);
+		// console.log(CategoryList.INCOME, income);
 		return income ? income.amount : 0;
 	}
 
@@ -39,7 +39,7 @@ export class CategoryStatsComponent implements OnInit {
 
 	get data() {
 		return this.categories.getData().sort((c1: Category, c2: Category) => {
-			return c1.amount == c2.amount
+			return c1.amount === c2.amount
 				? 0
 				: (c1.amount > c2.amount) ? 1 : -1;
 		});
