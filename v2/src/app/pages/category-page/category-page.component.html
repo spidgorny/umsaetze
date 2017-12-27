@@ -1,0 +1,59 @@
+<h2>
+    Categories
+    <span class="badge" id="categoryCount">
+        {{categories.getData().length}}
+    </span>
+</h2>
+<form id="addCategoryForm">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-9">
+                <input name="newName" class="form-control" title="New Category Name" #newName/>
+            </div>
+            <div class="col-sm-3">
+                <button (click)="addNewCategory(newName.value)" class="btn btn-success">Add</button>
+            </div>
+        </div>
+    </div>
+</form>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Category</th>
+        <th>Sparkline</th>
+        <th>Used</th>
+        <th class="text-right">Amount</th>
+        <th class="text-right">Average/Month</th>
+        <th>Color</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let category of categories.getData()"
+        [style.background-color]="category.color"
+        data-id="category.id">
+        <td class="inlineEdit">
+            <span>{{category.name}}</span>
+            <input style="display: none"/>
+        </td>
+        <td>
+            <app-sparkline
+                    [sparkLine]="category.sparkLine"
+                    [average]="category.average"
+            ></app-sparkline>
+        </td>
+        <td>{{category.count}}</td>
+        <td class="text-right">{{category.amount | number:'1.2'}}</td>
+        <td class="text-right">{{category.averagePerMonth | number:'1.2'}}</td>
+        <td>
+            <input type="color" value="{{category.color}}"/>
+        </td>
+        <td>
+            <button class="close" aria-label="Close"
+                    (click)="removeCategory(category)">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
