@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {LocalStorageDataSourceService} from './local-storage-data-source.service';
-import {Transaction} from './transaction';
-import {JsonDataSourceService} from './json-data-source.service';
+import {LocalStorageDataSourceService} from '../datasource/local-storage-data-source.service';
+import {Transaction} from '../models/transaction';
+import {JsonDataSourceService} from '../datasource/json-data-source.service';
 import {CurrentMonthService} from './current-month.service';
 import {CategoryList} from './category-list';
-import {ExpensesBase} from './expenses-base';
+import {ExpensesBase} from '../datasource/expenses-base';
 
 @Injectable()
 export class ExpensesService extends ExpensesBase {

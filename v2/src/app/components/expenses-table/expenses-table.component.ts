@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {JsonDataSourceService} from "../json-data-source.service";
-import {ExpensesService} from '../expenses.service';
-import {CurrentMonthService} from '../current-month.service';
-import {Transaction} from '../transaction';
+import {ExpensesService} from '../../services/expenses.service';
+import {CurrentMonthService} from '../../services/current-month.service';
+import {Transaction} from '../../models/transaction';
 import 'datejs';
 
 @Component({
@@ -24,7 +23,7 @@ export class ExpensesTableComponent implements OnInit {
 		// console.log('date extremes', this.dateFrom.toString('yyyy-MM-dd'), this.dateTill.toString('yyyy-MM-dd'));
 
 		// show at least something - to be removed
-		//this.visible = this.expenses.data;
+		// this.visible = this.expenses.data;
 	}
 
 	get dateFrom() {

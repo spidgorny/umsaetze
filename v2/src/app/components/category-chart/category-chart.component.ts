@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Category} from '../category';
-import {CategoryList} from '../category-list';
+import {Category} from '../../models/category';
+import {CategoryList} from '../../services/category-list';
 import {Chart} from 'chart.js';
 
 @Component({

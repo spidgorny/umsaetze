@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Transaction} from '../transaction';
-import {ExpensesService} from '../expenses.service';
-import {CategoryList} from '../category-list';
-import {Category} from '../category';
-import {CurrentMonthService} from '../current-month.service';
+import {Transaction} from '../../models/transaction';
+import {ExpensesService} from '../../services/expenses.service';
+import {CategoryList} from '../../services/category-list';
+import {Category} from '../../models/category';
+import {CurrentMonthService} from '../../services/current-month.service';
 
 @Component({
 	selector: 'app-category-selector',
@@ -31,7 +31,7 @@ export class CategorySelectorComponent implements OnInit {
 	 */
 	onChange(option: HTMLOptionElement, newCat) {
 		console.log(this);
-		if (option.id == 'new') {
+		if (option.id === 'new') {
 			const name = prompt('New Category');
 			if (name) {
 				newCat = name;
@@ -40,7 +40,7 @@ export class CategorySelectorComponent implements OnInit {
 				const selector = <HTMLSelectElement>option.parentElement;
 				const other = this.getOther();
 				const index = other.findIndex((cat: Category) => {
-					return cat.name == newCat;
+					return cat.name === newCat;
 				});
 				selector.selectedIndex = index;
 			}
@@ -56,7 +56,7 @@ export class CategorySelectorComponent implements OnInit {
 	}
 
 	getOther() {
-		let cats = new Map(this.categories.data);
+		const cats = new Map(this.categories.data);
 		// console.log(this.selected, cats);
 		cats.delete(this.selected);
 		let array = Array.from(cats.values());

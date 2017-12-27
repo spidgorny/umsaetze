@@ -11,10 +11,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
-var transaction_1 = require("../app/transaction");
-var json_data_source_service_1 = require("../app/json-data-source.service");
-var category_list_1 = require("../app/category-list");
-var expenses_service_1 = require("../app/expenses.service");
+var transaction_1 = require("../app/models/transaction");
+var json_data_source_service_1 = require("../app/datasource/json-data-source.service");
+var category_list_1 = require("../app/services/category-list");
+var expenses_service_1 = require("../app/services/expenses.service");
 require("datejs");
 var categories = new category_list_1.CategoryList();
 // categories.setCategoriesFromExpenses();

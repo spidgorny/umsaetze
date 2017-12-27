@@ -1,6 +1,6 @@
 import * as _ from "underscore";
-import {Transaction} from './transaction';
-import {Category} from './category';
+import {Transaction} from '../models/transaction';
+import {Category} from '../models/category';
 import {ExpensesService} from './expenses.service';
 import {Injectable} from '@angular/core';
 

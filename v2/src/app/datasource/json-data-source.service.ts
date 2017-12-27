@@ -1,11 +1,11 @@
-/// <reference path="../custom_typings/json.d.ts" />
+/// <reference path="../../custom_typings/json.d.ts" />
 
 import {Injectable} from '@angular/core';
-import * as JSONData from '../data/umsaetze-2017-04-20.json';
-import {Transaction} from './transaction';
+import * as JSONData from '../../data/umsaetze-2017-04-20.json';
+import {Transaction} from '../models/transaction';
 import {DataSourceInterface} from './data-source-interface';
 import 'datejs';
-import {CategoryList} from './category-list';
+import {CategoryList} from '../services/category-list';
 
 @Injectable()
 export class JsonDataSourceService implements DataSourceInterface {

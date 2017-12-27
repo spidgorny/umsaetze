@@ -1,6 +1,6 @@
-import {CategoryList} from './category-list';
-import {CurrentMonthService} from './current-month.service';
-import {Transaction} from './transaction';
+import {CategoryList} from '../services/category-list';
+import {CurrentMonthService} from '../services/current-month.service';
+import {Transaction} from '../models/transaction';
 import {LocalStorageDataSourceService} from './local-storage-data-source.service';
 import {DataSourceInterface} from './data-source-interface';
 

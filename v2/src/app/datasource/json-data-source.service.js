@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var JSONData = require("../data/umsaetze-2017-04-20.json");
+var JSONData = require("../../data/umsaetze-2017-04-20.json");
 var transaction_1 = require("./transaction");
 require("datejs");
 var JsonDataSourceService = /** @class */ (function () {

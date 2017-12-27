@@ -1,8 +1,8 @@
 import 'reflect-metadata';
-import {Transaction} from '../app/transaction';
-import {JsonDataSourceService} from '../app/json-data-source.service';
-import {CategoryList} from '../app/category-list';
-import {ExpensesService} from '../app/expenses.service';
+import {Transaction} from '../app/models/transaction';
+import {JsonDataSourceService} from '../app/datasource/json-data-source.service';
+import {CategoryList} from '../app/services/category-list';
+import {ExpensesService} from '../app/services/expenses.service';
 import {ExpensesService4Test} from './ExpensesService4Test';
 import 'datejs';
 

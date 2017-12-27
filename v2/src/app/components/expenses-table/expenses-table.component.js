@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var core_1 = require('@angular/core');
-var json_data_source_service_1 = require("../json-data-source.service");
+var json_data_source_service_1 = require("../../datasource/json-data-source.service");
 var ExpensesTableComponent = (function () {
     function ExpensesTableComponent(data) {
         this.data = data;

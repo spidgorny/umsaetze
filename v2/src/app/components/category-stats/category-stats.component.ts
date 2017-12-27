@@ -1,9 +1,9 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ExpensesService} from '../expenses.service';
-import {CategoryList} from '../category-list';
-import {CurrentMonthService} from '../current-month.service';
-import {Transaction} from '../transaction';
-import {Category} from '../category';
+import {ExpensesService} from '../../services/expenses.service';
+import {CategoryList} from '../../services/category-list';
+import {CurrentMonthService} from '../../services/current-month.service';
+import {Transaction} from '../../models/transaction';
+import {Category} from '../../models/category';
 import {CategoryChartComponent} from '../category-chart/category-chart.component';
 
 @Component({

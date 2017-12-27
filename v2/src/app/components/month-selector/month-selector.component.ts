@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ExpensesService} from '../expenses.service';
-import {CurrentMonthService} from '../current-month.service';
+import {ExpensesService} from '../../services/expenses.service';
+import {CurrentMonthService} from '../../services/current-month.service';
 
 @Component({
 	selector: 'app-month-selector',

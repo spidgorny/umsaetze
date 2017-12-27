@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Transaction} from './transaction';
+import {Transaction} from '../models/transaction';
 import {DataSourceInterface} from './data-source-interface';
-import {CategoryList} from './category-list';
+import {CategoryList} from '../services/category-list';
 
 @Injectable()
 export class LocalStorageDataSourceService implements DataSourceInterface {

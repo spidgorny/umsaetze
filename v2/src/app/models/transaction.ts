@@ -1,4 +1,4 @@
-import {CategoryList} from './category-list';
+import {CategoryList} from '../services/category-list';
 
 export class Transaction {
 
