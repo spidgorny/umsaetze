@@ -7,3 +7,5 @@ typings
 /docs/startbootstrap-sb-admin-2/
 /docs/npm-debug.log
 /*.rar
+/v2local/
+/v3/

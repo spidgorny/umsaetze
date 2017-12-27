@@ -79,6 +79,10 @@ export class ExpensesBase {
 		}, 0).toFixed(2);
 	}
 
+	saveAll() {
+		this.saver.saveAll();
+	}
+
 	filterByCategory(category: Category) {
 		return this.data.filter((tr: Transaction) => {
 			return tr.category === category.name;
