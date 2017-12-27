@@ -6,32 +6,75 @@ import {ExpensesService} from '../app/services/expenses.service';
 import {ExpensesService4Test} from './ExpensesService4Test';
 import 'datejs';
 
-const categories = new CategoryList();
-// categories.setCategoriesFromExpenses();
+class ManualTest {
 
-const t = new Transaction({
-	id: '123',
-	date: '2017-12-18',
-	amount: 10.20,
-	category: 'Default',
-	notes: 'Description'
-}, categories);
+	protected categories;
+	protected dataService: ExpensesService4Test;
 
-console.log('sign', t.sign);
+	constructor() {
+		this.categories = new CategoryList();
+		// categories.setCategoriesFromExpenses();
+		const jsonLoader = new JsonDataSourceService(this.categories);
 
-const jsonLoader = new JsonDataSourceService(categories);
+		this.dataService = new ExpensesService4Test(jsonLoader, jsonLoader);
+	}
 
+	testSign() {
+		const t = new Transaction({
+			id: '123',
+			date: '2017-12-18',
+			amount: 10.20,
+			category: 'Default',
+			notes: 'Description'
+		}, this.categories);
 
-const dataService = new ExpensesService4Test(jsonLoader, jsonLoader);
-const from = dataService.getEarliest();
-console.log('from', from, dataService.getLatest());
+		console.log('sign', t.sign);
+		return this;
+	}
 
-const april = new Date(2017, 3);
-console.log('april', april);
-const visible = dataService.filterByMonth(april);
-console.log('visible', visible.length);
+	testEarliest() {
+		const from = this.dataService.getEarliest();
+		console.log('from', from, this.dataService.getLatest());
+		return this;
+	}
 
-const today = new Date();
-console.log('today is bigger than april', today > april);
-console.log('today is bigger than april by getTime()', today.getTime() > april.getTime());
-console.log(today.toString('yyyy-MM-dd'), today.getTime(), april.toString('yyyy-MM-dd'), april.getTime());
+	testFilterByMonth() {
+		const april = new Date(2017, 3);
+		console.log('april', april);
+		const visible = this.dataService.filterByMonth(april);
+		console.log('visible', visible.length);
+		return this;
+	}
+
+	testDateCompare() {
+		const april = new Date(2017, 3);
+		console.log('april', april);
+		const today = new Date();
+		console.log('today is bigger than april', today > april);
+		console.log('today is bigger than april by getTime()', today.getTime() > april.getTime());
+		console.log(today.toString('yyyy-MM-dd'), today.getTime(), april.toString('yyyy-MM-dd'), april.getTime());
+		return this;
+	}
+
+	testGetMonths() {
+		const months = this.dataService.getMonths();
+		console.log(months);
+		return this;
+	}
+
+	testGetMonthPairs() {
+		const months = this.dataService.getMonthPairs();
+		console.log(months);
+		return this;
+	}
+
+}
+
+new ManualTest()
+	// .testSign()
+	// .testEarliest()
+	// .testFilterByMonth()
+	// .testDateCompare()
+	.testGetMonths()
+	.testGetMonthPairs()
+;

@@ -1,4 +1,4 @@
-import * as _ from "underscore";
+import * as _ from 'underscore';
 import {Transaction} from '../models/transaction';
 import {Category} from '../models/category';
 import {ExpensesService} from './expenses.service';
@@ -12,13 +12,20 @@ export class CategoryList {
 	data: Map<string, Category> = new Map();
 
 	constructor() {
-		const stored = window.localStorage.getItem('categories');
+		const stored = this.fetch();
 		if (stored) {
 			this.data = new Map(JSON.parse(stored));
 			this.data.forEach((json: any, key: string) => {
 				this.data.set(key, new Category(json));
 			});
 		}
+	}
+
+	fetch() {
+		if (typeof window !== 'undefined') {
+			return window.localStorage.getItem('categories');
+		}
+		return null;
 	}
 
 	getData() {
@@ -40,7 +47,7 @@ export class CategoryList {
 		// console.profile('getCategoriesFromExpenses');
 		this.resetCounters();
 		expenses.forEach((transaction: Transaction) => {
-			let categoryName = transaction.category;
+			const categoryName = transaction.category;
 			this.incrementCategoryData(categoryName, transaction);
 		});
 		// this.sortBy('amount');
@@ -50,7 +57,7 @@ export class CategoryList {
 	}
 
 	private incrementCategoryData(categoryName: any, transaction: Transaction) {
-		let exists = this.data.get(categoryName);
+		const exists = this.data.get(categoryName);
 		if (exists) {
 			exists.count  += 1;
 			exists.amount += transaction.amount;
@@ -65,14 +72,14 @@ export class CategoryList {
 
 	getColorFor(value: string) {
 		let color;
-		let category = this.data.get(value);
+		const category = this.data.get(value);
 		color = category ? category.color : '#AAAAAA';
 		return color;
 	}
 
 	getTotal() {
 		return Array.from(this.data.values()).reduce((acc, cat: Category) => {
-			if (cat.name != CategoryList.INCOME) {
+			if (cat.name !== CategoryList.INCOME) {
 				return acc + Math.abs(cat.amount);
 			}
 			return acc;
@@ -90,7 +97,10 @@ export class CategoryList {
 	}
 
 	save() {
-		window.localStorage.setItem('categories', JSON.stringify(Array.from(this.data)));
+		if (typeof window !== 'undefined') {
+			window.localStorage.setItem('categories',
+				JSON.stringify(Array.from(this.data)));
+		}
 	}
 
 }

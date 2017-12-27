@@ -3,6 +3,7 @@ import {CurrentMonthService} from '../services/current-month.service';
 import {Transaction} from '../models/transaction';
 import {LocalStorageDataSourceService} from './local-storage-data-source.service';
 import {DataSourceInterface} from './data-source-interface';
+import {Category} from '../models/category';
 
 export class ExpensesBase {
 
@@ -71,11 +72,69 @@ export class ExpensesBase {
 
 	getTotal(visible: Transaction[]) {
 		return visible.reduce((acc, tr: Transaction) => {
-			if (tr.category != CategoryList.INCOME) {
+			if (tr.category !== CategoryList.INCOME) {
 				return acc + Math.abs(tr.amount);
 			}
 			return acc;
 		}, 0).toFixed(2);
+	}
+
+	filterByCategory(category: Category) {
+		return this.data.filter((tr: Transaction) => {
+			return tr.category === category.name;
+		});
+	}
+
+	getMonths() {
+		const months = [];
+		const from = this.getEarliest().moveToFirstDayOfMonth();
+		const till = this.getLatest().moveToLastDayOfMonth();
+		// console.log({
+		// 	from: from.toString('yyyy-MM-dd HH:mm'),
+		// 	till: till.toString('yyyy-MM-dd HH:mm'),
+		// });
+		for (const month = from; month.compareTo(till) === -1; month.addMonths(1)) {
+			const copy = month.clone();
+			months.push(copy);
+		}
+		return months;
+	}
+
+	getMonthPairs() {
+		return this.getMonths().map((month: Date) => {
+			const next = month.clone();
+			next.addMonths(1).add(<IDateJSLiteral>{seconds: -1});
+			return {
+				month,
+				next,
+			};
+		});
+	}
+
+	getMonthlyTotalsFor(category: Category) {
+		const categoryData = this.filterByCategory(category);
+		const sparks = {};
+		this.getMonthPairs().forEach((pair) => {
+			// console.log({
+			// 	month: month.toString('yyyy-MM-dd HH:mm'),
+			// 	month1: month1.toString('yyyy-MM-dd HH:mm'),
+			// 	today_is_between: Date.today().between(month, month1)
+			// });
+			let sum = 0;
+			categoryData.forEach((transaction: Transaction) => {
+				const sameMonth = transaction.getDate()
+					.between(pair.month, pair.next);
+				if (sameMonth) {
+					sum += transaction.amount;
+					// count++;
+					// category.incrementAmountBy(transaction.getAmount());	// spoils CategoryView
+				}
+			});
+			const key = pair.month.toString('yyyy-MM');
+			sparks[key] = Math.abs(sum).toFixed(2);
+		});
+		// console.log(category.getName(), count);
+		return sparks;
 	}
 
 }
