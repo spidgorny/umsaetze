@@ -26,12 +26,12 @@ const dataService = new ExpensesService4Test(jsonLoader, jsonLoader);
 const from = dataService.getEarliest();
 console.log('from', from, dataService.getLatest());
 
-let april = new Date(2017, 3);
+const april = new Date(2017, 3);
 console.log('april', april);
 const visible = dataService.filterByMonth(april);
 console.log('visible', visible.length);
 
-let today = new Date();
+const today = new Date();
 console.log('today is bigger than april', today > april);
 console.log('today is bigger than april by getTime()', today.getTime() > april.getTime());
 console.log(today.toString('yyyy-MM-dd'), today.getTime(), april.toString('yyyy-MM-dd'), april.getTime());
