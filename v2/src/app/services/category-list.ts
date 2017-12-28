@@ -31,9 +31,7 @@ export class CategoryList {
 	getData() {
 		return Array.from(this.data.values())
 			.sort((c1: Category, c2: Category) => {
-				return (c1.name === c2.name)
-					? 0
-					: (c1.name > c2.name) ? 1 : -1;
+				return c1.name.localeCompare(c2.name);
 			});
 	}
 

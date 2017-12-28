@@ -39,9 +39,8 @@
 			<td class="text-right">{{category.amount | number:'1.2'}}</td>
 			<td class="text-right">{{category.averagePerMonth | number:'1.2'}}</td>
 			<td>
-				<!--value="{{category.color}}"-->
+				"{{category.color}}"
 				<input type="color"
-
 					   [(ngModel)]="category.color"
 					   (change)="setColor(category, $event)"/>
 			</td>
