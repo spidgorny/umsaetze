@@ -8,7 +8,7 @@ export class Category {
 	color: string = Category.pastelColor();
 	total = 1;
 	averagePerMonth: number;
-	sparkLine: object;
+	sparkLine: object = {};
 
 	static pastelColor() {
 		const r = (Math.round(Math.random() * 55) + 200).toString(16);

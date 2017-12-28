@@ -17,7 +17,7 @@ import { KeywordsPageComponent } from './pages/keywords-page/keywords-page.compo
 import {CategoryPageComponent} from './pages/category-page/category-page.component';
 import { CategoryStatsComponent } from './components/category-stats/category-stats.component';
 import { CategoryChartComponent } from './components/category-chart/category-chart.component';
-import { SyncComponent } from './sync/sync.component';
+import { SyncComponent } from './pages/sync/sync.component';
 
 const appRoutes: Routes = [
 	{ path: 'dashboard', component: ExpensesTableComponent},

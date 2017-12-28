@@ -23,7 +23,7 @@ export class CategoryPageComponent implements OnInit {
 	}
 
 	addNewCategory(newName: string) {
-
+		this.categories.add(newName);
 	}
 
 }

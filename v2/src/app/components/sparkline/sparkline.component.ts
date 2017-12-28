@@ -1,5 +1,6 @@
 import {Component, ElementRef, Input, OnInit} from '@angular/core';
 import {Chart} from 'chart.js';
+import {Router} from '@angular/router';
 
 @Component({
 	selector: 'app-sparkline',
@@ -10,15 +11,18 @@ export class SparklineComponent implements OnInit {
 
 	@Input() sparkLine;
 	@Input() average;
+	@Input() categoryName;
 
 	canvas: HTMLCanvasElement;
+	chart: Chart;
 
-	constructor(protected element: ElementRef) {
+	constructor(protected element: ElementRef,
+				protected router: Router) {
 	}
 
 	ngOnInit() {
 		this.canvas = this.element.nativeElement.querySelector('canvas');
-		console.log(this.canvas);
+		// console.log(this.canvas);
 		this.renderSparkLine();
 	}
 
@@ -33,11 +37,11 @@ export class SparklineComponent implements OnInit {
 		const data = this.values(this.sparkLine);
 		const labels = Object.keys(this.sparkLine);
 		// console.log(data, labels);
-		const datasets = {};
+		const dataSets = {};
 
-		// Create the dataset
-		datasets['strokeColor'] = this.canvas.getAttribute('data-chart_StrokeColor');
-		datasets['data'] = data;
+		// Create the dataSet
+		dataSets['strokeColor'] = this.canvas.getAttribute('data-chart_StrokeColor');
+		dataSets['data'] = data;
 
 		const lineSet = {
 			type: 'line',
@@ -51,10 +55,11 @@ export class SparklineComponent implements OnInit {
 		// Add to data object
 		const dataDesc = {};
 		dataDesc['labels'] = labels;
-		dataDesc['datasets'] = Array(datasets, lineSet);
+		dataDesc['datasets'] = Array(dataSets, lineSet);
 
-		const catPage = this;
-		const chart = new Chart.Line(ctx, {
+		this.canvas.style.display = 'block';
+		this.canvas.parentElement.style.display = 'block';
+		this.chart = new Chart.Line(ctx, {
 			data: dataDesc,
 			options: {
 				responsive: true,
@@ -78,38 +83,59 @@ export class SparklineComponent implements OnInit {
 						}
 					}]
 				},
-				onClick: function (event: MouseEvent, aChartElement) {
-					// catPage.clickOnChart(labels, event, aChartElement, this);
+				animation: false,
+				onClick: (event: MouseEvent, aChartElement) => {
+					this.clickOnChart(labels, event, aChartElement, this);
 				}
 			}
 		});
+		// console.log(this);
 	}
 
-/*
-	private clickOnChart(labels, event: MouseEvent, aChartElement, chart) {
-		const catPage = this;
+	/**
+	 * https://stackoverflow.com/questions/18663941/finding-closest-element-without-jquery
+	 * @param el
+	 * @param tag
+	 * @returns {any}
+	 */
+	getClosest(el, tag) {
+		// this is necessary since nodeName is always in upper case
+		tag = tag.toUpperCase();
+		do {
+			if (el.nodeName === tag) {
+				// tag name is found! let's return it. :)
+				return el;
+			}
+		} while (el = el.parentNode);
+
+		// not found :(
+		return null;
+	}
+
+	private clickOnChart(labels, event: MouseEvent, aChartElement, self) {
+		// console.log(aChartElement, self);
+		// click on the value dot
 		const first = aChartElement.length ? aChartElement[0] : null;
 		if (first) {
 			console.log(labels, aChartElement);
 			const yearMonth = labels[first._index];
 			const [year, month] = yearMonth.split('-');
-			const categoryID = $(event.target).closest('tr').attr('data-id');
-			const category: CategoryCount = catPage.categoryList.get(categoryID);
-			console.log(yearMonth, year, month, category);
-			Backbone.history.navigate('#/' + year + '/' + month + '/' + category.get('catName'));
+			console.log(yearMonth, year, month, this.categoryName);
+
+			// TODO
+			// this.router.navigateByUrl('/' + year + '/' + month + '/' + this.categoryName);
 		} else {
-			console.log(this, event, event.target);
-			const $canvas = $(event.target);
-			if ($canvas.height() == 100) {
-				$canvas.height(300);
+			// console.log(this, event, event.target);
+			console.log(this.canvas.offsetHeight);
+			if (this.canvas.offsetHeight === 100) {
+				// this.canvas.style.height = '300px';
 			} else {
-				$canvas.height(100);
+				// this.canvas.style.height = '100px';
 			}
 			setTimeout(() => {
-				chart.resize();
+				// self.chart.resize();
 			}, 1000);
 		}
 	}
-*/
 
 }

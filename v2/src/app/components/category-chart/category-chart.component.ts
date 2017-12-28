@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {Category} from '../../models/category';
 import {CategoryList} from '../../services/category-list';
 import {Chart} from 'chart.js';
@@ -8,7 +8,7 @@ import {Chart} from 'chart.js';
 	templateUrl: './category-chart.component.html',
 	styleUrls: ['./category-chart.component.css']
 })
-export class CategoryChartComponent implements OnInit {
+export class CategoryChartComponent implements OnInit, AfterViewInit {
 
 	@Input() categories: CategoryList;
 	myPieChart: Chart;
@@ -28,15 +28,15 @@ export class CategoryChartComponent implements OnInit {
 	}
 
 	draw(sum: number) {
-		let labels = [];
-		let colors = [];
-		let dataSet1 = [];
+		const labels = [];
+		const colors = [];
+		const dataSet1 = [];
 
 		let rest = 0;
 		this.categories.getData().forEach((cat: Category) => {
 			if (cat.name != CategoryList.INCOME) {
-				let amount = Math.abs(cat.amount);
-				let perCent = 100 * amount / sum;
+				const amount = Math.abs(cat.amount);
+				const perCent = 100 * amount / sum;
 				if (perCent > 3) {
 					labels.push(cat.name);
 					dataSet1.push(amount.toFixed(2));
@@ -49,7 +49,7 @@ export class CategoryChartComponent implements OnInit {
 		labels.push('Rest');
 		dataSet1.push(rest.toFixed(2));
 
-		let data = {
+		const data = {
 			labels: labels,
 			datasets: [
 				{
@@ -63,7 +63,7 @@ export class CategoryChartComponent implements OnInit {
 		if (this.myPieChart) {
 			this.myPieChart.destroy();
 		}
-		let canvas = document.getElementById('pieChart');
+		const canvas = document.getElementById('pieChart');
 		// console.log(canvas, canvas.style.display);
 		// console.log(canvas.parentElement);
 		canvas.style.display = 'block';

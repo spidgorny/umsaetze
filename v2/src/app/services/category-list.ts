@@ -62,11 +62,9 @@ export class CategoryList {
 			exists.count  += 1;
 			exists.amount += transaction.amount;
 		} else {
-			this.data.set(categoryName, new Category({
-				name: categoryName,
-				count: 1,
+			this.add(categoryName, {
 				amount: transaction.amount,
-			}));
+			});
 		}
 	}
 
@@ -109,4 +107,11 @@ export class CategoryList {
 		return this.data[key];
 	}
 
+	add(newName: string, props: any = {}) {
+		this.data.set(newName, new Category(
+			Object.assign({
+			name: newName,
+			count: 1,
+		}, props)));
+	}
 }
