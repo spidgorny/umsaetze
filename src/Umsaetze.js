@@ -1,15 +1,15 @@
 "use strict";
-var Workspace_1 = require('./Workspace');
+Object.defineProperty(exports, "__esModule", { value: true });
+const Workspace_1 = require("./Workspace");
 console.log(Workspace_1.default);
-// import Backbone from 'backbone-es6/src/Backbone.js';
-var Backbone = require('backbone');
-var $ = require("jquery");
-var bootstrap_tour_1 = require('bootstrap-tour');
-var Umsaetze = (function () {
-    function Umsaetze() {
+const Backbone = require("backbone");
+const $ = require("jquery");
+const bootstrap_tour_1 = require("bootstrap-tour");
+class Umsaetze {
+    constructor() {
         this.router = new Workspace_1.default();
         console.log('Umsaetze.router', this.router);
-        var ok = Backbone.history.start({
+        const ok = Backbone.history.start({
             root: '/umsaetze/docs/web/'
         });
         console.log('history.start', ok);
@@ -20,46 +20,43 @@ var Umsaetze = (function () {
         this.tour();
         console.log('Umsaetze.constructor() done');
     }
-    Umsaetze.prototype.inlineEdit = function () {
-        $(document).on('click', '.inlineEdit span', function (event) {
-            var span = $(event.target);
-            var container = span.parent();
-            var input = container.find('input').show();
+    inlineEdit() {
+        $(document).on('click', '.inlineEdit span', (event) => {
+            let span = $(event.target);
+            let container = span.parent();
+            let input = container.find('input').show();
             span.hide();
             input.focus().val(span.text().trim());
-            input.keyup(function (event) {
+            input.keyup((event) => {
                 console.log(event.key);
                 if (event.keyCode === 13) {
                     $(event.target).blur();
                 }
             });
-            input.blur(function (event) {
+            input.blur((event) => {
                 span.html(input.val().toString().trim());
                 input.hide();
                 span.show();
-                var callback = container.data('callback');
+                let callback = container.data('callback');
                 if (typeof callback == 'function') {
                     callback(event, container, container.text().trim());
                 }
             });
         });
-    };
-    Umsaetze.prototype.tour = function () {
-        var tour = new bootstrap_tour_1.default({
+    }
+    tour() {
+        let tour = new bootstrap_tour_1.default({
             steps: [
                 {
                     element: "#app",
                     title: "Let me show you how it works",
                     content: "Here you will see all your expenses in a selected month."
                 },
-            ] });
-        setTimeout(function () {
-            // Initialize the tour
-            // tour.init();
-            // Start the tour
-            // tour.start();
+            ]
+        });
+        setTimeout(() => {
         }, 5);
-    };
-    return Umsaetze;
-}());
+    }
+}
 exports.Umsaetze = Umsaetze;
+//# sourceMappingURL=Umsaetze.js.map

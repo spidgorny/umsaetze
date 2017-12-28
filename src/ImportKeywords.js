@@ -63,23 +63,32 @@ class ImportKeywords {
             "WOOLWORTH": "Einkauf",
             "ZEEMAN": "Kleidung"
         };
-        let kc = new KeywordCollection_1.default();
+    }
+    importFromExcel() {
+        this.readExcelFile().then((categoryList) => {
+            console.log('categoryList', categoryList);
+        }).catch(e => {
+            console.log('promise error', e);
+        });
+    }
+    importFromClass() {
+        this.kc = new KeywordCollection_1.default();
         _.each(this.keywords, (val, key) => {
             console.log(key, val);
             let kw = new Keyword_1.default({
                 word: key,
                 category: val,
             });
-            kc.add(kw);
+            this.kc.add(kw);
         });
     }
     readExcelFile() {
         return new Promise((resolve, reject) => {
-            var workbook = new exceljs_1.default.Workbook();
+            const workbook = new exceljs_1.default.Workbook();
             workbook.xlsx.readFile(this.keywordFile)
                 .then(() => {
-                var sheet = workbook.getWorksheet(1);
-                var keyWords = this.dumpSheet(sheet);
+                const sheet = workbook.getWorksheet(1);
+                const keyWords = this.dumpSheet(sheet);
                 resolve(keyWords);
             });
         });

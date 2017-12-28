@@ -1,69 +1,52 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var simplestorage_js_1 = require('simplestorage.js');
-var _ = require('underscore');
-var CollectionArray = (function (_super) {
-    __extends(CollectionArray, _super);
-    function CollectionArray() {
-        var arguments2 = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            arguments2[_i - 0] = arguments[_i];
-        }
-        _super.apply(this, arguments2);
+Object.defineProperty(exports, "__esModule", { value: true });
+const simplestorage_js_1 = require("simplestorage.js");
+const _ = require("underscore");
+class CollectionArray extends Array {
+    constructor(...arguments2) {
+        super(...arguments2);
         this.models = [];
         this.name = this.constructor.prototype.name;
     }
-    /**
-     * Call this after setting this.modelClass
-     */
-    CollectionArray.prototype.fetch = function () {
-        var _this = this;
-        var models = simplestorage_js_1.simplestorage.get(this.name) || [];
-        models.forEach(function (row) {
+    fetch() {
+        let models = simplestorage_js_1.simplestorage.get(this.name) || [];
+        models.forEach((row) => {
             if (row) {
-                var model = new _this.modelClass(row);
-                _this.add(model);
+                let model = new this.modelClass(row);
+                this.add(model);
             }
         });
-    };
-    CollectionArray.prototype.add = function (model) {
+    }
+    add(model) {
         this.models.push(model);
         this.save();
-    };
-    CollectionArray.prototype.save = function () {
+    }
+    save() {
         simplestorage_js_1.simplestorage.set(this.name, this.models);
-        //console.log(this.name+' saved '+this.size()+' records');
-    };
-    CollectionArray.prototype.each = function (callback) {
-        this.models.forEach(function (el) {
-            //console.log('each', el);
+    }
+    each(callback) {
+        this.models.forEach((el) => {
             callback(el);
         });
-    };
-    CollectionArray.prototype.getJSON = function () {
+    }
+    getJSON() {
         return JSON.stringify(this.models, null, '\t');
-    };
-    CollectionArray.prototype.size = function () {
+    }
+    size() {
         return this.models.length;
-    };
-    CollectionArray.prototype.random = function () {
+    }
+    random() {
         return _.sample(this.models);
-    };
-    CollectionArray.prototype.remove = function (id, idField) {
-        if (idField === void 0) { idField = 'id'; }
-        var index = _.findIndex(this.models, function (el) {
+    }
+    remove(id, idField = 'id') {
+        let index = _.findIndex(this.models, el => {
             return el[idField] == id;
         });
         console.log(index, id, idField);
         if (index > -1) {
             delete this.models[index];
         }
-    };
-    return CollectionArray;
-}(Array));
-Object.defineProperty(exports, "__esModule", { value: true });
+    }
+}
 exports.default = CollectionArray;
+//# sourceMappingURL=CollectionArray.js.map

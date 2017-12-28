@@ -1,21 +1,13 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var MonthSelect_1 = require("../MonthSelect");
-var SLTable_1 = require("../Util/SLTable");
-// import Backbone from 'backbone-es6/src/Backbone.js';
-var Backbone = require('backbone');
-var _ = require('underscore');
-var chart_js_1 = require('chart.js');
-// import datejs from 'datejs';
-// import array from '../Util/Array';
-var HistoryView = (function (_super) {
-    __extends(HistoryView, _super);
-    function HistoryView(options) {
-        _super.call(this, options);
+Object.defineProperty(exports, "__esModule", { value: true });
+const MonthSelect_1 = require("../MonthSelect");
+const SLTable_1 = require("../Util/SLTable");
+const Backbone = require("backbone");
+const _ = require("underscore");
+const chart_js_1 = require("chart.js");
+class HistoryView extends Backbone.View {
+    constructor(options) {
+        super(options);
         this.collection = options.collection;
         this.setElement($('#app'));
         this.ms = MonthSelect_1.default.getInstance();
@@ -27,64 +19,52 @@ var HistoryView = (function (_super) {
             'data-chart_StrokeColor="rgba(151,187,0,1)" ' +
             'data-average="<%= average %>" ' +
             '></canvas>');
-        // let nintendo = this.collection.findWhere({id: '6137a425c770c89cfd55d60f91448749'});
-        // if (nintendo) {
-        // 	nintendo.set('amount', 3714.69);
-        // 	console.log(nintendo);
-        // }
     }
-    HistoryView.prototype.initialize = function () {
-    };
-    HistoryView.prototype.render = function () {
+    initialize() {
+    }
+    render() {
         this.collection.setAllVisible();
-        var yearMonth = this.ms.getSelected();
+        const yearMonth = this.ms.getSelected();
         console.log('yearMonth', yearMonth);
         this.collection.filterByMonth(yearMonth);
         this.collection.stepBackTillSalary(this.ms);
-        var dataThisMonth = this.collection.getSorted();
-        var onlyAmounts = dataThisMonth.map(function (set) {
+        const dataThisMonth = this.collection.getSorted();
+        let onlyAmounts = dataThisMonth.map((set) => {
             return set.get('amount');
         });
-        var accumulator = 0;
-        var cumulative = dataThisMonth.map(function (set) {
+        let accumulator = 0;
+        let cumulative = dataThisMonth.map((set) => {
             accumulator += set.get('amount');
-            //console.log(set.get('amount'), accumulator);
             return accumulator;
         });
-        var labels = dataThisMonth.map(function (set) {
-            var date = set.get('date');
+        let labels = dataThisMonth.map((set) => {
+            let date = set.get('date');
             return date.toString('yyyy.MM.dd');
         });
-        var content = '';
+        let content = '';
         content += this.template({
             average: onlyAmounts.average(),
         });
         content += new SLTable_1.default(JSON.parse(JSON.stringify(dataThisMonth)));
-        //content += '<pre>' + JSON.stringify(dataThisMonth, null, 4) + '</pre>';
         this.$el.html(content);
         this.renderSparkLines(labels, onlyAmounts, cumulative);
         return this;
-    };
-    HistoryView.prototype.hide = function () {
+    }
+    hide() {
         this.stopListening(this.ms);
-    };
-    HistoryView.prototype.monthChange = function () {
-        //console.error('monthChange event');
+    }
+    monthChange() {
         this.render();
-    };
-    HistoryView.prototype.renderSparkLines = function (labels, data, data2) {
-        var _this = this;
-        var $sparkLine = $('.sparkline');
-        $sparkLine.each(function (index, self) {
-            //console.log($self);
-            var $self = $(self);
-            //Get context with jQuery - using jQuery's .get() method.
-            var ctx = $self.get(0).getContext("2d");
-            var datasets = {};
-            // Create the dataset
+    }
+    renderSparkLines(labels, data, data2) {
+        let $sparkLine = $('.sparkline');
+        $sparkLine.each((index, self) => {
+            let $self = $(self);
+            let ctx = $self.get(0).getContext("2d");
+            let datasets = {};
             datasets['strokeColor'] = $self.attr('data-chart_StrokeColor');
             datasets['data'] = data2;
-            var lineSet = {
+            let lineSet = {
                 type: 'line',
                 label: 'Transaction',
                 data: data,
@@ -92,11 +72,10 @@ var HistoryView = (function (_super) {
                 borderWidth: 1,
                 fill: false,
             };
-            // Add to data object
-            var dataDesc = {};
+            let dataDesc = {};
             dataDesc['labels'] = labels;
             dataDesc['datasets'] = Array(datasets, lineSet);
-            var chart = new chart_js_1.default.Line(ctx, {
+            let chart = new chart_js_1.default.Line(ctx, {
                 data: dataDesc,
                 options: {
                     responsive: false,
@@ -106,8 +85,6 @@ var HistoryView = (function (_super) {
                     scaleShowGridLines: false,
                     pointDot: false,
                     datasetFill: false,
-                    // Sadly if you set scaleFontSize to 0, chartjs crashes
-                    // Instead we'll set it as small as possible and make it transparent
                     scaleFontSize: 1,
                     scaleFontColor: "rgba(0,0,0,0)",
                     legend: {
@@ -121,31 +98,22 @@ var HistoryView = (function (_super) {
                                 }
                             }]
                     },
-                    onClick: function (event, aChartElement) {
-                        _this.clickOnChart(labels, event, aChartElement, _this);
+                    onClick: (event, aChartElement) => {
+                        this.clickOnChart(labels, event, aChartElement, this);
                     }
                 }
             });
             $self.prop('chart', chart);
-            // $self.width('100%');
-            // $self.height(256);
         });
-    };
-    HistoryView.prototype.clickOnChart = function (labels, event, aChart, context) {
-        // console.log(labels);
-        // console.log(event);
-        // console.log(aChart);
-        // console.log(context);
-        var any = aChart[0];
-        var index = any._index;
-        // console.log(index);
-        var model = this.collection.getSorted()[index];
-        var id = model.get('id');
-        // console.log(id);
+    }
+    clickOnChart(labels, event, aChart, context) {
+        let any = aChart[0];
+        let index = any._index;
+        let model = this.collection.getSorted()[index];
+        let id = model.get('id');
         $(window).scrollTop($("*:contains('" + id + "'):last").offset().top);
         document.location.hash = '#History/' + id;
-    };
-    return HistoryView;
-}(Backbone.View));
-Object.defineProperty(exports, "__esModule", { value: true });
+    }
+}
 exports.default = HistoryView;
+//# sourceMappingURL=HistoryView.js.map

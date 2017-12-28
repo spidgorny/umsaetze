@@ -7,7 +7,7 @@ export default class ImportKeywords {
 
 	keywordFile = 'keywords.xlsx';
 
-	keywords = {
+	public keywords = {
 		"1u1": "Internet",
 		"ALDI": "Lebensmittel",
 		"Aldi Talk": "Handy",
@@ -64,32 +64,39 @@ export default class ImportKeywords {
 		"ZEEMAN": "Kleidung"
 	};
 
-	constructor() {
-		// fs is not working on the client
-		// this.readExcelFile().then((categoryList) => {
-		// 	console.log('categoryList', categoryList);
-		// }).catch(e => {
-		// 	console.log('promise error', e);
-		// });
+	public kc: KeywordCollection;
 
-		let kc = new KeywordCollection();
+	constructor() {
+	}
+
+	importFromExcel() {
+		// fs is not working on the client
+		this.readExcelFile().then((categoryList) => {
+			console.log('categoryList', categoryList);
+		}).catch(e => {
+			console.log('promise error', e);
+		});
+	}
+
+	importFromClass() {
+		this.kc = new KeywordCollection();
 		_.each(this.keywords, (val, key) => {
 			console.log(key, val);
 			let kw = new Keyword({
 				word: key,
 				category: val,
 			});
-			kc.add(kw);
+			this.kc.add(kw);
 		});
 	}
 
 	readExcelFile() {
 		return new Promise((resolve, reject) => {
-			var workbook = new Excel.Workbook();
+			const workbook = new Excel.Workbook();
 			workbook.xlsx.readFile(this.keywordFile)
 				.then(() => {
-					var sheet = workbook.getWorksheet(1);
-					var keyWords = this.dumpSheet(sheet);
+					const sheet = workbook.getWorksheet(1);
+					const keyWords = this.dumpSheet(sheet);
 					resolve(keyWords);
 				});
 		});
