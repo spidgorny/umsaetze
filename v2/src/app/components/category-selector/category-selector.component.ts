@@ -62,7 +62,7 @@ export class CategorySelectorComponent implements OnInit {
 		let array = Array.from(cats.values());
 		// console.log(array);
 		array = array.sort((c1: Category, c2: Category) => {
-			return (c1.name == c2.name)
+			return (c1.name === c2.name)
 				? 0
 				: (c1.name > c2.name) ? 1 : -1;
 		});

@@ -11,7 +11,7 @@
 				<input name="newName" class="form-control" title="New Category Name" #newName/>
 			</div>
 			<div class="col-sm-3">
-				<button (click)="addNewCategory(newName.value)" class="btn btn-success">Add</button>
+				<button (click)="addNewCategory(newName)" class="btn btn-success">Add</button>
 			</div>
 		</div>
 	</div>
@@ -39,7 +39,11 @@
 			<td class="text-right">{{category.amount | number:'1.2'}}</td>
 			<td class="text-right">{{category.averagePerMonth | number:'1.2'}}</td>
 			<td>
-				<input type="color" value="{{category.color}}"/>
+				<!--value="{{category.color}}"-->
+				<input type="color"
+
+					   [(ngModel)]="category.color"
+					   (change)="setColor(category, $event)"/>
 			</td>
 			<td>
 				<button class="close" aria-label="Close"

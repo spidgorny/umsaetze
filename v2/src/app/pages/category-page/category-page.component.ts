@@ -22,8 +22,20 @@ export class CategoryPageComponent implements OnInit {
 		});
 	}
 
-	addNewCategory(newName: string) {
-		this.categories.add(newName);
+	addNewCategory(newName: HTMLInputElement) {
+		this.categories.add(newName.value);
+		this.categories.save();	 // save is not called to optimize
+		newName.value = '';
+	}
+
+	setColor(category: Category, $event: Event) {
+		console.log(event);
+		this.categories.update(category);
+	}
+
+	removeCategory(category: Category) {
+		// console.log(category);
+		this.categories.remove(category);
 	}
 
 }
