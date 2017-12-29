@@ -227,6 +227,8 @@ var CatPage = (function (_super) {
             }
         }
     };
+    CatPage.prototype.hide = function () {
+    };
     return CatPage;
 }(CollectionController_1.CollectionController));
 exports.CatPage = CatPage;

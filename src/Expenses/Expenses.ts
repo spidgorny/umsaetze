@@ -43,7 +43,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 			this.saveAll();
 		});
 		this.on("all", () => {
-			debug("Expenses");
+			console.log("Expenses");
 		});
 	}
 

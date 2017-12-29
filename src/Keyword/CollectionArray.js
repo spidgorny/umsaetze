@@ -4,7 +4,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var simplestorage_js_1 = require('simplestorage.js');
+// import {simplestorage as simpleStorage} from 'simplestorage.js';
+var simpleStorage = require('simplestorage.js');
 var _ = require('underscore');
 var CollectionArray = (function (_super) {
     __extends(CollectionArray, _super);
@@ -22,7 +23,7 @@ var CollectionArray = (function (_super) {
      */
     CollectionArray.prototype.fetch = function () {
         var _this = this;
-        var models = simplestorage_js_1.simplestorage.get(this.name) || [];
+        var models = simpleStorage.get(this.name) || [];
         models.forEach(function (row) {
             if (row) {
                 var model = new _this.modelClass(row);
@@ -35,7 +36,7 @@ var CollectionArray = (function (_super) {
         this.save();
     };
     CollectionArray.prototype.save = function () {
-        simplestorage_js_1.simplestorage.set(this.name, this.models);
+        simpleStorage.set(this.name, this.models);
         //console.log(this.name+' saved '+this.size()+' records');
     };
     CollectionArray.prototype.each = function (callback) {

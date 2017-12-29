@@ -5,11 +5,11 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var CategoryCount_1 = require("./CategoryCount");
+var backbone_localstorage_1 = require('backbone.localstorage');
+var _ = require('underscore');
 // import Backbone from 'backbone-es6/src/Backbone.js';
 var Backbone = require('backbone');
 // import elapse from 'elapse';
-var backbone_localstorage_1 = require('backbone.localstorage');
-var _ = require('underscore');
 // elapse.configure({
 // 	debug: true
 // });

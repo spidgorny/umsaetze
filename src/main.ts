@@ -1,6 +1,6 @@
 import * as $ from "jquery";
 import {Umsaetze} from './Umsaetze';
-import 'toastr/build/toastr.css';
+// import 'toastr/build/toastr.css';
 const Backbone = require('backbone');
 import {View} from 'backbone';
 
@@ -22,7 +22,6 @@ $(() => {
 });
 
 const u = new Umsaetze();
-
 
 export function asyncLoop(arr: Array<any>, callback: Function, done?: Function) {
 	(function loop(i) {

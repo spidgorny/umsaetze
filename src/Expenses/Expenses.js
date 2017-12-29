@@ -8,7 +8,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Transaction_1 = require('./Transaction');
 var Backbone = require('backbone');
-var main_1 = require('../main');
 var MonthSelect_1 = require('../MonthSelect');
 // import FakeJQueryXHR from '../FakeJQueryXHR';
 var backbone_localstorage_1 = require('backbone.localstorage');
@@ -30,7 +29,7 @@ var Expenses = (function (_super) {
             _this.saveAll();
         });
         this.on("all", function () {
-            main_1.debug("Expenses");
+            console.log("Expenses");
         });
     }
     Expenses.comparatorFunction = function (compare, to) {

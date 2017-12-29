@@ -1,4 +1,5 @@
-import {simplestorage as simpleStorage} from 'simplestorage.js';
+// import {simplestorage as simpleStorage} from 'simplestorage.js';
+const simpleStorage = require('simplestorage.js');
 import * as _ from 'underscore';
 
 export default class CollectionArray extends Array {
