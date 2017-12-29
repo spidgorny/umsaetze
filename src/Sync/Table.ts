@@ -1,5 +1,5 @@
 import Row from './Row';
-import ArrayPlus from './ArrayPlus';
+import ArrayPlus from '../Util/ArrayPlus';
 import * as _ from "underscore";
 
 export default class Table extends ArrayPlus {

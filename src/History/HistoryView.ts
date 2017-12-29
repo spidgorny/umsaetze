@@ -11,7 +11,7 @@ import {Chart} from 'chart.js';
 // import datejs from 'datejs';
 // import {Array as ArrayWithAverage} from '../Util/Array';
 import * as $ from 'jquery';
-import ArrayPlus from "../Sync/ArrayPlus";
+import ArrayPlus from "../Util/ArrayPlus";
 
 export default class HistoryView extends Backbone.View<Backbone.Model> {
 

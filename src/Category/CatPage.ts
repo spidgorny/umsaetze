@@ -55,7 +55,7 @@ export class CatPage extends CollectionController<Expenses> {
 
 	render() {
 		if (window.location.hash != '#CatPage') return;
-		console.log('CatPage.render');
+		// console.log('CatPage.render', this.template);
 		if (this.template) {
 			let categoryOptions = [];
 			this.categoryList.each((category: CategoryCount) => {
@@ -96,17 +96,17 @@ export class CatPage extends CollectionController<Expenses> {
 		event.preventDefault();
 		let $form = $(event.target);
 		let newName = $form.find('input').val();
-		console.log('newName', newName);
+		// console.log('newName', newName);
 		let categoryObject = new CategoryCount({
 			catName: newName,
 		});
-		console.log('get', categoryObject.get('catName'));
-		console.log('get', categoryObject.get('color'));
+		// console.log('get', categoryObject.get('catName'));
+		// console.log('get', categoryObject.get('color'));
 		this.categoryList.add(categoryObject);
 	}
 
 	selectColor(event) {
-		console.log(event);
+		// console.log('selectColor', event);
 		let $input = $(event.target);
 		let id = $input.closest('tr').attr('data-id');
 		console.log('id', id);
@@ -122,7 +122,7 @@ export class CatPage extends CollectionController<Expenses> {
 		let button = event.target;
 		let tr = $(button).closest('tr');
 		let id = tr.attr('data-id');
-		console.log('deleteCategory', id);
+		// console.log('deleteCategory', id);
 		this.categoryList.remove(id);
 	}
 

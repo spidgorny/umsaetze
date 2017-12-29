@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Row_1 = require("./Row");
-const ArrayPlus_1 = require("./ArrayPlus");
+const ArrayPlus_1 = require("../Util/ArrayPlus");
 class Table extends ArrayPlus_1.default {
     constructor(rows) {
         super();

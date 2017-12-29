@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ArrayPlus_1 = require("./ArrayPlus");
+const ArrayPlus_1 = require("../Util/ArrayPlus");
 const Table_1 = require("./Table");
 const _ = require("underscore");
 require("../Util/String");

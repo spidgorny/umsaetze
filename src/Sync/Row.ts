@@ -1,4 +1,4 @@
-import ArrayPlus from "./ArrayPlus";
+import ArrayPlus from "../Util/ArrayPlus";
 import Table from "./Table";
 import * as _ from 'underscore';
 import accounting from 'accounting-js';

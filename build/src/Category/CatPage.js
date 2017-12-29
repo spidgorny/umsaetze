@@ -38,7 +38,6 @@ class CatPage extends CollectionController_1.CollectionController {
     render() {
         if (window.location.hash != '#CatPage')
             return;
-        console.log('CatPage.render');
         if (this.template) {
             let categoryOptions = [];
             this.categoryList.each((category) => {
@@ -78,16 +77,12 @@ class CatPage extends CollectionController_1.CollectionController {
         event.preventDefault();
         let $form = $(event.target);
         let newName = $form.find('input').val();
-        console.log('newName', newName);
         let categoryObject = new CategoryCount_1.default({
             catName: newName,
         });
-        console.log('get', categoryObject.get('catName'));
-        console.log('get', categoryObject.get('color'));
         this.categoryList.add(categoryObject);
     }
     selectColor(event) {
-        console.log(event);
         let $input = $(event.target);
         let id = $input.closest('tr').attr('data-id');
         console.log('id', id);
@@ -101,7 +96,6 @@ class CatPage extends CollectionController_1.CollectionController {
         let button = event.target;
         let tr = $(button).closest('tr');
         let id = tr.attr('data-id');
-        console.log('deleteCategory', id);
         this.categoryList.remove(id);
     }
     renderSparkLines() {

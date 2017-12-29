@@ -36,26 +36,22 @@ class Workspace extends Backbone.Router {
         this.activateMenu2();
     }
     activateMenu2() {
-        console.group('activateMenu');
         let url = '#' + window.location.hash;
         let element = $('ul.nav#side-menu a')
             .removeClass('active')
             .filter(function () {
             let href = $(this).attr('href');
-            console.log(href, url);
             return href === url;
         })
             .addClass('active');
         let liElement = element
             .parent()
             .removeClass('in');
-        console.log(element, liElement);
         if (liElement.length && liElement.is('li')) {
             element = liElement.parent().addClass('in').parent();
         }
         else {
         }
-        console.groupEnd();
     }
     hideCurrentPage() {
         if (this.currentPage) {

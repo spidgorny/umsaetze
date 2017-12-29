@@ -56,7 +56,7 @@ export default class Workspace extends Backbone.Router {
 	}
 
 	activateMenu2() {
-		console.group('activateMenu');
+		// console.group('activateMenu');
 		let url = '#' + window.location.hash;
 		// var element = $('ul.nav a').filter(function() {
 		//     return this.href == url;
@@ -66,7 +66,7 @@ export default class Workspace extends Backbone.Router {
 			.removeClass('active')
 			.filter(function () {
 				let href = $(this).attr('href');
-				console.log(href, url);
+				// console.log(href, url);
 				return href === url;
 			})
 			.addClass('active');
@@ -75,7 +75,7 @@ export default class Workspace extends Backbone.Router {
 			.removeClass('in');
 
 		//while (true) {
-			console.log(element, liElement);
+		// 	console.log(element, liElement);
 
 			if (liElement.length && liElement.is('li')) {
 				element = liElement.parent().addClass('in').parent();
@@ -83,7 +83,7 @@ export default class Workspace extends Backbone.Router {
 				//break;
 			}
 		//}
-		console.groupEnd();
+		// console.groupEnd();
 	}
 
 	hideCurrentPage() {

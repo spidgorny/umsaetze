@@ -6,7 +6,7 @@ const Backbone = require("backbone");
 const _ = require("underscore");
 const chart_js_1 = require("chart.js");
 const $ = require("jquery");
-const ArrayPlus_1 = require("../Sync/ArrayPlus");
+const ArrayPlus_1 = require("../Util/ArrayPlus");
 class HistoryView extends Backbone.View {
     constructor(options) {
         super(options);
