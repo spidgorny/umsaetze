@@ -159,7 +159,8 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 			options: {
 				legend: {
 					display: false,
-				}
+				},
+				animation: false,
 			}
 		});
 	}

@@ -116,7 +116,8 @@ class CategoryView extends Backbone.View {
             options: {
                 legend: {
                     display: false,
-                }
+                },
+                animation: false,
             }
         });
     }
