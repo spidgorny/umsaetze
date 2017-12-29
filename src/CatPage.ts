@@ -242,4 +242,8 @@ export class CatPage extends CollectionController<Expenses> {
 		}
 	}
 
+	hide() {
+
+	}
+
 }

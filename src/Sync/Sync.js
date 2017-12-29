@@ -22,6 +22,8 @@ var _ = require('underscore');
 var FileReaderJS = require('filereader.js');
 console.log(Number_1.detectFloat('3.141528'));
 console.debug(Number_1.detectFloat('3.141528'));
+//debug(detectFloat('3.141528'));
+require('file-saver');
 // elapse.configure({
 // 	debug: true
 // });
@@ -194,9 +196,12 @@ var Sync = (function (_super) {
         for (var _i = 0, _a = _.range(amount); _i < _a.length; _i++) {
             var i = _a[_i];
             var category = categories.random();
+            console.log('random cat', category);
             this.model.add(new Transaction_1.default({
                 account: account,
-                category: category.get('catName') || "Default",
+                category: category
+                    ? category.get('catName')
+                    : "Default",
                 currency: "EUR",
                 amount: chance_1.default.floating({ fixed: 2, min: -1000, max: 1000 }),
                 payment_type: "DEBIT_CARD",

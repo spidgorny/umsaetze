@@ -24,6 +24,9 @@ console.log(detectFloat('3.141528'));
 console.debug(detectFloat('3.141528'));
 //debug(detectFloat('3.141528'));
 
+require('file-saver');
+function saveAs(a: any, b: any);
+
 declare function saveAs(a: any, b: any);
 
 // elapse.configure({
@@ -229,9 +232,12 @@ export default class Sync extends CollectionController<Expenses> {
 		let categories = this.router.categoryList;
 		for (let i of _.range(amount)) {
 			let category: CategoryCount = <CategoryCount>categories.random();
+			console.log('random cat', category);
 			this.model.add(new Transaction({
 				account: account,
-				category: category.get('catName') || "Default",
+				category: category
+					? category.get('catName')
+					: "Default",
 				currency: "EUR",
 				amount: chance.floating({fixed: 2, min: -1000, max: 1000}),
 				payment_type: "DEBIT_CARD",
