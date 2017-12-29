@@ -7,7 +7,7 @@ import ParseMT940 from "../src/Sync/ParseMT940";
 const fs = require('fs');
 const iconv = require('iconv-lite');
 import path = require('path');
-import detectFloat from "../src/Util/Number";
+import {detectFloat} from "../src/Util/Number";
 const _ = require('underscore');
 const accounting = require('accounting-js');
 process.stdout.isTTY = true;

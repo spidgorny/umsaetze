@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const backbone_1 = require("backbone");
 const Backbone = require('backbone');
-class CollectionController extends Backbone.Events {
+class CollectionController extends backbone_1.Events {
     init(options) {
         this.cid = Math.random().toString();
     }

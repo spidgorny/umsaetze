@@ -2,12 +2,14 @@
 
 // import Events from 'typhonjs-core-backbone-events/src/Events.js';
 // import Backbone = require('backbone');
+import {Events} from "backbone";
+
 const Backbone = require('backbone');
 import * as JQuery from 'jquery';
 import Expenses from "./Expenses/Expenses";
 import CollectionArray from "./Util/CollectionArray";
 
-export class CollectionController<T extends Expenses|CollectionArray> extends Backbone.Events {
+export class CollectionController<T extends Expenses|CollectionArray> extends Events {
 
 	cid: string;
 
