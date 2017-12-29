@@ -1,26 +1,20 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var $ = require('jquery');
-var _ = require('underscore');
-var RecursiveArrayOfStrings_1 = require('../Util/RecursiveArrayOfStrings');
-var toastr_1 = require('toastr');
-var CollectionController_1 = require('../CollectionController');
-var KeywordsView = (function (_super) {
-    __extends(KeywordsView, _super);
-    function KeywordsView(options) {
-        _super.call(this);
+Object.defineProperty(exports, "__esModule", { value: true });
+const $ = require("jquery");
+const _ = require("underscore");
+const RecursiveArrayOfStrings_1 = require("../Util/RecursiveArrayOfStrings");
+const toastr_1 = require("toastr");
+const CollectionController_1 = require("../CollectionController");
+class KeywordsView extends CollectionController_1.CollectionController {
+    constructor(options) {
+        super();
         this.$el = $('#app');
         console.log(this);
-        //console.log(super);
         console.log('new KeywordsView()', this.cid);
     }
-    KeywordsView.prototype.render = function () {
+    render() {
         console.time('KeywordsView::render');
-        var content = ['<table class="table">',
+        let content = ['<table class="table">',
             '<thead>',
             '<tr>',
             '<th>Keyword</th>',
@@ -30,50 +24,69 @@ var KeywordsView = (function (_super) {
             '</thead>',
         ];
         content.push('<tbody>');
-        this.keywords.each(function (el) {
-            content.push("\n\t\t\t\t<tr data-id=\"" + el.word + "\">\n\t\t\t\t<td>" + el.word + "</td>\n\t\t\t\t<td>" + el.category + "</td>\n\t\t\t\t<td class=\"hover-btn\">\n\t\t\t\t\t<button type=\"button\" class=\"close btn-sm\" data-dismiss=\"alert\">\n\t\t\t\t\t\t<span aria-hidden=\"true\">\u00D7</span>\n\t\t\t\t\t\t<span class=\"sr-only\">Delete</span>\n\t\t\t\t\t</button>\n\t\t\t\t</td>\n\t\t\t\t</tr>");
+        this.keywords.each((el) => {
+            content.push(`
+				<tr data-id="${el.word}">
+				<td>${el.word}</td>
+				<td>${el.category}</td>
+				<td class="hover-btn">
+					<button type="button" class="close btn-sm" data-dismiss="alert">
+						<span aria-hidden="true">×</span>
+						<span class="sr-only">Delete</span>
+					</button>
+				</td>
+				</tr>`);
         });
         content.push('</tbody>');
         content.push('</table>');
-        // console.log(content);
         content = [
-            ("<div class=\"panel panel-default\">\n\t\t\t\t<div class=\"panel-heading\">\n\t\t\t\t\t<div class=\"pull-right\">\n\t\t\t\t\t\t<button class=\"btn btn-default btn-xs\" id=\"removeDuplicates\">\n\t\t\t\t\t\t\t<span class=\"glyphicon glyphicon-filter\"></span>\n\t\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t\tKeywords\n\t\t\t\t<span class=\"badge\">" + this.keywords.size() + "</span>\n\t\t\t</div>\n\t\t\t<div class=\"panel-body\">")
-        ].concat(content, [
+            `<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="pull-right">
+						<button class="btn btn-default btn-xs" id="removeDuplicates">
+							<span class="glyphicon glyphicon-filter"></span>
+						</button>
+				</div>
+				Keywords
+				<span class="badge">${this.keywords.size()}</span>
+			</div>
+			<div class="panel-body">`,
+            ...content,
             '</div>',
             '</div>',
-        ]);
+        ];
         this.$el.html(RecursiveArrayOfStrings_1.default.merge(content));
         CollectionController_1.CollectionController.$('#removeDuplicates').off().on('click', this.removeDuplicates.bind(this));
         this.$el.off('click', 'button.close').on('click', 'button.close', this.deleteRow.bind(this));
         console.timeEnd('KeywordsView::render');
-    };
-    KeywordsView.prototype.removeDuplicates = function (event) {
-        var original = this.keywords.size();
+    }
+    removeDuplicates(event) {
+        let original = this.keywords.size();
         console.log('removeDuplicates', original);
-        this.keywords.models = _.uniq(this.keywords.models, false, function (el) {
+        this.keywords.models = _.uniq(this.keywords.models, false, (el) => {
             return el.word;
         });
         console.log(this.keywords.size());
-        var x = this.keywords.size() - original;
+        let x = this.keywords.size() - original;
         if (x) {
-            toastr_1.default.success("Removed " + x + " duplicates");
+            toastr_1.default.success(`Removed ${x} duplicates`);
         }
         else {
-            toastr_1.default.error("No duplicates to remove");
+            toastr_1.default.error(`No duplicates to remove`);
         }
         this.keywords.save();
         this.render();
-    };
-    KeywordsView.prototype.deleteRow = function (event) {
-        var button = $(event.target);
-        var dataID = button.closest('tr').attr('data-id');
+    }
+    deleteRow(event) {
+        let button = $(event.target);
+        let dataID = button.closest('tr').attr('data-id');
         console.log(dataID);
         this.keywords.remove(dataID, 'word');
         this.keywords.save();
         this.render();
-    };
-    KeywordsView.prototype.hide = function () {
-    };
-    return KeywordsView;
-}(CollectionController_1.CollectionController));
+    }
+    hide() {
+    }
+}
 exports.KeywordsView = KeywordsView;
+//# sourceMappingURL=KeywordsView.js.map

@@ -23,6 +23,7 @@ export class SparklineComponent implements OnInit {
 	ngOnInit() {
 		this.canvas = this.element.nativeElement.querySelector('canvas');
 		// console.log(this.canvas);
+		// this.sparkLine = JSON.parse(this.sparkLine);
 		this.renderSparkLine();
 	}
 
@@ -46,7 +47,7 @@ export class SparklineComponent implements OnInit {
 		const lineSet = {
 			type: 'line',
 			label: 'Average per month',
-			data: [].fill(this.average, 0, data.length),
+			data: Array(data.length).fill(this.average),
 			borderColor: '#FF0000',
 			borderWidth: 1,
 			fill: false,
@@ -56,6 +57,7 @@ export class SparklineComponent implements OnInit {
 		const dataDesc = {};
 		dataDesc['labels'] = labels;
 		dataDesc['datasets'] = Array(dataSets, lineSet);
+		// console.log(data.length, lineSet.data);
 
 		this.canvas.style.display = 'block';
 		this.canvas.parentElement.style.display = 'block';
