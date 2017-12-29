@@ -25,7 +25,6 @@ console.debug(detectFloat('3.141528'));
 //debug(detectFloat('3.141528'));
 
 require('file-saver');
-function saveAs(a: any, b: any);
 
 declare function saveAs(a: any, b: any);
 

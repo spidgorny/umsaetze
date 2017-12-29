@@ -5,7 +5,7 @@
 const Backbone = require('backbone');
 import * as JQuery from 'jquery';
 import Expenses from "./Expenses/Expenses";
-import CollectionArray from "./Keyword/CollectionArray";
+import CollectionArray from "./Util/CollectionArray";
 
 export class CollectionController<T extends Expenses|CollectionArray> extends Backbone.Events {
 

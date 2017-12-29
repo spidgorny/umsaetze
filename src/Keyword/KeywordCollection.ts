@@ -1,4 +1,4 @@
-import CollectionArray from './CollectionArray';
+import CollectionArray from '../Util/CollectionArray';
 import Keyword from './Keyword';
 
 export default class KeywordCollection extends CollectionArray {

@@ -1,5 +1,5 @@
 import KeywordCollection from "../src/Keyword/KeywordCollection";
-import CollectionArray from "../src/Keyword/CollectionArray";
+import CollectionArray from "../src/Util/CollectionArray";
 
 class KeywordCollectionTest {
 

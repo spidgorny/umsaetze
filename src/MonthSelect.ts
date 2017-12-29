@@ -2,7 +2,7 @@
 import Backbone = require('backbone');
 import Expenses from './Expenses/Expenses';
 import {LocalStorage} from 'backbone.localstorage';
-import ExpensesMock from '../test/helper/ExpensesMock';
+import ExpensesMock from './Util/ExpensesMock';
 import * as $ from 'jquery';
 // import datejs from 'datejs';
 // import * as _ from 'underscore';

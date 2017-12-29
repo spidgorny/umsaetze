@@ -50,7 +50,6 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	/**
 	 * Should be called after constructor to read data from LS
 	 * @param options
-	 // * @return JQueryXHR
 	 */
 	fetch(options: CollectionFetchOptions = {}) {
 		let models = this.localStorage.findAll();
@@ -63,7 +62,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 			this.trigger('change');
 		}
 		console.log('read', this.length);
-		// return new FakeJQueryXHR();
+		return <JQueryXHR>{};
 	}
 
 	/**

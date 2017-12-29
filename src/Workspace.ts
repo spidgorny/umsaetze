@@ -13,6 +13,7 @@ import Backbone = require('backbone');
 import Controller from './Controller';
 import { CollectionController } from './CollectionController';
 import * as $ from 'jquery';
+import CategoryCollectionModel from "./Category/CategoryCollectionModel";
 // import * as _ from 'underscore';
 
 export default class Workspace extends Backbone.Router {
@@ -160,8 +161,9 @@ export default class Workspace extends Backbone.Router {
 		this.activateMenu();
 		this.hideCurrentPage();
 		if (!this.summaryPage) {
+			const categoryModel = new CategoryCollectionModel(this.categoryList);
 			this.summaryPage = new SummaryView({
-				collection: this.categoryList
+				collection: this.categoryList,
 			}, this.model);
 		}
 		$('#pieChart').hide();

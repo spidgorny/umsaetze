@@ -1,10 +1,11 @@
 import Transaction from "../Expenses/Transaction";
 import CategoryCount from "./CategoryCount";
 import Expenses from "../Expenses/Expenses";
-import LocalStorage from 'backbone.localstorage';
 import * as _ from 'underscore';
-// import Backbone from 'backbone-es6/src/Backbone.js';
 const Backbone = require('backbone');
+import LocalStorage from 'backbone.localstorage';
+import {Collection} from "backbone";
+// import Backbone from 'backbone-es6/src/Backbone.js';
 // import elapse from 'elapse';
 
 // elapse.configure({
@@ -15,7 +16,8 @@ const Backbone = require('backbone');
  * Depends on Expenses to parse them
  * and retrieve the total values for each category
  */
-export default class CategoryCollection extends Backbone.Collection<any|CategoryCount> {
+export default class CategoryCollection
+	extends Collection<any|CategoryCount> {
 
 	model: CategoryCount|any;
 
@@ -26,7 +28,7 @@ export default class CategoryCollection extends Backbone.Collection<any|Category
 	expenses: Expenses;
 
 	constructor(options?) {
-		super(options);
+		super();
 		let ls = new LocalStorage('Categories');
 		//this.colors = simpleStorage.get('CategoryColors');
 		let models = ls.findAll();
@@ -51,6 +53,18 @@ export default class CategoryCollection extends Backbone.Collection<any|Category
 		}
 
 		this.listenTo(this, 'change', this.saveToLS);
+	}
+
+	get length() {
+		return this.models.length;
+	}
+
+	initialize() {
+
+	}
+
+	fetch() {
+		return <JQueryXHR>{};
 	}
 
 	setExpenses(ex: Expenses) {

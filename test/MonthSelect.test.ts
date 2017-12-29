@@ -6,7 +6,7 @@ createDocument['default']();
 
 import MonthSelect from "../src/MonthSelect";
 import MonthSelectMock from "./helper/MonthSelectMock";
-import ExpensesMock from "./helper/ExpensesMock";
+import ExpensesMock from "../src/Util/ExpensesMock";
 let assert = require('assert');
 //import expect, { createSpy, spyOn, isSpy } from 'expect';
 let expect = require('expect');

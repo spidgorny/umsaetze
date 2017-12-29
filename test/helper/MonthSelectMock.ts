@@ -1,6 +1,6 @@
 
 import MonthSelect from "../../src/MonthSelect";
-import MockStorage from "./MockStorage";
+import MockStorage from "../../src/Util/MockStorage";
 
 export default class MonthSelectMock extends MonthSelect {
 

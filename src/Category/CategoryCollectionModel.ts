@@ -9,7 +9,7 @@ export default class CategoryCollectionModel extends Backbone.Model {
 		options.innerCollection = collection;
 	}
 
-	getCollection() : CategoryCollection {
+	getCollection(): CategoryCollection {
 		return this.get('innerCollection');
 	}
 
