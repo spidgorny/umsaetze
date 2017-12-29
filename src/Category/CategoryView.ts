@@ -5,7 +5,7 @@ import Expenses from "../Expenses/Expenses";
 import Backbone = require('backbone');
 import * as _ from 'underscore';
 import * as $ from 'jquery';
-import Chart from 'chart.js';
+import {Chart} from 'chart.js';
 import {debug} from '../main';
 import CategoryCollectionModel from "./CategoryCollectionModel";
 
@@ -76,6 +76,10 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 					width: width,
 					amount: Math.round(catCount.amount),
 					sign: catCount.amount >= 0 ? 'positive' : 'negative',
+					color: catCount.color,
+					id: catCount.id,
+					catName: catCount.catName,
+					count: catCount.count,
 				})
 			));
 		});
@@ -111,9 +115,12 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 		let labels = [];
 		let colors = [];
 		let dataSet1 = [];
-		this.model.getCollection().comparator = function (el: CategoryCount) {
-			return -Math.abs(el.getAmount());
-		};
+		console.log(this.model);
+		if (this.model) {
+			this.model.getCollection().comparator = function (el: CategoryCount) {
+				return -Math.abs(el.getAmount());
+			};
+		}
 		this.model.getCollection().sort();
 
 		let rest = 0;

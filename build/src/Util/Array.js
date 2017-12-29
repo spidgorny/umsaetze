@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const _ = require("underscore");
 Array.prototype.average = function () {
     if (this.length) {
         const sum = _.reduce(this, (a, b) => {

@@ -1,4 +1,3 @@
-///<reference path="../Util/Array.ts" />
 import MyView from "./MyView";
 import Expenses from "../Expenses/Expenses";
 import MonthSelect from "../MonthSelect";
@@ -8,9 +7,11 @@ import Handlebars from 'handlebars';
 // import Backbone from 'backbone-es6/src/Backbone.js';
 import Backbone = require('backbone');
 import * as _ from 'underscore';
-import Chart from 'chart.js';
+import {Chart} from 'chart.js';
 // import datejs from 'datejs';
-// import array from '../Util/Array';
+// import {Array as ArrayWithAverage} from '../Util/Array';
+import * as $ from 'jquery';
+import ArrayPlus from "../Sync/ArrayPlus";
 
 export default class HistoryView extends Backbone.View<Backbone.Model> {
 
@@ -55,9 +56,11 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 		this.collection.stepBackTillSalary(this.ms);
 		const dataThisMonth = this.collection.getSorted();
 
-		let onlyAmounts: Array<number> = dataThisMonth.map((set: Transaction) => {
-			return set.get('amount');
-		});
+		let onlyAmounts = new ArrayPlus(
+			dataThisMonth.map((set: Transaction) => {
+				return set.get('amount');
+			})
+		);
 
 		let accumulator = 0;
 		let cumulative = dataThisMonth.map((set: Transaction) => {

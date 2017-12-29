@@ -5,19 +5,19 @@ console.log(Workspace_1.default);
 const Backbone = require("backbone");
 const $ = require("jquery");
 const bootstrap_tour_1 = require("bootstrap-tour");
+console.log(bootstrap_tour_1.Tour);
 class Umsaetze {
     constructor() {
         this.router = new Workspace_1.default();
         console.log('Umsaetze.router', this.router);
         const ok = Backbone.history.start({
-            root: '/umsaetze/docs/web/'
+            root: '/docs/web/'
         });
         console.log('history.start', ok);
         if (!ok) {
             console.log(this.router.routes);
         }
         this.inlineEdit();
-        this.tour();
         console.log('Umsaetze.constructor() done');
     }
     inlineEdit() {
@@ -45,7 +45,7 @@ class Umsaetze {
         });
     }
     tour() {
-        let tour = new bootstrap_tour_1.default({
+        let tour = new bootstrap_tour_1.Tour({
             steps: [
                 {
                     element: "#app",

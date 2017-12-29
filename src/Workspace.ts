@@ -1,7 +1,7 @@
 import AppView from './AppView';
 import Sync from './Sync/Sync';
 import Expenses from './Expenses/Expenses';
-import { CatPage } from './CatPage';
+import { CatPage } from './Category/CatPage';
 import { KeywordsView } from './Keyword/KeywordsView';
 import CategoryCollection from './Category/CategoryCollection';
 import RouterOptions = Backbone.RouterOptions;
@@ -52,6 +52,10 @@ export default class Workspace extends Backbone.Router {
 	}
 
 	activateMenu() {
+		this.activateMenu2();
+	}
+
+	activateMenu2() {
 		let url = window.location.href;
 		// var element = $('ul.nav a').filter(function() {
 		//     return this.href == url;
@@ -68,7 +72,9 @@ export default class Workspace extends Backbone.Router {
 			.removeClass('in');
 
 		while (true) {
-			if (liElement.is('li')) {
+			console.log(liElement, element);
+
+			if (liElement.length && liElement.is('li')) {
 				element = liElement.parent().addClass('in').parent();
 			} else {
 				break;

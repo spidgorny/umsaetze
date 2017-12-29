@@ -5,6 +5,8 @@ const SLTable_1 = require("../Util/SLTable");
 const Backbone = require("backbone");
 const _ = require("underscore");
 const chart_js_1 = require("chart.js");
+const $ = require("jquery");
+const ArrayPlus_1 = require("../Sync/ArrayPlus");
 class HistoryView extends Backbone.View {
     constructor(options) {
         super(options);
@@ -29,9 +31,9 @@ class HistoryView extends Backbone.View {
         this.collection.filterByMonth(yearMonth);
         this.collection.stepBackTillSalary(this.ms);
         const dataThisMonth = this.collection.getSorted();
-        let onlyAmounts = dataThisMonth.map((set) => {
+        let onlyAmounts = new ArrayPlus_1.default(dataThisMonth.map((set) => {
             return set.get('amount');
-        });
+        }));
         let accumulator = 0;
         let cumulative = dataThisMonth.map((set) => {
             accumulator += set.get('amount');
@@ -75,7 +77,7 @@ class HistoryView extends Backbone.View {
             let dataDesc = {};
             dataDesc['labels'] = labels;
             dataDesc['datasets'] = Array(datasets, lineSet);
-            let chart = new chart_js_1.default.Line(ctx, {
+            let chart = new chart_js_1.Chart.Line(ctx, {
                 data: dataDesc,
                 options: {
                     responsive: false,

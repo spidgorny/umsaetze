@@ -6,7 +6,9 @@ class ArrayPlus extends Array {
     constructor(rows) {
         super();
         if (rows) {
-            rows.forEach((el, i) => {
+            console.log('ArrayPlus', rows);
+            Object.keys(rows).forEach((i) => {
+                const el = rows[i];
                 this[i] = el;
             });
         }
@@ -47,6 +49,18 @@ class ArrayPlus extends Array {
     mode() {
         return this.sort((a, b) => this.filter(v => v.equals(a)).length
             - this.filter(v => v.equals(b)).length).pop();
+    }
+    average() {
+        if (this.length) {
+            const sum = _.reduce(this, (a, b) => {
+                return '' + (parseFloat(a) + parseFloat(b));
+            });
+            let avg = parseFloat(sum) / this.length;
+            return avg.toFixed(2);
+        }
+        else {
+            return null;
+        }
     }
 }
 exports.default = ArrayPlus;

@@ -19,6 +19,14 @@ class MockStorage {
     }
     update(object) {
     }
+    clear() {
+        this._clear();
+    }
+    key(index) {
+        return '';
+    }
+    removeItem(index) {
+    }
 }
 exports.default = MockStorage;
 //# sourceMappingURL=MockStorage.js.map

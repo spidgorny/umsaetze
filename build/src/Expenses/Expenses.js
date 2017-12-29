@@ -15,7 +15,6 @@ class Expenses extends Backbone.Collection {
             this.saveAll();
         });
         this.on("all", () => {
-            console.log("Expenses");
         });
     }
     static comparatorFunction(compare, to) {

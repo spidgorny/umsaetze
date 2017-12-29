@@ -8,8 +8,9 @@ export default class ArrayPlus extends Array<any> {
 	constructor(rows?: Array<any>) {
 		super();
 		if (rows) {
-			//console.log('ArrayPlus', rows.length);
-			rows.forEach((el, i) => {
+			console.log('ArrayPlus', rows);
+			Object.keys(rows).forEach((i) => {
+				const el = rows[i];
 				this[i] = el;
 			});
 		}
@@ -66,6 +67,20 @@ export default class ArrayPlus extends Array<any> {
 			this.filter(v => v.equals(a)).length
 			- this.filter(v => v.equals(b)).length
 		).pop();
+	}
+
+	average() {
+		//console.log('average', this);
+		if (this.length) {
+			const sum = _.reduce(this, (a: string, b: string) => {
+				return '' + (parseFloat(a) + parseFloat(b));
+			});
+			let avg = parseFloat(sum) / this.length;
+			//console.log(totals, sum, avg);
+			return avg.toFixed(2);
+		} else {
+			return null;
+		}
 	}
 
 }

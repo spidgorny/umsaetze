@@ -3,7 +3,8 @@ console.log(Workspace);
 // import Backbone from 'backbone-es6/src/Backbone.js';
 import Backbone = require('backbone');
 import * as $ from "jquery";
-import Tour from 'bootstrap-tour';
+import {Tour} from 'bootstrap-tour';
+console.log(Tour);
 
 export class Umsaetze {
 
@@ -14,7 +15,7 @@ export class Umsaetze {
 		console.log('Umsaetze.router', this.router);
 
 		const ok = Backbone.history.start({
-			root: '/umsaetze/docs/web/'
+			root: '/docs/web/'
 		});
 		console.log('history.start', ok);
 		if (!ok) {
@@ -22,7 +23,7 @@ export class Umsaetze {
 		}
 
 		this.inlineEdit();
-		this.tour();
+		// this.tour();
 		console.log('Umsaetze.constructor() done');
 	}
 

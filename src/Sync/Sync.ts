@@ -14,11 +14,12 @@ import toastr from 'toastr';
 import chance from 'chance';
 // import Backbone from 'backbone-es6/src/Backbone.js';
 import Backbone = require('backbone');
-import LocalStorage from 'backbone.localstorage';
+import {LocalStorage} from 'backbone.localstorage';
 import * as $ from 'jquery';
 import * as _ from 'underscore';
 import CategoryCount from "../Category/CategoryCount";
-const FileReaderJS = require('filereader.js');
+// const FileReaderJS = require('filereader.js');
+import {FileReaderJS} from 'filereader.js';
 
 console.log(detectFloat('3.141528'));
 console.debug(detectFloat('3.141528'));

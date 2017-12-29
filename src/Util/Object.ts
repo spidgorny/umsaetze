@@ -2,4 +2,7 @@ declare interface Object {
 	values: Function;
 }
 
-Object.prototype.values = obj => Object.keys(obj).map(key => obj[key]);
+// this may break jQuery
+// Object.prototype.values = obj => Object.keys(obj).map(key => obj[key]);
+
+Object.values = obj => Object.keys(obj).map(key => obj[key]);

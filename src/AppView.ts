@@ -12,6 +12,7 @@ import { ViewOptionsExpenses } from './ViewOptionsExpenses';
 // import elapse from 'elapse';
 import * as $ from "jquery";
 import * as _ from 'underscore';
+import CategoryCollectionModel from "./Category/CategoryCollectionModel";
 
 // elapse.configure({
 // 	debug: true
@@ -54,8 +55,9 @@ export default class AppView extends CollectionController<Expenses> {
 		});
 		this.table.setCategoryList(this.categoryList);
 
+		const categoryModel = new CategoryCollectionModel(this.categoryList);
 		this.categories = new CategoryView({
-			model: this.categoryList
+			model: categoryModel
 		});
 		this.categories.setExpenses(this.collection);
 		//console.log('category view collection', this.categories.model);

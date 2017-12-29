@@ -1,7 +1,12 @@
-declare interface Array<T> {
-	average(): string;
+import * as _ from 'underscore';
+
+export module global {
+	declare interface Array<T> {
+		average(): string;
+	}
 }
 
+/*
 // should not use =>
 Array.prototype.average = function () {
 	//console.log('average', this);
@@ -16,3 +21,5 @@ Array.prototype.average = function () {
 		return null;
 	}
 };
+
+*/

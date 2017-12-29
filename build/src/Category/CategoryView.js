@@ -44,6 +44,10 @@ class CategoryView extends Backbone.View {
                 width: width,
                 amount: Math.round(catCount.amount),
                 sign: catCount.amount >= 0 ? 'positive' : 'negative',
+                color: catCount.color,
+                id: catCount.id,
+                catName: catCount.catName,
+                count: catCount.count,
             })));
         });
         this.$('#catElements').html(content.join('\n'));
@@ -69,9 +73,12 @@ class CategoryView extends Backbone.View {
         let labels = [];
         let colors = [];
         let dataSet1 = [];
-        this.model.getCollection().comparator = function (el) {
-            return -Math.abs(el.getAmount());
-        };
+        console.log(this.model);
+        if (this.model) {
+            this.model.getCollection().comparator = function (el) {
+                return -Math.abs(el.getAmount());
+            };
+        }
         this.model.getCollection().sort();
         let rest = 0;
         this.model.getCollection().each((cat) => {
@@ -103,7 +110,7 @@ class CategoryView extends Backbone.View {
         if (this.myPieChart) {
             this.myPieChart.destroy();
         }
-        this.myPieChart = new chart_js_1.default(document.getElementById('pieChart'), {
+        this.myPieChart = new chart_js_1.Chart(document.getElementById('pieChart'), {
             type: 'pie',
             data: data,
             options: {

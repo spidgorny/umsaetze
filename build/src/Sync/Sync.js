@@ -12,7 +12,7 @@ const Backbone = require("backbone");
 const backbone_localstorage_1 = require("backbone.localstorage");
 const $ = require("jquery");
 const _ = require("underscore");
-const FileReaderJS = require('filereader.js');
+const filereader_js_1 = require("filereader.js");
 console.log(Number_1.detectFloat('3.141528'));
 console.debug(Number_1.detectFloat('3.141528'));
 require('file-saver');
@@ -20,7 +20,7 @@ class Sync extends CollectionController_1.CollectionController {
     constructor(expenses) {
         super();
         this.$el = $('#app');
-        this.localStorage = new backbone_localstorage_1.default("Expenses");
+        this.localStorage = new backbone_localstorage_1.LocalStorage("Expenses");
         this.model = expenses;
         this.listenTo(this.model, 'change', this.render);
         this.slowUpdateLoadingBar = _.throttle(this.updateLoadingBar, 128);
@@ -38,13 +38,13 @@ class Sync extends CollectionController_1.CollectionController {
             }));
             CollectionController_1.CollectionController.$('#Refresh').on('click', this.refresh.bind(this));
             CollectionController_1.CollectionController.$('#Generate').on('click', this.generate.bind(this));
-            FileReaderJS.setupInput(document.getElementById('file-input-csv'), {
+            filereader_js_1.FileReaderJS.setupInput(document.getElementById('file-input-csv'), {
                 readAsDefault: 'Text',
                 on: {
                     load: this.load.bind(this),
                 }
             });
-            FileReaderJS.setupInput(document.getElementById('file-input-json'), {
+            filereader_js_1.FileReaderJS.setupInput(document.getElementById('file-input-json'), {
                 readAsDefault: 'Text',
                 on: {
                     load: this.loadJSON.bind(this),
@@ -153,7 +153,7 @@ class Sync extends CollectionController_1.CollectionController {
     clear() {
         console.log('clear');
         if (confirm('Delete *ALL* entries from Local Storage? Make sure you have exported data first.')) {
-            let localStorage = new backbone_localstorage_1.default("Expenses");
+            let localStorage = new backbone_localstorage_1.LocalStorage("Expenses");
             localStorage._clear();
             if (this.model) {
                 this.model.clear();

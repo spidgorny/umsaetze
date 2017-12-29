@@ -2,13 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const CategoryCount_1 = require("./CategoryCount");
 const _ = require("underscore");
-const Backbone = require('backbone');
 const backbone_localstorage_1 = require("backbone.localstorage");
 const backbone_1 = require("backbone");
 class CategoryCollection extends backbone_1.Collection {
     constructor(options) {
         super();
-        let ls = new backbone_localstorage_1.default('Categories');
+        let ls = new backbone_localstorage_1.LocalStorage('Categories');
         let models = ls.findAll();
         models = _.uniq(models, false, (e1) => {
             return e1.catName;
@@ -36,7 +35,7 @@ class CategoryCollection extends backbone_1.Collection {
         this.getCategoriesFromExpenses();
     }
     saveToLS() {
-        let ls = new backbone_localstorage_1.default('Categories');
+        let ls = new backbone_localstorage_1.LocalStorage('Categories');
         let deleteMe = ls.findAll();
         this.each((model) => {
             if (model.get('id')) {

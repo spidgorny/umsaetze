@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var $ = require("jquery");
-$(function () {
+const $ = require("jquery");
+$(() => {
     console.log('ready');
 });
+//# sourceMappingURL=jq.js.map

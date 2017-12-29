@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const backbone_1 = require("backbone");
-const Backbone = require('backbone');
-class CollectionController extends backbone_1.Events {
+const $ = require("jquery");
+const CustomEvents_1 = require("./Util/CustomEvents");
+class CollectionController extends CustomEvents_1.CustomEvents {
     init(options) {
         this.cid = Math.random().toString();
     }

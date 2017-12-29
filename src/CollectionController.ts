@@ -4,18 +4,18 @@
 // import Backbone = require('backbone');
 import {Events} from "backbone";
 
-const Backbone = require('backbone');
-import * as JQuery from 'jquery';
+import * as $ from 'jquery';
 import Expenses from "./Expenses/Expenses";
 import CollectionArray from "./Util/CollectionArray";
+import {CustomEvents} from './Util/CustomEvents';
 
 export class CollectionController<T extends Expenses|CollectionArray>
-	extends Events
+	extends CustomEvents
 {
 
 	cid: string;
 
-	$el: JQuery;
+	$el: $;
 
 	/**
 	 * It has no constructor
@@ -25,7 +25,7 @@ export class CollectionController<T extends Expenses|CollectionArray>
 		this.cid = Math.random().toString();
 	}
 
-	setElement(el: JQuery) {
+	setElement(el: $) {
 		this.$el = el;
 	}
 

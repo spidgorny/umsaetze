@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const AppView_1 = require("./AppView");
 const Sync_1 = require("./Sync/Sync");
 const Expenses_1 = require("./Expenses/Expenses");
-const CatPage_1 = require("./CatPage");
+const CatPage_1 = require("./Category/CatPage");
 const KeywordsView_1 = require("./Keyword/KeywordsView");
 const CategoryCollection_1 = require("./Category/CategoryCollection");
 const KeywordCollection_1 = require("./Keyword/KeywordCollection");
@@ -33,6 +33,9 @@ class Workspace extends Backbone.Router {
         this.categoryList.setExpenses(this.model);
     }
     activateMenu() {
+        this.activateMenu2();
+    }
+    activateMenu2() {
         let url = window.location.href;
         let element = $('ul.nav#side-menu a')
             .removeClass('active')
@@ -44,7 +47,8 @@ class Workspace extends Backbone.Router {
             .parent()
             .removeClass('in');
         while (true) {
-            if (liElement.is('li')) {
+            console.log(liElement, element);
+            if (liElement.length && liElement.is('li')) {
                 element = liElement.parent().addClass('in').parent();
             }
             else {

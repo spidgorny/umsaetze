@@ -7,6 +7,7 @@ const main_1 = require("./main");
 const CollectionController_1 = require("./CollectionController");
 const $ = require("jquery");
 const _ = require("underscore");
+const CategoryCollectionModel_1 = require("./Category/CategoryCollectionModel");
 class AppView extends CollectionController_1.CollectionController {
     constructor(options, categoryList) {
         super();
@@ -21,8 +22,9 @@ class AppView extends CollectionController_1.CollectionController {
             el: $('#expenseTable')
         });
         this.table.setCategoryList(this.categoryList);
+        const categoryModel = new CategoryCollectionModel_1.default(this.categoryList);
         this.categories = new CategoryView_1.default({
-            model: this.categoryList
+            model: categoryModel
         });
         this.categories.setExpenses(this.collection);
         this.ms = MonthSelect_1.default.getInstance();

@@ -2,13 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Backbone = require("backbone");
 class CategoryCollectionModel extends Backbone.Model {
-    constructor(collection, options) {
-        super();
-        options = options || {};
-        options.innerCollection = collection;
+    constructor(collection, options = {}) {
+        super({}, options);
+        this.innerCollection = collection;
     }
     getCollection() {
-        return this.get('innerCollection');
+        return this.innerCollection;
     }
 }
 exports.default = CategoryCollectionModel;
