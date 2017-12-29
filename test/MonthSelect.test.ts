@@ -1,4 +1,3 @@
-///<reference path="../typings/index.d.ts"/>
 
 import Expenses from "../src/Expenses/Expenses";
 let createDocument = require('./helper/createDocument');

@@ -13,6 +13,13 @@ const accounting = require('accounting-js');
 process.stdout.isTTY = true;
 require('colors').enabled = true;
 
+declare global {
+	interface String {
+		green: string;
+		red: string;
+	}
+}
+
 export default class TestImport {
 
 	testLongest() {

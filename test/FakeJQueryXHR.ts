@@ -1,3 +1,9 @@
+class TResolve {
+}
+
+class T {
+}
+
 export default class FakeJQueryXHR implements JQueryXHR {
 	[Symbol.toStringTag];
 	onreadystatechange: (ev: Event) => any;

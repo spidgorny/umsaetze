@@ -23,4 +23,19 @@ export default class MockStorage {
 
 	}
 
+	clear() {
+		this._clear();
+	}
+
+	key(index) {
+		return '';
+	}
+
+	removeItem(index) {
+
+	}
+
+	[key: string]: any;
+	[index: number]: string;
+
 }

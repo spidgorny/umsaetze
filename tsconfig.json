@@ -14,7 +14,8 @@
 	},
 	"lib": ["es2016", "dom"],
 	"include": [
-		"src/*.ts"
+		"src/*.ts",
+		"test/*.ts"
 	],
-	"exclude": ["node_modules", "./test"]
+	"exclude": ["node_modules"]
 }

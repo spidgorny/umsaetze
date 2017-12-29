@@ -1,4 +1,5 @@
 import {Record} from './runSpardaBank';
+import * as fs from "fs";
 
 export class SpardaBank {
 
@@ -230,11 +231,11 @@ export class SpardaBank {
 	}
 
 	startCategorize() {
-		sb.readExcelFile().then((categoryList) => {
+		this.readExcelFile().then((categoryList) => {
 			console.log('categoryList', categoryList);
 			fs.writeFileSync('test/data/keywords.json',
-				JSON.stringify(categoryList, '', '\n'));
-			sb.categorize(categoryList);
+				JSON.stringify(categoryList, [''], '\n'));
+			this.categorize(categoryList);
 			return true;
 		}).catch((e) => {
 			console.log('Promise error: ' + e);

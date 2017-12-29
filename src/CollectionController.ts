@@ -9,7 +9,9 @@ import * as JQuery from 'jquery';
 import Expenses from "./Expenses/Expenses";
 import CollectionArray from "./Util/CollectionArray";
 
-export class CollectionController<T extends Expenses|CollectionArray> extends Events {
+export class CollectionController<T extends Expenses|CollectionArray>
+	extends Events
+{
 
 	cid: string;
 

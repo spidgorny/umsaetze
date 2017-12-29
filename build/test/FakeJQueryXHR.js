@@ -1,5 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+class TResolve {
+}
+class T {
+}
 class FakeJQueryXHR {
     state() {
         return undefined;
