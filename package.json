@@ -11,7 +11,8 @@
     "watch": "node_modules/.bin/watchify build/src/main.js -o docs/web/bundle.js -d -v",
     "w": "node_modules/.bin/watchify build/src/main.js -o docs/web/bundle.js -d -v --poll=1",
     "FIXFIX": "webpack --progress --profile --colors --display-error-details --display-cached build/src/main.js docs/web/bundle.js",
-    "serve": "node_modules/.bin/webpack-dev-server ./docs/web/ --hot --no-inline --module-bind \"css=style\\!css\" -w -d",
+    "serve": "node_modules/.bin/webpack-dev-server ./docs --hot --module-bind \"css=style\\!css\" -w -d",
+    "s": "node_modules/.bin/webpack-dev-server",
     "jasmine": "cd jasmine && jasmine",
     "build": "rollup -c"
   },
@@ -39,6 +40,7 @@
     "datejs": "^1.0.0-rc3",
     "dev-null": "^0.1.1",
     "elapse": "^0.1.1",
+    "enhanced-resolve": "^3.3.0",
     "exceljs": "^0.8.1",
     "expect": "^22.0.3",
     "file-saver": "^1.3.3",
@@ -68,7 +70,8 @@
     "utf8": "^3.0.0",
     "watchify": "^3.9.0",
     "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.9.7"
+    "webpack-dev-server": "^2.9.7",
+    "webpack-hot-middleware": "^2.21.0"
   },
   "devDependencies": {
     "@types/node": "^8.5.2",

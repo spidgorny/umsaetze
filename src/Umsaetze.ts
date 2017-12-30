@@ -4,7 +4,7 @@ console.log(Workspace);
 import Backbone = require('backbone');
 import * as $ from "jquery";
 import {Tour} from 'bootstrap-tour';
-console.log(Tour);
+console.log('Tour', Tour);
 
 export class Umsaetze {
 
@@ -12,19 +12,19 @@ export class Umsaetze {
 
 	constructor() {
 		this.router = new Workspace();
-		console.log('Umsaetze.router', this.router);
+		// console.log('Umsaetze.router', this.router);
 
 		const ok = Backbone.history.start({
-			root: '/docs/web/'
+			root: '/web/'
 		});
-		console.log('history.start', ok);
+		// console.log('history.start', ok);
 		if (!ok) {
-			console.log(this.router.routes);
+			console.error('history start failed', this.router.routes);
 		}
 
 		this.inlineEdit();
 		// this.tour();
-		console.log('Umsaetze.constructor() done');
+		// console.log('Umsaetze.constructor() done');
 	}
 
 	inlineEdit() {

@@ -1,8 +1,6 @@
 import * as $ from "jquery";
 import {Umsaetze} from './Umsaetze';
-// import 'toastr/build/toastr.css';
 const Backbone = require('backbone');
-import {View} from 'backbone';
 
 console.log('Umsaetze', Umsaetze);
 

@@ -8,13 +8,11 @@ import RouterOptions = Backbone.RouterOptions;
 import KeywordCollection from './Keyword/KeywordCollection';
 import SummaryView from './Summary/SummaryView';
 import HistoryView from './History/HistoryView';
-// import Backbone from 'backbone-es6/src/Backbone.js';
 import Backbone = require('backbone');
 import Controller from './Controller';
 import { CollectionController } from './CollectionController';
 import * as $ from 'jquery';
 import CategoryCollectionModel from "./Category/CategoryCollectionModel";
-// import * as _ from 'underscore';
 
 export default class Workspace extends Backbone.Router {
 

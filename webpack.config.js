@@ -1,14 +1,31 @@
 let path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
-	entry: "./src/main.ts",
+	entry: [
+		"./src/main.ts",
+		"webpack-dev-server/client?http://localhost:8080",
+	],
 	output: {
-		filename: "docs/web/bundle.js"
+		filename: "bundle.js",
+		path: path.join(__dirname, 'docs/web'),
+		publicPath: "/web/"
 	},
+	plugins: [
+		new webpack.HotModuleReplacementPlugin()
+	],
 	devtool: "source-map",
 	devServer: {
-		contentBase: path.join(__dirname, "docs/web"),
+		hot: true,
+		contentBase: path.join(__dirname, "docs"),
+		compress: true,
 		publicPath: "/",
+		watchContentBase: true,
+		watchOptions: {
+			poll: true
+		},
+		overlay: true,
+		inline: true,
 	},
 	module: {
 		rules: [
@@ -28,9 +45,9 @@ module.exports = {
 		extensions: [".ts", ".tsx", ".js", ".json"],
 		alias: {
 			handlebars: 'handlebars/dist/handlebars.min.js'
-		}
+		},
 	},
 	externals: {
 		"filereader.js": "FileReaderJS"
-	}
+	},
 };

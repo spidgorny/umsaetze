@@ -1,7 +1,7 @@
 {
 	"compileOnSave": true,
 	"compilerOptions": {
-		"rootDir": "src",
+		"rootDir": "src/",
 		"moduleResolution": "node",
 		"module": "commonjs",
 		"removeComments": true,
@@ -9,13 +9,11 @@
 		"sourceMap": true,
 		"target": "es2016",
 		"lib": ["es2016","dom"],
-		"rootDir": "src/",
 		"outDir": "build/"
 	},
 	"lib": ["es2016", "dom"],
 	"include": [
-		"src/*.ts",
-		"test/*.ts"
+		"src/*.ts"
 	],
 	"exclude": ["node_modules"]
 }

@@ -1,6 +1,5 @@
 .idea
 node_modules
-typings
 test/data/
 /docs/themes/
 /docs/.deploy_git/
@@ -12,3 +11,4 @@ test/data/
 /v2local/
 /v3/
 /test/data
+/docs/yarn-error.log
