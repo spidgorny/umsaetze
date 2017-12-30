@@ -13,6 +13,7 @@ import { ViewOptionsExpenses } from './ViewOptionsExpenses';
 import * as $ from "jquery";
 import * as _ from 'underscore';
 import CategoryCollectionModel from "./Category/CategoryCollectionModel";
+import KeywordCollection from "./Keyword/KeywordCollection";
 
 // elapse.configure({
 // 	debug: true
@@ -28,6 +29,8 @@ export default class AppView extends CollectionController<Expenses> {
 
 	categoryList: CategoryCollection;
 
+	keywords: KeywordCollection;
+
 	categories: CategoryView;
 
 	ms: MonthSelect;
@@ -39,8 +42,11 @@ export default class AppView extends CollectionController<Expenses> {
 	 * and this.categoryList as well
 	 * @param options
 	 * @param categoryList
+	 * @param keywords
 	 */
-	constructor(options: ViewOptionsExpenses<Transaction>, categoryList: CategoryCollection) {
+	constructor(options: ViewOptionsExpenses<Transaction>,
+				categoryList: CategoryCollection,
+				keywords: KeywordCollection) {
 		super();
 		console.log('construct AppView');
 		this.collection = options.viewCollection;
@@ -48,11 +54,12 @@ export default class AppView extends CollectionController<Expenses> {
 		this.setTemplate();
 
 		this.categoryList = categoryList;
+		this.keywords = keywords;
 
 		this.table = new ExpenseTable({
 			model: this.collection,
 			el: $('#expenseTable')
-		});
+		}, this.keywords);
 		this.table.setCategoryList(this.categoryList);
 
 		const categoryModel = new CategoryCollectionModel(this.categoryList);

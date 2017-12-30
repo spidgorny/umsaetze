@@ -39,12 +39,13 @@ class CollectionArray extends Array {
         return _.sample(this.models);
     }
     remove(id, idField = 'id') {
+        console.log(this.models);
         let index = _.findIndex(this.models, el => {
             return el[idField] == id;
         });
-        console.log(index, id, idField);
+        console.log('remove', id, index, idField);
         if (index > -1) {
-            delete this.models[index];
+            this.models.splice(index, 1);
         }
     }
 }

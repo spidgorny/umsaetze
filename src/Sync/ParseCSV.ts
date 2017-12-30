@@ -1,4 +1,3 @@
-// import {start} from "repl";
 import {detectFloat} from '../Util/Number';
 import Papa from 'papaparse';
 import Table from './Table';

@@ -8,10 +8,11 @@ const _ = require("underscore");
 const handlebars_1 = require("handlebars");
 const Backbone = require("backbone");
 class ExpenseTable extends Backbone.View {
-    constructor(options) {
+    constructor(options, keywords) {
         super(options);
         this.template = _.template($('#rowTemplate').html());
-        console.log(this.keywords);
+        this.keywords = keywords;
+        console.log('ExpenseTable.keywords', this.keywords);
         let $expenseTable = $('#expenseTable');
         if (!$expenseTable.length) {
             const template = _.template($('#AppView').html());

@@ -1,5 +1,6 @@
 import {Record} from './runSpardaBank';
 import * as fs from "fs";
+const Excel = require('exceljs');
 
 export class SpardaBank {
 
@@ -30,17 +31,17 @@ export class SpardaBank {
 		let rows = 0;
 		let transformer = transform(function (record: Record, callback) {
 			pb.tick();
-			var amount = record.amount;
+			let amount = record.amount;
 			amount = amount.replace('.', '');
 			amount = amount.replace(',', '.');
-			var iAmount = parseFloat(amount);
+			const iAmount = parseFloat(amount);
 			record.amount = iAmount.toString();
 			//record.amount3 = parseFloat(amount);
 			//callback(null, JSON.stringify(record)+'\n');
 			if (!storeColumns) {
 				storeColumns = {};
 				//var columns = Object.keys(record);
-				for (var key in record) {
+				for (let key in record) {
 					//noinspection JSUnfilteredForInLoop
 					storeColumns[key] = key;
 				}
@@ -90,12 +91,11 @@ export class SpardaBank {
 
 	readExcelFile() {
 		return new Promise((resolve, reject) => {
-			const Excel = require('exceljs');
 			let workbook = new Excel.Workbook();
 			workbook.xlsx.readFile(this.keywordFile)
 				.then(() => {
-					var sheet = workbook.getWorksheet(1);
-					var keyWords = this.dumpSheet(sheet);
+					const sheet = workbook.getWorksheet(1);
+					const keyWords = this.dumpSheet(sheet);
 					resolve(keyWords);
 				});
 		});
@@ -134,7 +134,7 @@ export class SpardaBank {
 			//record.note = iconv.decode(record.note, 'ISO-8859-1');
 			// record.note = iconv.encode(record.note, 'UTF-8');
 			record.category = this.getCategoryFor(record.note);
-			var shortNote = record.note.substr(0, 120);
+			const shortNote = record.note.substr(0, 120);
 
 			console.log(
 				SpardaBank.twoTabs(record.amount), '\t',

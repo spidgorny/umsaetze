@@ -9,7 +9,7 @@ const $ = require("jquery");
 const _ = require("underscore");
 const CategoryCollectionModel_1 = require("./Category/CategoryCollectionModel");
 class AppView extends CollectionController_1.CollectionController {
-    constructor(options, categoryList) {
+    constructor(options, categoryList, keywords) {
         super();
         this.q = '';
         console.log('construct AppView');
@@ -17,10 +17,11 @@ class AppView extends CollectionController_1.CollectionController {
         this.setElement($('#app'));
         this.setTemplate();
         this.categoryList = categoryList;
+        this.keywords = keywords;
         this.table = new ExpenseTable_1.default({
             model: this.collection,
             el: $('#expenseTable')
-        });
+        }, this.keywords);
         this.table.setCategoryList(this.categoryList);
         const categoryModel = new CategoryCollectionModel_1.default(this.categoryList);
         this.categories = new CategoryView_1.default({

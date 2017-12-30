@@ -97,8 +97,7 @@ export default class Workspace extends Backbone.Router {
 		if (!this.appPage) {
 			this.appPage = new AppView({
 				viewCollection: this.model
-			}, this.categoryList);
-			this.appPage.table.keywords = this.keywords;
+			}, this.categoryList, this.keywords);
 		}
 		this.appPage.show();
 		this.currentPage = this.appPage;
@@ -136,8 +135,7 @@ export default class Workspace extends Backbone.Router {
 		this.activateMenu();
 		this.hideCurrentPage();
 		if (!this.keywordsPage) {
-			this.keywordsPage = new KeywordsView();
-			this.keywordsPage.keywords = this.keywords;
+			this.keywordsPage = new KeywordsView(this.keywords, this.categoryList);
 		}
 		this.keywordsPage.render();
 		this.currentPage = this.keywordsPage;

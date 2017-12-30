@@ -3,12 +3,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const $ = require("jquery");
 const _ = require("underscore");
 const RecursiveArrayOfStrings_1 = require("../Util/RecursiveArrayOfStrings");
+const Keyword_1 = require("./Keyword");
 const toastr = require("toastr");
 const CollectionController_1 = require("../CollectionController");
+const FileReaderJS = require("filereader.js");
+const XLSX = require("xlsx");
 class KeywordsView extends CollectionController_1.CollectionController {
-    constructor(options) {
+    constructor(keywords, categories) {
         super();
         this.$el = $('#app');
+        this.keywords = keywords;
+        this.categories = categories;
     }
     render() {
         console.time('KeywordsView::render');
@@ -70,7 +75,6 @@ class KeywordsView extends CollectionController_1.CollectionController {
     deleteRow(event) {
         let button = $(event.target);
         let dataID = button.closest('tr').attr('data-id');
-        console.log(dataID);
         this.keywords.remove(dataID, 'word');
         this.keywords.save();
         this.render();
@@ -79,6 +83,34 @@ class KeywordsView extends CollectionController_1.CollectionController {
     }
     importExcel() {
         console.log('importExcel');
+        let fileTag = document.getElementById('fileInput');
+        FileReaderJS.setupInput(fileTag, {
+            readAsDefault: 'ArrayBuffer',
+            on: {
+                load: this.loadExcel.bind(this),
+            }
+        });
+        fileTag.click();
+    }
+    loadExcel(e, file) {
+        const excelData = e.target.result;
+        const excelDataArray = new Uint8Array(excelData);
+        const workbook = XLSX.read(excelDataArray, {
+            type: 'array'
+        });
+        const first_sheet_name = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[first_sheet_name];
+        const json = XLSX.utils.sheet_to_json(worksheet, {
+            header: ['A', 'B'],
+        });
+        json.forEach((row) => {
+            this.keywords.add(new Keyword_1.default({
+                word: row['A'],
+                category: row['B'],
+            }));
+            this.categories.addCategory(row['B']);
+        });
+        this.render();
     }
 }
 exports.KeywordsView = KeywordsView;

@@ -10,7 +10,6 @@ const stream = require('stream');
 const fs = require('fs');
 const iconv = require('iconv-lite');
 const _ = require('underscore');
-import path = require('path');
 
 function StringifyStream() {
 	stream.Transform.call(this);

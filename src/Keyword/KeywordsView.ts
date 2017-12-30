@@ -5,6 +5,9 @@ import RecursiveArrayOfStrings from '../Util/RecursiveArrayOfStrings'
 import Keyword from './Keyword';
 import * as toastr from 'toastr';
 import {CollectionController} from '../CollectionController';
+import * as FileReaderJS from 'filereader.js';
+import * as XLSX from 'xlsx';
+import CategoryCollection from "../Category/CategoryCollection";
 
 export class KeywordsView extends CollectionController<KeywordCollection> {
 
@@ -15,10 +18,14 @@ export class KeywordsView extends CollectionController<KeywordCollection> {
 	 */
 	keywords: KeywordCollection;
 
+	categories: CategoryCollection;
+
 	template: Function;
 
-	constructor(options?) {
+	constructor(keywords: KeywordCollection, categories: CategoryCollection) {
 		super();
+		this.keywords = keywords;
+		this.categories = categories;
 		//console.log('KeywordsView', this);
 		//console.log(super);
 		//console.log('new KeywordsView()', this.cid);
@@ -88,7 +95,7 @@ export class KeywordsView extends CollectionController<KeywordCollection> {
 	deleteRow(event: MouseEvent) {
 		let button = $(event.target);
 		let dataID = button.closest('tr').attr('data-id');
-		console.log(dataID);
+		//console.log(dataID);
 		this.keywords.remove(dataID, 'word');
 		this.keywords.save();
 		this.render();
@@ -100,6 +107,38 @@ export class KeywordsView extends CollectionController<KeywordCollection> {
 
 	importExcel() {
 		console.log('importExcel');
+		let fileTag = document.getElementById('fileInput');
+		FileReaderJS.setupInput(fileTag, {
+			readAsDefault: 'ArrayBuffer',
+			on: {
+				load: this.loadExcel.bind(this),
+			}
+		});
+		fileTag.click();
+	}
+
+	loadExcel(e, file) {
+		const excelData = e.target.result;
+		//console.log('loadExcel', excelData.length);
+		const excelDataArray = new Uint8Array(excelData);
+		const workbook = XLSX.read(excelDataArray, {
+			type: 'array'
+		});
+		//console.log(workbook.Sheets[0]);
+		const first_sheet_name = workbook.SheetNames[0];
+		const worksheet = workbook.Sheets[first_sheet_name];
+		const json = XLSX.utils.sheet_to_json(worksheet, {
+			header: ['A', 'B'],
+		});
+		//console.log(json);
+		json.forEach((row) => {
+			this.keywords.add(new Keyword({
+				word: row['A'],
+				category: row['B'],
+			}));
+			this.categories.addCategory(row['B']);
+		});
+		this.render();
 	}
 
 }

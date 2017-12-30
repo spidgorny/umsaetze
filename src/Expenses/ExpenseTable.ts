@@ -29,9 +29,10 @@ export default class ExpenseTable extends Backbone.View<any> {
 
 	keywords: KeywordCollection;
 
-	constructor(options?) {
+	constructor(options, keywords: KeywordCollection) {
 		super(options);
-		console.log(this.keywords);
+		this.keywords = keywords;
+		console.log('ExpenseTable.keywords', this.keywords);
 
 		// in case we started with Sync page the table is not visible
 		let $expenseTable = $('#expenseTable');
