@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const $ = require("jquery");
+const JQuery = require("jquery");
 const CustomEvents_1 = require("./Util/CustomEvents");
 class CollectionController extends CustomEvents_1.CustomEvents {
     init(options) {
@@ -13,7 +13,7 @@ class CollectionController extends CustomEvents_1.CustomEvents {
         this.$el.hide();
     }
     static $(selector) {
-        return $(selector);
+        return JQuery(selector);
     }
 }
 exports.CollectionController = CollectionController;

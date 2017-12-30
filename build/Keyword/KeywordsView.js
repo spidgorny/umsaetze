@@ -9,21 +9,25 @@ class KeywordsView extends CollectionController_1.CollectionController {
     constructor(options) {
         super();
         this.$el = $('#app');
-        console.log(this);
-        console.log('new KeywordsView()', this.cid);
     }
     render() {
         console.time('KeywordsView::render');
-        let content = ['<table class="table">',
-            '<thead>',
-            '<tr>',
-            '<th>Keyword</th>',
-            '<th>Category</th>',
-            '<th></th>',
-            '</tr>',
-            '</thead>',
-        ];
-        content.push('<tbody>');
+        if (this.template) {
+            this.renderTemplate();
+        }
+        else {
+            this.$el.html('Loading template...');
+            let $link = $('#KeywordsTemplate');
+            console.log($link);
+            $link.load($link.attr('href'), (html) => {
+                this.template = _.template(html);
+                this.renderTemplate();
+            });
+        }
+        console.timeEnd('KeywordsView::render');
+    }
+    renderTemplate() {
+        let content = [];
         this.keywords.each((el) => {
             content.push(`
 				<tr data-id="${el.word}">
@@ -37,28 +41,14 @@ class KeywordsView extends CollectionController_1.CollectionController {
 				</td>
 				</tr>`);
         });
-        content.push('</tbody>');
-        content.push('</table>');
-        content = [
-            `<div class="panel panel-default">
-				<div class="panel-heading">
-					<div class="pull-right">
-						<button class="btn btn-default btn-xs" id="removeDuplicates">
-							<span class="glyphicon glyphicon-filter"></span>
-						</button>
-				</div>
-				Keywords
-				<span class="badge">${this.keywords.size()}</span>
-			</div>
-			<div class="panel-body">`,
-            ...content,
-            '</div>',
-            '</div>',
-        ];
+        content = this.template({
+            size: this.keywords.size(),
+            list: content.join('\n')
+        });
         this.$el.html(RecursiveArrayOfStrings_1.default.merge(content));
-        CollectionController_1.CollectionController.$('#removeDuplicates').off().on('click', this.removeDuplicates.bind(this));
+        this.$el.find('#removeDuplicates').off().on('click', this.removeDuplicates.bind(this));
+        this.$el.find('#importExcel').off().on('click', this.importExcel.bind(this));
         this.$el.off('click', 'button.close').on('click', 'button.close', this.deleteRow.bind(this));
-        console.timeEnd('KeywordsView::render');
     }
     removeDuplicates(event) {
         let original = this.keywords.size();
@@ -86,6 +76,9 @@ class KeywordsView extends CollectionController_1.CollectionController {
         this.render();
     }
     hide() {
+    }
+    importExcel() {
+        console.log('importExcel');
     }
 }
 exports.KeywordsView = KeywordsView;

@@ -19,7 +19,7 @@ import * as FileReaderJS from 'filereader.js';
 import CategoryCollection from "../Category/CategoryCollection";
 
 const chance = new Chance();
-console.log(chance);
+// console.log(chance);
 
 // console.log('FileReaderJS', FileReaderJS);
 
@@ -60,7 +60,7 @@ export default class Sync extends CollectionController<Expenses> {
 		this.slowUpdateLoadingBar = _.throttle(this.updateLoadingBar, 128);
 
 		let $SyncPage = $('#SyncPage');
-		$SyncPage.load($SyncPage.attr('src'), (html) => {
+		$SyncPage.load($SyncPage.attr('href'), (html) => {
 			this.template = _.template(html);
 			this.render();
 		});

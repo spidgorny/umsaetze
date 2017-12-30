@@ -5,20 +5,17 @@ console.log(Workspace_1.default);
 const Backbone = require("backbone");
 const $ = require("jquery");
 const bootstrap_tour_1 = require("bootstrap-tour");
-console.log(bootstrap_tour_1.Tour);
+console.log('Tour', bootstrap_tour_1.Tour);
 class Umsaetze {
     constructor() {
         this.router = new Workspace_1.default();
-        console.log('Umsaetze.router', this.router);
         const ok = Backbone.history.start({
-            root: '/docs/web/'
+            root: '/web/'
         });
-        console.log('history.start', ok);
         if (!ok) {
-            console.log(this.router.routes);
+            console.error('history start failed', this.router.routes);
         }
         this.inlineEdit();
-        console.log('Umsaetze.constructor() done');
     }
     inlineEdit() {
         $(document).on('click', '.inlineEdit span', (event) => {

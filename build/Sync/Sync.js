@@ -13,7 +13,6 @@ const $ = require("jquery");
 const _ = require("underscore");
 const FileReaderJS = require("filereader.js");
 const chance = new Chance();
-console.log(chance);
 require('file-saver');
 class Sync extends CollectionController_1.CollectionController {
     constructor(expenses, router) {
@@ -24,7 +23,7 @@ class Sync extends CollectionController_1.CollectionController {
         this.listenTo(this.model, 'change', this.render);
         this.slowUpdateLoadingBar = _.throttle(this.updateLoadingBar, 128);
         let $SyncPage = $('#SyncPage');
-        $SyncPage.load($SyncPage.attr('src'), (html) => {
+        $SyncPage.load($SyncPage.attr('href'), (html) => {
             this.template = _.template(html);
             this.render();
         });

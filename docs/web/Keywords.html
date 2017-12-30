@@ -1,0 +1,28 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<div class="pull-right">
+			<button class="btn btn-default btn-xs" id="removeDuplicates">
+				<span class="glyphicon glyphicon-filter"></span>
+			</button>
+			<button class="btn btn-default btn-xs" id="importExcel">
+				<span class="glyphicon glyphicon-upload"></span>
+			</button>
+		</div>
+		Keywords
+		<span class="badge"><%- size %></span>
+	</div>
+	<div class="panel-body">
+		<table class="table">
+			<thead>
+			<tr>
+				<th>Keyword</th>
+				<th>Category</th>
+				<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<%= list %>
+			</tbody>
+		</table>
+	</div>
+</div>

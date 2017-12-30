@@ -126,6 +126,13 @@ class CategoryCollection extends backbone_1.Collection {
     random() {
         return _.sample(this.models);
     }
+    addCategory(newName) {
+        if (!this.exists(newName)) {
+            this.add(new CategoryCount_1.default({
+                catName: newName
+            }));
+        }
+    }
 }
 exports.default = CategoryCollection;
 //# sourceMappingURL=CategoryCollection.js.map
