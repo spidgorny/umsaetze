@@ -10,19 +10,23 @@ import {detectFloat} from '../Util/Number';
 import {CollectionController} from '../CollectionController';
 // import elapse from 'elapse';
 import { saveAs } from  'file-saver';
-import toastr from 'toastr';
-import chance from 'chance';
-// import Backbone from 'backbone-es6/src/Backbone.js';
+import * as toastr from 'toastr';
+import * as Chance from 'chance';
 import Backbone = require('backbone');
 import {LocalStorage} from 'backbone.localstorage';
 import * as $ from 'jquery';
 import * as _ from 'underscore';
 import CategoryCount from "../Category/CategoryCount";
 // const FileReaderJS = require('filereader.js');
-import {FileReaderJS} from 'filereader.js';
+import * as FileReaderJS from 'filereader.js';
 
-console.log(detectFloat('3.141528'));
-console.debug(detectFloat('3.141528'));
+const chance = new Chance();
+console.log(chance);
+
+// console.log('FileReaderJS', FileReaderJS);
+
+// console.log(detectFloat('3.141528'));
+// console.debug(detectFloat('3.141528'));
 //debug(detectFloat('3.141528'));
 
 require('file-saver');

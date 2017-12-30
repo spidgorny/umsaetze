@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Backbone = require("backbone");
-const md5_1 = require("md5");
+const md5 = require("md5");
 class Transaction extends Backbone.Model {
     constructor(attributes, options) {
         super(attributes, options);
@@ -23,7 +23,7 @@ class Transaction extends Backbone.Model {
             this.set('date', dDate);
         }
         if (!this.get('id')) {
-            this.set('id', md5_1.default(sDate + this.get('amount')));
+            this.set('id', md5(sDate + this.get('amount')));
         }
         this.set('amount', parseFloat(this.get('amount')));
         if (!this.has('visible')) {

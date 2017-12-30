@@ -4,17 +4,16 @@ const Transaction_1 = require("../Expenses/Transaction");
 const main_1 = require("../main");
 const ParseCSV_1 = require("./ParseCSV");
 const MonthSelect_1 = require("../MonthSelect");
-const Number_1 = require("../Util/Number");
 const CollectionController_1 = require("../CollectionController");
-const toastr_1 = require("toastr");
-const chance_1 = require("chance");
+const toastr = require("toastr");
+const Chance = require("chance");
 const Backbone = require("backbone");
 const backbone_localstorage_1 = require("backbone.localstorage");
 const $ = require("jquery");
 const _ = require("underscore");
-const filereader_js_1 = require("filereader.js");
-console.log(Number_1.detectFloat('3.141528'));
-console.debug(Number_1.detectFloat('3.141528'));
+const FileReaderJS = require("filereader.js");
+const chance = new Chance();
+console.log(chance);
 require('file-saver');
 class Sync extends CollectionController_1.CollectionController {
     constructor(expenses) {
@@ -38,13 +37,13 @@ class Sync extends CollectionController_1.CollectionController {
             }));
             CollectionController_1.CollectionController.$('#Refresh').on('click', this.refresh.bind(this));
             CollectionController_1.CollectionController.$('#Generate').on('click', this.generate.bind(this));
-            filereader_js_1.FileReaderJS.setupInput(document.getElementById('file-input-csv'), {
+            FileReaderJS.setupInput(document.getElementById('file-input-csv'), {
                 readAsDefault: 'Text',
                 on: {
                     load: this.load.bind(this),
                 }
             });
-            filereader_js_1.FileReaderJS.setupInput(document.getElementById('file-input-json'), {
+            FileReaderJS.setupInput(document.getElementById('file-input-json'), {
                 readAsDefault: 'Text',
                 on: {
                     load: this.loadJSON.bind(this),
@@ -60,7 +59,7 @@ class Sync extends CollectionController_1.CollectionController {
         return this;
     }
     refresh() {
-        toastr_1.default.success('Refreshing...');
+        toastr.success('Refreshing...');
         this.render();
     }
     load(e, file) {
@@ -127,11 +126,11 @@ class Sync extends CollectionController_1.CollectionController {
     loadJSON(e, file) {
         try {
             let data = JSON.parse(e.target.result);
-            toastr_1.default.info('Importing ' + data.length + ' entries');
+            toastr.info('Importing ' + data.length + ' entries');
             _.each(data, (row) => {
                 this.model.add(new Transaction_1.default(row));
             });
-            toastr_1.default.success('Imported');
+            toastr.success('Imported');
             this.model.trigger('change');
             Backbone.history.navigate('#', {
                 trigger: true,
@@ -162,9 +161,9 @@ class Sync extends CollectionController_1.CollectionController {
         }
     }
     generate() {
-        toastr_1.default.info('Generating...');
+        toastr.info('Generating...');
         let amount = 100;
-        let account = chance_1.default.word();
+        let account = chance.word();
         let categories = this.router.categoryList;
         for (let i of _.range(amount)) {
             let category = categories.random();
@@ -175,20 +174,20 @@ class Sync extends CollectionController_1.CollectionController {
                     ? category.get('catName')
                     : "Default",
                 currency: "EUR",
-                amount: chance_1.default.floating({ fixed: 2, min: -1000, max: 1000 }),
+                amount: chance.floating({ fixed: 2, min: -1000, max: 1000 }),
                 payment_type: "DEBIT_CARD",
-                date: chance_1.default.date({ year: new Date().getFullYear() }),
-                note: chance_1.default.sentence(),
+                date: chance.date({ year: new Date().getFullYear() }),
+                note: chance.sentence(),
             }));
         }
-        toastr_1.default.success('Generated ' + amount + ' records.');
+        toastr.success('Generated ' + amount + ' records.');
         this.model.trigger('change');
         Backbone.history.navigate('#', {
             trigger: true,
         });
     }
     saveToLS() {
-        toastr_1.default.success('Saving...');
+        toastr.success('Saving...');
         this.model.saveAll();
         this.render();
     }

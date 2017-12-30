@@ -3,7 +3,7 @@ import * as _ from 'underscore';
 import KeywordCollection from './KeywordCollection';
 import RecursiveArrayOfStrings from '../Util/RecursiveArrayOfStrings'
 import Keyword from './Keyword';
-import toastr from 'toastr';
+import * as toastr from 'toastr';
 import {CollectionController} from '../CollectionController';
 
 export class KeywordsView extends CollectionController<KeywordCollection> {

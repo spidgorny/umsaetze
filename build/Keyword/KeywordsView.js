@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const $ = require("jquery");
 const _ = require("underscore");
 const RecursiveArrayOfStrings_1 = require("../Util/RecursiveArrayOfStrings");
-const toastr_1 = require("toastr");
+const toastr = require("toastr");
 const CollectionController_1 = require("../CollectionController");
 class KeywordsView extends CollectionController_1.CollectionController {
     constructor(options) {
@@ -69,10 +69,10 @@ class KeywordsView extends CollectionController_1.CollectionController {
         console.log(this.keywords.size());
         let x = this.keywords.size() - original;
         if (x) {
-            toastr_1.default.success(`Removed ${x} duplicates`);
+            toastr.success(`Removed ${x} duplicates`);
         }
         else {
-            toastr_1.default.error(`No duplicates to remove`);
+            toastr.error(`No duplicates to remove`);
         }
         this.keywords.save();
         this.render();

@@ -2,7 +2,7 @@
 ///<reference path="../Util/Date.ts" />
 import Backbone = require('backbone');
 // import * as Backbone from 'backbone-ts';
-import md5 from 'md5';
+import * as md5 from 'md5';
 // import * as Date from 'datejs';
 import Expenses from "./Expenses";
 
