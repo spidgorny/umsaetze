@@ -16,7 +16,7 @@ const chance = new Chance();
 console.log(chance);
 require('file-saver');
 class Sync extends CollectionController_1.CollectionController {
-    constructor(expenses) {
+    constructor(expenses, router) {
         super();
         this.$el = $('#app');
         this.localStorage = new backbone_localstorage_1.LocalStorage("Expenses");
@@ -28,6 +28,8 @@ class Sync extends CollectionController_1.CollectionController {
             this.template = _.template(html);
             this.render();
         });
+        this.router = router;
+        this.categories = this.router.categoryList;
     }
     render() {
         if (this.template) {
@@ -164,9 +166,8 @@ class Sync extends CollectionController_1.CollectionController {
         toastr.info('Generating...');
         let amount = 100;
         let account = chance.word();
-        let categories = this.router.categoryList;
         for (let i of _.range(amount)) {
-            let category = categories.random();
+            let category = this.categories.random();
             console.log('random cat', category);
             this.model.add(new Transaction_1.default({
                 account: account,
@@ -182,6 +183,7 @@ class Sync extends CollectionController_1.CollectionController {
         }
         toastr.success('Generated ' + amount + ' records.');
         this.model.trigger('change');
+        this.categories.addCategory('Default');
         Backbone.history.navigate('#', {
             trigger: true,
         });

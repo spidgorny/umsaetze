@@ -6,9 +6,7 @@ import Workspace from '../Workspace';
 import ParseCSV from './ParseCSV';
 import Table from "./Table";
 import MonthSelect from '../MonthSelect';
-import {detectFloat} from '../Util/Number';
 import {CollectionController} from '../CollectionController';
-// import elapse from 'elapse';
 import { saveAs } from  'file-saver';
 import * as toastr from 'toastr';
 import * as Chance from 'chance';
@@ -17,8 +15,8 @@ import {LocalStorage} from 'backbone.localstorage';
 import * as $ from 'jquery';
 import * as _ from 'underscore';
 import CategoryCount from "../Category/CategoryCount";
-// const FileReaderJS = require('filereader.js');
 import * as FileReaderJS from 'filereader.js';
+import CategoryCollection from "../Category/CategoryCollection";
 
 const chance = new Chance();
 console.log(chance);
@@ -53,7 +51,9 @@ export default class Sync extends CollectionController<Expenses> {
 
 	router: Workspace;
 
-	constructor(expenses: Expenses) {
+	categories: CategoryCollection;
+
+	constructor(expenses: Expenses, router: Workspace) {
 		super();
 		this.model = expenses;
 		this.listenTo(this.model, 'change', this.render);
@@ -64,6 +64,8 @@ export default class Sync extends CollectionController<Expenses> {
 			this.template = _.template(html);
 			this.render();
 		});
+		this.router = router;
+		this.categories = this.router.categoryList;
 	}
 
 	render() {
@@ -233,9 +235,8 @@ export default class Sync extends CollectionController<Expenses> {
 		toastr.info('Generating...');
 		let amount = 100;
 		let account = chance.word();
-		let categories = this.router.categoryList;
 		for (let i of _.range(amount)) {
-			let category: CategoryCount = <CategoryCount>categories.random();
+			let category: CategoryCount = <CategoryCount>this.categories.random();
 			console.log('random cat', category);
 			this.model.add(new Transaction({
 				account: account,
@@ -251,6 +252,7 @@ export default class Sync extends CollectionController<Expenses> {
 		}
 		toastr.success('Generated '+amount+' records.');
 		this.model.trigger('change');
+		this.categories.addCategory('Default');
 		Backbone.history.navigate('#', {
 			trigger: true,
 		});

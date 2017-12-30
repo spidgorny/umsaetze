@@ -4,12 +4,6 @@ import Expenses from "../Expenses/Expenses";
 import * as _ from 'underscore';
 import {LocalStorage} from 'backbone.localstorage';
 import {Collection} from "backbone";
-// import Backbone from 'backbone-es6/src/Backbone.js';
-// import elapse from 'elapse';
-
-// elapse.configure({
-// 	debug: true
-// });
 
 /**
  * Depends on Expenses to parse them
@@ -207,6 +201,14 @@ export default class CategoryCollection
 	 */
 	random() {
 		return _.sample(this.models);
+	}
+
+	addCategory(newName: string) {
+		if (!this.exists(newName)) {
+			this.add(new CategoryCount({
+				catName: newName
+			}));
+		}
 	}
 
 }

@@ -1,9 +1,5 @@
-///<reference path="../../node_modules/@types/backbone/index.d.ts" />
-///<reference path="../Util/Date.ts" />
 import Backbone = require('backbone');
-// import * as Backbone from 'backbone-ts';
 import * as md5 from 'md5';
-// import * as Date from 'datejs';
 import Expenses from "./Expenses";
 
 /*
@@ -17,7 +13,7 @@ import Expenses from "./Expenses";
  "id": "",
  "visible": false,
  "sign": ""
- */
+*/
 
 export default class Transaction extends Backbone.Model {
 

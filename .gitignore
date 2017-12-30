@@ -1,14 +1,12 @@
 .idea
 node_modules
-test/data/
 /docs/themes/
 /docs/.deploy_git/
-/docs/filereader.js/
 /docs/startbootstrap-sb-admin-2/
 /docs/npm-debug.log
 /yarn-error.log
 /*.rar
 /v2local/
 /v3/
-/test/data
+/src/test/data
 /docs/yarn-error.log

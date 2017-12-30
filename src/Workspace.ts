@@ -114,8 +114,7 @@ export default class Workspace extends Backbone.Router {
 			$('#MonthSelect').hide();	// for consistency
 		}
 		if (!this.syncPage) {
-			this.syncPage = new Sync(this.model);
-			this.syncPage.router = this;
+			this.syncPage = new Sync(this.model, this);
 		}
 		this.syncPage.render();
 		this.currentPage = this.syncPage;

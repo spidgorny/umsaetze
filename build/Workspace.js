@@ -82,8 +82,7 @@ class Workspace extends Backbone.Router {
             $('#MonthSelect').hide();
         }
         if (!this.syncPage) {
-            this.syncPage = new Sync_1.default(this.model);
-            this.syncPage.router = this;
+            this.syncPage = new Sync_1.default(this.model, this);
         }
         this.syncPage.render();
         this.currentPage = this.syncPage;
