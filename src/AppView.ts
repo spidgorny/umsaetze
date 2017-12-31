@@ -3,7 +3,7 @@ import Expenses from './Expenses/Expenses';
 import ExpenseTable from './Expenses/ExpenseTable';
 import CategoryCollection from './Category/CategoryCollection';
 import CategoryView from './Category/CategoryView';
-import MonthSelect from './MonthSelect';
+import MonthSelect from './MonthSelect/MonthSelect';
 import Transaction from './Expenses/Transaction';
 import {debug} from './main';
 import { CollectionController } from './CollectionController';
@@ -43,10 +43,12 @@ export default class AppView extends CollectionController<Expenses> {
 	 * @param options
 	 * @param categoryList
 	 * @param keywords
+	 * @param monthSelect
 	 */
 	constructor(options: ViewOptionsExpenses<Transaction>,
 				categoryList: CategoryCollection,
-				keywords: KeywordCollection) {
+				keywords: KeywordCollection,
+				monthSelect: MonthSelect) {
 		super();
 		// console.log('construct AppView');
 		this.collection = options.viewCollection;
@@ -55,6 +57,7 @@ export default class AppView extends CollectionController<Expenses> {
 
 		this.categoryList = categoryList;
 		this.keywords = keywords;
+		this.ms = monthSelect;
 
 		this.table = new ExpenseTable({
 			model: this.collection,
@@ -69,10 +72,8 @@ export default class AppView extends CollectionController<Expenses> {
 		this.categories.setExpenses(this.collection);
 		//console.log('category view collection', this.categories.model);
 
-		this.ms = MonthSelect.getInstance();
-		this.ms.earliest = this.collection.getEarliest();
-		this.ms.latest = this.collection.getLatest();
-		this.ms.render();
+		this.ms.update(this.collection);
+
 		this.listenTo(this.ms, 'MonthSelect:change', this.monthChange.bind(this));
 
 		this.collection.selectedMonth = this.ms.getSelected();	// for filtering to know which month we're in
@@ -146,12 +147,8 @@ export default class AppView extends CollectionController<Expenses> {
 	show() {
 		console.profile('AppView.show');
 
-		this.ms.earliest = this.collection.getEarliest();
-		this.ms.latest = this.collection.getLatest();
-		console.log('MonthSelect range',
-			this.ms.earliest.toString('yyyy-MM-dd'),
-			this.ms.latest.toString('yyyy-MM-dd'), this.collection.size());
-		this.ms.show();
+		// updated in the constructor once
+		// this.ms.update(this.collection);
 
 		this.render();
 		this.categories.show();

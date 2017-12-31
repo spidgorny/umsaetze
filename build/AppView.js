@@ -2,14 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const ExpenseTable_1 = require("./Expenses/ExpenseTable");
 const CategoryView_1 = require("./Category/CategoryView");
-const MonthSelect_1 = require("./MonthSelect");
 const main_1 = require("./main");
 const CollectionController_1 = require("./CollectionController");
 const $ = require("jquery");
 const _ = require("underscore");
 const CategoryCollectionModel_1 = require("./Category/CategoryCollectionModel");
 class AppView extends CollectionController_1.CollectionController {
-    constructor(options, categoryList, keywords) {
+    constructor(options, categoryList, keywords, monthSelect) {
         super();
         this.q = '';
         this.collection = options.viewCollection;
@@ -17,6 +16,7 @@ class AppView extends CollectionController_1.CollectionController {
         this.setTemplate();
         this.categoryList = categoryList;
         this.keywords = keywords;
+        this.ms = monthSelect;
         this.table = new ExpenseTable_1.default({
             model: this.collection,
             el: $('#expenseTable')
@@ -27,10 +27,7 @@ class AppView extends CollectionController_1.CollectionController {
             model: categoryModel
         });
         this.categories.setExpenses(this.collection);
-        this.ms = MonthSelect_1.default.getInstance();
-        this.ms.earliest = this.collection.getEarliest();
-        this.ms.latest = this.collection.getLatest();
-        this.ms.render();
+        this.ms.update(this.collection);
         this.listenTo(this.ms, 'MonthSelect:change', this.monthChange.bind(this));
         this.collection.selectedMonth = this.ms.getSelected();
         this.listenTo(this.collection, 'change', this.render);
@@ -72,10 +69,6 @@ class AppView extends CollectionController_1.CollectionController {
     }
     show() {
         console.profile('AppView.show');
-        this.ms.earliest = this.collection.getEarliest();
-        this.ms.latest = this.collection.getLatest();
-        console.log('MonthSelect range', this.ms.earliest.toString('yyyy-MM-dd'), this.ms.latest.toString('yyyy-MM-dd'), this.collection.size());
-        this.ms.show();
         this.render();
         this.categories.show();
         console.profileEnd();

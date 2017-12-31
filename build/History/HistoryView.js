@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const MonthSelect_1 = require("../MonthSelect");
+const MonthSelect_1 = require("../MonthSelect/MonthSelect");
 const SLTable_1 = require("../Util/SLTable");
 const Backbone = require("backbone");
 const _ = require("underscore");

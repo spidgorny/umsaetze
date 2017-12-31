@@ -1,6 +1,6 @@
 ///<reference path="../../typings/index.d.ts"/>
 
-import MonthSelect from "../../src/MonthSelect";
+import MonthSelect from "../../src/MonthSelect/MonthSelect";
 
 const dom = require('node-dom').dom;
 window = dom('', null, {});

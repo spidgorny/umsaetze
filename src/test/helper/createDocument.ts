@@ -1,12 +1,10 @@
-///<reference path="../../typings/globals/node/index.d.ts"/>
-
-import { jsdom } from 'jsdom';
+import {JSDOM} from 'jsdom';
 
 function createDocument() {
-	const document = jsdom(undefined);
+	const document = new JSDOM(undefined);
 	const window = document.defaultView;
-	global.document = document;
-	global.window = window;
+	global['document'] = document;
+	global['window'] = window;
 
 	Object.keys(window).forEach((key) => {
 		if (!(key in global)) {

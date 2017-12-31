@@ -1,13 +1,9 @@
-// import Backbone from 'backbone-es6/src/Backbone.js';
 import Backbone = require('backbone');
-import Expenses from './Expenses/Expenses';
+import Expenses from '../Expenses/Expenses';
 import {LocalStorage} from 'backbone.localstorage';
-import ExpensesMock from './Util/ExpensesMock';
+import ExpensesMock from '../Util/ExpensesMock';
 import * as $ from 'jquery';
-// import datejs from 'datejs';
-// import * as _ from 'underscore';
-// import {detectFloat} from './Util/Number';
-// import {Number} from './Util/Number';
+import {CurrentMonth} from "./CurrentMonth";
 
 export default class MonthSelect extends Backbone.View<any> {
 
@@ -17,33 +13,19 @@ export default class MonthSelect extends Backbone.View<any> {
 
 	monthOptions: JQuery = this.$('button');
 
-	selectedYear = parseInt(this.yearSelect.val()+'') || new Date().getFullYear();
-
-	selectedMonth = 'Feb';
-
-	earliest = new Date();
-
-	latest = new Date();
-
 	//localStorage: Backbone.LocalStorage;
 
 	static instance: MonthSelect;
 
 	storageProvider: Storage;
 
-	/**
-	 * http://stackoverflow.com/questions/1643320/get-month-name-from-date
-	 * @type {[string,string,string,string,string,string,string,string,string,string,string,string]}
-	 */
-	monthNames = [
-		"January", "February", "March",
-		"April", "May", "June",
-		"July", "August", "September",
-		"October", "November", "December"
-	];
+	currentMonth: CurrentMonth;
 
 	constructor() {
 		super();
+		this.currentMonth = new CurrentMonth(
+			parseInt(this.yearSelect.val()+'') || CurrentMonth.DEFAULT_YEAR
+		);
 
 		if (!this.storageProvider) {
 			this.storageProvider = window.localStorage;
@@ -60,11 +42,11 @@ export default class MonthSelect extends Backbone.View<any> {
 		//this.localStorage = new Backbone.LocalStorage('MonthSelect');
 		let year = this.storageProvider.getItem('MonthSelect.year');
 		if (year) {
-			this.selectedYear = parseInt(year);
+			this.currentMonth.selectedYear = parseInt(year);
 		}
 		let month = this.storageProvider.getItem('MonthSelect.month');
 		if (month) {
-			this.selectedMonth = month;
+			this.currentMonth.selectedMonth = month;
 		}
 		//console.log('MonthSelect', this.selectedYear, this.selectedMonth);
 	}
@@ -78,13 +60,12 @@ export default class MonthSelect extends Backbone.View<any> {
 
 	render() {
 		//console.time('MonthSelect.render');
-		this.earliest.moveToFirstDayOfMonth();
 		let selectedDate = this.getSelected();
 
 		// year
 		let options = [];
-		let minYear = this.earliest.getFullYear();
-		let maxYear = this.latest.getFullYear();
+		let minYear = this.currentMonth.earliest.getFullYear();
+		let maxYear = this.currentMonth.latest.getFullYear();
 		// console.log('minYear', minYear, 'maxYear', maxYear);
 		for (let y = minYear; y <= maxYear; y++) {
 			let selected = selectedDate.getFullYear() == y ? 'selected' : '';
@@ -96,14 +77,21 @@ export default class MonthSelect extends Backbone.View<any> {
 		this.monthOptions.each((i, button) => {
 			let monthNumber = i+1;
 			//console.log(button);
-			let sDate = this.selectedYear+'-'+monthNumber+'-01';
+			let sDate = this.currentMonth.selectedYear+'-'+monthNumber+'-01';
 			let firstOfMonth = new Date(sDate);
 			let $button = $(button);
-			let isAfter = firstOfMonth.isAfter(this.earliest);
-			let isBefore = firstOfMonth.isBefore(this.latest);
-			if (isAfter && isBefore) {
+			let isAfter = firstOfMonth.isAfter(this.currentMonth.earliest);
+			let isBefore = firstOfMonth.isBefore(this.currentMonth.latest);
+			let isTheSame = firstOfMonth.equals(this.currentMonth.earliest);
+			if ((isAfter && isBefore) || isTheSame) {
 				$button.removeAttr('disabled');
 			} else {
+				console.log('disable month', monthNumber,
+					isAfter, isBefore, isTheSame,
+					firstOfMonth.toString('yyyy-MM-dd'),
+					this.currentMonth.earliest.toString('yyyy-MM-dd'),
+					firstOfMonth, this.currentMonth.earliest,
+				);
 				$button.attr('disabled', 'disabled');
 			}
 			let equals = firstOfMonth.equals(selectedDate);
@@ -129,25 +117,13 @@ export default class MonthSelect extends Backbone.View<any> {
 		this.$el.hide();
 	}
 
-	getMonthIndex() {
-		let result = Date.getMonthNumberFromName(this.selectedMonth) + 1;
-		//console.log('getMonthIndex', this.selectedMonth, '=>', result);
-		return result;
-	}
-
-	getMonthIndexFor(monthName: string) {
-		let result = Date.getMonthNumberFromName(monthName) + 1;
-		//console.log('getMonthIndex', monthName, result);
-		return result;
-	}
-
-	getMonthNameFor(index) {
-		return this.getShortMonthNameFor(index);
-	}
-
+	/**
+	 * UI triggered
+	 * @param event
+	 */
 	changeYear(event) {
 		// this.selectedYear = this.yearSelect.val();	// don't set yet - URL will do
-		Backbone.history.navigate('#/' + this.yearSelect.val() + '/' + this.getMonthIndex());
+		Backbone.history.navigate('#/' + this.yearSelect.val() + '/' + this.currentMonth.getMonthIndex());
 	}
 
 	clickOnMonthAndNavigate(event) {
@@ -156,8 +132,8 @@ export default class MonthSelect extends Backbone.View<any> {
 		$button.removeClass('btn-default');
 		$button.addClass('btn-success');
 		//this.selectedMonth = $button.text();	// don't set yet - URL will do
-		let monthIndex = this.getMonthIndexFor($button.text());
-		Backbone.history.navigate('#/' + this.selectedYear + '/' + monthIndex);
+		let monthIndex = this.currentMonth.getMonthIndexFor($button.text());
+		Backbone.history.navigate('#/' + this.currentMonth.selectedYear + '/' + monthIndex);
 	}
 
 	clickOnMonth(event) {
@@ -165,8 +141,9 @@ export default class MonthSelect extends Backbone.View<any> {
 		let $button = $(event.target);
 		$button.removeClass('btn-default');
 		$button.addClass('btn-success');
-		this.selectedMonth = $button.text();
-		this.storageProvider.setItem('MonthSelect.month', this.selectedMonth);
+		this.currentMonth.selectedMonth = $button.text();
+		this.storageProvider.setItem('MonthSelect.month', this.currentMonth.selectedMonth);
+		this.storageProvider.setItem('MonthSelect.year', this.currentMonth.selectedYear+'');
 
 		this.trigger('MonthSelect:change');
 	}
@@ -174,34 +151,34 @@ export default class MonthSelect extends Backbone.View<any> {
 	setYear(year) {
 		// if (this.selectedYear == year) return;
 		console.log('setYear', year);
-		this.selectedYear = year;
+		this.currentMonth.selectedYear = year;
 		//console.log(this.selectedYear);
-		this.storageProvider.setItem('MonthSelect.year', this.selectedYear+'');
+		this.storageProvider.setItem('MonthSelect.year', this.currentMonth.selectedYear+'');
 		this.render();		// repaint months as available or not
 		this.trigger('MonthSelect:change');
 	}
 
 	setMonth(month: number) {
-		let monthName = this.getMonthNameFor(month);
+		let monthName = this.currentMonth.getMonthNameFor(month);
 		// if (this.selectedMonth == monthName) {
 		// 	console.warn('same month', this.selectedMonth, monthName);
 		// 	return;
 		// }
 		console.log('setMonth', month);
-		this.selectedMonth = monthName;
-		this.storageProvider.setItem('MonthSelect.month', this.selectedMonth);
+		this.currentMonth.selectedMonth = monthName;
+		this.storageProvider.setItem('MonthSelect.month', this.currentMonth.selectedMonth);
 		this.trigger('MonthSelect:change');
 	}
 
 	setYearMonth(year: number, month: number) {
 		console.log('setYearMonth', year, month);
 
-		this.selectedYear = year;
+		this.currentMonth.selectedYear = year;
 		//console.log(this.selectedYear);
-		this.storageProvider.setItem('MonthSelect.year', this.selectedYear.toString());
+		this.storageProvider.setItem('MonthSelect.year', this.currentMonth.selectedYear.toString());
 
-		this.selectedMonth = this.getMonthNameFor(month);
-		this.storageProvider.setItem('MonthSelect.month', this.selectedMonth);
+		this.currentMonth.selectedMonth = this.currentMonth.getMonthNameFor(month);
+		this.storageProvider.setItem('MonthSelect.month', this.currentMonth.selectedMonth);
 
 		this.render();		// repaint months as available or not
 		this.trigger('MonthSelect:change');
@@ -217,50 +194,14 @@ export default class MonthSelect extends Backbone.View<any> {
 	 * @returns Date
 	 */
 	getSelected() {
-		let sSelectedDate = this.selectedYear+'-'+this.getMonthIndex()+'-01';
+		let sSelectedDate = this.currentMonth.selectedYear+'-'+this.currentMonth.getMonthIndex()+'-01';
 		let selectedDate = new Date(sSelectedDate);
 		//console.log('selectedDate', sSelectedDate, selectedDate);
 		return selectedDate;
 	}
 
-	/**
-	 * @deprecated
-	 * @returns {string|string|string|string|string|string|string|string|string|string|string|string}
-	 */
-	static getMonthName() {
-		throw new Error('getMonthName called when selectedMonth is a string already');
-		//return this.monthNames[this.selectedMonth];
-	}
-
-	/**
-	 * @deprecated
-	 * @returns {string}
-	 */
-	getShortMonthName() {
-		// return MonthSelect.getMonthName().substr(0, 3);
-	}
-
-	getShortMonthNameFor(index) {
-		return this.monthNames[index-1].substr(0, 3);
-	}
-
 	update(collection: Expenses|ExpensesMock) {
-		this.earliest = collection.getEarliest();
-		this.latest = collection.getLatest();
-		// console.log('MonthSelect.update',
-		// 	this.earliest.toString('yyyy-MM-dd'),
-		// 	this.latest.toString('yyyy-MM-dd'));
-
-		this.selectedYear = this.selectedYear.clamp(
-			this.earliest.getFullYear(),
-			this.latest.getFullYear()
-		);
-		let selectedMonthIndex = this.getMonthIndex().clamp(
-			this.earliest.getMonth(),
-			this.latest.getMonth()
-		);
-		this.selectedMonth = this.getShortMonthNameFor(selectedMonthIndex);
-
+		this.currentMonth.update(collection.getEarliest(), collection.getLatest());
 		this.show();
 	}
 

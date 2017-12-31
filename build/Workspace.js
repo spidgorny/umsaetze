@@ -12,6 +12,7 @@ const HistoryView_1 = require("./History/HistoryView");
 const Backbone = require("backbone");
 const $ = require("jquery");
 const CategoryCollectionModel_1 = require("./Category/CategoryCollectionModel");
+const MonthSelect_1 = require("./MonthSelect/MonthSelect");
 class Workspace extends Backbone.Router {
     constructor(options) {
         super(options);
@@ -66,7 +67,7 @@ class Workspace extends Backbone.Router {
         if (!this.appPage) {
             this.appPage = new AppView_1.default({
                 viewCollection: this.model
-            }, this.categoryList, this.keywords);
+            }, this.categoryList, this.keywords, MonthSelect_1.default.getInstance());
         }
         this.appPage.show();
         this.currentPage = this.appPage;

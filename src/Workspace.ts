@@ -13,6 +13,7 @@ import Controller from './Controller';
 import { CollectionController } from './CollectionController';
 import * as $ from 'jquery';
 import CategoryCollectionModel from "./Category/CategoryCollectionModel";
+import MonthSelect from "./MonthSelect/MonthSelect";
 
 export default class Workspace extends Backbone.Router {
 
@@ -100,7 +101,7 @@ export default class Workspace extends Backbone.Router {
 		if (!this.appPage) {
 			this.appPage = new AppView({
 				viewCollection: this.model
-			}, this.categoryList, this.keywords);
+			}, this.categoryList, this.keywords, MonthSelect.getInstance());
 		}
 		this.appPage.show();
 		this.currentPage = this.appPage;

@@ -5,7 +5,7 @@ import PersistenceOptions = Backbone.PersistenceOptions;
 import Workspace from '../Workspace';
 import ParseCSV from './ParseCSV';
 import Table from "./Table";
-import MonthSelect from '../MonthSelect';
+import MonthSelect from '../MonthSelect/MonthSelect';
 import {CollectionController} from '../CollectionController';
 import { saveAs } from  'file-saver';
 import * as toastr from 'toastr';

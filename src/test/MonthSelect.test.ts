@@ -1,11 +1,10 @@
+import MonthSelect from "../MonthSelect/MonthSelect";
+import MonthSelectMock from "./helper/MonthSelectMock";
+import ExpensesMock from "../Util/ExpensesMock";
 
-import Expenses from "../src/Expenses/Expenses";
 let createDocument = require('./helper/createDocument');
 createDocument['default']();
 
-import MonthSelect from "../src/MonthSelect";
-import MonthSelectMock from "./helper/MonthSelectMock";
-import ExpensesMock from "../src/Util/ExpensesMock";
 let assert = require('assert');
 //import expect, { createSpy, spyOn, isSpy } from 'expect';
 let expect = require('expect');

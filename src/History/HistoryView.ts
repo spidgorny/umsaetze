@@ -1,6 +1,6 @@
 import MyView from "./MyView";
 import Expenses from "../Expenses/Expenses";
-import MonthSelect from "../MonthSelect";
+import MonthSelect from "../MonthSelect/MonthSelect";
 import Transaction from "../Expenses/Transaction";
 import {default as SLTable} from "../Util/SLTable";
 import Handlebars from 'handlebars';

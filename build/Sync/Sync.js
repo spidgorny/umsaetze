@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Transaction_1 = require("../Expenses/Transaction");
 const main_1 = require("../main");
 const ParseCSV_1 = require("./ParseCSV");
-const MonthSelect_1 = require("../MonthSelect");
+const MonthSelect_1 = require("../MonthSelect/MonthSelect");
 const CollectionController_1 = require("../CollectionController");
 const toastr = require("toastr");
 const Chance = require("chance");

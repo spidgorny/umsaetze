@@ -9,7 +9,7 @@ import KeywordCollection from '../Keyword/KeywordCollection';
 import Keyword from '../Keyword/Keyword';
 import CategoryCount from '../Category/CategoryCount';
 import {debug} from '../main';
-import MonthSelect from '../MonthSelect';
+import MonthSelect from '../MonthSelect/MonthSelect';
 // import FakeJQueryXHR from '../FakeJQueryXHR';
 import {LocalStorage} from 'backbone.localstorage';
 // import * as Date from 'datejs';

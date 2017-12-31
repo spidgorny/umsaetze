@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Transaction_1 = require("./Transaction");
 const Backbone = require("backbone");
 const CategoryCount_1 = require("../Category/CategoryCount");
-const MonthSelect_1 = require("../MonthSelect");
+const MonthSelect_1 = require("../MonthSelect/MonthSelect");
 const backbone_localstorage_1 = require("backbone.localstorage");
 const _ = require("underscore");
 class Expenses extends Backbone.Collection {
