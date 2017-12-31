@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Keyword_1 = require("../Keyword/Keyword");
 const main_1 = require("../main");
-const Table_1 = require("../Sync/Table");
 const $ = require("jquery");
 const _ = require("underscore");
 const handlebars_1 = require("handlebars");
 const Backbone = require("backbone");
+const CategoryCount_1 = require("../Category/CategoryCount");
 class ExpenseTable extends Backbone.View {
     constructor(options, keywords) {
         super(options);
@@ -52,12 +52,12 @@ class ExpenseTable extends Backbone.View {
         return this;
     }
     getTransactionAttributesTable() {
-        let visible = this.model.getVisible();
-        let table = new Table_1.default();
+        let visible = this.model.getSorted();
+        let table = [];
         _.each(visible, (transaction) => {
-            let attributes = transaction.toJSON();
+            const attributes = transaction.toJSON();
             attributes.sDate = transaction.getDate().toString('yyyy-MM-dd');
-            attributes.cssClass = attributes.category == 'Default'
+            attributes.cssClass = attributes.category == CategoryCount_1.default.DEFAULT
                 ? 'bg-warning' : '';
             attributes.categoryOptions = this.getCategoryOptions(transaction);
             attributes.background = this.categoryList.getColorFor(transaction.get('category'));
@@ -65,7 +65,6 @@ class ExpenseTable extends Backbone.View {
             attributes.amount = attributes.amount.toFixed(2);
             table.push(attributes);
         });
-        table = new Table_1.default(_.sortBy(table, 'date'));
         return table;
     }
     openSelect(event) {

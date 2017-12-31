@@ -1,6 +1,3 @@
-///<reference path="../../node_modules/@types/backbone/index.d.ts" />
-///<reference path="../../node_modules/@types/datejs/index.d.ts" />
-
 import Transaction from './Transaction';
 import Backbone = require('backbone');
 import CollectionFetchOptions = Backbone.CollectionFetchOptions;
@@ -10,15 +7,9 @@ import Keyword from '../Keyword/Keyword';
 import CategoryCount from '../Category/CategoryCount';
 import {debug} from '../main';
 import MonthSelect from '../MonthSelect/MonthSelect';
-// import FakeJQueryXHR from '../FakeJQueryXHR';
 import {LocalStorage} from 'backbone.localstorage';
-// import * as Date from 'datejs';
+import 'datejs';
 import * as _ from 'underscore';
-// import Timer from 'elapse';
-
-// Timer.configure({
-// 	debug: true
-// });
 
 export default class Expenses extends Backbone.Collection<Transaction> {
 
@@ -28,13 +19,13 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 
 	selectedMonth: Date;
 
-	comparator = Expenses.comparatorFunction;
+	comparator;
 
 	_events;
 
 	static comparatorFunction(compare: Transaction, to?: Transaction) {
-		return compare.date == to.date
-			? 0 : (compare.date > to.date ? 1 : -1);
+		return compare.getDate() == to.getDate()
+			? 0 : (compare.getDate() > to.getDate() ? 1 : -1);
 	}
 
 	constructor(models?: Transaction[] | Object[], options?: any) {
@@ -47,6 +38,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		this.on("all", () => {
 			//console.log("Expenses");
 		});
+		this.comparator = Expenses.comparatorFunction;
 	}
 
 	/**
@@ -241,10 +233,20 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	}
 
 	getSorted() {
-		this.sort();
+		// this.sort();
 		let visible = this.getVisible();
-		// return _.sortBy(visible, 'attributes.date');
-		return visible;
+		// return visible;
+		// const sorted = _.sortBy(visible, 'date');
+		const sorted = visible.sort(this.comparator);
+
+		/*const dates = [];
+		sorted.forEach(el => {
+			dates.push(el.getDate().toString('yyyy-MM-dd'));
+		});
+		console.log(dates);
+		*/
+
+		return sorted;
 	}
 
 	/**

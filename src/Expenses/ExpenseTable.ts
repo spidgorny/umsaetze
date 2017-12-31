@@ -12,6 +12,7 @@ import * as _ from 'underscore';
 import handlebars from 'handlebars';
 // import elapse from 'elapse';
 import Backbone = require('backbone');
+import CategoryCount from "../Category/CategoryCount";
 
 // elapse.configure({
 // 	debug: true
@@ -87,12 +88,12 @@ export default class ExpenseTable extends Backbone.View<any> {
 	}
 
 	getTransactionAttributesTable() {
-		let visible = this.model.getVisible();
-		let table = new Table();
+		let visible = this.model.getSorted();
+		let table = [];
 		_.each(visible, (transaction: Transaction) => {
-			let attributes = transaction.toJSON();
+			const attributes = transaction.toJSON();
 			attributes.sDate = transaction.getDate().toString('yyyy-MM-dd');
-			attributes.cssClass = attributes.category == 'Default'
+			attributes.cssClass = attributes.category == CategoryCount.DEFAULT
 				? 'bg-warning' : '';
 			attributes.categoryOptions = this.getCategoryOptions(transaction);
 			attributes.background = this.categoryList.getColorFor(transaction.get('category'));
@@ -102,7 +103,11 @@ export default class ExpenseTable extends Backbone.View<any> {
 			table.push(attributes);
 		});
 		// sortBy only works with direct attributes (not Model)
-		table = new Table(_.sortBy(table, 'date'));
+		//table = new Table(_.sortBy(table, 'date'));
+		// table = new Table(_.sortBy(table, 'sDate'));
+		// table = _.sortBy(table, el => {
+		// 	return el.date;
+		// });
 		return table;
 	}
 

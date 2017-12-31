@@ -5,11 +5,15 @@ const Backbone = require("backbone");
 const CategoryCount_1 = require("../Category/CategoryCount");
 const MonthSelect_1 = require("../MonthSelect/MonthSelect");
 const backbone_localstorage_1 = require("backbone.localstorage");
+require("datejs");
 const _ = require("underscore");
 class Expenses extends Backbone.Collection {
+    static comparatorFunction(compare, to) {
+        return compare.getDate() == to.getDate()
+            ? 0 : (compare.getDate() > to.getDate() ? 1 : -1);
+    }
     constructor(models, options) {
         super(models, options);
-        this.comparator = Expenses.comparatorFunction;
         this.localStorage = new backbone_localstorage_1.LocalStorage("Expenses");
         this.listenTo(this, 'change', () => {
             console.log('Expenses changed event, saveAll()');
@@ -17,10 +21,7 @@ class Expenses extends Backbone.Collection {
         });
         this.on("all", () => {
         });
-    }
-    static comparatorFunction(compare, to) {
-        return compare.date == to.date
-            ? 0 : (compare.date > to.date ? 1 : -1);
+        this.comparator = Expenses.comparatorFunction;
     }
     fetch(options = {}) {
         let models = this.localStorage.findAll();
@@ -173,9 +174,9 @@ class Expenses extends Backbone.Collection {
         return this.getVisible().length;
     }
     getSorted() {
-        this.sort();
         let visible = this.getVisible();
-        return visible;
+        const sorted = visible.sort(this.comparator);
+        return sorted;
     }
     setCategories(keywords) {
         console.group('Expenses.setCategories');
