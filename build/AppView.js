@@ -12,7 +12,6 @@ class AppView extends CollectionController_1.CollectionController {
     constructor(options, categoryList, keywords) {
         super();
         this.q = '';
-        console.log('construct AppView');
         this.collection = options.viewCollection;
         this.setElement($('#app'));
         this.setTemplate();
@@ -43,9 +42,10 @@ class AppView extends CollectionController_1.CollectionController {
     render() {
         console.log('AppView.render()', this.collection.size());
         this.setTemplate();
+        console.log('this.table.render()');
         this.table.render();
         this.categories.render();
-        CollectionController_1.CollectionController.$('#applyKeywords').on('click', this.applyKeywords.bind(this));
+        CollectionController_1.CollectionController.$('#applyKeywords').off().on('click', this.applyKeywords.bind(this));
         return this;
     }
     setTemplate() {
@@ -91,7 +91,7 @@ class AppView extends CollectionController_1.CollectionController {
     applyKeywords(event) {
         event.preventDefault();
         console.log('applyKeywords');
-        this.table.model.setCategories(this.table.keywords);
+        this.collection.setCategories(this.keywords);
     }
 }
 exports.default = AppView;

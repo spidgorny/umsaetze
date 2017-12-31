@@ -259,6 +259,8 @@ export default class ExpenseTable extends Backbone.View<any> {
 			category: categoryName,
 		}));
 		this.model.setCategories(this.keywords);
+
+		console.log('this.render()');
 		this.render();
 
 		setTimeout(() => {
@@ -271,8 +273,10 @@ export default class ExpenseTable extends Backbone.View<any> {
 		let button = $(event.target);
 		let dataID = button.closest('tr').attr('data-id');
 		console.log('deleteRow', dataID);
-		this.model.remove(dataID);
+		this.model.remove(dataID);	// there are no events on 'remove'
 		this.model.saveAll();
+
+		console.log('this.render()');
 		this.render();
 	}
 

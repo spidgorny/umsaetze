@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Transaction_1 = require("./Transaction");
 const Backbone = require("backbone");
+const CategoryCount_1 = require("../Category/CategoryCount");
 const MonthSelect_1 = require("../MonthSelect");
 const backbone_localstorage_1 = require("backbone.localstorage");
 const _ = require("underscore");
@@ -11,7 +12,7 @@ class Expenses extends Backbone.Collection {
         this.comparator = Expenses.comparatorFunction;
         this.localStorage = new backbone_localstorage_1.LocalStorage("Expenses");
         this.listenTo(this, 'change', () => {
-            console.log('Expenses changed event');
+            console.log('Expenses changed event, saveAll()');
             this.saveAll();
         });
         this.on("all", () => {
@@ -177,18 +178,30 @@ class Expenses extends Backbone.Collection {
         return visible;
     }
     setCategories(keywords) {
+        console.group('Expenses.setCategories');
+        console.log('setCategories', this.size(), keywords.size());
+        let anythingChanged = false;
         this.each((row) => {
-            if (row.get('category') == 'Default') {
+            if (row.get('category') === CategoryCount_1.default.DEFAULT) {
+                let note = row.get('note');
                 keywords.each((key) => {
-                    let note = row.get('note');
-                    if (note.indexOf(key.word) > -1) {
+                    let found = note.indexOf(key.word);
+                    if (found > -1) {
                         console.log(note, 'contains', key.word, 'gets', key.category);
                         row.set('category', key.category, { silent: true });
+                        anythingChanged = true;
                     }
                 });
             }
         });
-        this.trigger('change');
+        if (anythingChanged) {
+            console.log('trigger change', this._events);
+            this.trigger('change');
+        }
+        else {
+            console.log('nothing changed');
+        }
+        console.groupEnd();
     }
     getMonthlyTotalsFor(category) {
         let sparks = {};

@@ -43,8 +43,11 @@ class Transaction extends Backbone.Model {
         return json;
     }
     setCategory(category) {
+        console.group('Transaction.setCategory');
+        console.warn('this.set', this._events);
         this.set('category', category);
         this.collection.localStorage.update(this);
+        console.groupEnd();
     }
     getDate() {
         let date = this.get('date');

@@ -1,10 +1,10 @@
 import Workspace from './Workspace';
-console.log(Workspace);
-// import Backbone from 'backbone-es6/src/Backbone.js';
 import Backbone = require('backbone');
 import * as $ from "jquery";
 import {Tour} from 'bootstrap-tour';
-console.log('Tour', Tour);
+
+// console.log(Workspace);
+// console.log('Tour', Tour);
 
 export class Umsaetze {
 

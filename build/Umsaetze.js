@@ -1,11 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Workspace_1 = require("./Workspace");
-console.log(Workspace_1.default);
 const Backbone = require("backbone");
 const $ = require("jquery");
 const bootstrap_tour_1 = require("bootstrap-tour");
-console.log('Tour', bootstrap_tour_1.Tour);
 class Umsaetze {
     constructor() {
         this.router = new Workspace_1.default();

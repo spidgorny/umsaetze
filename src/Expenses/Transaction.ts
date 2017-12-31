@@ -23,6 +23,8 @@ export default class Transaction extends Backbone.Model {
 	note: String;
 	collection: Backbone.Collection<any>;
 
+	_events;
+
 	constructor(attributes: Object, options?: Object) {
 		super(attributes, options);
 		this.defaults = <any>{
@@ -75,8 +77,11 @@ export default class Transaction extends Backbone.Model {
 	}
 
 	setCategory(category) {
+		console.group('Transaction.setCategory');
+		console.warn('this.set', this._events);
 		this.set('category', category);
 		(<Expenses>this.collection).localStorage.update(this);
+		console.groupEnd();
 	}
 
 	/**

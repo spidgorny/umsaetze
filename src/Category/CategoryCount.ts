@@ -11,6 +11,8 @@ export default class CategoryCount extends Backbone.Model {
 
 	color: string;
 
+	static DEFAULT: string = 'Default';
+
 	constructor(...args: any[]) {
 		super();
 		this.set('catName', args[0].catName);	// this should not be necessary but it is

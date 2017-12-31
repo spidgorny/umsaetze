@@ -20,6 +20,8 @@ export default class CategoryCollection
 
 	expenses: Expenses;
 
+	_events;
+
 	constructor(options?) {
 		super();
 		let ls = new LocalStorage('Categories');
@@ -105,6 +107,9 @@ export default class CategoryCollection
 		});
 	}
 
+	/**
+	 * This is called when expenses change.
+	 */
 	getCategoriesFromExpenses() {
 		console.profile('getCategoriesFromExpenses');
 		// this.reset();	// don't reset - loosing colors
@@ -122,6 +127,7 @@ export default class CategoryCollection
 		console.profileEnd();
 
 		// when we recalculated the data we trigger the view render
+		console.warn('trigger CategoryCollection change', this._events);
 		this.trigger('change'); // commented because of infinite loop
 	}
 

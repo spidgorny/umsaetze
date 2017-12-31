@@ -176,6 +176,7 @@ class ExpenseTable extends Backbone.View {
             category: categoryName,
         }));
         this.model.setCategories(this.keywords);
+        console.log('this.render()');
         this.render();
         setTimeout(() => {
             console.log('Scrolling', scrollTop);
@@ -188,6 +189,7 @@ class ExpenseTable extends Backbone.View {
         console.log('deleteRow', dataID);
         this.model.remove(dataID);
         this.model.saveAll();
+        console.log('this.render()');
         this.render();
     }
     onCheck(event) {

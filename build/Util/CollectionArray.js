@@ -9,13 +9,17 @@ class CollectionArray extends Array {
         this.name = this.constructor.prototype.name;
     }
     fetch() {
+        let timerName = 'CollectionArray.fetch: ' + this.modelClass.constructor.name;
+        console.time(timerName);
         let models = simpleStorage.get(this.name) || [];
+        console.log('adding', models.length);
         models.forEach((row) => {
             if (row) {
                 let model = new this.modelClass(row);
-                this.add(model);
+                this.models.push(model);
             }
         });
+        console.timeEnd(timerName);
     }
     add(model) {
         this.models.push(model);

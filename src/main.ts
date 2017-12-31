@@ -2,7 +2,7 @@ import * as $ from "jquery";
 import {Umsaetze} from './Umsaetze';
 const Backbone = require('backbone');
 
-console.log('Umsaetze', Umsaetze);
+//console.log('Umsaetze', Umsaetze);
 
 interface Window {
 	__backboneAgent: any;

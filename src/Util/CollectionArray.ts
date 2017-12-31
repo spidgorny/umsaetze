@@ -19,13 +19,18 @@ export default class CollectionArray extends Array {
 	 * Call this after setting this.modelClass
 	 */
 	fetch() {
+		let timerName = 'CollectionArray.fetch: ' + this.modelClass.constructor.name;
+		console.time(timerName);
 		let models = simpleStorage.get(this.name) || [];
+		console.log('adding', models.length);
 		models.forEach((row) => {
 			if (row) {
 				let model = new this.modelClass(row);
-				this.add(model);
+				// this.add(model); // will save
+				this.models.push(model); // will not save
 			}
 		});
+		console.timeEnd(timerName);
 	}
 
 	add(model) {

@@ -48,7 +48,7 @@ export default class AppView extends CollectionController<Expenses> {
 				categoryList: CategoryCollection,
 				keywords: KeywordCollection) {
 		super();
-		console.log('construct AppView');
+		// console.log('construct AppView');
 		this.collection = options.viewCollection;
 		this.setElement($('#app'));
 		this.setTemplate();
@@ -96,9 +96,12 @@ export default class AppView extends CollectionController<Expenses> {
 		// this.collection.setAllVisible();
 		// this.collection.filterByMonth();
 
+		// commented because the change event from CategoryCollection has rendered
+		console.log('this.table.render()');
 		this.table.render();
+
 		this.categories.render();
-		CollectionController.$('#applyKeywords').on('click', this.applyKeywords.bind(this));
+		CollectionController.$('#applyKeywords').off().on('click', this.applyKeywords.bind(this));
 		// let popover = $('[data-toggle="popover"]').popover();
 		// console.log(popover);
 		return this;
@@ -168,7 +171,7 @@ export default class AppView extends CollectionController<Expenses> {
 	applyKeywords(event: MouseEvent) {
 		event.preventDefault();
 		console.log('applyKeywords');
-		this.table.model.setCategories(this.table.keywords);
+		this.collection.setCategories(this.keywords);
 	}
 
 }

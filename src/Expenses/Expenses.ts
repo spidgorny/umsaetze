@@ -30,6 +30,8 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 
 	comparator = Expenses.comparatorFunction;
 
+	_events;
+
 	static comparatorFunction(compare: Transaction, to?: Transaction) {
 		return compare.date == to.date
 			? 0 : (compare.date > to.date ? 1 : -1);
@@ -39,7 +41,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		super(models, options);
 		this.localStorage = new LocalStorage("Expenses");
 		this.listenTo(this, 'change', () => {
-			console.log('Expenses changed event');
+			console.log('Expenses changed event, saveAll()');
 			this.saveAll();
 		});
 		this.on("all", () => {
@@ -245,20 +247,36 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		return visible;
 	}
 
+	/**
+	 * Called by [Apply Keywords] button
+	 * @param {KeywordCollection} keywords
+	 */
 	setCategories(keywords: KeywordCollection) {
+		console.group('Expenses.setCategories');
+		console.log('setCategories', this.size(), keywords.size());
+		let anythingChanged = false;
 		this.each((row: Transaction) => {
-			if (row.get('category') == 'Default') {
+			if (row.get('category') === CategoryCount.DEFAULT) {
+				let note = row.get('note');
+				// console.log(note.length, keywords.size());
 				keywords.each((key: Keyword) => {
-					//console.log(key);
-					let note = row.get('note');
-					if (note.indexOf(key.word) > -1) {
+					let found = note.indexOf(key.word);
+					// console.log(note.length, key.word, found);
+					if (found > -1) {
 						console.log(note, 'contains', key.word, 'gets', key.category);
 						row.set('category', key.category, { silent: true });
+						anythingChanged = true;
 					}
 				});
 			}
 		});
-		this.trigger('change');
+		if (anythingChanged) {
+			console.log('trigger change', this._events);
+			this.trigger('change');
+		} else {
+			console.log('nothing changed');
+		}
+		console.groupEnd();
 	}
 
 	/**

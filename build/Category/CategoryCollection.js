@@ -73,6 +73,7 @@ class CategoryCollection extends backbone_1.Collection {
         });
         this.sortBy('amount');
         console.profileEnd();
+        console.warn('trigger CategoryCollection change', this._events);
         this.trigger('change');
     }
     incrementCategoryData(categoryName, transaction) {

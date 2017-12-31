@@ -23,7 +23,6 @@ class KeywordsView extends CollectionController_1.CollectionController {
         else {
             this.$el.html('Loading template...');
             let $link = $('#KeywordsTemplate');
-            console.log($link);
             $link.load($link.attr('href'), (html) => {
                 this.template = _.template(html);
                 this.renderTemplate();

@@ -54,5 +54,6 @@ class CategoryCount extends Backbone.Model {
         return avg.toFixed(2);
     }
 }
+CategoryCount.DEFAULT = 'Default';
 exports.default = CategoryCount;
 //# sourceMappingURL=CategoryCount.js.map

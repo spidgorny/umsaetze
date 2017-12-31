@@ -29,7 +29,7 @@ export default class Workspace extends Backbone.Router {
 
 	model: Expenses;
 	categoryList: CategoryCollection;
-	keywords = new KeywordCollection();
+	keywords: KeywordCollection;
 
 	appPage: AppView;
 	syncPage: Sync;
@@ -47,6 +47,9 @@ export default class Workspace extends Backbone.Router {
 		this.model.fetch();
 		this.categoryList = new CategoryCollection();
 		this.categoryList.setExpenses(this.model);
+
+		this.keywords = new KeywordCollection();
+		console.log('this.keywords', this.keywords.size());
 	}
 
 	activateMenu() {

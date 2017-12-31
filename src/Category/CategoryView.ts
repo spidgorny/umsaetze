@@ -38,6 +38,9 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 		this.listenTo(this.expenses, 'change', this.recalculate);
 	}
 
+	/**
+	 * Triggered on change in expenses
+	 */
 	recalculate() {
 		console.warn('CategoryView.recalculate');
 		this.model.getCollection().getCategoriesFromExpenses();
