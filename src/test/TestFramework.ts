@@ -15,14 +15,29 @@ export default class TestFramework {
 		}
 		// console.log(testFunctions);
 		for (let method of testFunctions) {
-			console.log('=== ', method, ' ===');
+			this.runTest(method);
 			this[method].call(this);
+		}
+	}
+
+	runTest(method) {
+		console.log('');
+		console.log('=== ', method, ' ===');
+	}
+
+	error(message: string, must: any, is: any) {
+		console.error(message);
+	}
+
+	assert(b: boolean, message?: string) {
+		if (!b) {
+			this.error(message, true, b);
 		}
 	}
 
 	assertEquals(must, is, message?: string) {
 		if (must != is) {
-			console.error(message, must, is);
+			this.error(message, must, is);
 		}
 	}
 

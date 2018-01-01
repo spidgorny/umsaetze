@@ -2,8 +2,6 @@ import Backbone = require('backbone');
 import * as md5 from 'md5';
 import Expenses from "./Expenses";
 import {ModelSetOptions} from "backbone";
-import Workspace from "../Workspace";
-import {isUndefined} from "util";
 import * as _ from 'underscore';
 
 /*
@@ -27,7 +25,6 @@ export default class Transaction extends Backbone.Model {
 		category: string;
 		amount: number;
 		note: string;
-		visible: boolean;
 		done: boolean;
 	};
 
@@ -36,10 +33,15 @@ export default class Transaction extends Backbone.Model {
 	collection: Backbone.Collection<any>;
 	expenses: Expenses;
 
+	// outside of attributes as this will be calculated
+	visible: boolean = true;
+
 	constructor(attributes: Object, options?: Object) {
 		super(attributes, options);
-		this.injectExpenses();
+		// this.injectExpenses(); // see TransactionFactory
+	}
 
+	init() {
 		this.defaults = <any>{
 			visible: true,
 		};
@@ -70,10 +72,6 @@ export default class Transaction extends Backbone.Model {
 		if (!this.has('done')) {
 			this.set('done', false);
 		}
-	}
-
-	injectExpenses() {
-		this.expenses = Workspace.getInstance().model;
 	}
 
 	sign() {
@@ -130,11 +128,25 @@ export default class Transaction extends Backbone.Model {
 		return parseFloat(this.get('amount'));
 	}
 
+	get(field: string) {
+		if (field === 'visible') {
+			// console.log('get visible', this.visible);
+			return this.visible;
+		} else {
+			return super.get(field);
+		}
+	}
+
 	set(field: string, value: any, options?: ModelSetOptions) {
-		super.set(field, value, options);
-		if (_.isString(field)) {
-			console.log('Transaction updated: ', field, value);
-			this.expenses.localStorage.update(this);
+		if (field === 'visible') {
+			// console.log('set visible', value);
+			this.visible = value;
+		} else {
+			super.set(field, value, options);
+			if (_.isString(field)) {
+				console.log('Transaction updated: ', field, value);
+				this.expenses.localStorage.update(this);
+			}
 		}
 		return this;
 	}

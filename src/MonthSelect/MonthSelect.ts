@@ -1,7 +1,7 @@
 import Backbone = require('backbone');
 import Expenses from '../Expenses/Expenses';
 import {LocalStorage} from 'backbone.localstorage';
-import ExpensesMock from '../Util/ExpensesMock';
+import ExpensesMock from '../Expenses/ExpensesMock';
 import * as $ from 'jquery';
 import {CurrentMonth} from "./CurrentMonth";
 
@@ -36,9 +36,14 @@ export default class MonthSelect extends Backbone.View<any> {
 
 		// this is a problem for HistoryView because it switches to page type
 		// this.monthOptions.on('click', this.clickOnMonthAndNavigate.bind(this));
-		this.monthOptions.on('click', this.clickOnMonth.bind(this));
+		this.monthOptions
+			.off('click')
+			.on('click', this.clickOnMonth.bind(this));
 
-		this.yearSelect.on('change', this.changeYear.bind(this));
+		this.yearSelect
+			.off('change')
+			.on('change', this.changeYear.bind(this));
+
 		//this.localStorage = new Backbone.LocalStorage('MonthSelect');
 		let year = this.storageProvider.getItem('MonthSelect.year');
 		if (year) {
@@ -194,10 +199,7 @@ export default class MonthSelect extends Backbone.View<any> {
 	 * @returns Date
 	 */
 	getSelected() {
-		let sSelectedDate = this.currentMonth.selectedYear+'-'+this.currentMonth.getMonthIndex()+'-01';
-		let selectedDate = new Date(sSelectedDate);
-		//console.log('selectedDate', sSelectedDate, selectedDate);
-		return selectedDate;
+		return this.currentMonth.getSelected();
 	}
 
 	update(collection: Expenses|ExpensesMock) {

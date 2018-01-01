@@ -8,6 +8,7 @@ import * as $ from 'jquery';
 import {Chart} from 'chart.js';
 import {debug} from '../main';
 import CategoryCollectionModel from "./CategoryCollectionModel";
+import {CurrentMonth} from "../MonthSelect/CurrentMonth";
 
 // elapse.configure({
 // 	debug: true
@@ -17,17 +18,24 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 
 	model: CategoryCollectionModel;
 
+	currentMonth: CurrentMonth;
+
 	expenses: Expenses;
 
 	template = _.template($('#categoryTemplate').html());
 
 	myPieChart;
 
-	constructor(options) {
+	constructor(options: any, currentMonth: CurrentMonth) {
 		super(options);
+		this.currentMonth = currentMonth;
 		this.setElement($('#categories'));
 		this.listenTo(this.model, 'change', this.render);
-		this.$el.on('click', 'a.filterByCategory', this.filterByCategory.bind(this));
+
+		this.$el
+			.off('click')
+			.on('click', 'a.filterByCategory', this.filterByCategory.bind(this));
+
 		this.on("all", () => {
 			debug("CategoryView")
 		});
@@ -178,11 +186,11 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 		//this.expenses.filterByMonth();
 		if (cat) {
 			this.expenses.setAllVisible();
-			this.expenses.filterByMonth();
+			this.expenses.filterByMonth(this.currentMonth.getSelected());
 			this.expenses.filterByCategory(cat);
 		} else {
 			this.expenses.setAllVisible();
-			this.expenses.filterByMonth();
+			this.expenses.filterByMonth(this.currentMonth.getSelected());
 		}
 		this.expenses.trigger('change');	// slow!
 	}

@@ -14,7 +14,9 @@ import { CollectionController } from './CollectionController';
 import * as $ from 'jquery';
 import CategoryCollectionModel from "./Category/CategoryCollectionModel";
 import MonthSelect from "./MonthSelect/MonthSelect";
-import {CurrentMonth} from "./MonthSelect/CurrentMonth";
+import Transaction from "./Expenses/Transaction";
+import {TransactionFactory} from "./Expenses/TransactionFactory";
+import {LocalStorage} from 'backbone.localstorage';
 
 export default class Workspace extends Backbone.Router {
 
@@ -32,7 +34,7 @@ export default class Workspace extends Backbone.Router {
 	model: Expenses;
 	categoryList: CategoryCollection;
 	keywords: KeywordCollection;
-	currentMonth: CurrentMonth;
+	tf: TransactionFactory;
 
 	appPage: AppView;
 	syncPage: Sync;
@@ -55,18 +57,21 @@ export default class Workspace extends Backbone.Router {
 
 		(this as any)._bindRoutes();
 
-		this.model = new Expenses();
-		setTimeout(() => {
+		const expensesStorage = new LocalStorage("Expenses");
+		this.model = new Expenses([], {}, expensesStorage);
+		// setTimeout(() => {
 			this.model.fetch();
 			const monthSelect = MonthSelect.getInstance();
 			monthSelect.update(this.model);
-		}, 0);
+		// }, 0);
 
 		this.categoryList = new CategoryCollection();
 		this.categoryList.setExpenses(this.model);
 
 		this.keywords = new KeywordCollection();
 		console.log('this.keywords', this.keywords.size());
+
+		this.tf = new TransactionFactory(this.model);
 	}
 
 	activateMenu() {
@@ -133,7 +138,7 @@ export default class Workspace extends Backbone.Router {
 			$('#MonthSelect').hide();	// for consistency
 		}
 		if (!this.syncPage) {
-			this.syncPage = new Sync(this.model, this);
+			this.syncPage = new Sync(this.model, this, this.tf);
 		}
 		this.syncPage.render();
 		this.currentPage = this.syncPage;

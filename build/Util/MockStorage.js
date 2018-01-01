@@ -4,6 +4,9 @@ class MockStorage {
     constructor() {
         this.length = 0;
     }
+    findAll() {
+        return this;
+    }
     getItem($name) {
         return this[name];
     }

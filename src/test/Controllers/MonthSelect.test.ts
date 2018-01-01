@@ -1,8 +1,8 @@
-import MonthSelect from "../MonthSelect/MonthSelect";
-import MonthSelectMock from "./helper/MonthSelectMock";
-import ExpensesMock from "../Util/ExpensesMock";
+import MonthSelect from "../../MonthSelect/MonthSelect";
+import MonthSelectMock from "../helper/MonthSelectMock";
+import ExpensesMock from "../../Expenses/ExpensesMock";
 
-let createDocument = require('./helper/createDocument');
+let createDocument = require('../helper/createDocument');
 createDocument['default']();
 
 let assert = require('assert');

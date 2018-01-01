@@ -63,6 +63,15 @@ export class CurrentMonth {
 		this._selectedMonth = value;
 	}
 
+	/**
+	 * @public
+	 * @returns Date
+	 */
+	getSelected() {
+		let sSelectedDate = this.selectedYear+'-'+this.getMonthIndex()+'-01';
+		return new Date(sSelectedDate);
+	}
+
 	setEarliest(date: Date) {
 		this.earliest = date;
 		this.earliest.moveToFirstDayOfMonth()

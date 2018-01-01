@@ -78,10 +78,19 @@ export default class ExpenseTable extends Backbone.View<any> {
 		$('#dateTill').html(this.model.getDateTill().toString('yyyy-MM-dd'));
 		$('#numRows').html(this.model.getVisibleCount().toString());
 
-		this.$el.on('change', 'select', this.newCategory.bind(this));
-		this.$el.on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
-		this.$el.off('click', 'button.close').on('click', 'button.close', this.deleteRow.bind(this));
-		this.$el.on('click', 'input.checkedDone', this.onCheck.bind(this));
+		this.$el
+			.off('change', 'select')
+			.on('change', 'select', this.newCategory.bind(this));
+
+		this.$el
+			.off('mouseup', 'td.note')
+			.on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
+		this.$el
+			.off('click', 'button.close')
+			.on('click', 'button.close', this.deleteRow.bind(this));
+		this.$el
+			.off('click', 'input.checkedDone')
+			.on('click', 'input.checkedDone', this.onCheck.bind(this));
 
 		console.profileEnd();
 		return this;
@@ -133,7 +142,8 @@ export default class ExpenseTable extends Backbone.View<any> {
 							.text(value));
 				}
 			});
-			$select.on('change', this.newCategory.bind(this));
+
+			// $select.on('change', this.newCategory.bind(this));
 		}
 	}
 

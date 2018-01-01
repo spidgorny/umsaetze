@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Workspace_1 = require("./Workspace");
 const Backbone = require("backbone");
 const $ = require("jquery");
-const bootstrap_tour_1 = require("bootstrap-tour");
 class Umsaetze {
     constructor() {
         this.router = new Workspace_1.default();
@@ -41,17 +40,6 @@ class Umsaetze {
         });
     }
     tour() {
-        let tour = new bootstrap_tour_1.Tour({
-            steps: [
-                {
-                    element: "#app",
-                    title: "Let me show you how it works",
-                    content: "Here you will see all your expenses in a selected month."
-                },
-            ]
-        });
-        setTimeout(() => {
-        }, 5);
     }
 }
 exports.Umsaetze = Umsaetze;

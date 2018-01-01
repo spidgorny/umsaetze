@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Transaction_1 = require("../Expenses/Transaction");
 const main_1 = require("../main");
 const ParseCSV_1 = require("./ParseCSV");
 const MonthSelect_1 = require("../MonthSelect/MonthSelect");
@@ -15,7 +14,7 @@ const FileReaderJS = require("filereader.js");
 const chance = new Chance();
 require('file-saver');
 class Sync extends CollectionController_1.CollectionController {
-    constructor(expenses, router) {
+    constructor(expenses, router, tf) {
         super();
         this.$el = $('#app');
         this.localStorage = new backbone_localstorage_1.LocalStorage("Expenses");
@@ -29,6 +28,7 @@ class Sync extends CollectionController_1.CollectionController {
         });
         this.router = router;
         this.categories = this.router.categoryList;
+        this.tf = tf;
     }
     render() {
         if (this.template) {
@@ -36,8 +36,6 @@ class Sync extends CollectionController_1.CollectionController {
                 memoryRows: this.model.size(),
                 lsRows: this.localStorage.findAll().length,
             }));
-            CollectionController_1.CollectionController.$('#Refresh').on('click', this.refresh.bind(this));
-            CollectionController_1.CollectionController.$('#Generate').on('click', this.generate.bind(this));
             FileReaderJS.setupInput(document.getElementById('file-input-csv'), {
                 readAsDefault: 'Text',
                 on: {
@@ -50,9 +48,21 @@ class Sync extends CollectionController_1.CollectionController {
                     load: this.loadJSON.bind(this),
                 }
             });
-            CollectionController_1.CollectionController.$('#Save').on('click', this.save.bind(this));
-            CollectionController_1.CollectionController.$('#Clear').on('click', this.clear.bind(this));
-            CollectionController_1.CollectionController.$('#saveToLS').on('click', this.saveToLS.bind(this));
+            this.$el.find('#Refresh')
+                .off('click')
+                .on('click', this.refresh.bind(this));
+            this.$el.find('#Generate')
+                .off('click')
+                .on('click', this.generate.bind(this));
+            this.$el.find('#Save')
+                .off()
+                .on('click', this.save.bind(this));
+            this.$el.find('#Clear')
+                .off()
+                .on('click', this.clear.bind(this));
+            this.$el.find('#saveToLS')
+                .off()
+                .on('click', this.saveToLS.bind(this));
         }
         else {
             this.$el.html('Loading ...');
@@ -101,7 +111,7 @@ class Sync extends CollectionController_1.CollectionController {
     processRow(row, i, length) {
         this.slowUpdateLoadingBar(i, length);
         if (row && row.amount) {
-            this.model.add(new Transaction_1.default(row), { silent: true });
+            this.model.add(this.tf.make(row), { silent: true });
         }
     }
     updateLoadingBar(i, length) {
@@ -129,7 +139,7 @@ class Sync extends CollectionController_1.CollectionController {
             let data = JSON.parse(e.target.result);
             toastr.info('Importing ' + data.length + ' entries');
             _.each(data, (row) => {
-                this.model.add(new Transaction_1.default(row));
+                this.model.add(this.tf.make(row));
             });
             toastr.success('Imported');
             this.model.trigger('change');
@@ -168,7 +178,7 @@ class Sync extends CollectionController_1.CollectionController {
         for (let i of _.range(amount)) {
             let category = this.categories.random();
             console.log('random cat', category);
-            this.model.add(new Transaction_1.default({
+            this.model.add(this.tf.make({
                 account: account,
                 category: category
                     ? category.get('catName')

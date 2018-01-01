@@ -1,23 +1,20 @@
 import Transaction from './Transaction';
 import Backbone = require('backbone');
 import CollectionFetchOptions = Backbone.CollectionFetchOptions;
-import PersistenceOptions = Backbone.PersistenceOptions;
 import KeywordCollection from '../Keyword/KeywordCollection';
 import Keyword from '../Keyword/Keyword';
 import CategoryCount from '../Category/CategoryCount';
-import {debug} from '../main';
 import MonthSelect from '../MonthSelect/MonthSelect';
 import {LocalStorage} from 'backbone.localstorage';
 import 'datejs';
 import * as _ from 'underscore';
+import {LocalStorageInterface} from "../test/helper/LocalStorageInterface";
 
 export default class Expenses extends Backbone.Collection<Transaction> {
 
 	model: typeof Transaction;
 
 	localStorage: LocalStorage;
-
-	selectedMonth: Date;
 
 	comparator;
 
@@ -28,9 +25,9 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 			? 0 : (compare.getDate() > to.getDate() ? 1 : -1);
 	}
 
-	constructor(models?: Transaction[] | Object[], options?: any) {
+	constructor(models: Transaction[] | Object[] = [], options: any = {}, ls: LocalStorageInterface) {
 		super(models, options);
-		this.localStorage = new LocalStorage("Expenses");
+		this.localStorage = ls;
 		this.listenTo(this, 'change', () => {
 			console.log('Expenses changed event, saveAll()');
 			// this.saveAll();
@@ -53,7 +50,9 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		console.log('models from LS', models.length);
 		if (models.length) {
 			_.each(models, (el) => {
-				this.add(new Transaction(el));
+				let transaction = new Transaction(el);
+				transaction.init();
+				this.add(transaction);
 			});
 			//this.unserializeDate();
 			this.trigger('change');
@@ -168,34 +167,24 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	 * Will hide some visible
 	 * @param selectedMonth
 	 */
-	filterByMonth(selectedMonth?: Date) {
-		console.profile('Expense.filterByMonth');
-		if (selectedMonth) {
-			this.selectedMonth = selectedMonth;
-		} else if (this.selectedMonth) {
-			selectedMonth = this.selectedMonth;
-		} else {
-			//throw new Error('filterByMonth no month defined');
-			let ms = MonthSelect.getInstance();
-			selectedMonth = ms.getSelected();
-		}
-
-		console.log('filterMyMonth', selectedMonth);
+	filterByMonth(selectedMonth: Date) {
+		console.time('Expense.filterByMonth');
+		console.log('filterByMonth', selectedMonth.toString('yyyy-MM-dd'));
 		if (selectedMonth) {
 			let inThisMonth = this.whereMonth(selectedMonth);
 			let allOthers = _.difference(this.models, inThisMonth);
 			allOthers.forEach((row: Transaction) => {
 				row.set('visible', false, {silent: true});
 			});
-			this.saveAll();
+			// this.saveAll();
 		}
-		console.profileEnd();
+		console.timeEnd('Expense.filterByMonth');
 	}
 
 	whereMonth(selectedMonth: Date) {
 		let filtered = [];
 		this.each((row: Transaction) => {
-			let tDate: Date = row.get('date');
+			let tDate: Date = row.getDate();
 			let sameYear = tDate.getFullYear() == selectedMonth.getFullYear();
 			let sameMonth = tDate.getMonth() == selectedMonth.getMonth();
 			if (sameYear && sameMonth) {
@@ -234,7 +223,9 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	}
 
 	getVisible() {
-		return this.where({visible: true});
+		// visible is not a property in attributes anymore, so it does't work
+		// return this.where({visible: true});
+		return _(this.models).where({visible: true});
 	}
 
 	getVisibleCount() {
@@ -274,7 +265,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 					let found = note.indexOf(key.word);
 					// console.log(note.length, key.word, found);
 					if (found > -1) {
-						console.log(note, 'contains', key.word, 'gets', key.category);
+						//console.log(note, 'contains', key.word, 'gets', key.category);
 						row.set('category', key.category, { silent: true });
 						anythingChanged = true;
 					}

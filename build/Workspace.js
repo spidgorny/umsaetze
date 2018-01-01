@@ -13,6 +13,8 @@ const Backbone = require("backbone");
 const $ = require("jquery");
 const CategoryCollectionModel_1 = require("./Category/CategoryCollectionModel");
 const MonthSelect_1 = require("./MonthSelect/MonthSelect");
+const TransactionFactory_1 = require("./Expenses/TransactionFactory");
+const backbone_localstorage_1 = require("backbone.localstorage");
 class Workspace extends Backbone.Router {
     constructor(options) {
         super(options);
@@ -28,16 +30,16 @@ class Workspace extends Backbone.Router {
         };
         Workspace.instance = this;
         this._bindRoutes();
-        this.model = new Expenses_1.default();
-        setTimeout(() => {
-            this.model.fetch();
-            const monthSelect = MonthSelect_1.default.getInstance();
-            monthSelect.update(this.model);
-        }, 0);
+        const expensesStorage = new backbone_localstorage_1.LocalStorage("Expenses");
+        this.model = new Expenses_1.default([], {}, expensesStorage);
+        this.model.fetch();
+        const monthSelect = MonthSelect_1.default.getInstance();
+        monthSelect.update(this.model);
         this.categoryList = new CategoryCollection_1.default();
         this.categoryList.setExpenses(this.model);
         this.keywords = new KeywordCollection_1.default();
         console.log('this.keywords', this.keywords.size());
+        this.tf = new TransactionFactory_1.TransactionFactory(this.model);
     }
     static getInstance() {
         return Workspace.instance;
@@ -91,7 +93,7 @@ class Workspace extends Backbone.Router {
             $('#MonthSelect').hide();
         }
         if (!this.syncPage) {
-            this.syncPage = new Sync_1.default(this.model, this);
+            this.syncPage = new Sync_1.default(this.model, this, this.tf);
         }
         this.syncPage.render();
         this.currentPage = this.syncPage;

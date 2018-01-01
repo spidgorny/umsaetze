@@ -3,8 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Transaction_1 = require("./Transaction");
 const Backbone = require("backbone");
 const CategoryCount_1 = require("../Category/CategoryCount");
-const MonthSelect_1 = require("../MonthSelect/MonthSelect");
-const backbone_localstorage_1 = require("backbone.localstorage");
 require("datejs");
 const _ = require("underscore");
 class Expenses extends Backbone.Collection {
@@ -12,9 +10,9 @@ class Expenses extends Backbone.Collection {
         return compare.getDate() == to.getDate()
             ? 0 : (compare.getDate() > to.getDate() ? 1 : -1);
     }
-    constructor(models, options) {
+    constructor(models = [], options = {}, ls) {
         super(models, options);
-        this.localStorage = new backbone_localstorage_1.LocalStorage("Expenses");
+        this.localStorage = ls;
         this.listenTo(this, 'change', () => {
             console.log('Expenses changed event, saveAll()');
         });
@@ -27,7 +25,9 @@ class Expenses extends Backbone.Collection {
         console.log('models from LS', models.length);
         if (models.length) {
             _.each(models, (el) => {
-                this.add(new Transaction_1.default(el));
+                let transaction = new Transaction_1.default(el);
+                transaction.init();
+                this.add(transaction);
             });
             this.trigger('change');
         }
@@ -115,32 +115,21 @@ class Expenses extends Backbone.Collection {
         this.saveAll();
     }
     filterByMonth(selectedMonth) {
-        console.profile('Expense.filterByMonth');
-        if (selectedMonth) {
-            this.selectedMonth = selectedMonth;
-        }
-        else if (this.selectedMonth) {
-            selectedMonth = this.selectedMonth;
-        }
-        else {
-            let ms = MonthSelect_1.default.getInstance();
-            selectedMonth = ms.getSelected();
-        }
-        console.log('filterMyMonth', selectedMonth);
+        console.time('Expense.filterByMonth');
+        console.log('filterByMonth', selectedMonth.toString('yyyy-MM-dd'));
         if (selectedMonth) {
             let inThisMonth = this.whereMonth(selectedMonth);
             let allOthers = _.difference(this.models, inThisMonth);
             allOthers.forEach((row) => {
                 row.set('visible', false, { silent: true });
             });
-            this.saveAll();
         }
-        console.profileEnd();
+        console.timeEnd('Expense.filterByMonth');
     }
     whereMonth(selectedMonth) {
         let filtered = [];
         this.each((row) => {
-            let tDate = row.get('date');
+            let tDate = row.getDate();
             let sameYear = tDate.getFullYear() == selectedMonth.getFullYear();
             let sameMonth = tDate.getMonth() == selectedMonth.getMonth();
             if (sameYear && sameMonth) {
@@ -172,7 +161,7 @@ class Expenses extends Backbone.Collection {
         console.profileEnd();
     }
     getVisible() {
-        return this.where({ visible: true });
+        return _(this.models).where({ visible: true });
     }
     getVisibleCount() {
         return this.getVisible().length;
@@ -192,7 +181,6 @@ class Expenses extends Backbone.Collection {
                 keywords.each((key) => {
                     let found = note.indexOf(key.word);
                     if (found > -1) {
-                        console.log(note, 'contains', key.word, 'gets', key.category);
                         row.set('category', key.category, { silent: true });
                         anythingChanged = true;
                     }

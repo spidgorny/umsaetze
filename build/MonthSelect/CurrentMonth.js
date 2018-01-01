@@ -41,6 +41,10 @@ class CurrentMonth {
         }
         this._selectedMonth = value;
     }
+    getSelected() {
+        let sSelectedDate = this.selectedYear + '-' + this.getMonthIndex() + '-01';
+        return new Date(sSelectedDate);
+    }
     setEarliest(date) {
         this.earliest = date;
         this.earliest.moveToFirstDayOfMonth()

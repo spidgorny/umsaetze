@@ -1,4 +1,4 @@
-import TestFramework from './TestFramework';
+import TestFramework from '../TestFramework';
 import {KeywordsView} from "../src/Keyword/KeywordsView";
 
 class KeywordsViewTest extends TestFramework {

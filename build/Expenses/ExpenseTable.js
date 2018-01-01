@@ -44,10 +44,18 @@ class ExpenseTable extends Backbone.View {
         $('#dateFrom').html(this.model.getDateFrom().toString('yyyy-MM-dd'));
         $('#dateTill').html(this.model.getDateTill().toString('yyyy-MM-dd'));
         $('#numRows').html(this.model.getVisibleCount().toString());
-        this.$el.on('change', 'select', this.newCategory.bind(this));
-        this.$el.on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
-        this.$el.off('click', 'button.close').on('click', 'button.close', this.deleteRow.bind(this));
-        this.$el.on('click', 'input.checkedDone', this.onCheck.bind(this));
+        this.$el
+            .off('change', 'select')
+            .on('change', 'select', this.newCategory.bind(this));
+        this.$el
+            .off('mouseup', 'td.note')
+            .on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
+        this.$el
+            .off('click', 'button.close')
+            .on('click', 'button.close', this.deleteRow.bind(this));
+        this.$el
+            .off('click', 'input.checkedDone')
+            .on('click', 'input.checkedDone', this.onCheck.bind(this));
         console.profileEnd();
         return this;
     }
@@ -81,7 +89,6 @@ class ExpenseTable extends Backbone.View {
                         .text(value));
                 }
             });
-            $select.on('change', this.newCategory.bind(this));
         }
     }
     getCategoryOptions(transaction) {

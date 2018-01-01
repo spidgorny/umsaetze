@@ -1,7 +1,7 @@
 import Workspace from './Workspace';
 import Backbone = require('backbone');
 import * as $ from "jquery";
-import {Tour} from 'bootstrap-tour';
+// import {Tour} from 'bootstrap-tour';
 
 // console.log(Workspace);
 // console.log('Tour', Tour);
@@ -54,6 +54,7 @@ export class Umsaetze {
 	}
 
 	tour() {
+		/*
 		let tour = new Tour({
 			steps: [
 				{
@@ -69,6 +70,7 @@ export class Umsaetze {
 			// Start the tour
 			// tour.start();
 		}, 5);
+		*/
 	}
 
 }

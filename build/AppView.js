@@ -25,10 +25,10 @@ class AppView extends CollectionController_1.CollectionController {
         const categoryModel = new CategoryCollectionModel_1.default(this.categoryList);
         this.categories = new CategoryView_1.default({
             model: categoryModel
-        });
+        }, this.ms.currentMonth);
         this.categories.setExpenses(this.collection);
         this.listenTo(this.ms, 'MonthSelect:change', this.monthChange.bind(this));
-        this.collection.selectedMonth = this.ms.getSelected();
+        this.collection.filterByMonth(this.ms.getSelected());
         this.listenTo(this.collection, 'change', this.render);
         $('.custom-search-form input').on('keyup', _.debounce(this.onSearch.bind(this), 300));
         this.on('all', () => {

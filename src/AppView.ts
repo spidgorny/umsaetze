@@ -68,13 +68,14 @@ export default class AppView extends CollectionController<Expenses> {
 		const categoryModel = new CategoryCollectionModel(this.categoryList);
 		this.categories = new CategoryView({
 			model: categoryModel
-		});
+		}, this.ms.currentMonth);
 		this.categories.setExpenses(this.collection);
 		//console.log('category view collection', this.categories.model);
 
 		this.listenTo(this.ms, 'MonthSelect:change', this.monthChange.bind(this));
 
-		this.collection.selectedMonth = this.ms.getSelected();	// for filtering to know which month we're in
+		// for filtering to know which month we're in
+		this.collection.filterByMonth(this.ms.getSelected());
 
 		this.listenTo(this.collection, 'change', this.render);
 		//this.listenTo(this.collection, "change", this.table.render);
@@ -119,6 +120,9 @@ export default class AppView extends CollectionController<Expenses> {
 		}
 	}
 
+	/**
+	 * MonthSelect:change event handler
+	 */
 	monthChange() {
 		console.profile('AppView.monthChange');
 		this.collection.setAllVisible();						// silent

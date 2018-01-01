@@ -1,7 +1,12 @@
+import {LocalStorageInterface} from "../test/helper/LocalStorageInterface";
 
-export default class MockStorage {
+export default class MockStorage implements LocalStorageInterface {
 
-	length: number = 0;
+	protected length: number = 0;
+
+	findAll() {
+		return this;
+	}
 
 	getItem($name) {
 		return this[name];

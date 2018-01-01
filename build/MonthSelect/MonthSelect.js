@@ -13,8 +13,12 @@ class MonthSelect extends Backbone.View {
         if (!this.storageProvider) {
             this.storageProvider = window.localStorage;
         }
-        this.monthOptions.on('click', this.clickOnMonth.bind(this));
-        this.yearSelect.on('change', this.changeYear.bind(this));
+        this.monthOptions
+            .off('click')
+            .on('click', this.clickOnMonth.bind(this));
+        this.yearSelect
+            .off('change')
+            .on('change', this.changeYear.bind(this));
         let year = this.storageProvider.getItem('MonthSelect.year');
         if (year) {
             this.currentMonth.selectedYear = parseInt(year);
@@ -122,9 +126,7 @@ class MonthSelect extends Backbone.View {
         super.trigger(what);
     }
     getSelected() {
-        let sSelectedDate = this.currentMonth.selectedYear + '-' + this.currentMonth.getMonthIndex() + '-01';
-        let selectedDate = new Date(sSelectedDate);
-        return selectedDate;
+        return this.currentMonth.getSelected();
     }
     update(collection) {
         this.currentMonth.update(collection.getEarliest(), collection.getLatest());

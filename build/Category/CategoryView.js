@@ -6,12 +6,15 @@ const $ = require("jquery");
 const chart_js_1 = require("chart.js");
 const main_1 = require("../main");
 class CategoryView extends Backbone.View {
-    constructor(options) {
+    constructor(options, currentMonth) {
         super(options);
         this.template = _.template($('#categoryTemplate').html());
+        this.currentMonth = currentMonth;
         this.setElement($('#categories'));
         this.listenTo(this.model, 'change', this.render);
-        this.$el.on('click', 'a.filterByCategory', this.filterByCategory.bind(this));
+        this.$el
+            .off('click')
+            .on('click', 'a.filterByCategory', this.filterByCategory.bind(this));
         this.on("all", () => {
             main_1.debug("CategoryView");
         });
@@ -129,12 +132,12 @@ class CategoryView extends Backbone.View {
         let cat = this.model.get(id);
         if (cat) {
             this.expenses.setAllVisible();
-            this.expenses.filterByMonth();
+            this.expenses.filterByMonth(this.currentMonth.getSelected());
             this.expenses.filterByCategory(cat);
         }
         else {
             this.expenses.setAllVisible();
-            this.expenses.filterByMonth();
+            this.expenses.filterByMonth(this.currentMonth.getSelected());
         }
         this.expenses.trigger('change');
     }
