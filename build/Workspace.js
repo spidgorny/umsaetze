@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const AppView_1 = require("./AppView");
+const AppView_1 = require("./Expenses/AppView");
 const Sync_1 = require("./Sync/Sync");
 const Expenses_1 = require("./Expenses/Expenses");
 const CatPage_1 = require("./Category/CatPage");
@@ -31,7 +31,9 @@ class Workspace extends Backbone.Router {
         Workspace.instance = this;
         this._bindRoutes();
         const expensesStorage = new backbone_localstorage_1.LocalStorage("Expenses");
-        this.model = new Expenses_1.default([], {}, expensesStorage);
+        this.model = new Expenses_1.default([], {}, expensesStorage, null);
+        this.tf = new TransactionFactory_1.TransactionFactory(this.model);
+        this.model.tf = this.tf;
         this.model.fetch();
         const monthSelect = MonthSelect_1.default.getInstance();
         monthSelect.update(this.model);
@@ -39,7 +41,6 @@ class Workspace extends Backbone.Router {
         this.categoryList.setExpenses(this.model);
         this.keywords = new KeywordCollection_1.default();
         console.log('this.keywords', this.keywords.size());
-        this.tf = new TransactionFactory_1.TransactionFactory(this.model);
     }
     static getInstance() {
         return Workspace.instance;

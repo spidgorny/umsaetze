@@ -9,6 +9,7 @@ import {LocalStorage} from 'backbone.localstorage';
 import 'datejs';
 import * as _ from 'underscore';
 import {LocalStorageInterface} from "../test/helper/LocalStorageInterface";
+import {TransactionFactory} from "./TransactionFactory";
 
 export default class Expenses extends Backbone.Collection<Transaction> {
 
@@ -20,12 +21,17 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 
 	_events;
 
+	tf: TransactionFactory;
+
 	static comparatorFunction(compare: Transaction, to?: Transaction) {
 		return compare.getDate() == to.getDate()
 			? 0 : (compare.getDate() > to.getDate() ? 1 : -1);
 	}
 
-	constructor(models: Transaction[] | Object[] = [], options: any = {}, ls: LocalStorageInterface) {
+	constructor(models: Transaction[] | Object[] = [],
+				options: any = {},
+				ls: LocalStorageInterface,
+				tf: TransactionFactory = null) {
 		super(models, options);
 		this.localStorage = ls;
 		this.listenTo(this, 'change', () => {
@@ -50,8 +56,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		console.log('models from LS', models.length);
 		if (models.length) {
 			_.each(models, (el) => {
-				let transaction = new Transaction(el);
-				transaction.init();
+				let transaction = this.tf.make(el);
 				this.add(transaction);
 			});
 			//this.unserializeDate();

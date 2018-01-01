@@ -1,6 +1,7 @@
 import Expenses from "./Expenses";
 import Transaction from "./Transaction";
 import MockStorage from "../Util/MockStorage";
+import {TransactionFactory} from "./TransactionFactory";
 const fs = require('fs');
 
 export default class ExpensesMock extends Expenses {
@@ -9,8 +10,8 @@ export default class ExpensesMock extends Expenses {
 
 	models: Transaction[] = [];
 
-	constructor() {
-		super([], {}, new MockStorage());
+	constructor(tf: TransactionFactory) {
+		super([], {}, new MockStorage(), tf);
 	}
 
 	load(file) {

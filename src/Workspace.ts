@@ -1,4 +1,4 @@
-import AppView from './AppView';
+import AppView from './Expenses/AppView';
 import Sync from './Sync/Sync';
 import Expenses from './Expenses/Expenses';
 import { CatPage } from './Category/CatPage';
@@ -14,7 +14,6 @@ import { CollectionController } from './CollectionController';
 import * as $ from 'jquery';
 import CategoryCollectionModel from "./Category/CategoryCollectionModel";
 import MonthSelect from "./MonthSelect/MonthSelect";
-import Transaction from "./Expenses/Transaction";
 import {TransactionFactory} from "./Expenses/TransactionFactory";
 import {LocalStorage} from 'backbone.localstorage';
 
@@ -58,7 +57,9 @@ export default class Workspace extends Backbone.Router {
 		(this as any)._bindRoutes();
 
 		const expensesStorage = new LocalStorage("Expenses");
-		this.model = new Expenses([], {}, expensesStorage);
+		this.model = new Expenses([], {}, expensesStorage, null);
+		this.tf = new TransactionFactory(this.model);
+		this.model.tf = this.tf;
 		// setTimeout(() => {
 			this.model.fetch();
 			const monthSelect = MonthSelect.getInstance();
@@ -70,8 +71,6 @@ export default class Workspace extends Backbone.Router {
 
 		this.keywords = new KeywordCollection();
 		console.log('this.keywords', this.keywords.size());
-
-		this.tf = new TransactionFactory(this.model);
 	}
 
 	activateMenu() {

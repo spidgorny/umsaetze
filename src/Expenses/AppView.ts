@@ -1,19 +1,19 @@
-///<reference path="../node_modules/@types/backbone/index.d.ts" />
-import Expenses from './Expenses/Expenses';
-import ExpenseTable from './Expenses/ExpenseTable';
-import CategoryCollection from './Category/CategoryCollection';
-import CategoryView from './Category/CategoryView';
-import MonthSelect from './MonthSelect/MonthSelect';
-import Transaction from './Expenses/Transaction';
-import {debug} from './main';
-import { CollectionController } from './CollectionController';
+///<reference path="../../node_modules/@types/backbone/index.d.ts" />
+import Expenses from './Expenses';
+import ExpenseTable from './ExpenseTable';
+import CategoryCollection from '../Category/CategoryCollection';
+import CategoryView from '../Category/CategoryView';
+import MonthSelect from '../MonthSelect/MonthSelect';
+import Transaction from './Transaction';
+import {debug} from '../main';
+import { CollectionController } from '../CollectionController';
 import { ViewOptionsExpenses } from './ViewOptionsExpenses';
 // import Backbone from 'backbone-es6/src/Backbone.js';
 // import elapse from 'elapse';
 import * as $ from "jquery";
 import * as _ from 'underscore';
-import CategoryCollectionModel from "./Category/CategoryCollectionModel";
-import KeywordCollection from "./Keyword/KeywordCollection";
+import CategoryCollectionModel from "../Category/CategoryCollectionModel";
+import KeywordCollection from "../Keyword/KeywordCollection";
 
 // elapse.configure({
 // 	debug: true
@@ -62,8 +62,7 @@ export default class AppView extends CollectionController<Expenses> {
 		this.table = new ExpenseTable({
 			model: this.collection,
 			el: $('#expenseTable')
-		}, this.keywords);
-		this.table.setCategoryList(this.categoryList);
+		}, this.keywords, this.categoryList);
 
 		const categoryModel = new CategoryCollectionModel(this.categoryList);
 		this.categories = new CategoryView({

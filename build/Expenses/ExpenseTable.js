@@ -1,14 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Keyword_1 = require("../Keyword/Keyword");
 const main_1 = require("../main");
 const $ = require("jquery");
 const _ = require("underscore");
-const handlebars_1 = require("handlebars");
 const Backbone = require("backbone");
 const CategoryCount_1 = require("../Category/CategoryCount");
+const CategoryPopup_1 = require("./CategoryPopup");
 class ExpenseTable extends Backbone.View {
-    constructor(options, keywords) {
+    constructor(options, keywords, categoryList) {
         super(options);
         this.template = _.template($('#rowTemplate').html());
         this.keywords = keywords;
@@ -22,10 +21,9 @@ class ExpenseTable extends Backbone.View {
         this.on("all", () => {
             main_1.debug("ExpenseTable");
         });
-    }
-    setCategoryList(list) {
-        this.categoryList = list;
+        this.categoryList = categoryList;
         this.listenTo(this.categoryList, 'change', this.render);
+        this.categoryPopup = new CategoryPopup_1.CategoryPopup(this.$el, this.model, this.categoryList, this.keywords);
     }
     render(options) {
         if (options && options.noRender) {
@@ -48,14 +46,12 @@ class ExpenseTable extends Backbone.View {
             .off('change', 'select')
             .on('change', 'select', this.newCategory.bind(this));
         this.$el
-            .off('mouseup', 'td.note')
-            .on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
-        this.$el
             .off('click', 'button.close')
             .on('click', 'button.close', this.deleteRow.bind(this));
         this.$el
             .off('click', 'input.checkedDone')
             .on('click', 'input.checkedDone', this.onCheck.bind(this));
+        this.categoryPopup.bindEvents();
         console.profileEnd();
         return this;
     }
@@ -116,78 +112,6 @@ class ExpenseTable extends Backbone.View {
         else {
             console.error('Transaction with id=', id, 'not found');
         }
-    }
-    textSelectedEvent(event) {
-        let text = ExpenseTable.getSelectedText().trim();
-        if (text) {
-            let $contextMenu = $('#contextMenu');
-            if (!$contextMenu.length) {
-                let template = handlebars_1.default.compile($('#categoryMenu').html());
-                let menuHTML = template({
-                    catlist: this.categoryList.getOptions(),
-                });
-                $('body').append(menuHTML);
-                $contextMenu = $('#contextMenu');
-                console.log($contextMenu, event.clientX, event.clientY);
-            }
-            this.openMenu($contextMenu, event.clientX, event.clientY, this.applyFilter.bind(this, text));
-        }
-    }
-    static getSelectedText() {
-        if (window.getSelection) {
-            return window.getSelection().toString();
-        }
-        else if (typeof document['selection'] != 'undefined') {
-            return document['selection'].createRange().text;
-        }
-        return '';
-    }
-    openMenu(menuSelector, clientX, clientY, callback) {
-        let $menu = $(menuSelector)
-            .show()
-            .css({
-            position: "absolute",
-            left: ExpenseTable.getMenuPosition(clientX, 'width', 'scrollLeft', menuSelector),
-            top: ExpenseTable.getMenuPosition(clientY, 'height', 'scrollTop', menuSelector)
-        })
-            .off('click')
-            .on('click', 'a', function (e) {
-            let $selectedMenu = $(e.target);
-            if ($selectedMenu.length) {
-                $menu.hide();
-                callback.call(this, $selectedMenu);
-            }
-        });
-        setTimeout(function () {
-            $('body').click(function () {
-                $(menuSelector).hide();
-                $('body').off('click');
-            });
-        }, 0);
-    }
-    static getMenuPosition(mouse, direction, scrollDir, menuSelector) {
-        let $win = $(window);
-        let win = $win[direction](), scroll = $win[scrollDir](), menu = $(menuSelector)[direction](), position = mouse + scroll;
-        if (mouse + menu > win && menu < mouse)
-            position -= menu;
-        return position;
-    }
-    applyFilter(text, menu) {
-        let scrollTop = document.body.scrollTop;
-        console.log('scrollTop', scrollTop);
-        let categoryName = menu.text().trim();
-        console.log(text, 'to be', categoryName);
-        this.keywords.add(new Keyword_1.default({
-            word: text,
-            category: categoryName,
-        }));
-        this.model.setCategories(this.keywords);
-        console.log('this.render()');
-        this.render();
-        setTimeout(() => {
-            console.log('Scrolling', scrollTop);
-            $('body').scrollTop(scrollTop);
-        }, 0);
     }
     deleteRow(event) {
         let button = $(event.target);

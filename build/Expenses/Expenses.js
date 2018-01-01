@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Transaction_1 = require("./Transaction");
 const Backbone = require("backbone");
 const CategoryCount_1 = require("../Category/CategoryCount");
 require("datejs");
@@ -10,7 +9,7 @@ class Expenses extends Backbone.Collection {
         return compare.getDate() == to.getDate()
             ? 0 : (compare.getDate() > to.getDate() ? 1 : -1);
     }
-    constructor(models = [], options = {}, ls) {
+    constructor(models = [], options = {}, ls, tf = null) {
         super(models, options);
         this.localStorage = ls;
         this.listenTo(this, 'change', () => {
@@ -25,8 +24,7 @@ class Expenses extends Backbone.Collection {
         console.log('models from LS', models.length);
         if (models.length) {
             _.each(models, (el) => {
-                let transaction = new Transaction_1.default(el);
-                transaction.init();
+                let transaction = this.tf.make(el);
                 this.add(transaction);
             });
             this.trigger('change');
