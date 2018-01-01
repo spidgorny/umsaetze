@@ -72,7 +72,8 @@ class CurrentMonth {
     getShortMonthName() {
     }
     getShortMonthNameFor(index) {
-        return this.monthNames[index - 1].substr(0, 3);
+        const longName = this.monthNames[index - 1] || this.monthNames[0];
+        return longName.substr(0, 3);
     }
     update(earliest, latest) {
         this.setEarliest(earliest);

@@ -26,7 +26,7 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 
 	myPieChart;
 
-	constructor(options: any, currentMonth: CurrentMonth) {
+	constructor(options: any, currentMonth: CurrentMonth, expenses: Expenses) {
 		super(options);
 		this.currentMonth = currentMonth;
 		this.setElement($('#categories'));
@@ -39,9 +39,7 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 		this.on("all", () => {
 			debug("CategoryView")
 		});
-	}
 
-	setExpenses(expenses) {
 		this.expenses = expenses;
 		this.listenTo(this.expenses, 'change', this.recalculate);
 	}
@@ -56,13 +54,15 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 	}
 
 	render() {
-		console.profile('CategoryView.render');
-		let categoryCount = this.model.toJSON();
+		console.time('CategoryView.render');
+		let categoryCount = this.model.getCollection().toJSON();
+		console.log('categoryCount', categoryCount.length);
 
 		// remove income from %
 		let incomeRow: any = _.findWhere(categoryCount, {
 			catName: 'Income',
 		});
+		console.log('incomeRow', incomeRow);
 		categoryCount = _.without(categoryCount, incomeRow);
 
 		let sum: number = <number>_.reduce(categoryCount,
@@ -72,6 +72,21 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 			}, 0);
 		//console.log('sum', sum);
 
+		const content = this.renderTableRows(categoryCount, sum);
+		this.$('#catElements').html(content.join('\n'));
+		if (!incomeRow) {
+			incomeRow = { amount: 0 };
+		}
+		this.$('.income').html(incomeRow.amount.toFixed(2));
+		this.$('.total').html(sum.toFixed(2));
+
+		this.showPieChart(Math.abs(sum));
+
+		console.timeEnd('CategoryView.render');
+		return this;
+	}
+
+	renderTableRows(categoryCount: CategoryCount[], sum: number) {
 		categoryCount = _.sortBy(categoryCount, (el: CategoryCount) => {
 			return Math.abs(el.amount);
 		}).reverse();
@@ -80,7 +95,7 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 		_.each(categoryCount, (catCount: CategoryCount) => {
 			let width = Math.round(
 				100 * Math.abs(catCount.amount) / Math.abs(sum)
-				) + '%';
+			) + '%';
 			//console.log(catCount.catName, width, catCount.count, catCount.amount);
 			content.push(this.template(
 				_.extend(catCount, {
@@ -94,17 +109,7 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 				})
 			));
 		});
-		this.$('#catElements').html(content.join('\n'));
-		if (!incomeRow) {
-			incomeRow = { amount: 0 };
-		}
-		this.$('.income').html(incomeRow.amount.toFixed(2));
-		this.$('.total').html(sum.toFixed(2));
-
-		this.showPieChart(Math.abs(sum));
-
-		console.profileEnd();
-		return this;
+		return content;
 	}
 
 	/**
@@ -126,7 +131,7 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 		let labels = [];
 		let colors = [];
 		let dataSet1 = [];
-		console.log(this.model);
+		// console.log(this.model);
 		if (this.model) {
 			this.model.getCollection().comparator = function (el: CategoryCount) {
 				return -Math.abs(el.getAmount());

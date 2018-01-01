@@ -17,8 +17,9 @@ export class CategoryPopup {
 	}
 
 	bindEvents() {
+		console.warn('CategoryPopup.bindEvents', this.$el);
 		this.$el
-			.off('mouseup', 'td.note')
+			.off('mouseup')
 			.on('mouseup', 'td.note', this.textSelectedEvent.bind(this));
 	}
 

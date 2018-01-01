@@ -31,7 +31,7 @@ export default class AppView extends CollectionController<Expenses> {
 
 	keywords: KeywordCollection;
 
-	categories: CategoryView;
+	categoryView: CategoryView;
 
 	ms: MonthSelect;
 
@@ -65,10 +65,9 @@ export default class AppView extends CollectionController<Expenses> {
 		}, this.keywords, this.categoryList);
 
 		const categoryModel = new CategoryCollectionModel(this.categoryList);
-		this.categories = new CategoryView({
+		this.categoryView = new CategoryView({
 			model: categoryModel
-		}, this.ms.currentMonth);
-		this.categories.setExpenses(this.collection);
+		}, this.ms.currentMonth, this.collection);
 		//console.log('category view collection', this.categories.model);
 
 		this.listenTo(this.ms, 'MonthSelect:change', this.monthChange.bind(this));
@@ -99,8 +98,10 @@ export default class AppView extends CollectionController<Expenses> {
 		console.log('this.table.render()');
 		this.table.render();
 
-		this.categories.render();
-		CollectionController.$('#applyKeywords').off().on('click', this.applyKeywords.bind(this));
+		this.categoryView.render();
+		this.$el.find('#applyKeywords')
+			.off('click')
+			.on('click', this.applyKeywords.bind(this));
 		// let popover = $('[data-toggle="popover"]').popover();
 		// console.log(popover);
 		return this;
@@ -152,7 +153,7 @@ export default class AppView extends CollectionController<Expenses> {
 		// this.ms.update(this.collection);
 
 		this.render();
-		this.categories.show();
+		this.categoryView.show();
 		console.profileEnd();
 	}
 
@@ -162,7 +163,7 @@ export default class AppView extends CollectionController<Expenses> {
 		if (CollectionController.$('#expenseTable').length
 			&& CollectionController.$('#expenseTable').is(':visible')) {
 		}
-		this.categories.hide();
+		this.categoryView.hide();
 		console.profileEnd();
 	}
 

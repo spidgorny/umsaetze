@@ -6,7 +6,7 @@ const $ = require("jquery");
 const chart_js_1 = require("chart.js");
 const main_1 = require("../main");
 class CategoryView extends Backbone.View {
-    constructor(options, currentMonth) {
+    constructor(options, currentMonth, expenses) {
         super(options);
         this.template = _.template($('#categoryTemplate').html());
         this.currentMonth = currentMonth;
@@ -18,8 +18,6 @@ class CategoryView extends Backbone.View {
         this.on("all", () => {
             main_1.debug("CategoryView");
         });
-    }
-    setExpenses(expenses) {
         this.expenses = expenses;
         this.listenTo(this.expenses, 'change', this.recalculate);
     }
@@ -28,15 +26,29 @@ class CategoryView extends Backbone.View {
         this.model.getCollection().getCategoriesFromExpenses();
     }
     render() {
-        console.profile('CategoryView.render');
-        let categoryCount = this.model.toJSON();
+        console.time('CategoryView.render');
+        let categoryCount = this.model.getCollection().toJSON();
+        console.log('categoryCount', categoryCount.length);
         let incomeRow = _.findWhere(categoryCount, {
             catName: 'Income',
         });
+        console.log('incomeRow', incomeRow);
         categoryCount = _.without(categoryCount, incomeRow);
         let sum = _.reduce(categoryCount, (memo, item) => {
             return memo + Math.abs(item.amount);
         }, 0);
+        const content = this.renderTableRows(categoryCount, sum);
+        this.$('#catElements').html(content.join('\n'));
+        if (!incomeRow) {
+            incomeRow = { amount: 0 };
+        }
+        this.$('.income').html(incomeRow.amount.toFixed(2));
+        this.$('.total').html(sum.toFixed(2));
+        this.showPieChart(Math.abs(sum));
+        console.timeEnd('CategoryView.render');
+        return this;
+    }
+    renderTableRows(categoryCount, sum) {
         categoryCount = _.sortBy(categoryCount, (el) => {
             return Math.abs(el.amount);
         }).reverse();
@@ -53,15 +65,7 @@ class CategoryView extends Backbone.View {
                 count: catCount.count,
             })));
         });
-        this.$('#catElements').html(content.join('\n'));
-        if (!incomeRow) {
-            incomeRow = { amount: 0 };
-        }
-        this.$('.income').html(incomeRow.amount.toFixed(2));
-        this.$('.total').html(sum.toFixed(2));
-        this.showPieChart(Math.abs(sum));
-        console.profileEnd();
-        return this;
+        return content;
     }
     _change() {
         console.log('CategoryView changed', this.model.getCollection().size());
@@ -76,7 +80,6 @@ class CategoryView extends Backbone.View {
         let labels = [];
         let colors = [];
         let dataSet1 = [];
-        console.log(this.model);
         if (this.model) {
             this.model.getCollection().comparator = function (el) {
                 return -Math.abs(el.getAmount());

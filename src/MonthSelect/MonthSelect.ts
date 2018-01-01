@@ -91,12 +91,12 @@ export default class MonthSelect extends Backbone.View<any> {
 			if ((isAfter && isBefore) || isTheSame) {
 				$button.removeAttr('disabled');
 			} else {
-				console.log('disable month', monthNumber,
-					isAfter, isBefore, isTheSame,
-					firstOfMonth.toString('yyyy-MM-dd'),
-					this.currentMonth.earliest.toString('yyyy-MM-dd'),
-					firstOfMonth, this.currentMonth.earliest,
-				);
+				// console.log('disable month', monthNumber,
+				// 	isAfter, isBefore, isTheSame,
+				// 	firstOfMonth.toString('yyyy-MM-dd'),
+				// 	this.currentMonth.earliest.toString('yyyy-MM-dd'),
+				// 	firstOfMonth, this.currentMonth.earliest,
+				// );
 				$button.attr('disabled', 'disabled');
 			}
 			let equals = firstOfMonth.equals(selectedDate);

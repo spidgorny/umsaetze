@@ -78,15 +78,18 @@ export default class ExpenseTable extends Backbone.View<any> {
 		$('#numRows').html(this.model.getVisibleCount().toString());
 
 		this.$el
-			.off('change', 'select')
+			.off('change')
 			.on('change', 'select', this.newCategory.bind(this));
 
 		this.$el
-			.off('click', 'button.close')
+			.off('click')
 			.on('click', 'button.close', this.deleteRow.bind(this));
+
 		this.$el
-			.off('click', 'input.checkedDone')
+			.off('click')
 			.on('click', 'input.checkedDone', this.onCheck.bind(this));
+
+		this.categoryPopup.$el = this.$el;
 		this.categoryPopup.bindEvents();
 
 		console.profileEnd();

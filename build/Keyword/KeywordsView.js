@@ -50,9 +50,15 @@ class KeywordsView extends CollectionController_1.CollectionController {
             list: content.join('\n')
         });
         this.$el.html(RecursiveArrayOfStrings_1.default.merge(content));
-        this.$el.find('#removeDuplicates').off().on('click', this.removeDuplicates.bind(this));
-        this.$el.find('#importExcel').off().on('click', this.importExcel.bind(this));
-        this.$el.off('click', 'button.close').on('click', 'button.close', this.deleteRow.bind(this));
+        this.$el.find('#removeDuplicates')
+            .off('click')
+            .on('click', this.removeDuplicates.bind(this));
+        this.$el.find('#importExcel')
+            .off('click')
+            .on('click', this.importExcel.bind(this));
+        this.$el
+            .off('click')
+            .on('click', 'button.close', this.deleteRow.bind(this));
     }
     removeDuplicates(event) {
         let original = this.keywords.size();

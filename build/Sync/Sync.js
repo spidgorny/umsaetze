@@ -55,13 +55,13 @@ class Sync extends CollectionController_1.CollectionController {
                 .off('click')
                 .on('click', this.generate.bind(this));
             this.$el.find('#Save')
-                .off()
+                .off('click')
                 .on('click', this.save.bind(this));
             this.$el.find('#Clear')
-                .off()
+                .off('click')
                 .on('click', this.clear.bind(this));
             this.$el.find('#saveToLS')
-                .off()
+                .off('click')
                 .on('click', this.saveToLS.bind(this));
         }
         else {

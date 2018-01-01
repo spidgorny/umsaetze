@@ -22,10 +22,9 @@ class AppView extends CollectionController_1.CollectionController {
             el: $('#expenseTable')
         }, this.keywords, this.categoryList);
         const categoryModel = new CategoryCollectionModel_1.default(this.categoryList);
-        this.categories = new CategoryView_1.default({
+        this.categoryView = new CategoryView_1.default({
             model: categoryModel
-        }, this.ms.currentMonth);
-        this.categories.setExpenses(this.collection);
+        }, this.ms.currentMonth, this.collection);
         this.listenTo(this.ms, 'MonthSelect:change', this.monthChange.bind(this));
         this.collection.filterByMonth(this.ms.getSelected());
         this.listenTo(this.collection, 'change', this.render);
@@ -39,8 +38,10 @@ class AppView extends CollectionController_1.CollectionController {
         this.setTemplate();
         console.log('this.table.render()');
         this.table.render();
-        this.categories.render();
-        CollectionController_1.CollectionController.$('#applyKeywords').off().on('click', this.applyKeywords.bind(this));
+        this.categoryView.render();
+        this.$el.find('#applyKeywords')
+            .off('click')
+            .on('click', this.applyKeywords.bind(this));
         return this;
     }
     setTemplate() {
@@ -68,7 +69,7 @@ class AppView extends CollectionController_1.CollectionController {
     show() {
         console.profile('AppView.show');
         this.render();
-        this.categories.show();
+        this.categoryView.show();
         console.profileEnd();
     }
     hide() {
@@ -76,7 +77,7 @@ class AppView extends CollectionController_1.CollectionController {
         if (CollectionController_1.CollectionController.$('#expenseTable').length
             && CollectionController_1.CollectionController.$('#expenseTable').is(':visible')) {
         }
-        this.categories.hide();
+        this.categoryView.hide();
         console.profileEnd();
     }
     applyKeywords(event) {
