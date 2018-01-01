@@ -62,7 +62,7 @@ class CategoryCollection extends backbone_1.Collection {
         });
     }
     getCategoriesFromExpenses() {
-        console.profile('getCategoriesFromExpenses');
+        console.time('CategoryCollection.getCategoriesFromExpenses');
         this.resetCounters();
         let visible = this.expenses.getVisible();
         _.each(visible, (transaction) => {
@@ -72,9 +72,9 @@ class CategoryCollection extends backbone_1.Collection {
             }
         });
         this.sortBy('amount');
-        console.profileEnd();
         console.warn('trigger CategoryCollection change', this._events);
         this.trigger('change');
+        console.timeEnd('CategoryCollection.getCategoriesFromExpenses');
     }
     incrementCategoryData(categoryName, transaction) {
         let exists = this.findWhere({ catName: categoryName });

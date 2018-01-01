@@ -9,9 +9,10 @@ class CategoryView extends Backbone.View {
     constructor(options, currentMonth, expenses) {
         super(options);
         this.template = _.template($('#categoryTemplate').html());
+        this.categories = this.model.getCollection();
+        this.categories.on('change', this.render.bind(this));
         this.currentMonth = currentMonth;
         this.setElement($('#categories'));
-        this.listenTo(this.model, 'change', this.render);
         this.$el
             .off('click')
             .on('click', 'a.filterByCategory', this.filterByCategory.bind(this));
@@ -19,7 +20,7 @@ class CategoryView extends Backbone.View {
             main_1.debug("CategoryView");
         });
         this.expenses = expenses;
-        this.listenTo(this.expenses, 'change', this.recalculate);
+        this.listenTo(this.expenses, 'change', this.recalculate.bind(this));
     }
     recalculate() {
         console.warn('CategoryView.recalculate');
@@ -27,7 +28,7 @@ class CategoryView extends Backbone.View {
     }
     render() {
         console.time('CategoryView.render');
-        let categoryCount = this.model.getCollection().toJSON();
+        let categoryCount = this.categories.toJSON();
         console.log('categoryCount', categoryCount.length);
         let incomeRow = _.findWhere(categoryCount, {
             catName: 'Income',

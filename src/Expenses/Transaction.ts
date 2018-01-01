@@ -148,6 +148,7 @@ export default class Transaction extends Backbone.Model {
 				this.expenses.localStorage.update(this);
 			}
 		}
+		// this.trigger('Transaction:change');
 		return this;
 	}
 

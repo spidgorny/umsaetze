@@ -109,6 +109,7 @@ class ExpenseTable extends Backbone.View {
         let transaction = this.model.get(id);
         if (transaction) {
             transaction.setCategory($select.val());
+            this.trigger('Category:change');
         }
         else {
             console.error('Transaction with id=', id, 'not found');

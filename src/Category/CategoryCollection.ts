@@ -111,7 +111,7 @@ export default class CategoryCollection
 	 * This is called when expenses change.
 	 */
 	getCategoriesFromExpenses() {
-		console.profile('getCategoriesFromExpenses');
+		console.time('CategoryCollection.getCategoriesFromExpenses');
 		// this.reset();	// don't reset - loosing colors
 		this.resetCounters();
 		let visible = this.expenses.getVisible();
@@ -124,11 +124,12 @@ export default class CategoryCollection
 		});
 		//console.log(this.categoryCount);
 		this.sortBy('amount');
-		console.profileEnd();
 
 		// when we recalculated the data we trigger the view render
 		console.warn('trigger CategoryCollection change', this._events);
 		this.trigger('change'); // commented because of infinite loop
+
+		console.timeEnd('CategoryCollection.getCategoriesFromExpenses');
 	}
 
 	private incrementCategoryData(categoryName: any, transaction: Transaction) {

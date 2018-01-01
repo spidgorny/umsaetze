@@ -71,6 +71,7 @@ export default class AppView extends CollectionController<Expenses> {
 		//console.log('category view collection', this.categories.model);
 
 		this.listenTo(this.ms, 'MonthSelect:change', this.monthChange.bind(this));
+		this.listenTo(this.table, 'Category:change', this.categoryChanged.bind(this));
 
 		// for filtering to know which month we're in
 		this.collection.filterByMonth(this.ms.getSelected());
@@ -136,6 +137,12 @@ export default class AppView extends CollectionController<Expenses> {
 
 		this.categoryList.getCategoriesFromExpenses();
 		console.profileEnd();
+	}
+
+	categoryChanged() {
+		console.time('AppView.categoryChanged');
+		this.categoryView.recalculate();
+		console.timeEnd('AppView.categoryChanged');
 	}
 
 	onSearch(event) {

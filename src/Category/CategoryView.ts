@@ -18,6 +18,8 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 
 	model: CategoryCollectionModel;
 
+	categories: CategoryCollection;
+
 	currentMonth: CurrentMonth;
 
 	expenses: Expenses;
@@ -28,9 +30,13 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 
 	constructor(options: any, currentMonth: CurrentMonth, expenses: Expenses) {
 		super(options);
+		this.categories = this.model.getCollection();
+		// update when month changes
+		this.categories.on('change', this.render.bind(this));
+
 		this.currentMonth = currentMonth;
+
 		this.setElement($('#categories'));
-		this.listenTo(this.model, 'change', this.render);
 
 		this.$el
 			.off('click')
@@ -41,7 +47,8 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 		});
 
 		this.expenses = expenses;
-		this.listenTo(this.expenses, 'change', this.recalculate);
+		this.listenTo(this.expenses, 'change', this.recalculate.bind(this));
+		// this.listenTo(this, 'Transaction:change', this.recalculate);
 	}
 
 	/**
@@ -55,7 +62,7 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 
 	render() {
 		console.time('CategoryView.render');
-		let categoryCount = this.model.getCollection().toJSON();
+		let categoryCount = this.categories.toJSON();
 		console.log('categoryCount', categoryCount.length);
 
 		// remove income from %

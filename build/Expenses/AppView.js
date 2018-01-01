@@ -26,6 +26,7 @@ class AppView extends CollectionController_1.CollectionController {
             model: categoryModel
         }, this.ms.currentMonth, this.collection);
         this.listenTo(this.ms, 'MonthSelect:change', this.monthChange.bind(this));
+        this.listenTo(this.table, 'Category:change', this.categoryChanged.bind(this));
         this.collection.filterByMonth(this.ms.getSelected());
         this.listenTo(this.collection, 'change', this.render);
         $('.custom-search-form input').on('keyup', _.debounce(this.onSearch.bind(this), 300));
@@ -60,6 +61,11 @@ class AppView extends CollectionController_1.CollectionController {
         this.collection.filterVisible(this.q);
         this.categoryList.getCategoriesFromExpenses();
         console.profileEnd();
+    }
+    categoryChanged() {
+        console.time('AppView.categoryChanged');
+        this.categoryView.recalculate();
+        console.timeEnd('AppView.categoryChanged');
     }
     onSearch(event) {
         this.q = $(event.target).val().toString();
