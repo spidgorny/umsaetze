@@ -26,13 +26,21 @@ class Workspace extends Backbone.Router {
             'Summary': 'Summary',
             'History': 'History'
         };
+        Workspace.instance = this;
         this._bindRoutes();
         this.model = new Expenses_1.default();
-        this.model.fetch();
+        setTimeout(() => {
+            this.model.fetch();
+            const monthSelect = MonthSelect_1.default.getInstance();
+            monthSelect.update(this.model);
+        }, 0);
         this.categoryList = new CategoryCollection_1.default();
         this.categoryList.setExpenses(this.model);
         this.keywords = new KeywordCollection_1.default();
         console.log('this.keywords', this.keywords.size());
+    }
+    static getInstance() {
+        return Workspace.instance;
     }
     activateMenu() {
         this.activateMenu2();

@@ -7,8 +7,9 @@ const bootstrap_tour_1 = require("bootstrap-tour");
 class Umsaetze {
     constructor() {
         this.router = new Workspace_1.default();
+        console.log(document.location.pathname);
         const ok = Backbone.history.start({
-            root: '/web/'
+            root: document.location.pathname,
         });
         if (!ok) {
             console.error('history start failed', this.router.routes);

@@ -33,12 +33,14 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		this.localStorage = new LocalStorage("Expenses");
 		this.listenTo(this, 'change', () => {
 			console.log('Expenses changed event, saveAll()');
-			this.saveAll();
+			// this.saveAll();
 		});
 		this.on("all", () => {
 			//console.log("Expenses");
 		});
-		this.comparator = Expenses.comparatorFunction;
+
+		// commented to prevent execution while loading data one by one
+		// this.comparator = Expenses.comparatorFunction;
 	}
 
 	/**
@@ -46,6 +48,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	 * @param options
 	 */
 	fetch(options: CollectionFetchOptions = {}) {
+		console.time('Expenses.fetch');
 		let models = this.localStorage.findAll();
 		console.log('models from LS', models.length);
 		if (models.length) {
@@ -56,7 +59,22 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 			this.trigger('change');
 		}
 		console.log('read', this.length);
+		console.timeEnd('Expenses.fetch');
 		return <JQueryXHR>{};
+	}
+
+	saveAll() {
+		console.warn('Expenses.saveAll prevented');
+		return;
+	}
+
+	saveReallyAll() {
+		console.time('Expenses.saveAll');
+		this.localStorage._clear();
+		this.each((model: Transaction) => {
+			this.localStorage.update(model);
+		});
+		console.timeEnd('Expenses.saveAll');
 	}
 
 	/**
@@ -198,15 +216,6 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 			}
 		});
 		this.saveAll();
-		console.profileEnd();
-	}
-
-	saveAll() {
-		console.profile('Expense.saveAll');
-		this.localStorage._clear();
-		this.each((model: Transaction) => {
-			this.localStorage.update(model);
-		});
 		console.profileEnd();
 	}
 

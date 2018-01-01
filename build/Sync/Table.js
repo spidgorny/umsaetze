@@ -5,7 +5,8 @@ const ArrayPlus_1 = require("../Util/ArrayPlus");
 class Table extends ArrayPlus_1.default {
     constructor(rows) {
         super();
-        if (rows) {
+        if (typeof rows === 'object') {
+            console.log('ArrayPlus', rows);
             rows.forEach((el, i) => {
                 this[i] = new Row_1.default(el);
             });
@@ -75,6 +76,7 @@ class Table extends ArrayPlus_1.default {
             }
         });
         let data = rev.slice(startIndex);
+        console.log('trim()', rev.length, startIndex, data.length);
         data = data.reverse();
         return new Table(data);
     }

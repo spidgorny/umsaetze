@@ -88,7 +88,7 @@ export default class Row extends ArrayPlus {
 			}
 			let match = rowTypes.similar(this);
 			let matchPercent = rowTypes.similarPercent(this);
-			console.log(i+1, match, '/', this.length, '=', matchPercent, '%', row.length);
+			//console.log(i+1, match, '/', this.length, '=', matchPercent, '%', row.length);
 			// let firstMatch100 = matchNumber == 0 && matchPercent == 100;
 			let restMatch80 = /*matchNumber &&*/ matchPercent >= 80;
 			let sameLength = row.length == this.length;

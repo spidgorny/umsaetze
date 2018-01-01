@@ -153,6 +153,10 @@ export default class ExpenseTable extends Backbone.View<any> {
 		return sOptions.join('\n');
 	}
 
+	/**
+	 * Triggered by UI change of category drop-down
+	 * @param event
+	 */
 	newCategory(event) {
 		console.log('newCategory');
 		let $select = $(event.target);

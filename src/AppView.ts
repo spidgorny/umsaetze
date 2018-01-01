@@ -72,8 +72,6 @@ export default class AppView extends CollectionController<Expenses> {
 		this.categories.setExpenses(this.collection);
 		//console.log('category view collection', this.categories.model);
 
-		this.ms.update(this.collection);
-
 		this.listenTo(this.ms, 'MonthSelect:change', this.monthChange.bind(this));
 
 		this.collection.selectedMonth = this.ms.getSelected();	// for filtering to know which month we're in

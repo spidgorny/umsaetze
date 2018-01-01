@@ -5,8 +5,8 @@ export default class Table extends ArrayPlus {
 
 	constructor(rows?: Array<any>) {
 		super();
-		if (rows) {
-			//console.log('ArrayPlus', rows.length);
+		if (typeof rows === 'object') {
+			console.log('ArrayPlus', rows);
 			rows.forEach((el, i) => {
 				this[i] = new Row(el);
 			});
@@ -152,6 +152,7 @@ export default class Table extends ArrayPlus {
 			}
 		});
 		let data = rev.slice(startIndex);
+		console.log('trim()', rev.length, startIndex, data.length);
 		// console.log(data[0]);
 		data = data.reverse();
 		return new Table(data);

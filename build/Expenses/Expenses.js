@@ -17,13 +17,12 @@ class Expenses extends Backbone.Collection {
         this.localStorage = new backbone_localstorage_1.LocalStorage("Expenses");
         this.listenTo(this, 'change', () => {
             console.log('Expenses changed event, saveAll()');
-            this.saveAll();
         });
         this.on("all", () => {
         });
-        this.comparator = Expenses.comparatorFunction;
     }
     fetch(options = {}) {
+        console.time('Expenses.fetch');
         let models = this.localStorage.findAll();
         console.log('models from LS', models.length);
         if (models.length) {
@@ -33,7 +32,20 @@ class Expenses extends Backbone.Collection {
             this.trigger('change');
         }
         console.log('read', this.length);
+        console.timeEnd('Expenses.fetch');
         return {};
+    }
+    saveAll() {
+        console.warn('Expenses.saveAll prevented');
+        return;
+    }
+    saveReallyAll() {
+        console.time('Expenses.saveAll');
+        this.localStorage._clear();
+        this.each((model) => {
+            this.localStorage.update(model);
+        });
+        console.timeEnd('Expenses.saveAll');
     }
     getDateFrom() {
         let visible = this.getVisible();
@@ -147,14 +159,6 @@ class Expenses extends Backbone.Collection {
             }
         });
         this.saveAll();
-        console.profileEnd();
-    }
-    saveAll() {
-        console.profile('Expense.saveAll');
-        this.localStorage._clear();
-        this.each((model) => {
-            this.localStorage.update(model);
-        });
         console.profileEnd();
     }
     unserializeDate() {

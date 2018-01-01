@@ -14,6 +14,7 @@ import { CollectionController } from './CollectionController';
 import * as $ from 'jquery';
 import CategoryCollectionModel from "./Category/CategoryCollectionModel";
 import MonthSelect from "./MonthSelect/MonthSelect";
+import {CurrentMonth} from "./MonthSelect/CurrentMonth";
 
 export default class Workspace extends Backbone.Router {
 
@@ -31,6 +32,7 @@ export default class Workspace extends Backbone.Router {
 	model: Expenses;
 	categoryList: CategoryCollection;
 	keywords: KeywordCollection;
+	currentMonth: CurrentMonth;
 
 	appPage: AppView;
 	syncPage: Sync;
@@ -41,11 +43,25 @@ export default class Workspace extends Backbone.Router {
 
 	currentPage: Controller<any> | CollectionController<Expenses>;
 
+	static instance: Workspace;
+
+	static getInstance() {
+		return Workspace.instance;
+	}
+
 	constructor(options?: RouterOptions) {
 		super(options);
+		Workspace.instance = this;
+
 		(this as any)._bindRoutes();
+
 		this.model = new Expenses();
-		this.model.fetch();
+		setTimeout(() => {
+			this.model.fetch();
+			const monthSelect = MonthSelect.getInstance();
+			monthSelect.update(this.model);
+		}, 0);
+
 		this.categoryList = new CategoryCollection();
 		this.categoryList.setExpenses(this.model);
 

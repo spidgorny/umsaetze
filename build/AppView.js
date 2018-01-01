@@ -27,7 +27,6 @@ class AppView extends CollectionController_1.CollectionController {
             model: categoryModel
         });
         this.categories.setExpenses(this.collection);
-        this.ms.update(this.collection);
         this.listenTo(this.ms, 'MonthSelect:change', this.monthChange.bind(this));
         this.collection.selectedMonth = this.ms.getSelected();
         this.listenTo(this.collection, 'change', this.render);
