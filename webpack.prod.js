@@ -1,5 +1,6 @@
-let path = require('path');
+const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
 	entry: [
@@ -10,6 +11,11 @@ module.exports = {
 		path: path.resolve(__dirname, 'docs', 'web'),
 		publicPath: "web"
 	},
+	plugins: [
+		// new HtmlWebpackPlugin({
+		// 	template: 'src/index.html'
+		// }),
+	],
 	devtool: "source-map",
 	module: {
 		rules: [
@@ -17,8 +23,12 @@ module.exports = {
 			{test: /\.tsx?$/, loader: "awesome-typescript-loader"},
 
 			// All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-			{enforce: "pre", test: /\.js$/, loader: "source-map-loader"},
-
+			{
+				enforce: "pre",
+				test:
+					/\.js$/,
+				loader: "source-map-loader"
+			},
 			{
 				test: /\.css$/,
 				use: ['css-loader']

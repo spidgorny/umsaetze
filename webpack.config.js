@@ -1,5 +1,8 @@
-let path = require('path');
+const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Jarvis = require("webpack-jarvis");
+// const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
 	entry: [
@@ -12,7 +15,14 @@ module.exports = {
 		publicPath: "web"
 	},
 	plugins: [
-		new webpack.HotModuleReplacementPlugin()
+		new webpack.HotModuleReplacementPlugin(),
+		// new HtmlWebpackPlugin({
+		// 	template: 'src/index.html'
+		// })
+		new Jarvis({
+			port: 1337 // optional: set a port
+		}),
+		// new UglifyJSPlugin(),
 	],
 	devtool: "source-map",
 	devServer: {
@@ -38,7 +48,6 @@ module.exports = {
 				test: /\.js$/,
 				loader: "source-map-loader"
 			},
-
 			{
 				test: /\.css$/,
 				use: ['css-loader']
