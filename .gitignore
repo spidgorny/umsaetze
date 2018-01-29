@@ -9,4 +9,5 @@ node_modules
 /v2local/
 /v3/
 /src/test/data
+!/src/test/data/keywords.xlsx
 /docs/yarn-error.log

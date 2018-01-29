@@ -4,7 +4,6 @@ import CategoryCollection from '../Category/CategoryCollection';
 import CategoryCount from '../Category/CategoryCount';
 import {CollectionController} from '../CollectionController';
 import Handlebars from 'handlebars';
-// import Backbone from 'backbone-es6/src/Backbone.js';
 import Backbone = require('backbone');
 import * as $ from 'jquery';
 import * as _ from 'underscore';
@@ -14,7 +13,7 @@ import '../Util/Object';
 
 export class CatPage extends CollectionController<Expenses> {
 
-	$el = $('#app');
+	$el: JQuery = $('#app');
 
 	model: Transaction;
 
@@ -22,7 +21,7 @@ export class CatPage extends CollectionController<Expenses> {
 
 	categoryList: CategoryCollection;
 
-	template;
+	template: Function;
 
 	constructor(expenses: Expenses, categoryList: CategoryCollection) {
 		super();

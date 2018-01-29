@@ -4,7 +4,7 @@ const webpack = require('webpack');
 module.exports = {
 	entry: [
 		"./src/main.ts",
-		"webpack-dev-server/client?http://localhost:8080",
+		// "webpack-dev-server/client?http://localhost:8081",
 	],
 	output: {
 		filename: "bundle.js",
@@ -38,7 +38,9 @@ module.exports = {
 			{
 				test: /\.css$/,
 				use: [ 'css-loader' ]
-			}
+			},
+
+			{ test: /\.xslx$/, loader: 'raw' },
 		]
 	},
 	resolve: {

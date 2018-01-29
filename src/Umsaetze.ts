@@ -14,7 +14,7 @@ export class Umsaetze {
 		this.router = new Workspace();
 		// console.log('Umsaetze.router', this.router);
 
-		console.log(document.location.pathname);
+		console.log('document.location', document.location.pathname);
 		const ok = Backbone.history.start({
 			root: document.location.pathname,
 		});

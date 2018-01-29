@@ -6,7 +6,7 @@ const $ = require("jquery");
 class Umsaetze {
     constructor() {
         this.router = new Workspace_1.default();
-        console.log(document.location.pathname);
+        console.log('document.location', document.location.pathname);
         const ok = Backbone.history.start({
             root: document.location.pathname,
         });
