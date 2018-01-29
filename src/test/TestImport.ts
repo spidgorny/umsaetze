@@ -2,12 +2,12 @@
  * Created by DEPIDSVY on 17.10.2016.
  */
 // const parser = require('./src/Sync/ParseCSV.js');
-import ParseCSV from "../src/Sync/ParseCSV";
-import ParseMT940 from "../src/Sync/ParseMT940";
+import ParseCSV from "../Sync/ParseCSV";
+import ParseMT940 from "../Sync/ParseMT940";
 const fs = require('fs');
 const iconv = require('iconv-lite');
 import path = require('path');
-import {detectFloat} from "../src/Util/Number";
+import {detectFloat} from "../Util/Number";
 const _ = require('underscore');
 const accounting = require('accounting-js');
 process.stdout.isTTY = true;

@@ -186,7 +186,7 @@ export default class Workspace extends Backbone.Router {
 	}
 
 	Summary() {
-		console.log('Summary');
+		console.warn('Summary');
 		this.activateMenu();
 		this.hideCurrentPage();
 		if (!this.summaryPage) {
@@ -202,7 +202,7 @@ export default class Workspace extends Backbone.Router {
 	}
 
 	History() {
-		console.log('History');
+		console.warn('History');
 		this.activateMenu();
 		this.hideCurrentPage();
 		if (!this.historyPage) {

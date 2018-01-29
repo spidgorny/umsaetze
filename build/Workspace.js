@@ -138,7 +138,7 @@ class Workspace extends Backbone.Router {
         }
     }
     Summary() {
-        console.log('Summary');
+        console.warn('Summary');
         this.activateMenu();
         this.hideCurrentPage();
         if (!this.summaryPage) {
@@ -153,7 +153,7 @@ class Workspace extends Backbone.Router {
         this.currentPage = this.summaryPage;
     }
     History() {
-        console.log('History');
+        console.warn('History');
         this.activateMenu();
         this.hideCurrentPage();
         if (!this.historyPage) {

@@ -8,14 +8,16 @@
 		"preserveConstEnums": true,
 		"sourceMap": true,
 		"target": "es2016",
-		"lib": ["es2016","dom"],
+		"lib": ["es2016", "dom"],
 		"outDir": "build/",
 		"types": ["node"]
 	},
 	"lib": ["es2016", "dom"],
 	"include": [
 		"src/*.ts",
-		"src/*.test.ts"
+		"src/*.test.ts",
+		"src/test/*.ts",
+		"src/test/chrome/*.ts"
 	],
 	"exclude": ["node_modules"]
 }
