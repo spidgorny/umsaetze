@@ -7,8 +7,8 @@ module.exports = {
 	],
 	output: {
 		filename: "bundle.js",
-		path: path.join(__dirname, 'docs'),
-		publicPath: "/web/"
+		path: path.resolve(__dirname, 'docs', 'web'),
+		publicPath: "web"
 	},
 	devtool: "source-map",
 	module: {
@@ -21,7 +21,7 @@ module.exports = {
 
 			{
 				test: /\.css$/,
-				use: [ 'css-loader' ]
+				use: ['css-loader']
 			}
 		]
 	},
@@ -32,6 +32,6 @@ module.exports = {
 		},
 	},
 	externals: {
-		"filereader.js": "FileReaderJS"
+		// "filereader.js": "FileReaderJS"
 	},
 };

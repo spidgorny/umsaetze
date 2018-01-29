@@ -10,9 +10,10 @@ const Backbone = require("backbone");
 const backbone_localstorage_1 = require("backbone.localstorage");
 const $ = require("jquery");
 const _ = require("underscore");
-const FileReaderJS = require("filereader.js");
+const filereader_js_1 = require("filereader.js");
 const chance = new Chance();
-require('file-saver');
+console.log('FileReaderJS', filereader_js_1.FileReaderJS);
+const FileSaver = require('file-saver');
 class Sync extends CollectionController_1.CollectionController {
     constructor(expenses, router, tf) {
         super();
@@ -36,13 +37,13 @@ class Sync extends CollectionController_1.CollectionController {
                 memoryRows: this.model.size(),
                 lsRows: this.localStorage.findAll().length,
             }));
-            FileReaderJS.setupInput(document.getElementById('file-input-csv'), {
+            filereader_js_1.FileReaderJS.setupInput(document.getElementById('file-input-csv'), {
                 readAsDefault: 'Text',
                 on: {
                     load: this.load.bind(this),
                 }
             });
-            FileReaderJS.setupInput(document.getElementById('file-input-json'), {
+            filereader_js_1.FileReaderJS.setupInput(document.getElementById('file-input-json'), {
                 readAsDefault: 'Text',
                 on: {
                     load: this.loadJSON.bind(this),
@@ -158,7 +159,7 @@ class Sync extends CollectionController_1.CollectionController {
             type: "application/json;charset=utf-8"
         });
         let filename = "umsaetze-" + Date.today().toString('yyyy-MM-dd') + '.json';
-        saveAs(blob, filename);
+        FileSaver.saveAs(blob, filename);
     }
     clear() {
         console.log('clear');

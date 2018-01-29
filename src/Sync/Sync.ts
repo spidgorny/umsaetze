@@ -15,22 +15,22 @@ import {LocalStorage} from 'backbone.localstorage';
 import * as $ from 'jquery';
 import * as _ from 'underscore';
 import CategoryCount from "../Category/CategoryCount";
-import * as FileReaderJS from 'filereader.js';
+import {FileReaderJS} from 'filereader.js';
 import CategoryCollection from "../Category/CategoryCollection";
 import {TransactionFactory} from "../Expenses/TransactionFactory";
 
 const chance = new Chance();
 // console.log(chance);
 
-// console.log('FileReaderJS', FileReaderJS);
+console.log('FileReaderJS', FileReaderJS);
 
 // console.log(detectFloat('3.141528'));
 // console.debug(detectFloat('3.141528'));
 //debug(detectFloat('3.141528'));
 
-require('file-saver');
+const FileSaver = require('file-saver');
 
-declare function saveAs(a: any, b: any);
+// declare function saveAs(a: any, b: any);
 
 // elapse.configure({
 // 	debug: true
@@ -230,7 +230,7 @@ export default class Sync extends CollectionController<Expenses> {
 		});
 		let filename = "umsaetze-"+Date.today().toString('yyyy-MM-dd')+'.json';
 		//console.log(filename);
-		saveAs(blob, filename);
+		FileSaver.saveAs(blob, filename);
 	}
 
 	clear() {

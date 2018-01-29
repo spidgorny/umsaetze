@@ -8,21 +8,21 @@ module.exports = {
 	],
 	output: {
 		filename: "bundle.js",
-		path: path.join(__dirname, 'docs/web'),
-		publicPath: "/web/"
+		path: path.resolve(__dirname, 'docs', 'web'),
+		publicPath: "web"
 	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin()
 	],
 	devtool: "source-map",
 	devServer: {
+		contentBase: "docs",
 		hot: true,
-		contentBase: path.join(__dirname, "docs"),
 		compress: true,
-		publicPath: "/",
+		// publicPath: "/",
 		watchContentBase: true,
 		watchOptions: {
-			poll: true
+			poll: false
 		},
 		overlay: true,
 		inline: true,
@@ -33,14 +33,18 @@ module.exports = {
 			{test: /\.tsx?$/, loader: "awesome-typescript-loader"},
 
 			// All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-			{enforce: "pre", test: /\.js$/, loader: "source-map-loader"},
+			{
+				enforce: "pre",
+				test: /\.js$/,
+				loader: "source-map-loader"
+			},
 
 			{
 				test: /\.css$/,
-				use: [ 'css-loader' ]
+				use: ['css-loader']
 			},
 
-			{ test: /\.xslx$/, loader: 'raw' },
+			{test: /\.xslx$/, loader: 'raw'},
 		]
 	},
 	resolve: {
@@ -50,6 +54,6 @@ module.exports = {
 		},
 	},
 	externals: {
-		"filereader.js": "FileReaderJS"
+		// "filereader.js": "FileReaderJS"
 	},
 };

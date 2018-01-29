@@ -6,7 +6,7 @@ const RecursiveArrayOfStrings_1 = require("../Util/RecursiveArrayOfStrings");
 const Keyword_1 = require("./Keyword");
 const toastr = require("toastr");
 const CollectionController_1 = require("../CollectionController");
-const FileReaderJS = require("filereader.js");
+const filereader_js_1 = require("filereader.js");
 const XLSX = require("xlsx");
 class KeywordsView extends CollectionController_1.CollectionController {
     constructor(keywords, categories) {
@@ -89,7 +89,7 @@ class KeywordsView extends CollectionController_1.CollectionController {
     importExcel() {
         console.log('importExcel');
         let fileTag = document.getElementById('fileInput');
-        FileReaderJS.setupInput(fileTag, {
+        filereader_js_1.FileReaderJS.setupInput(fileTag, {
             readAsDefault: 'ArrayBuffer',
             on: {
                 load: this.loadExcel.bind(this),

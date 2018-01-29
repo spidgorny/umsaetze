@@ -5,7 +5,7 @@ import RecursiveArrayOfStrings from '../Util/RecursiveArrayOfStrings'
 import Keyword from './Keyword';
 import * as toastr from 'toastr';
 import {CollectionController} from '../CollectionController';
-import * as FileReaderJS from 'filereader.js';
+import {FileReaderJS} from 'filereader.js';
 import * as XLSX from 'xlsx';
 import CategoryCollection from "../Category/CategoryCollection";
 
