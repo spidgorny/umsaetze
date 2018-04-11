@@ -66,6 +66,7 @@
     "simplestorage.js": "^0.2.1",
     "source-map-support": "^0.5.3",
     "stream-to-promise": "^2.2.0",
+    "swagger-client": "^3.6.0",
     "toastr": "^2.1.4",
     "typhonjs-core-backbone-events": "git+https://github.com/typhonjs-backbone/typhonjs-core-backbone-events.git",
     "underscore": "^1.8.3",
