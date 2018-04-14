@@ -11,3 +11,4 @@ node_modules
 /src/test/data
 !/src/test/data/keywords.xlsx
 /docs/yarn-error.log
+/.env
