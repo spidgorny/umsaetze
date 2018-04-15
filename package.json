@@ -13,7 +13,7 @@
     "FIXFIX": "webpack --progress --profile --colors --display-error-details --display-cached build/src/main.js docs/web/bundle.js",
     "serve": "node_modules/.bin/webpack-dev-server",
     "s": "node_modules/.bin/webpack-dev-server",
-    "jasmine": "cd jasmine && jasmine",
+    "jasmine": "cd src/jasmine && jasmine",
     "rollup": "rollup -c",
     "build": "webpack --config webpack.prod.js --mode production",
     "http": "http-server -p 8080 docs",

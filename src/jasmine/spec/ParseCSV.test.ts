@@ -1,6 +1,6 @@
 //// <reference path="../../typings/index.d.ts" />
-import ParseCSV from "../../src/Sync/ParseCSV";
-import Table from "../../src/Sync/Table";
+import ParseCSV from "../../Sync/ParseCSV";
+import Table from "../../Sync/Table";
 
 describe("ParseCSV", function() {
 

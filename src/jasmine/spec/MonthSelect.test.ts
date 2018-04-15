@@ -11,13 +11,15 @@
 // ReferenceError: document is not defined
 
 const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
-const { window } = new JSDOM();
-const document = window.document;
-global['window'] = window;
-global['document'] = document;
+// const { JSDOM } = jsdom;
+// const { window } = new JSDOM();
+// const document = window.document;
+// global['window'] = window;
+// global['document'] = document;
 
-import MonthSelect from "../../src/MonthSelect/MonthSelect";
+window = jsdom.jsdom().defaultView;
+
+import MonthSelect from "../../MonthSelect/MonthSelect";
 
 describe('2B||!2B', () => {
 	it('true ==? false', () => {
