@@ -18,6 +18,7 @@ import CategoryCount from "../Category/CategoryCount";
 import {FileReaderJS} from 'filereader.js';
 import CategoryCollection from "../Category/CategoryCollection";
 import {TransactionFactory} from "../Expenses/TransactionFactory";
+import {FetchTransactions} from "./FetchTransactions";
 
 const chance = new Chance();
 // console.log(chance);
@@ -56,6 +57,8 @@ export default class Sync extends CollectionController<Expenses> {
 
 	tf: TransactionFactory;
 
+	fetchTransactions: FetchTransactions;
+
 	constructor(expenses: Expenses, router: Workspace, tf: TransactionFactory) {
 		super();
 		this.model = expenses;
@@ -70,6 +73,8 @@ export default class Sync extends CollectionController<Expenses> {
 		this.router = router;
 		this.categories = this.router.categoryList;
 		this.tf = tf;
+
+		this.fetchTransactions = new FetchTransactions(this.model, this.tf);
 	}
 
 	render() {
@@ -110,6 +115,9 @@ export default class Sync extends CollectionController<Expenses> {
 			this.$el.find('#saveToLS')
 				.off('click')
 				.on('click', this.saveToLS.bind(this));
+
+			this.fetchTransactions.setDiv($('#FetchTransactions'));
+			this.fetchTransactions.render();
 		} else {
 			this.$el.html('Loading ...');
 		}

@@ -11,6 +11,7 @@ const backbone_localstorage_1 = require("backbone.localstorage");
 const $ = require("jquery");
 const _ = require("underscore");
 const filereader_js_1 = require("filereader.js");
+const FetchTransactions_1 = require("./FetchTransactions");
 const chance = new Chance();
 console.log('FileReaderJS', filereader_js_1.FileReaderJS);
 const FileSaver = require('file-saver');
@@ -30,6 +31,7 @@ class Sync extends CollectionController_1.CollectionController {
         this.router = router;
         this.categories = this.router.categoryList;
         this.tf = tf;
+        this.fetchTransactions = new FetchTransactions_1.FetchTransactions(this.model, this.tf);
     }
     render() {
         if (this.template) {
@@ -64,6 +66,8 @@ class Sync extends CollectionController_1.CollectionController {
             this.$el.find('#saveToLS')
                 .off('click')
                 .on('click', this.saveToLS.bind(this));
+            this.fetchTransactions.setDiv($('#FetchTransactions'));
+            this.fetchTransactions.render();
         }
         else {
             this.$el.html('Loading ...');
