@@ -17,9 +17,9 @@ export class CurrentMonth {
 		"October", "November", "December"
 	];
 
-	private _selectedYear = CurrentMonth.DEFAULT_YEAR;
+	private _selectedYear: number = CurrentMonth.DEFAULT_YEAR;
 
-	private _selectedMonth = CurrentMonth.DEFAULT_MONTH;
+	private _selectedMonth: string = CurrentMonth.DEFAULT_MONTH;
 
 	public static readonly DEFAULT_YEAR = new Date().getFullYear();
 
@@ -144,4 +144,14 @@ export class CurrentMonth {
 			this.latest.toString('yyyy-MM-dd'));
 	}
 
+	getURL() {
+		let sMonth;
+		let month = this.getMonthIndex();
+		if (month < 10) {
+			sMonth = '0' + month.toString();
+		} else {
+			sMonth = month.toString();
+		}
+		return '/'+this.selectedYear.toString()+'/'+sMonth;
+	}
 }

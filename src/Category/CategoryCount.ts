@@ -1,6 +1,9 @@
 import Backbone = require('backbone');
 import '../Util/Object';
 
+/**
+ * Model for holding category information for a month
+ */
 export default class CategoryCount extends Backbone.Model {
 
 	catName: string;

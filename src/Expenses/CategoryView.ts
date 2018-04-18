@@ -1,15 +1,18 @@
-import CategoryCollection from "./CategoryCollection";
-import CategoryCount from "./CategoryCount";
-import Expenses from "../Expenses/Expenses";
+import CategoryCollection from "../Category/CategoryCollection";
+import CategoryCount from "../Category/CategoryCount";
+import Expenses from "./Expenses";
 // import elapse from 'elapse';
 import Backbone = require('backbone');
 import * as _ from 'underscore';
 import * as $ from 'jquery';
 import {Chart} from 'chart.js';
 import {debug} from '../main';
-import CategoryCollectionModel from "./CategoryCollectionModel";
+import CategoryCollectionModel from "../Category/CategoryCollectionModel";
 import {CurrentMonth} from "../MonthSelect/CurrentMonth";
 
+/**
+ * Sidebar category pie-chart and list
+ */
 export default class CategoryView extends Backbone.View<CategoryCollectionModel> {
 
 	model: CategoryCollectionModel;
@@ -22,7 +25,9 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 
 	template = _.template($('#categoryTemplate').html());
 
-	myPieChart;
+	myPieChart: Chart;
+
+	private INCOME_CATEGORY: string = 'Income';
 
 	constructor(options: any, currentMonth: CurrentMonth, expenses: Expenses) {
 		super(options);
@@ -34,9 +39,10 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 
 		this.setElement($('#categories'));
 
-		this.$el
-			.off('click')
-			.on('click', 'a.filterByCategory', this.filterByCategory.bind(this));
+		// this is now handled better by MonthSelectCategory
+		// this.$el
+		// 	.off('click')
+		// 	.on('click', 'a.filterByCategory', this.filterByCategory.bind(this));
 
 		this.on("all", () => {
 			debug("CategoryView")
@@ -63,7 +69,7 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 
 		// remove income from %
 		let incomeRow: any = _.findWhere(categoryCount, {
-			catName: 'Income',
+			catName: this.INCOME_CATEGORY,
 		});
 		console.log('incomeRow', incomeRow);
 		categoryCount = _.without(categoryCount, incomeRow);
@@ -111,6 +117,8 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 					id: catCount.id,
 					catName: catCount.catName,
 					count: catCount.count,
+					linkToCategory: this.currentMonth.getURL() + '/'
+						+ catCount.catName,
 				})
 			));
 		});
@@ -174,7 +182,8 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 		if (this.myPieChart) {
 			this.myPieChart.destroy();
 		}
-		this.myPieChart = new Chart(document.getElementById('pieChart'), {
+		this.myPieChart = new Chart(
+			document.getElementById('pieChart'), {
 			type: 'pie',
 			data: data,
 			options: {

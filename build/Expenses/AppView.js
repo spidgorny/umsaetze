@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ExpenseTable_1 = require("./ExpenseTable");
-const CategoryView_1 = require("../Category/CategoryView");
+const CategoryView_1 = require("./CategoryView");
 const main_1 = require("../main");
 const CollectionController_1 = require("../CollectionController");
 const $ = require("jquery");

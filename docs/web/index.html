@@ -420,7 +420,9 @@
 		<div class="category">
 			<div class="row" style="background-color: <%- color %>">
 				<div class="col-md-8">
-					<a href="#" class="filterByCategory" data-id="<%- id %>"><%- catName %></a>
+					<a href="#<%- linkToCategory %>"
+					   class="filterByCategory"
+					   data-id="<%- id %>"><%- catName %></a>
 					<span class="badge"><%- count %></span>
 				</div>
 				<div class="col-md-4 money <%- sign %>">

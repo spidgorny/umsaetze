@@ -7,7 +7,7 @@ require('./bootstrap');
 const log = console.log;
 log.error = console.error;
 
-import MonthSelect, {default as CategoryView} from "../../Category/CategoryView";
+import MonthSelect, {default as CategoryView} from "../../Expenses/CategoryView";
 import Expenses from "../../Expenses/Expenses";
 
 describe('2B||!2B', () => {
