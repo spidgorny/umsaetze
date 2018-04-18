@@ -4,16 +4,13 @@ const Backbone = require("backbone");
 const $ = require("jquery");
 const CurrentMonth_1 = require("./CurrentMonth");
 class MonthSelect extends Backbone.View {
-    constructor(storageProvider) {
+    constructor() {
         super();
         this.$el = $('#MonthSelect');
         this.yearSelect = this.$('select');
         this.monthOptions = this.$('button');
         this.currentMonth = new CurrentMonth_1.CurrentMonth(parseInt(this.yearSelect.val() + '') || CurrentMonth_1.CurrentMonth.DEFAULT_YEAR);
-        if (storageProvider) {
-            this.storageProvider = storageProvider;
-        }
-        else {
+        if (!this.storageProvider) {
             this.storageProvider = window.localStorage;
         }
         this.monthOptions
@@ -91,7 +88,6 @@ class MonthSelect extends Backbone.View {
         Backbone.history.navigate('#/' + this.currentMonth.selectedYear + '/' + monthIndex);
     }
     clickOnMonth(event) {
-        event.preventDefault();
         this.monthOptions.removeClass('btn-success').addClass('btn-default');
         let $button = $(event.target);
         $button.removeClass('btn-default');

@@ -15,6 +15,7 @@ const CategoryCollectionModel_1 = require("./Category/CategoryCollectionModel");
 const MonthSelect_1 = require("./MonthSelect/MonthSelect");
 const TransactionFactory_1 = require("./Expenses/TransactionFactory");
 const backbone_localstorage_1 = require("backbone.localstorage");
+const log = require('ololog');
 class Workspace extends Backbone.Router {
     constructor(options) {
         super(options);
@@ -31,6 +32,7 @@ class Workspace extends Backbone.Router {
         Workspace.instance = this;
         this._bindRoutes();
         const expensesStorage = new backbone_localstorage_1.LocalStorage("Expenses");
+        log(expensesStorage.findAll().length);
         this.model = new Expenses_1.default([], {}, expensesStorage, null);
         this.tf = new TransactionFactory_1.TransactionFactory(this.model);
         this.model.tf = this.tf;

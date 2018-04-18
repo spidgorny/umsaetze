@@ -17,6 +17,8 @@ import MonthSelect from "./MonthSelect/MonthSelect";
 import {TransactionFactory} from "./Expenses/TransactionFactory";
 import {LocalStorage} from 'backbone.localstorage';
 
+const log = require('ololog');
+
 export default class Workspace extends Backbone.Router {
 
 	routes = {
@@ -57,6 +59,7 @@ export default class Workspace extends Backbone.Router {
 		(this as any)._bindRoutes();
 
 		const expensesStorage = new LocalStorage("Expenses");
+		log(expensesStorage.findAll().length);
 		this.model = new Expenses([], {}, expensesStorage, null);
 		this.tf = new TransactionFactory(this.model);
 		this.model.tf = this.tf;

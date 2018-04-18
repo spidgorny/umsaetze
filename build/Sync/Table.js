@@ -6,6 +6,7 @@ class Table extends ArrayPlus_1.default {
     constructor(rows) {
         super();
         if (typeof rows === 'object') {
+            console.log('ArrayPlus', rows);
             rows.forEach((el, i) => {
                 this[i] = new Row_1.default(el);
             });

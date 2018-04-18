@@ -38,6 +38,11 @@ export default class CategoryCount extends Backbone.Model {
 		if (!amount) {
 			this.set('amount', 0);
 		}
+
+		// fix after corruption
+		if (typeof this.catName == 'object') {
+
+		}
 	}
 
 	setColor(color) {
