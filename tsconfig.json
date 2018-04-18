@@ -14,9 +14,10 @@
 	},
 	"include": [
 		"src/*.ts",
-		"src/*.test.ts",
-		"src/test/*.ts",
-		"src/test/chrome/*.ts"
+		"src/jasmine/spec/*.ts"
 	],
-	"exclude": ["node_modules"]
+	"exclude": [
+		"node_modules",
+		"build"
+	]
 }

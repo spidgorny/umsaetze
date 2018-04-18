@@ -21,13 +21,15 @@ export default class MonthSelect extends Backbone.View<any> {
 
 	currentMonth: CurrentMonth;
 
-	constructor() {
+	constructor(storageProvider?: Storage) {
 		super();
 		this.currentMonth = new CurrentMonth(
 			parseInt(this.yearSelect.val()+'') || CurrentMonth.DEFAULT_YEAR
 		);
 
-		if (!this.storageProvider) {
+		if (storageProvider) {
+			this.storageProvider = storageProvider;
+		} else {
 			this.storageProvider = window.localStorage;
 		}
 

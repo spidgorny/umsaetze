@@ -10,10 +10,6 @@ import {debug} from '../main';
 import CategoryCollectionModel from "./CategoryCollectionModel";
 import {CurrentMonth} from "../MonthSelect/CurrentMonth";
 
-// elapse.configure({
-// 	debug: true
-// });
-
 export default class CategoryView extends Backbone.View<CategoryCollectionModel> {
 
 	model: CategoryCollectionModel;
