@@ -62,7 +62,7 @@ export default class ParseCSV {
 				startIndex = i+1;
 			}
 		});
-		console.log('slicing ', startIndex, 'first rows');
+		// console.log('slicing ', startIndex, 'first rows');
 		let sliced = data.slice(startIndex);
 		return new Table(sliced);
 	}

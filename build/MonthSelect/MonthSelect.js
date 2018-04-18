@@ -91,6 +91,7 @@ class MonthSelect extends Backbone.View {
         Backbone.history.navigate('#/' + this.currentMonth.selectedYear + '/' + monthIndex);
     }
     clickOnMonth(event) {
+        event.preventDefault();
         this.monthOptions.removeClass('btn-success').addClass('btn-default');
         let $button = $(event.target);
         $button.removeClass('btn-default');

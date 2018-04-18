@@ -144,6 +144,7 @@ export default class MonthSelect extends Backbone.View<any> {
 	}
 
 	clickOnMonth(event) {
+		event.preventDefault();
 		this.monthOptions.removeClass('btn-success').addClass('btn-default');
 		let $button = $(event.target);
 		$button.removeClass('btn-default');

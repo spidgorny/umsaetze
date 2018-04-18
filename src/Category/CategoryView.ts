@@ -80,8 +80,10 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 		if (!incomeRow) {
 			incomeRow = { amount: 0 };
 		}
-		this.$('.income').html(incomeRow.amount.toFixed(2));
-		this.$('.total').html(sum.toFixed(2));
+		this.$('.income').html(
+			incomeRow.amount.toFixed(2));
+		this.$('.total').html(
+			sum.toFixed(2));
 
 		this.showPieChart(Math.abs(sum));
 

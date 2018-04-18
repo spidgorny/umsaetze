@@ -5,6 +5,9 @@ import CategoryCollection from "../Category/CategoryCollection";
 import KeywordCollection from "../Keyword/KeywordCollection";
 import Expenses from "./Expenses";
 
+/**
+ * Displays a second list of categories AFTER selecting some text
+ */
 export class CategoryPopup {
 
 	$el: JQuery;

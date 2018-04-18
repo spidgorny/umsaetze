@@ -29,6 +29,8 @@ export default class ExpenseTable extends Backbone.View<any> {
 
 	categoryPopup: CategoryPopup;
 
+	private CODE_FOR_NEW: string = '-new-';
+
 	constructor(options, keywords: KeywordCollection, categoryList: CategoryCollection) {
 		super(options);
 		this.keywords = keywords;
@@ -73,13 +75,16 @@ export default class ExpenseTable extends Backbone.View<any> {
 		this.$el.html(rows.join('\n'));
 		//console.log(this.$el);
 
-		$('#dateFrom').html(this.model.getDateFrom().toString('yyyy-MM-dd'));
-		$('#dateTill').html(this.model.getDateTill().toString('yyyy-MM-dd'));
-		$('#numRows').html(this.model.getVisibleCount().toString());
+		$('#dateFrom').html(
+			this.model.getDateFrom().toString('yyyy-MM-dd'));
+		$('#dateTill').html(
+			this.model.getDateTill().toString('yyyy-MM-dd'));
+		$('#numRows').html(
+			this.model.getVisibleCount().toString());
 
 		this.$el
 			.off('change')
-			.on('change', 'select', this.newCategory.bind(this));
+			.on('change', 'select', this.setCategory.bind(this));
 
 		this.$el
 			.off('click')
@@ -143,10 +148,15 @@ export default class ExpenseTable extends Backbone.View<any> {
 				}
 			});
 
-			// $select.on('change', this.newCategory.bind(this));
+			// $select.on('change', this.setCategory.bind(this));
 		}
 	}
 
+	/**
+	 * It renders the list of <option> tags for categories
+	 * @param {Transaction} transaction
+	 * @returns {string}
+	 */
 	getCategoryOptions(transaction: Transaction) {
 		let selected = transaction.get('category');
 		let sOptions = [];
@@ -159,6 +169,8 @@ export default class ExpenseTable extends Backbone.View<any> {
 				sOptions.push('<option>' + value + '</option>');
 			}
 		});
+		sOptions.push(`<option 
+			value="${this.CODE_FOR_NEW}">-New-</option>`);
 		// console.log('sOptions', sOptions);
 		return sOptions.join('\n');
 	}
@@ -167,8 +179,8 @@ export default class ExpenseTable extends Backbone.View<any> {
 	 * Triggered by UI change of category drop-down
 	 * @param event
 	 */
-	newCategory(event) {
-		console.log('newCategory');
+	setCategory(event) {
+		console.log('setCategory');
 		let $select = $(event.target);
 		//console.log('selected', $select.val());
 		let id = $select.closest('tr').attr('data-id');
@@ -177,10 +189,18 @@ export default class ExpenseTable extends Backbone.View<any> {
 		// console.log(transaction);
 		if (transaction) {
 			// console.log('Transaction id=', id);
-			transaction.setCategory($select.val());
-			// console.log(transaction.toJSON());
-			// this.categoryList.trigger('change');
-			this.trigger('Category:change');
+			if ($select.val() == this.CODE_FOR_NEW) {
+				const newName = prompt('New category name?');
+				if (newName) {
+					transaction.setCategory(newName);
+					this.trigger('Category:change');
+				}
+			} else {
+				transaction.setCategory($select.val());
+				// console.log(transaction.toJSON());
+				// this.categoryList.trigger('change');
+				this.trigger('Category:change');
+			}
 		} else {
 			console.error('Transaction with id=', id, 'not found');
 		}

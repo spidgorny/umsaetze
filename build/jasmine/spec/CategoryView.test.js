@@ -16,4 +16,4 @@ describe('Month Select', () => {
         expect(ms.constructor.name).toBe('MonthSelect');
     });
 });
-//# sourceMappingURL=MonthSelect.test.js.map
+//# sourceMappingURL=CategoryView.test.js.map

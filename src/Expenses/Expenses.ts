@@ -30,10 +30,14 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 
 	constructor(models: Transaction[] | Object[] = [],
 				options: any = {},
-				ls: LocalStorageInterface,
+				ls?: LocalStorageInterface,
 				tf: TransactionFactory = null) {
 		super(models, options);
-		this.localStorage = ls;
+		if (ls) {
+			this.localStorage = ls;
+		} else {
+			this.localStorage = window.localStorage;
+		}
 		this.listenTo(this, 'change', () => {
 			console.log('Expenses changed event, saveAll()');
 			// this.saveAll();

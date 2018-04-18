@@ -11,7 +11,12 @@ class Expenses extends Backbone.Collection {
     }
     constructor(models = [], options = {}, ls, tf = null) {
         super(models, options);
-        this.localStorage = ls;
+        if (ls) {
+            this.localStorage = ls;
+        }
+        else {
+            this.localStorage = window.localStorage;
+        }
         this.listenTo(this, 'change', () => {
             console.log('Expenses changed event, saveAll()');
         });

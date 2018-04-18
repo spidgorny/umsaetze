@@ -10,6 +10,7 @@ class ExpenseTable extends Backbone.View {
     constructor(options, keywords, categoryList) {
         super(options);
         this.template = _.template($('#rowTemplate').html());
+        this.CODE_FOR_NEW = '-new-';
         this.keywords = keywords;
         console.log('ExpenseTable.keywords', this.keywords);
         let $expenseTable = $('#expenseTable');
@@ -44,7 +45,7 @@ class ExpenseTable extends Backbone.View {
         $('#numRows').html(this.model.getVisibleCount().toString());
         this.$el
             .off('change')
-            .on('change', 'select', this.newCategory.bind(this));
+            .on('change', 'select', this.setCategory.bind(this));
         this.$el
             .off('click')
             .on('click', 'button.close', this.deleteRow.bind(this));
@@ -100,16 +101,27 @@ class ExpenseTable extends Backbone.View {
                 sOptions.push('<option>' + value + '</option>');
             }
         });
+        sOptions.push(`<option 
+			value="${this.CODE_FOR_NEW}">-New-</option>`);
         return sOptions.join('\n');
     }
-    newCategory(event) {
-        console.log('newCategory');
+    setCategory(event) {
+        console.log('setCategory');
         let $select = $(event.target);
         let id = $select.closest('tr').attr('data-id');
         let transaction = this.model.get(id);
         if (transaction) {
-            transaction.setCategory($select.val());
-            this.trigger('Category:change');
+            if ($select.val() == this.CODE_FOR_NEW) {
+                const newName = prompt('New category name?');
+                if (newName) {
+                    transaction.setCategory(newName);
+                    this.trigger('Category:change');
+                }
+            }
+            else {
+                transaction.setCategory($select.val());
+                this.trigger('Category:change');
+            }
         }
         else {
             console.error('Transaction with id=', id, 'not found');
