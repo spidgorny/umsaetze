@@ -9,6 +9,7 @@ if (typeof window == 'object' && window.__backboneAgent) {
 $(() => {
 });
 const u = new Umsaetze_1.Umsaetze();
+window.app = u;
 function asyncLoop(arr, callback, done) {
     (function loop(i) {
         callback(arr[i], i, arr.length);

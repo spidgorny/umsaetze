@@ -1,18 +1,17 @@
 const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Jarvis = require("webpack-jarvis");
 // const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
 	entry: [
 		"./src/main.ts",
-		// "webpack-dev-server/client?http://localhost:8081",
 	],
 	output: {
 		filename: "bundle.js",
-		path: path.resolve(__dirname, 'docs', 'web'),
-		publicPath: "web"
+		path: path.resolve(__dirname, 'docs', 'web', 'js'),
+		publicPath: "http://localhost:8080/web/js/"
 	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
@@ -29,13 +28,14 @@ module.exports = {
 		contentBase: "docs",
 		hot: true,
 		compress: true,
-		// publicPath: "/",
+		publicPath: "http://localhost:8080/web/js/",
 		watchContentBase: true,
 		watchOptions: {
 			poll: false
 		},
 		overlay: true,
 		inline: true,
+		stats: { colors: true }
 	},
 	module: {
 		rules: [

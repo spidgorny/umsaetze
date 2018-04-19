@@ -83,6 +83,17 @@ class CurrentMonth {
         this._selectedMonth = this.getShortMonthNameFor(selectedMonthIndex);
         console.log('MonthSelect range', this.earliest.toString('yyyy-MM-dd'), this.latest.toString('yyyy-MM-dd'));
     }
+    getURL() {
+        let sMonth;
+        let month = this.getMonthIndex();
+        if (month < 10) {
+            sMonth = '0' + month.toString();
+        }
+        else {
+            sMonth = month.toString();
+        }
+        return '/' + this.selectedYear.toString() + '/' + sMonth;
+    }
 }
 CurrentMonth.DEFAULT_YEAR = new Date().getFullYear();
 CurrentMonth.DEFAULT_MONTH = 'Feb';

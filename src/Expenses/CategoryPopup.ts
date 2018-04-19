@@ -4,6 +4,7 @@ import handlebars from 'handlebars';
 import CategoryCollection from "../Category/CategoryCollection";
 import KeywordCollection from "../Keyword/KeywordCollection";
 import Expenses from "./Expenses";
+import {MonthExpenses} from "./MonthExpenses";
 
 /**
  * Displays a second list of categories AFTER selecting some text
@@ -13,7 +14,7 @@ export class CategoryPopup {
 	$el: JQuery;
 
 	constructor($el: JQuery,
-				protected expenses: Expenses,
+				protected expenses: MonthExpenses,
 				protected categoryList: CategoryCollection,
 				protected keywords: KeywordCollection) {
 		this.$el = $el;

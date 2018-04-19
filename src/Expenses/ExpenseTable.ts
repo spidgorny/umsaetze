@@ -10,6 +10,7 @@ import * as _ from 'underscore';
 import Backbone = require('backbone');
 import CategoryCount from "../Category/CategoryCount";
 import {CategoryPopup} from "./CategoryPopup";
+import {MonthExpenses} from "./MonthExpenses";
 
 // elapse.configure({
 // 	debug: true
@@ -17,7 +18,7 @@ import {CategoryPopup} from "./CategoryPopup";
 
 export default class ExpenseTable extends Backbone.View<any> {
 
-	model: Expenses;
+	model: MonthExpenses;
 
 	//collection: Expenses;
 
@@ -80,7 +81,8 @@ export default class ExpenseTable extends Backbone.View<any> {
 		$('#dateTill').html(
 			this.model.getDateTill().toString('yyyy-MM-dd'));
 		$('#numRows').html(
-			this.model.getVisibleCount().toString());
+			this.model.getVisibleCount().toString() + '/' +
+			this.model.expenses.size());
 
 		this.$el
 			.off('change')

@@ -11,7 +11,7 @@
     "watch": "node_modules/.bin/watchify build/src/main.js -o docs/web/bundle.js -d -v",
     "w": "node_modules/.bin/watchify build/src/main.js -o docs/web/bundle.js -d -v --poll=1",
     "FIXFIX": "webpack --progress --profile --colors --display-error-details --display-cached build/src/main.js docs/web/bundle.js",
-    "serve": "node_modules/.bin/webpack-dev-server",
+    "serve": "node_modules/.bin/webpack-dev-server --config webpack.config.js",
     "s": "node_modules/.bin/webpack-dev-server",
     "jasmine": "cd src/jasmine && ls -l && jasmine",
     "rollup": "rollup -c",
