@@ -6,6 +6,7 @@ const Backbone = require('backbone');
 
 interface Window {
 	__backboneAgent: any;
+	app: Umsaetze;
 }
 declare let window: Window;
 
@@ -20,6 +21,7 @@ $(() => {
 });
 
 const u = new Umsaetze();
+window.app = u;
 
 export function asyncLoop(arr: Array<any>, callback: Function, done?: Function) {
 	(function loop(i) {

@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Backbone = require("backbone");
-const CategoryCount_1 = require("../Category/CategoryCount");
 require("datejs");
 const _ = require("underscore");
 class Expenses extends Backbone.Collection {
@@ -22,6 +21,7 @@ class Expenses extends Backbone.Collection {
         });
         this.on("all", () => {
         });
+        this.comparator = Expenses.comparatorFunction;
     }
     fetch(options = {}) {
         console.time('Expenses.fetch');
@@ -173,31 +173,6 @@ class Expenses extends Backbone.Collection {
         let visible = this.getVisible();
         const sorted = visible.sort(this.comparator);
         return sorted;
-    }
-    setCategories(keywords) {
-        console.group('Expenses.setCategories');
-        console.log('setCategories', this.size(), keywords.size());
-        let anythingChanged = false;
-        this.each((row) => {
-            if (row.get('category') === CategoryCount_1.default.DEFAULT) {
-                let note = row.get('note');
-                keywords.each((key) => {
-                    let found = note.indexOf(key.word);
-                    if (found > -1) {
-                        row.set('category', key.category, { silent: true });
-                        anythingChanged = true;
-                    }
-                });
-            }
-        });
-        if (anythingChanged) {
-            console.log('trigger change', this._events);
-            this.trigger('change');
-        }
-        else {
-            console.log('nothing changed');
-        }
-        console.groupEnd();
     }
     getMonthlyTotalsFor(category) {
         let sparks = {};

@@ -13,6 +13,7 @@ import * as $ from "jquery";
 import * as _ from 'underscore';
 import CategoryCollectionModel from "../Category/CategoryCollectionModel";
 import KeywordCollection from "../Keyword/KeywordCollection";
+import {MonthExpenses} from "./MonthExpenses";
 
 // import Backbone from 'backbone-es6/src/Backbone.js';
 // import elapse from 'elapse';
@@ -57,8 +58,9 @@ export default class AppView extends CollectionController<Expenses> {
 		this.keywords = keywords;
 		this.ms = monthSelect;
 
+		let monthExpenses = new MonthExpenses(this.collection, this.ms.currentMonth);
 		this.table = new ExpenseTable({
-			model: this.collection,
+			model: monthExpenses,
 			el: $('#expenseTable')
 		}, this.keywords, this.categoryList);
 
@@ -86,7 +88,7 @@ export default class AppView extends CollectionController<Expenses> {
 
 	render() {
 		//if (!['', '#'].includes(window.location.hash)) return;
-		console.log('AppView.render()', this.collection.size());
+		console.log('AppView.render()', this.table.model.size(), '/', this.collection.size());
 		this.setTemplate();
 
 		// should not be done as any outside filter stop working
@@ -175,7 +177,7 @@ export default class AppView extends CollectionController<Expenses> {
 	applyKeywords(event: MouseEvent) {
 		event.preventDefault();
 		console.log('applyKeywords');
-		this.collection.setCategories(this.keywords);
+		this.table.model.setCategories(this.keywords);
 	}
 
 }

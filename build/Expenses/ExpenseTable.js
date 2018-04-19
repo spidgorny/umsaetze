@@ -42,7 +42,8 @@ class ExpenseTable extends Backbone.View {
         this.$el.html(rows.join('\n'));
         $('#dateFrom').html(this.model.getDateFrom().toString('yyyy-MM-dd'));
         $('#dateTill').html(this.model.getDateTill().toString('yyyy-MM-dd'));
-        $('#numRows').html(this.model.getVisibleCount().toString());
+        $('#numRows').html(this.model.getVisibleCount().toString() + '/' +
+            this.model.expenses.size());
         this.$el
             .off('change')
             .on('change', 'select', this.setCategory.bind(this));

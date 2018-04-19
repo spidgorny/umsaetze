@@ -33,10 +33,6 @@ const FileSaver = require('file-saver');
 
 // declare function saveAs(a: any, b: any);
 
-// elapse.configure({
-// 	debug: true
-// });
-
 export default class Sync extends CollectionController<Expenses> {
 
 	$el = $('#app');

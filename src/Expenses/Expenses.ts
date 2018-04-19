@@ -47,7 +47,8 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		});
 
 		// commented to prevent execution while loading data one by one
-		// this.comparator = Expenses.comparatorFunction;
+		// required for the list to be sorted
+		this.comparator = Expenses.comparatorFunction;
 	}
 
 	/**
@@ -256,38 +257,6 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		*/
 
 		return sorted;
-	}
-
-	/**
-	 * Called by [Apply Keywords] button
-	 * @param {KeywordCollection} keywords
-	 */
-	setCategories(keywords: KeywordCollection) {
-		console.group('Expenses.setCategories');
-		console.log('setCategories', this.size(), keywords.size());
-		let anythingChanged = false;
-		this.each((row: Transaction) => {
-			if (row.get('category') === CategoryCount.DEFAULT) {
-				let note = row.get('note');
-				// console.log(note.length, keywords.size());
-				keywords.each((key: Keyword) => {
-					let found = note.indexOf(key.word);
-					// console.log(note.length, key.word, found);
-					if (found > -1) {
-						//console.log(note, 'contains', key.word, 'gets', key.category);
-						row.set('category', key.category, { silent: true });
-						anythingChanged = true;
-					}
-				});
-			}
-		});
-		if (anythingChanged) {
-			console.log('trigger change', this._events);
-			this.trigger('change');
-		} else {
-			console.log('nothing changed');
-		}
-		console.groupEnd();
 	}
 
 	/**

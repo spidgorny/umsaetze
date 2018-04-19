@@ -7,6 +7,7 @@ const CollectionController_1 = require("../CollectionController");
 const $ = require("jquery");
 const _ = require("underscore");
 const CategoryCollectionModel_1 = require("../Category/CategoryCollectionModel");
+const MonthExpenses_1 = require("./MonthExpenses");
 class AppView extends CollectionController_1.CollectionController {
     constructor(options, categoryList, keywords, monthSelect) {
         super();
@@ -17,8 +18,9 @@ class AppView extends CollectionController_1.CollectionController {
         this.categoryList = categoryList;
         this.keywords = keywords;
         this.ms = monthSelect;
+        let monthExpenses = new MonthExpenses_1.MonthExpenses(this.collection, this.ms.currentMonth);
         this.table = new ExpenseTable_1.default({
-            model: this.collection,
+            model: monthExpenses,
             el: $('#expenseTable')
         }, this.keywords, this.categoryList);
         const categoryModel = new CategoryCollectionModel_1.default(this.categoryList);
@@ -35,7 +37,7 @@ class AppView extends CollectionController_1.CollectionController {
         });
     }
     render() {
-        console.log('AppView.render()', this.collection.size());
+        console.log('AppView.render()', this.table.model.size(), '/', this.collection.size());
         this.setTemplate();
         console.log('this.table.render()');
         this.table.render();
@@ -89,7 +91,7 @@ class AppView extends CollectionController_1.CollectionController {
     applyKeywords(event) {
         event.preventDefault();
         console.log('applyKeywords');
-        this.collection.setCategories(this.keywords);
+        this.table.model.setCategories(this.keywords);
     }
 }
 exports.default = AppView;
