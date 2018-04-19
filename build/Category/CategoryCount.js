@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Backbone = require("backbone");
 require("../Util/Object");
+const type = require('get-type');
 class CategoryCount extends Backbone.Model {
     constructor(...args) {
         super();
@@ -22,7 +23,10 @@ class CategoryCount extends Backbone.Model {
         if (!amount) {
             this.set('amount', 0);
         }
-        if (typeof this.catName == 'object') {
+        if (type.isObject(this.catName)) {
+            const bankData = this.catName;
+            Object.assign(this, bankData);
+            this.catName = bankData.name;
         }
     }
     setColor(color) {
