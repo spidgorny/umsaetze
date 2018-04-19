@@ -47,7 +47,11 @@ class HistoryView extends Backbone.View {
         content += this.template({
             average: onlyAmounts.average(),
         });
-        content += new SLTable_1.default(JSON.parse(JSON.stringify(dataThisMonth)));
+        let pureData = JSON.parse(JSON.stringify(dataThisMonth));
+        pureData = pureData.map(el => {
+            return _.omit(el, ['id']);
+        });
+        content += new SLTable_1.default(pureData);
         this.$el.html(content);
         this.renderSparkLines(labels, onlyAmounts, cumulative);
         return this;

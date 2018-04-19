@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("datejs");
+require('../Util/Number');
 class CurrentMonth {
     constructor(year, month = CurrentMonth.DEFAULT_MONTH) {
         this.earliest = new Date().moveToMonth(0, -1).moveToFirstDayOfMonth();

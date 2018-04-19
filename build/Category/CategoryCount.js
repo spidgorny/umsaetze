@@ -22,6 +22,8 @@ class CategoryCount extends Backbone.Model {
         if (!amount) {
             this.set('amount', 0);
         }
+        if (typeof this.catName == 'object') {
+        }
     }
     setColor(color) {
         this.set('color', color);

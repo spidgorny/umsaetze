@@ -1,4 +1,5 @@
 import 'datejs';
+require('../Util/Number');
 
 export class CurrentMonth {
 
