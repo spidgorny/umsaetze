@@ -1,5 +1,6 @@
 import Backbone = require('backbone');
 import '../Util/Object';
+const type = require('get-type');
 
 /**
  * Model for holding category information for a month
@@ -40,8 +41,10 @@ export default class CategoryCount extends Backbone.Model {
 		}
 
 		// fix after corruption
-		if (typeof this.catName == 'object') {
-
+		if (type.isObject(this.catName)) {
+			const bankData: any = this.catName;
+			Object.assign(this, bankData);
+			this.catName = bankData.name;
 		}
 	}
 
