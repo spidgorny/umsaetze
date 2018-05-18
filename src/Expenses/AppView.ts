@@ -157,7 +157,8 @@ export default class AppView extends CollectionController<Expenses> {
 		console.profile('AppView.show');
 
 		// updated in the constructor once
-		// this.ms.update(this.collection);
+		// this is needed after [Generate]
+		this.ms.update(this.collection);
 
 		this.render();
 		this.categoryView.show();

@@ -18,7 +18,8 @@
 	},
 	"include": [
 		"src/*.ts",
-		"src/jasmine/spec/*.ts"
+		"src/jasmine/spec/*.ts",
+		"src/test/codecept/*.ts"
 	],
 	"exclude": [
 		"node_modules",

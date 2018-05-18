@@ -5,10 +5,12 @@ const express = require('express');
 var cors = require('cors');
 const app = express();
 const log = require('ololog');
+const serveStatic = require('serve-static');
 
 app.use(cors());
+app.use(serveStatic('docs/web'));
 
-app.get('/', (req, res) => res.send('Hello World!'));
+app.get('/hello', (req, res) => res.send('Hello World!'));
 
 app.get('/fetchTransactions', async (req, res) => {
 	// log(req.body, req.params, req.query);

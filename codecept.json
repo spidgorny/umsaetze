@@ -1,0 +1,15 @@
+{
+  "tests": "build/test/codecept/*_test.js",
+  "timeout": 10000,
+  "output": "src/test/codecept/output",
+  "helpers": {
+    "Puppeteer": {
+      "url": "http://localhost:3000/"
+    }
+  },
+  "include": {
+  },
+  "bootstrap": false,
+  "mocha": {},
+  "name": "umsaetze"
+}

@@ -14,8 +14,10 @@ const express = require('express');
 var cors = require('cors');
 const app = express();
 const log = require('ololog');
+const serveStatic = require('serve-static');
 app.use(cors());
-app.get('/', (req, res) => res.send('Hello World!'));
+app.use(serveStatic('docs/web'));
+app.get('/hello', (req, res) => res.send('Hello World!'));
 app.get('/fetchTransactions', (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
         const fs = new FetchExpenses_1.FetchExpenses(process.env['ClientID'], process.env['Secret']);

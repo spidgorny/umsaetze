@@ -10,8 +10,8 @@ module.exports = {
 	],
 	output: {
 		filename: "bundle.js",
-		path: path.resolve(__dirname, 'docs', 'web', 'js'),
-		publicPath: "http://localhost:8080/web/js/"
+		path: path.resolve(__dirname, 'docs', 'web'),
+		publicPath: "http://localhost:8080/web/"
 	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
@@ -28,7 +28,7 @@ module.exports = {
 		contentBase: "docs",
 		hot: true,
 		compress: true,
-		publicPath: "http://localhost:8080/web/js/",
+		publicPath: "http://localhost:8080/web/",
 		watchContentBase: true,
 		watchOptions: {
 			poll: false

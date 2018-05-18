@@ -76,6 +76,7 @@ class AppView extends CollectionController_1.CollectionController {
     }
     show() {
         console.profile('AppView.show');
+        this.ms.update(this.collection);
         this.render();
         this.categoryView.show();
         console.profileEnd();

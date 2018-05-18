@@ -12,3 +12,4 @@ node_modules
 !/src/test/data/keywords.xlsx
 /docs/yarn-error.log
 /.env
+/src/test/codecept/output
