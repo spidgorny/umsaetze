@@ -13,12 +13,9 @@ require("datejs");
 const _ = require("underscore");
 const $ = require("jquery");
 class Expenses extends Backbone.Collection {
-    static comparatorFunction(compare, to) {
-        return compare.getDate() == to.getDate()
-            ? 0 : (compare.getDate() > to.getDate() ? 1 : -1);
-    }
     constructor(models = [], options = {}, ls, tf = null) {
         super(models, options);
+        this.counter = 0;
         if (ls) {
             this.localStorage = ls;
         }
@@ -31,6 +28,10 @@ class Expenses extends Backbone.Collection {
         this.on("all", () => {
         });
         this.comparator = Expenses.comparatorFunction;
+    }
+    static comparatorFunction(compare, to) {
+        return compare.getDate() == to.getDate()
+            ? 0 : (compare.getDate() > to.getDate() ? 1 : -1);
     }
     fetch(options = {}) {
         console.time('Expenses.fetch');
@@ -58,10 +59,11 @@ class Expenses extends Backbone.Collection {
   </div>
 </div>`);
             if (models.length) {
-                let counter = 0;
+                const promList = [];
                 for (let el of models) {
-                    yield this.addElementUpdateProgress(el, counter++, models.length);
+                    promList.push(this.addElementUpdateProgress(el, models.length));
                 }
+                yield Promise.all(promList);
                 console.log('added objects', this.size());
             }
             console.log('read', this.length);
@@ -73,12 +75,12 @@ class Expenses extends Backbone.Collection {
             setTimeout(() => resolve(fn(par)), 0);
         });
     }
-    addElementUpdateProgress(el, counter, numModels) {
+    addElementUpdateProgress(el, numModels) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.sleep(() => {
                 let transaction = this.tf.make(el);
                 this.add(transaction);
-                const percent = Math.round(counter / numModels * 100) + '%';
+                const percent = Math.round(this.counter++ / numModels * 100) + '%';
                 $('#app #progress .progress-bar')
                     .width(percent)
                     .text(percent);

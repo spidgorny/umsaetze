@@ -15,6 +15,12 @@ import {asyncLoop, awaitLoop} from "../main";
 
 export default class Expenses extends Backbone.Collection<Transaction> {
 
+	/**
+	 * For async progress bar
+	 * @type {number}
+	 */
+	counter = 0;
+
 	model: typeof Transaction;
 
 	localStorage: LocalStorage;
@@ -89,10 +95,12 @@ export default class Expenses extends Backbone.Collection<Transaction> {
   </div>
 </div>`);
 		if (models.length) {
-			let counter = 0;
+			const promList = [];
 			for (let el of models) {
-				await this.addElementUpdateProgress(el, counter++, models.length);
+				promList.push(
+					this.addElementUpdateProgress(el, models.length));
 			}
+			await Promise.all(promList);
 			//this.unserializeDate();
 			console.log('added objects', this.size());
 			// this.trigger('change');
@@ -108,12 +116,12 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		})
 	}
 
-	async addElementUpdateProgress(el, counter, numModels) {
+	async addElementUpdateProgress(el, numModels) {
 		await this.sleep(() => {
 			let transaction = this.tf.make(el);
 			this.add(transaction);
 
-			const percent = Math.round(counter / numModels * 100) + '%';
+			const percent = Math.round(this.counter++ / numModels * 100) + '%';
 			$('#app #progress .progress-bar')
 				.width(percent)
 				.text(percent);
