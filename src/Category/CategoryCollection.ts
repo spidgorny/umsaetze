@@ -5,6 +5,8 @@ import * as _ from 'underscore';
 import {LocalStorage} from 'backbone.localstorage';
 import {Collection} from "backbone";
 
+const log = require('ololog');
+
 /**
  * Depends on Expenses to parse them
  * and retrieve the total values for each category
@@ -22,32 +24,36 @@ export default class CategoryCollection
 
 	_events;
 
-	constructor(options?) {
+	static readonly LS_KEY = 'Categories';
+
+	constructor(models: any[]) {
 		super();
-		let ls = new LocalStorage('Categories');
-		//this.colors = simpleStorage.get('CategoryColors');
-		let models = ls.findAll();
-		models = _.uniq(models, false, (e1: CategoryCount) => {
-			return e1.catName;
-		});
-		//console.log('categories in LS', models);
 
-		//this.add(models);	// makes Backbone.Model instances
-		_.each(models, m => {
-			this.add(new CategoryCount(m));
-		});
+		if (models.length) {
+			models = _.uniq(models, false, (e1: CategoryCount) => {
+				return e1.catName;
+			});
+			// log('unique categories in LS', models);
 
-		// sort
-		this.models = _.uniq(this.models, (el) => {
-			return el.getName();
-		});
+			//this.add(models);	// makes Backbone.Model instances
+			_.each(models, m => {
+				this.add(new CategoryCount(m));
+			});
+			// log('added as objects', this.models);
+
+			// sort
+			this.models = _.uniq(this.models, (el) => {
+				return el.getName();
+			});
+			// log('unique objects', this.models);
+		}
 
 		if (!this.size()) {
 			//this.getCategoriesFromExpenses();
 			// this is not available yet
 		}
 
-		this.listenTo(this, 'change', this.saveToLS);
+		this.listenTo(this, 'change', this.saveToLS.bind(this));
 	}
 
 	get length() {
@@ -77,7 +83,7 @@ export default class CategoryCollection
 	}
 
 	saveToLS() {
-		let ls = new LocalStorage('Categories');
+		let ls = new LocalStorage(CategoryCollection.LS_KEY);
 		let deleteMe = ls.findAll();
 		// console.log('saveToLS', deleteMe.length);
 		this.each((model: CategoryCount) => {

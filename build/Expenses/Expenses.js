@@ -101,7 +101,7 @@ class Expenses extends Backbone.Collection {
     }
     setAllVisible() {
         this.each((model) => {
-            model.set('visible', true, { silent: true });
+            model.visible = true;
         });
     }
     filterVisible(q) {

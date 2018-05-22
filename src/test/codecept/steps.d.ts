@@ -29,6 +29,13 @@ interface ILocator {
 }
 
 declare class Locator implements ILocator {
+	xpath?: string;
+	css?: string;
+	name?: string;
+	value?: string;
+	frame?: string;
+	android?: string;
+	ios?: string;
   or(locator): Locator;
   find(locator): Locator;
   withChild(locator): Locator;
@@ -59,12 +66,12 @@ declare function AfterSuite(callback: ICodeceptCallback): void;
 
 declare function locate(selector: string): Locator;
 declare function locate(selector: ILocator): Locator;
-declare function within(selector: string, callback: Function): Promise;
-declare function within(selector: ILocator, callback: Function): Promise;
-declare function session(selector: string, callback: Function): Promise;
-declare function session(selector: ILocator, callback: Function): Promise;
-declare function session(selector: string, config: any, callback: Function): Promise;
-declare function session(selector: ILocator, config: any, callback: Function): Promise;
+declare function within(selector: string, callback: Function): Promise<any>;
+declare function within(selector: ILocator, callback: Function): Promise<any>;
+declare function session(selector: string, callback: Function): Promise<any>;
+declare function session(selector: ILocator, callback: Function): Promise<any>;
+declare function session(selector: string, config: any, callback: Function): Promise<any>;
+declare function session(selector: ILocator, config: any, callback: Function): Promise<any>;
 
 declare const codecept_helper: any;
 
@@ -75,7 +82,7 @@ declare namespace CodeceptJS {
     amCancellingPopups() : void,
     cancelPopup() : void,
     seeInPopup(text: string) : void,
-    grabPopupText() : Promise,
+    grabPopupText() : Promise<any>,
     amOnPage(url: string) : void,
     resizeWindow(width: number, height: number) : void,
     haveRequestHeaders(customHeaders: string) : void,
@@ -88,16 +95,16 @@ declare namespace CodeceptJS {
     scrollTo(locator: ILocator, offsetX?: string, offsetY?: string) : void,
     scrollTo(locator: string, offsetX?: string, offsetY?: string) : void,
     seeInTitle(text: string) : void,
-    grabPageScrollPosition() : Promise,
+    grabPageScrollPosition() : Promise<any>,
     seeTitleEquals(text: string) : void,
     dontSeeInTitle(text: string) : void,
-    grabTitle() : Promise,
+    grabTitle() : Promise<any>,
     switchToNextTab(num?: number) : void,
     switchToPreviousTab(num?: number) : void,
     closeCurrentTab() : void,
     closeOtherTabs() : void,
     openNewTab() : void,
-    grabNumberOfOpenTabs() : Promise,
+    grabNumberOfOpenTabs() : Promise<any>,
     seeElement(locator: ILocator, undefined: string) : void,
     dontSeeElement(locator: ILocator, undefined: string) : void,
     seeElementInDOM(locator: ILocator, undefined: string) : void,
@@ -134,7 +141,7 @@ declare namespace CodeceptJS {
     attachFile(locator: string, pathToFile: string) : void,
     selectOption(select: ILocator, option: string) : void,
     selectOption(select: string, option: string) : void,
-    grabNumberOfVisibleElements(locator: ILocator, undefined: string) : Promise,
+    grabNumberOfVisibleElements(locator: ILocator, undefined: string) : Promise<any>,
     seeInCurrentUrl(url: string) : void,
     dontSeeInCurrentUrl(url: string) : void,
     seeCurrentUrlEquals(url: string) : void,
@@ -145,9 +152,9 @@ declare namespace CodeceptJS {
     seeTextEquals(text: string, context?: string) : void,
     dontSee(text: string, context?: ILocator) : void,
     dontSee(text: string, context?: string) : void,
-    grabSource() : Promise,
-    grabBrowserLogs() : Promise,
-    grabCurrentUrl() : Promise,
+    grabSource() : Promise<any>,
+    grabBrowserLogs() : Promise<any>,
+    grabCurrentUrl() : Promise<any>,
     seeInSource(text: string) : void,
     dontSeeInSource(text: string) : void,
     seeNumberOfElements(selector: string, num: number) : void,
@@ -156,22 +163,22 @@ declare namespace CodeceptJS {
     setCookie(cookie: string) : void,
     seeCookie(name: string) : void,
     dontSeeCookie(name: string) : void,
-    grabCookie(name: string) : Promise,
+    grabCookie(name: string) : Promise<any>,
     clearCookie(name: string) : void,
     executeScript(fn: Function) : void,
     executeAsyncScript(fn: Function) : void,
-    grabTextFrom(locator: ILocator, undefined: string) : Promise,
-    grabValueFrom(locator: ILocator, undefined: string) : Promise,
-    grabHTMLFrom(locator: ILocator, undefined: string) : Promise,
-    grabCssPropertyFrom(locator: ILocator, cssProperty: string) : Promise,
-    grabCssPropertyFrom(locator: string, cssProperty: string) : Promise,
+    grabTextFrom(locator: ILocator, undefined: string) : Promise<any>,
+    grabValueFrom(locator: ILocator, undefined: string) : Promise<any>,
+    grabHTMLFrom(locator: ILocator, undefined: string) : Promise<any>,
+    grabCssPropertyFrom(locator: ILocator, cssProperty: string) : Promise<any>,
+    grabCssPropertyFrom(locator: string, cssProperty: string) : Promise<any>,
     seeCssPropertiesOnElements(locator: ILocator, cssProperties: string) : void,
     seeCssPropertiesOnElements(locator: string, cssProperties: string) : void,
     seeAttributesOnElements(locator: ILocator, attributes: string) : void,
     seeAttributesOnElements(locator: string, attributes: string) : void,
-    grabAttributeFrom(locator: ILocator, attr: string) : Promise,
-    grabAttributeFrom(locator: string, attr: string) : Promise,
-    saveScreenshot(fileName: string, fullPage: boolean = false) : void,
+    grabAttributeFrom(locator: ILocator, attr: string) : Promise<any>,
+    grabAttributeFrom(locator: string, attr: string) : Promise<any>,
+    saveScreenshot(fileName: string, fullPage: boolean) : void,
     wait(sec: number) : void,
     waitForEnabled(locator: ILocator, sec: number) : void,
     waitForEnabled(locator: string, sec: number) : void,
@@ -179,7 +186,7 @@ declare namespace CodeceptJS {
     waitForValue(locator: string, value: string, sec: number) : void,
     waitNumberOfVisibleElements(locator: ILocator, num: number, sec: number) : void,
     waitNumberOfVisibleElements(locator: string, num: number, sec: number) : void,
-    waitForElement(locator: ILocator|string, sec: number = 1) : void,
+    waitForElement(locator: ILocator|string, sec: number) : void,
     waitForElement(locator: string, sec: number) : void,
     waitForVisible(locator: ILocator, sec: number) : void,
     waitForVisible(locator: string, sec: number) : void,

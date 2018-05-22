@@ -3,7 +3,7 @@ import * as expect from 'expect';
 
 // const log = require('ololog');
 const log = console.log;
-log.error = console.error;
+// log.error = console.error;
 
 Feature('Main');
 

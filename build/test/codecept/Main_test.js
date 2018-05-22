@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const expect = require("expect");
 const log = console.log;
-log.error = console.error;
 Feature('Main');
 Scenario('home empty', (I) => __awaiter(this, void 0, void 0, function* () {
     I.amOnPage('/');

@@ -39,7 +39,10 @@ class Workspace extends Backbone.Router {
         this.model.fetch();
         const monthSelect = MonthSelect_1.default.getInstance();
         monthSelect.update(this.model);
-        this.categoryList = new CategoryCollection_1.default();
+        let ls = new backbone_localstorage_1.LocalStorage(CategoryCollection_1.default.LS_KEY);
+        let catList = ls.findAll();
+        log('catList', catList);
+        this.categoryList = new CategoryCollection_1.default(catList);
         this.categoryList.setExpenses(this.model);
         this.keywords = new KeywordCollection_1.default();
         console.log('this.keywords', this.keywords.size());

@@ -1,5 +1,8 @@
 import Backbone = require('backbone');
 import '../Util/Object';
+import {InvalidArgumentException} from '../Exception/InvalidArgumentException';
+import * as _ from 'underscore';
+
 const type = require('get-type');
 
 /**
@@ -19,6 +22,9 @@ export default class CategoryCount extends Backbone.Model {
 
 	constructor(...args: any[]) {
 		super();
+		if (!args[0] || !('catName' in args[0])) {
+			throw new InvalidArgumentException('CategoryCount needs parameters');
+		}
 		this.set('catName', args[0].catName);	// this should not be necessary but it is
 		this.set('color', args[0].color);	// this should not be necessary but it is
 		this.set('count', args[0].count);	// this should not be necessary but it is
@@ -60,10 +66,14 @@ export default class CategoryCount extends Backbone.Model {
 	}
 
 	getName() {
-		return this.get('catName');
+		let catName = this.get('catName');
+		if (_.isObject(catName)) {
+			catName = catName.name;
+		}
+		return catName;
 	}
 
-	getAmount() {
+	getAmount(): string {
 		return this.get('amount').toFixed(2);
 	}
 
@@ -90,6 +100,10 @@ export default class CategoryCount extends Backbone.Model {
 		let avg = sum / totals.length;
 		//console.log(totals, sum, avg);
 		return avg.toFixed(2);
+	}
+
+	getAmountFloat() {
+		return this.get('amount');
 	}
 
 }

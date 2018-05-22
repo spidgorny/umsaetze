@@ -69,7 +69,10 @@ export default class Workspace extends Backbone.Router {
 			monthSelect.update(this.model);
 		// }, 0);
 
-		this.categoryList = new CategoryCollection();
+		let ls = new LocalStorage(CategoryCollection.LS_KEY);
+		let catList: any[] = ls.findAll();
+		log('catList', catList);
+		this.categoryList = new CategoryCollection(catList);
 		this.categoryList.setExpenses(this.model);
 
 		this.keywords = new KeywordCollection();

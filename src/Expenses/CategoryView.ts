@@ -147,7 +147,7 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 		// console.log(this.model);
 		if (this.model) {
 			this.model.getCollection().comparator = function (el: CategoryCount) {
-				return -Math.abs(el.getAmount());
+				return -Math.abs(el.getAmountFloat());
 			};
 		}
 		this.model.getCollection().sort();
@@ -155,7 +155,7 @@ export default class CategoryView extends Backbone.View<CategoryCollectionModel>
 		let rest = 0;
 		this.model.getCollection().each((cat: CategoryCount) => {
 			if (cat.getName() != 'Income') {
-				let amount = Math.abs(cat.getAmount());
+				let amount = Math.abs(cat.getAmountFloat());
 				let perCent = 100 * amount / sum;
 				if (perCent > 3) {
 					labels.push(cat.get('catName'));

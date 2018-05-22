@@ -4,23 +4,24 @@ const CategoryCount_1 = require("./CategoryCount");
 const _ = require("underscore");
 const backbone_localstorage_1 = require("backbone.localstorage");
 const backbone_1 = require("backbone");
+const log = require('ololog');
 class CategoryCollection extends backbone_1.Collection {
-    constructor(options) {
+    constructor(models) {
         super();
-        let ls = new backbone_localstorage_1.LocalStorage('Categories');
-        let models = ls.findAll();
-        models = _.uniq(models, false, (e1) => {
-            return e1.catName;
-        });
-        _.each(models, m => {
-            this.add(new CategoryCount_1.default(m));
-        });
-        this.models = _.uniq(this.models, (el) => {
-            return el.getName();
-        });
+        if (models.length) {
+            models = _.uniq(models, false, (e1) => {
+                return e1.catName;
+            });
+            _.each(models, m => {
+                this.add(new CategoryCount_1.default(m));
+            });
+            this.models = _.uniq(this.models, (el) => {
+                return el.getName();
+            });
+        }
         if (!this.size()) {
         }
-        this.listenTo(this, 'change', this.saveToLS);
+        this.listenTo(this, 'change', this.saveToLS.bind(this));
     }
     get length() {
         return this.models.length;
@@ -35,7 +36,7 @@ class CategoryCollection extends backbone_1.Collection {
         this.getCategoriesFromExpenses();
     }
     saveToLS() {
-        let ls = new backbone_localstorage_1.LocalStorage('Categories');
+        let ls = new backbone_localstorage_1.LocalStorage(CategoryCollection.LS_KEY);
         let deleteMe = ls.findAll();
         this.each((model) => {
             if (model.get('id')) {
@@ -135,5 +136,6 @@ class CategoryCollection extends backbone_1.Collection {
         }
     }
 }
+CategoryCollection.LS_KEY = 'Categories';
 exports.default = CategoryCollection;
 //# sourceMappingURL=CategoryCollection.js.map

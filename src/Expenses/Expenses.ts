@@ -152,7 +152,9 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	 */
 	public setAllVisible() {
 		this.each((model: Transaction) => {
-			model.set('visible', true, { silent: true });
+			// this value is not stored in LS, but calculated
+			model.visible = true;
+			//model.set('visible', true, { silent: true });
 		});
 	}
 

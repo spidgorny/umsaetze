@@ -1,4 +1,4 @@
-import {CollectionController} from "../src/CollectionController";
+import {CollectionController} from "../../CollectionController";
 
 class CollectionControllerTest {
 

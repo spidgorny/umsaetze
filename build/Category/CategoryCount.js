@@ -2,10 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Backbone = require("backbone");
 require("../Util/Object");
+const InvalidArgumentException_1 = require("../Exception/InvalidArgumentException");
+const _ = require("underscore");
 const type = require('get-type');
 class CategoryCount extends Backbone.Model {
     constructor(...args) {
         super();
+        if (!args[0] || !('catName' in args[0])) {
+            throw new InvalidArgumentException_1.InvalidArgumentException('CategoryCount needs parameters');
+        }
         this.set('catName', args[0].catName);
         this.set('color', args[0].color);
         this.set('count', args[0].count);
@@ -39,7 +44,11 @@ class CategoryCount extends Backbone.Model {
         return '#' + r + g + b;
     }
     getName() {
-        return this.get('catName');
+        let catName = this.get('catName');
+        if (_.isObject(catName)) {
+            catName = catName.name;
+        }
+        return catName;
     }
     getAmount() {
         return this.get('amount').toFixed(2);
@@ -58,6 +67,9 @@ class CategoryCount extends Backbone.Model {
         let sum = totals.reduce(function (a, b) { return parseFloat(a) + parseFloat(b); });
         let avg = sum / totals.length;
         return avg.toFixed(2);
+    }
+    getAmountFloat() {
+        return this.get('amount');
     }
 }
 CategoryCount.DEFAULT = 'Default';
