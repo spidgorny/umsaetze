@@ -1,8 +1,17 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const Backbone = require("backbone");
 require("datejs");
 const _ = require("underscore");
+const $ = require("jquery");
 class Expenses extends Backbone.Collection {
     static comparatorFunction(compare, to) {
         return compare.getDate() == to.getDate()
@@ -37,6 +46,44 @@ class Expenses extends Backbone.Collection {
         console.log('read', this.length);
         console.timeEnd('Expenses.fetch');
         return {};
+    }
+    asyncFetch(options = {}) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.time('Expenses.fetch');
+            let models = this.localStorage.findAll();
+            console.log('models from LS', models.length);
+            $('#app').html(`<div class="progress" id="progress">
+  <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+    0%
+  </div>
+</div>`);
+            if (models.length) {
+                let counter = 0;
+                for (let el of models) {
+                    yield this.addElementUpdateProgress(el, counter++, models.length);
+                }
+                console.log('added objects', this.size());
+            }
+            console.log('read', this.length);
+            console.timeEnd('Expenses.fetch');
+        });
+    }
+    sleep(fn, par) {
+        return new Promise((resolve) => {
+            setTimeout(() => resolve(fn(par)), 0);
+        });
+    }
+    addElementUpdateProgress(el, counter, numModels) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.sleep(() => {
+                let transaction = this.tf.make(el);
+                this.add(transaction);
+                const percent = Math.round(counter / numModels * 100) + '%';
+                $('#app #progress .progress-bar')
+                    .width(percent)
+                    .text(percent);
+            });
+        });
     }
     saveAll() {
         console.warn('Expenses.saveAll prevented');

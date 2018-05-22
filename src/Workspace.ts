@@ -57,14 +57,16 @@ export default class Workspace extends Backbone.Router {
 		Workspace.instance = this;
 
 		(this as any)._bindRoutes();
+	}
 
+	async init() {
 		const expensesStorage = new LocalStorage("Expenses");
 		log(expensesStorage.findAll().length);
 		this.model = new Expenses([], {}, expensesStorage, null);
 		this.tf = new TransactionFactory(this.model);
 		this.model.tf = this.tf;
 		// setTimeout(() => {
-			this.model.fetch();
+			await this.model.asyncFetch();
 			const monthSelect = MonthSelect.getInstance();
 			monthSelect.update(this.model);
 		// }, 0);

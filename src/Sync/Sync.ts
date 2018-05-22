@@ -62,7 +62,7 @@ export default class Sync extends CollectionController<Expenses> {
 		this.slowUpdateLoadingBar = _.throttle(this.updateLoadingBar, 128);
 
 		let $SyncPage = $('#SyncPage');
-		$SyncPage.load($SyncPage.attr('href'), (html) => {
+		$.get($SyncPage.attr('href'), (html) => {
 			this.template = _.template(html);
 			this.render();
 		});

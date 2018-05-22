@@ -8,8 +8,10 @@ import MonthSelect from '../MonthSelect/MonthSelect';
 import {LocalStorage} from 'backbone.localstorage';
 import 'datejs';
 import * as _ from 'underscore';
+import * as $ from 'jquery';
 import {LocalStorageInterface} from "../test/helper/LocalStorageInterface";
 import {TransactionFactory} from "./TransactionFactory";
+import {asyncLoop, awaitLoop} from "../main";
 
 export default class Expenses extends Backbone.Collection<Transaction> {
 
@@ -71,6 +73,51 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		console.log('read', this.length);
 		console.timeEnd('Expenses.fetch');
 		return <JQueryXHR>{};
+	}
+
+	/**
+	 * Should be called after constructor to read data from LS
+	 * @param options
+	 */
+	async asyncFetch(options: CollectionFetchOptions = {}) {
+		console.time('Expenses.fetch');
+		let models = this.localStorage.findAll();
+		console.log('models from LS', models.length);
+		$('#app').html(`<div class="progress" id="progress">
+  <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+    0%
+  </div>
+</div>`);
+		if (models.length) {
+			let counter = 0;
+			for (let el of models) {
+				await this.addElementUpdateProgress(el, counter++, models.length);
+			}
+			//this.unserializeDate();
+			console.log('added objects', this.size());
+			// this.trigger('change');
+		}
+		console.log('read', this.length);
+		console.timeEnd('Expenses.fetch');
+	}
+
+	sleep (fn, par?: any) {
+		return new Promise((resolve) => {
+			// wait 3s before calling fn(par)
+			setTimeout(() => resolve(fn(par)), 0)
+		})
+	}
+
+	async addElementUpdateProgress(el, counter, numModels) {
+		await this.sleep(() => {
+			let transaction = this.tf.make(el);
+			this.add(transaction);
+
+			const percent = Math.round(counter / numModels * 100) + '%';
+			$('#app #progress .progress-bar')
+				.width(percent)
+				.text(percent);
+		});
 	}
 
 	saveAll() {

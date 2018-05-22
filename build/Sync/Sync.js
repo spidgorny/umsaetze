@@ -24,7 +24,7 @@ class Sync extends CollectionController_1.CollectionController {
         this.listenTo(this.model, 'change', this.render);
         this.slowUpdateLoadingBar = _.throttle(this.updateLoadingBar, 128);
         let $SyncPage = $('#SyncPage');
-        $SyncPage.load($SyncPage.attr('href'), (html) => {
+        $.get($SyncPage.attr('href'), (html) => {
             this.template = _.template(html);
             this.render();
         });

@@ -1,4 +1,12 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const AppView_1 = require("./Expenses/AppView");
 const Sync_1 = require("./Sync/Sync");
@@ -31,23 +39,27 @@ class Workspace extends Backbone.Router {
         };
         Workspace.instance = this;
         this._bindRoutes();
-        const expensesStorage = new backbone_localstorage_1.LocalStorage("Expenses");
-        log(expensesStorage.findAll().length);
-        this.model = new Expenses_1.default([], {}, expensesStorage, null);
-        this.tf = new TransactionFactory_1.TransactionFactory(this.model);
-        this.model.tf = this.tf;
-        this.model.fetch();
-        const monthSelect = MonthSelect_1.default.getInstance();
-        monthSelect.update(this.model);
-        let ls = new backbone_localstorage_1.LocalStorage(CategoryCollection_1.default.LS_KEY);
-        let catList = ls.findAll();
-        this.categoryList = new CategoryCollection_1.default(catList);
-        this.categoryList.setExpenses(this.model);
-        this.keywords = new KeywordCollection_1.default();
-        console.log('this.keywords', this.keywords.size());
     }
     static getInstance() {
         return Workspace.instance;
+    }
+    init() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const expensesStorage = new backbone_localstorage_1.LocalStorage("Expenses");
+            log(expensesStorage.findAll().length);
+            this.model = new Expenses_1.default([], {}, expensesStorage, null);
+            this.tf = new TransactionFactory_1.TransactionFactory(this.model);
+            this.model.tf = this.tf;
+            yield this.model.asyncFetch();
+            const monthSelect = MonthSelect_1.default.getInstance();
+            monthSelect.update(this.model);
+            let ls = new backbone_localstorage_1.LocalStorage(CategoryCollection_1.default.LS_KEY);
+            let catList = ls.findAll();
+            this.categoryList = new CategoryCollection_1.default(catList);
+            this.categoryList.setExpenses(this.model);
+            this.keywords = new KeywordCollection_1.default();
+            console.log('this.keywords', this.keywords.size());
+        });
     }
     activateMenu() {
         this.activateMenu2();

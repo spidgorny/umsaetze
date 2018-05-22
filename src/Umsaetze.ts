@@ -12,6 +12,10 @@ export class Umsaetze {
 
 	constructor() {
 		this.router = new Workspace();
+	}
+
+	async init() {
+		await this.router.init();
 		// console.log('Umsaetze.router', this.router);
 
 		console.log('document.location', document.location.pathname);

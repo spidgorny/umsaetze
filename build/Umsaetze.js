@@ -1,4 +1,12 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const Workspace_1 = require("./Workspace");
 const Backbone = require("backbone");
@@ -6,14 +14,19 @@ const $ = require("jquery");
 class Umsaetze {
     constructor() {
         this.router = new Workspace_1.default();
-        console.log('document.location', document.location.pathname);
-        const ok = Backbone.history.start({
-            root: document.location.pathname,
+    }
+    init() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.router.init();
+            console.log('document.location', document.location.pathname);
+            const ok = Backbone.history.start({
+                root: document.location.pathname,
+            });
+            if (!ok) {
+                console.error('history start failed', this.router.routes);
+            }
+            this.inlineEdit();
         });
-        if (!ok) {
-            console.error('history start failed', this.router.routes);
-        }
-        this.inlineEdit();
     }
     inlineEdit() {
         $(document).on('click', '.inlineEdit span', (event) => {
