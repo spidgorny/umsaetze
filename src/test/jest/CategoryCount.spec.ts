@@ -19,6 +19,19 @@ describe('CategoryCount', () => {
 		}).toThrow(InvalidArgumentException);
 	});
 
+	it('can handle catName object', () => {
+		const cc = new CategoryCount({
+			catName: {
+				name: 'cat name'
+			},
+			color: '#abcdef',
+			count: 12,
+			amount: 123.55,
+			id: '85764598'
+		});
+		expect(cc.getName()).toBe('cat name');
+	});
+
 	it('setColor', () => {
 		cc.setColor('#123456');
 		// direct access is not supposed to work?

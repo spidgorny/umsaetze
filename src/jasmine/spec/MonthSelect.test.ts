@@ -1,8 +1,8 @@
-// /<reference path="../../typings/index.d.ts"/>
+/// <reference path="../../index.d.ts"/>
 
 require('./bootstrap');
 
-const log = console.log;
+const log = <Console><any>console.log;
 log.error = console.error;
 
 import MonthSelect from "../../MonthSelect/MonthSelect";

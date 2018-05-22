@@ -15,6 +15,18 @@ describe('CategoryCount', () => {
             new CategoryCount_1.default();
         }).toThrow(InvalidArgumentException_1.InvalidArgumentException);
     });
+    it('can handle catName object', () => {
+        const cc = new CategoryCount_1.default({
+            catName: {
+                name: 'cat name'
+            },
+            color: '#abcdef',
+            count: 12,
+            amount: 123.55,
+            id: '85764598'
+        });
+        expect(cc.getName()).toBe('cat name');
+    });
     it('setColor', () => {
         cc.setColor('#123456');
         expect(cc.get('color')).toBe('#123456');

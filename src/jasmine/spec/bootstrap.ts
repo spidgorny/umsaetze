@@ -1,4 +1,12 @@
 require('source-map-support').install();
+const jsdom = require("jsdom");
+
+declare module NodeJS  {
+	interface Global {
+		window: any;
+		document: any;
+	}
+}
 
 // window.navigator undefined
 // const log = require('ololog');
@@ -18,7 +26,6 @@ function buildDOM2() {
 }
 
 function buildDOM3() {
-	const jsdom = require("jsdom");
 	const {JSDOM} = jsdom;
 	const {window} = new JSDOM();
 	// window.navigator = {};

@@ -1,10 +1,10 @@
-// /<reference path="../../typings/index.d.ts"/>
+/// <reference path="../../index.d.ts"/>
 
 import {CurrentMonth} from "../../MonthSelect/CurrentMonth";
 
 require('./bootstrap');
 
-const log = console.log;
+const log = <Console><any>console.log;
 log.error = console.error;
 
 import MonthSelect, {default as CategoryView} from "../../Expenses/CategoryView";
