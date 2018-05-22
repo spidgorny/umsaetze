@@ -8,9 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const log = require('ololog');
+const Backbone = require("backbone");
 const _ = require("underscore");
 const axios_1 = require("axios");
+const log = require('ololog');
 class FetchTransactions {
     constructor(expenses, tf) {
         this.email = 'e.m@i.l';
@@ -54,6 +55,10 @@ class FetchTransactions {
         this.templateFunc = _.template(this.template);
         this.expenses = expenses;
         this.tf = tf;
+        const defaultFields = window.localStorage.getItem('FetchTransactions');
+        log(defaultFields);
+        const values = JSON.parse(defaultFields);
+        Object.assign(this, values);
     }
     setDiv(div) {
         this.div = div;
@@ -76,8 +81,11 @@ class FetchTransactions {
                 });
                 console.log(response.data.data);
                 for (let t of response.data.data) {
-                    this.expenses.add(this.tf.make(Object.assign({ account: null, category: t.category ? t.category.name : 'Default', currency: "EUR", amount: t.amount, payment_type: t.type, date: t.bankBookingDate, note: t.counterpartName }, t)));
+                    this.expenses.add(this.tf.make(Object.assign({ account: null, category: (t.category && 'name' in t.category) ? t.category.name : 'Default', currency: "EUR", amount: t.amount, payment_type: t.type, date: t.bankBookingDate, note: t.counterpartName }, t)));
                 }
+                Backbone.history.navigate('#', {
+                    trigger: true,
+                });
             }
             catch (e) {
                 console.error(e);
