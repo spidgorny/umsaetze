@@ -36,6 +36,8 @@ export default class Transaction extends Backbone.Model {
 	// outside of attributes as this will be calculated
 	visible: boolean = true;
 
+	cacheDate: Date;
+
 	constructor(attributes: Object, options?: Object) {
 		super(attributes, options);
 		// this.injectExpenses(); // see TransactionFactory
@@ -106,18 +108,21 @@ export default class Transaction extends Backbone.Model {
 	 * This will return Date object any time
 	 */
 	getDate() {
-		let dDate;
-		let sDate = this.get('date');
-		if (sDate instanceof Date) {
-			dDate = sDate;
-		} else {
-			dDate = new Date(sDate);
-			let dDateValid = !isNaN( dDate.getTime() );
-			if (!dDate || !dDateValid) {
-				dDate = Date.parseExact(sDate, "d.M.yyyy");
+		if (!this.cacheDate) {
+			let dDate;
+			let sDate = this.get('date');
+			if (sDate instanceof Date) {
+				dDate = sDate;
+			} else {
+				dDate = new Date(sDate);
+				let dDateValid = !isNaN(dDate.getTime());
+				if (!dDate || !dDateValid) {
+					dDate = Date.parseExact(sDate, "d.M.yyyy");
+				}
 			}
+			this.cacheDate = dDate;
 		}
-		return dDate;
+		return this.cacheDate;
 	}
 
 	isVisible() {

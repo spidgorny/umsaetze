@@ -71,7 +71,7 @@ export default class Workspace extends Backbone.Router {
 
 		let ls = new LocalStorage(CategoryCollection.LS_KEY);
 		let catList: any[] = ls.findAll();
-		log('catList', catList);
+		// log('catList', catList);
 		this.categoryList = new CategoryCollection(catList);
 		this.categoryList.setExpenses(this.model);
 
@@ -186,7 +186,7 @@ export default class Workspace extends Backbone.Router {
 			this.appPage.ms.setYearMonth(year, month);
 			let cat = this.categoryList.findWhere({catName: category});
 			console.log('MonthSelectCategory cat', cat);
-			this.appPage.collection.filterByCategory(cat);
+			this.appPage.table.model.setCategory(cat);
 			this.appPage.collection.trigger('change');	// slow!
 		}
 	}

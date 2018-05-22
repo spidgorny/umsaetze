@@ -32,7 +32,7 @@ class Expenses extends Backbone.Collection {
                 let transaction = this.tf.make(el);
                 this.add(transaction);
             });
-            this.trigger('change');
+            console.log('added objects', this.size());
         }
         console.log('read', this.length);
         console.timeEnd('Expenses.fetch');
@@ -107,18 +107,17 @@ class Expenses extends Backbone.Collection {
     filterVisible(q) {
         if (!q.length)
             return;
-        console.profile('Expense.filterVisible');
+        console.time('Expenses.filterVisible');
         let lowQ = q.toLowerCase();
         this.each((row) => {
             if (row.get('note').toLowerCase().indexOf(lowQ) == -1) {
                 row.set('visible', false, { silent: true });
             }
         });
-        console.profileEnd();
-        this.saveAll();
+        console.timeEnd('Expenses.filterVisible');
     }
     filterByMonth(selectedMonth) {
-        console.time('Expense.filterByMonth');
+        console.time('Expenses.filterByMonth');
         console.log('filterByMonth', selectedMonth.toString('yyyy-MM-dd'));
         if (selectedMonth) {
             let inThisMonth = this.whereMonth(selectedMonth);
@@ -127,7 +126,7 @@ class Expenses extends Backbone.Collection {
                 row.set('visible', false, { silent: true });
             });
         }
-        console.timeEnd('Expense.filterByMonth');
+        console.timeEnd('Expenses.filterByMonth');
     }
     whereMonth(selectedMonth) {
         let filtered = [];
@@ -142,7 +141,7 @@ class Expenses extends Backbone.Collection {
         return filtered;
     }
     filterByCategory(category) {
-        console.profile('Expense.filterByCategory');
+        console.time('Expenses.filterByCategory');
         this.each((row) => {
             if (row.isVisible()) {
                 let rowCat = row.get('category');
@@ -151,17 +150,17 @@ class Expenses extends Backbone.Collection {
             }
         });
         this.saveAll();
-        console.profileEnd();
+        console.timeEnd('Expenses.filterByCategory');
     }
     unserializeDate() {
-        console.profile('Expense.unserializeDate');
+        console.time('Expenses.unserializeDate');
         this.each((model) => {
             let sDate = model.get('date');
             let dateObject = new Date(sDate);
             console.log(sDate, dateObject);
             model.set('date', dateObject);
         });
-        console.profileEnd();
+        console.timeEnd('Expenses.unserializeDate');
     }
     getVisible() {
         return _(this.models).where({ visible: true });

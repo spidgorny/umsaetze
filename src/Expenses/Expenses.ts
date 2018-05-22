@@ -65,7 +65,8 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 				this.add(transaction);
 			});
 			//this.unserializeDate();
-			this.trigger('change');
+			console.log('added objects', this.size());
+			// this.trigger('change');
 		}
 		console.log('read', this.length);
 		console.timeEnd('Expenses.fetch');
@@ -164,15 +165,17 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	 */
 	filterVisible(q: string) {
 		if (!q.length) return;
-		console.profile('Expense.filterVisible');
+		console.time('Expenses.filterVisible');
 		let lowQ = q.toLowerCase();
 		this.each((row: Transaction) => {
 			if (row.get('note').toLowerCase().indexOf(lowQ) == -1) {
 				row.set('visible', false, { silent: true });
 			}
 		});
-		console.profileEnd();
-		this.saveAll();
+		console.timeEnd('Expenses.filterVisible');
+
+		// slow?
+		// this.saveAll();
 	}
 
 	/**
@@ -180,7 +183,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	 * @param selectedMonth
 	 */
 	filterByMonth(selectedMonth: Date) {
-		console.time('Expense.filterByMonth');
+		console.time('Expenses.filterByMonth');
 		console.log('filterByMonth', selectedMonth.toString('yyyy-MM-dd'));
 		if (selectedMonth) {
 			let inThisMonth = this.whereMonth(selectedMonth);
@@ -190,7 +193,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 			});
 			// this.saveAll();
 		}
-		console.timeEnd('Expense.filterByMonth');
+		console.timeEnd('Expenses.filterByMonth');
 	}
 
 	whereMonth(selectedMonth: Date) {
@@ -207,7 +210,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	}
 
 	filterByCategory(category: CategoryCount) {
-		console.profile('Expense.filterByCategory');
+		console.time('Expenses.filterByCategory');
 		this.each((row: Transaction) => {
 			if (row.isVisible()) {
 				let rowCat: string = row.get('category');
@@ -217,21 +220,21 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 			}
 		});
 		this.saveAll();
-		console.profileEnd();
+		console.timeEnd('Expenses.filterByCategory');
 	}
 
 	/**
 	 * @deprecated
 	 */
 	unserializeDate() {
-		console.profile('Expense.unserializeDate');
+		console.time('Expenses.unserializeDate');
 		this.each((model: Transaction) => {
 			let sDate = model.get('date');
 			let dateObject = new Date(sDate);
 			console.log(sDate, dateObject);
 			model.set('date', dateObject);
 		});
-		console.profileEnd();
+		console.timeEnd('Expenses.unserializeDate');
 	}
 
 	getVisible() {

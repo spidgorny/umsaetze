@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("datejs");
+const Number_1 = require("../Util/Number");
 require('../Util/Number');
 class CurrentMonth {
     constructor(year, month = CurrentMonth.DEFAULT_MONTH) {
@@ -47,14 +48,14 @@ class CurrentMonth {
         return new Date(sSelectedDate);
     }
     setEarliest(date) {
-        this.earliest = date;
+        this.earliest = date.clone();
         this.earliest.moveToFirstDayOfMonth()
-            .setHours(0, 0, 0, 0);
+            .setUTCHours(0, 0, 0, 0);
     }
     setLatest(date) {
-        this.latest = date;
+        this.latest = date.clone();
         this.latest.moveToLastDayOfMonth()
-            .setHours(0, 0, 0, 0);
+            .setUTCHours(0, 0, 0, 0);
     }
     getMonthIndex() {
         let result = Date.getMonthNumberFromName(this._selectedMonth) + 1;
@@ -79,8 +80,8 @@ class CurrentMonth {
     update(earliest, latest) {
         this.setEarliest(earliest);
         this.setLatest(latest);
-        this._selectedYear = this._selectedYear.clamp(this.earliest.getFullYear(), this.latest.getFullYear());
-        let selectedMonthIndex = this.getMonthIndex().clamp(this.earliest.getMonth(), this.latest.getMonth());
+        this._selectedYear = Number_1.clamp(this._selectedYear, this.earliest.getFullYear(), this.latest.getFullYear());
+        let selectedMonthIndex = Number_1.clamp(this.getMonthIndex(), this.earliest.getMonth(), this.latest.getMonth());
         this._selectedMonth = this.getShortMonthNameFor(selectedMonthIndex);
         console.log('MonthSelect range', this.earliest.toString('yyyy-MM-dd'), this.latest.toString('yyyy-MM-dd'));
     }

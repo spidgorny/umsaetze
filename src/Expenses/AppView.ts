@@ -125,7 +125,7 @@ export default class AppView extends CollectionController<Expenses> {
 	 * MonthSelect:change event handler
 	 */
 	monthChange() {
-		console.profile('AppView.monthChange');
+		console.time('AppView.monthChange');
 		this.collection.setAllVisible();						// silent
 		this.collection.filterByMonth(this.ms.getSelected());	// silent
 		this.collection.filterVisible(this.q);					// silent
@@ -136,7 +136,7 @@ export default class AppView extends CollectionController<Expenses> {
 		// wrong. this is called by this.render()
 
 		this.categoryList.getCategoriesFromExpenses();
-		console.profileEnd();
+		console.timeEnd('AppView.monthChange');
 	}
 
 	categoryChanged() {
@@ -154,7 +154,7 @@ export default class AppView extends CollectionController<Expenses> {
 	}
 
 	show() {
-		console.profile('AppView.show');
+		console.time('AppView.show');
 
 		// updated in the constructor once
 		// this is needed after [Generate]
@@ -162,17 +162,17 @@ export default class AppView extends CollectionController<Expenses> {
 
 		this.render();
 		this.categoryView.show();
-		console.profileEnd();
+		console.timeEnd('AppView.show');
 	}
 
 	hide() {
-		console.profile('AppView.hide');
+		console.time('AppView.hide');
 		//this.ms.hide();	// this may be needed for History
 		if (CollectionController.$('#expenseTable').length
 			&& CollectionController.$('#expenseTable').is(':visible')) {
 		}
 		this.categoryView.hide();
-		console.profileEnd();
+		console.timeEnd('AppView.hide');
 	}
 
 	applyKeywords(event: MouseEvent) {

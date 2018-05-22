@@ -1,4 +1,5 @@
 import 'datejs';
+import {clamp} from "../Util/Number";
 require('../Util/Number');
 
 export class CurrentMonth {
@@ -74,15 +75,15 @@ export class CurrentMonth {
 	}
 
 	setEarliest(date: Date) {
-		this.earliest = date;
+		this.earliest = date.clone();
 		this.earliest.moveToFirstDayOfMonth()
-			.setHours(0, 0, 0, 0);
+			.setUTCHours(0, 0, 0, 0);
 	}
 
 	setLatest(date: Date) {
-		this.latest = date;
+		this.latest = date.clone();
 		this.latest.moveToLastDayOfMonth()
-			.setHours(0, 0, 0, 0);
+			.setUTCHours(0, 0, 0, 0);
 	}
 
 	getMonthIndex() {
@@ -128,13 +129,13 @@ export class CurrentMonth {
 		this.setLatest(latest);
 		// console.log('MonthSelect.update',
 		// 	this.earliest.toString('yyyy-MM-dd'),
-		// 	this.latest.toString('yyyy-MM-dd'));
+		// 	this.latest.toString('yyyy-MM-dd'));d
 
-		this._selectedYear = this._selectedYear.clamp(
+		this._selectedYear = clamp(this._selectedYear,
 			this.earliest.getFullYear(),
 			this.latest.getFullYear()
 		);
-		let selectedMonthIndex = this.getMonthIndex().clamp(
+		let selectedMonthIndex = clamp(this.getMonthIndex(),
 			this.earliest.getMonth(),
 			this.latest.getMonth()
 		);

@@ -57,12 +57,12 @@ class AppView extends CollectionController_1.CollectionController {
         }
     }
     monthChange() {
-        console.profile('AppView.monthChange');
+        console.time('AppView.monthChange');
         this.collection.setAllVisible();
         this.collection.filterByMonth(this.ms.getSelected());
         this.collection.filterVisible(this.q);
         this.categoryList.getCategoriesFromExpenses();
-        console.profileEnd();
+        console.timeEnd('AppView.monthChange');
     }
     categoryChanged() {
         console.time('AppView.categoryChanged');
@@ -75,19 +75,19 @@ class AppView extends CollectionController_1.CollectionController {
         this.monthChange();
     }
     show() {
-        console.profile('AppView.show');
+        console.time('AppView.show');
         this.ms.update(this.collection);
         this.render();
         this.categoryView.show();
-        console.profileEnd();
+        console.timeEnd('AppView.show');
     }
     hide() {
-        console.profile('AppView.hide');
+        console.time('AppView.hide');
         if (CollectionController_1.CollectionController.$('#expenseTable').length
             && CollectionController_1.CollectionController.$('#expenseTable').is(':visible')) {
         }
         this.categoryView.hide();
-        console.profileEnd();
+        console.timeEnd('AppView.hide');
     }
     applyKeywords(event) {
         event.preventDefault();

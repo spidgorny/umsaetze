@@ -25,4 +25,8 @@ exports.detectFloat = detectFloat;
 Number.prototype.clamp = function (min, max) {
     return Math.min(Math.max(this, min), max);
 };
+function clamp(self, min, max) {
+    return Math.min(Math.max(self, min), max);
+}
+exports.clamp = clamp;
 //# sourceMappingURL=Number.js.map

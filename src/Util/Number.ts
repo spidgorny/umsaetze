@@ -29,3 +29,7 @@ declare global {
 Number.prototype.clamp = function (min: number, max: number) {
 	return Math.min(Math.max(this, min), max);
 };
+
+export function clamp(self: number, min: number, max: number) {
+	return Math.min(Math.max(self, min), max);
+}

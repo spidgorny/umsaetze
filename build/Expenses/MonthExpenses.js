@@ -3,12 +3,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const CategoryCount_1 = require("../Category/CategoryCount");
 class MonthExpenses {
     constructor(expenses, month) {
+        this.category = null;
         this.expenses = expenses;
         this.month = month;
+    }
+    setCategory(cat) {
+        this.category = cat;
     }
     getSorted() {
         this.expenses.setAllVisible();
         this.expenses.filterByMonth(this.month.getSelected());
+        if (this.category) {
+            this.expenses.filterByCategory(this.category);
+        }
         return this.expenses.getSorted();
     }
     size() {

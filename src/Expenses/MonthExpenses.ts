@@ -13,14 +13,23 @@ export class MonthExpenses {
 
 	month: CurrentMonth;
 
+	category: CategoryCount = null;
+
 	constructor(expenses: Expenses, month: CurrentMonth) {
 		this.expenses = expenses;
 		this.month = month;
 	}
 
+	setCategory(cat: CategoryCount) {
+		this.category = cat;
+	}
+
 	getSorted() {
 		this.expenses.setAllVisible();							// silent
 		this.expenses.filterByMonth(this.month.getSelected());	// silent
+		if (this.category) {
+			this.expenses.filterByCategory(this.category);
+		}
 
 		return this.expenses.getSorted();
 	}
