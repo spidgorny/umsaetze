@@ -119,6 +119,10 @@ export default class CategoryCollection
 		_.each(visible, (transaction: Transaction) => {
 			let categoryName = transaction.get('category');
 			if (categoryName) {
+				if (_.isObject(categoryName)) {
+					// after import from FinAPI
+					categoryName = categoryName.name;
+				}
 				this.incrementCategoryData(categoryName, transaction);
 			}
 		});

@@ -166,6 +166,9 @@ export default class ExpenseTable extends Backbone.View<any> {
 		// console.log('options', options);
 		let wasSelected = false;
 		$.each(options, (key, value) => {
+			if (_.isObject(value)) {
+				value = value.name;	// FinAPI
+			}
 			if (value == selected) {
 				sOptions.push('<option selected>' + value + '</option>');
 				wasSelected = true;

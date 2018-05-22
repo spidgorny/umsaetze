@@ -68,6 +68,9 @@ class CategoryCollection extends backbone_1.Collection {
         _.each(visible, (transaction) => {
             let categoryName = transaction.get('category');
             if (categoryName) {
+                if (_.isObject(categoryName)) {
+                    categoryName = categoryName.name;
+                }
                 this.incrementCategoryData(categoryName, transaction);
             }
         });

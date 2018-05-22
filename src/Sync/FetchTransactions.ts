@@ -1,9 +1,12 @@
-import Expenses from "../Expenses/Expenses";
+/// <reference path="../../node_modules/@types/node/index.d.ts" />
 
-const log = require('ololog');
+import Expenses from "../Expenses/Expenses";
+import Backbone = require('backbone');
 import * as _ from 'underscore';
 import axios from 'axios';
 import {TransactionFactory} from "../Expenses/TransactionFactory";
+
+const log = require('ololog');
 
 export class FetchTransactions {
 
@@ -66,6 +69,11 @@ export class FetchTransactions {
 		this.templateFunc = _.template(this.template);
 		this.expenses = expenses;
 		this.tf = tf;
+
+		const defaultFields = window.localStorage.getItem('FetchTransactions');
+		log(defaultFields);
+		const values = JSON.parse(defaultFields);
+		Object.assign(this, values);	// unsafe?
 	}
 
 	setDiv(div: JQuery) {
@@ -83,6 +91,10 @@ export class FetchTransactions {
 	async startFetch(event: Event) {
 		event.preventDefault();
 		const json = this.getFormValues(this.form);
+
+		// unsafe to store values?
+		//window.localStorage.setItem('FetchTransactions', JSON.stringify(json));
+
 		try {
 			// const url = 'http://localhost:3000/fetchTransactions';
 			const url = 'http://localhost:3000/test';
@@ -93,7 +105,7 @@ export class FetchTransactions {
 			for (let t of response.data.data) {
 				this.expenses.add(this.tf.make({
 					account: null,
-					category: t.category ? t.category.name : 'Default',
+					category: (t.category && 'name' in t.category) ? t.category.name : 'Default',
 					currency: "EUR",
 					amount: t.amount,
 					payment_type: t.type,
@@ -102,6 +114,10 @@ export class FetchTransactions {
 					...t,
 				}));
 			}
+
+			Backbone.history.navigate('#', {
+				trigger: true,
+			});
 		} catch (e) {
 			console.error(e);
 		}
