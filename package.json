@@ -15,8 +15,8 @@
     "s": "node_modules/.bin/webpack-dev-server --mode development",
     "jasmine": "cd src/jasmine && ls -l && jasmine",
     "rollup": "rollup -c",
-    "build": "webpack --config webpack.prod.js",
-    "build4": "webpack --config webpack.prod.js --mode production",
+    "build3": "webpack --config webpack.prod.js",
+    "build": "webpack --config webpack.prod.js --mode production",
     "http": "http-server -p 8080 docs",
     "server": "node build/server.js",
     "codecept": "codeceptjs run"
