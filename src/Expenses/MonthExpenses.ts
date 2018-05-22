@@ -5,6 +5,8 @@ import CategoryCount from "../Category/CategoryCount";
 import Keyword from "../Keyword/Keyword";
 import KeywordCollection from "../Keyword/KeywordCollection";
 
+const log = require('ololog');
+
 export class MonthExpenses {
 
 	model: typeof Transaction;
@@ -78,7 +80,9 @@ export class MonthExpenses {
 				// console.log(note.length, keywords.size());
 				keywords.each((key: Keyword) => {
 					let found = note.indexOf(key.word);
-					// console.log(note.length, key.word, found);
+					if (key.word == 'SVYETOSLAV PIDGORNYY') {
+						log(note.length, key.word, found);
+					}
 					if (found > -1) {
 						//console.log(note, 'contains', key.word, 'gets', key.category);
 						row.set('category', key.category, { silent: true });

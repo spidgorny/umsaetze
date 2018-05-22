@@ -190,6 +190,7 @@ export class CatPage extends CollectionController<Expenses> {
 							}
 						}]
 					},
+					animationEnabled: false,
 					onClick: function (event: MouseEvent, aChartElement) {
 						catPage.clickOnChart(labels, event, aChartElement, this);
 					}
@@ -218,11 +219,12 @@ export class CatPage extends CollectionController<Expenses> {
 			} else {
 				$canvas.height(100);
 			}
-			setTimeout(() => {
-				chart.resize();
-			}, 1000);
+			// setTimeout(() => {
+			// 	chart.resize();
+			// }, 1000);
 		}
 	}
+
 
 	renameCategory(event, container, newName) {
 		console.log('Rename', newName);

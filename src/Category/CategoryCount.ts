@@ -25,6 +25,13 @@ export default class CategoryCount extends Backbone.Model {
 		if (!args[0] || !('catName' in args[0])) {
 			throw new InvalidArgumentException('CategoryCount needs parameters');
 		}
+		if (_.isObject(args[0].catName)) {
+			//throw new InvalidArgumentException('catName must be string');
+			for (let key in args[0].catName) {
+				this.set(key, args[0].catName[key]);
+			}
+			args[0].catName = args[0].catName.name;
+		}
 		this.set('catName', args[0].catName);	// this should not be necessary but it is
 		this.set('color', args[0].color);	// this should not be necessary but it is
 		this.set('count', args[0].count);	// this should not be necessary but it is

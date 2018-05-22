@@ -46,7 +46,20 @@ describe('Transaction', () => {
         }
         const duration = (new Date().getTime() - start.getTime()) / 1000;
         log(duration);
-        expect(duration).toBeLessThanOrEqual(0.005);
+        expect(duration).toBeLessThanOrEqual(0.006);
+    });
+    it('getCategory(object)', () => {
+        const t = new Transaction_1.default({
+            id: 1236543,
+            date: '2018-06-01',
+            category: {
+                name: 'some cat',
+            },
+            amount: 123.55,
+            note: 'REWE',
+            done: false,
+        });
+        expect(t.get('category')).toBe('some cat');
     });
 });
 //# sourceMappingURL=Transaction.spec.js.map

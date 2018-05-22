@@ -145,6 +145,7 @@ class CatPage extends CollectionController_1.CollectionController {
                                 }
                             }]
                     },
+                    animationEnabled: false,
                     onClick: function (event, aChartElement) {
                         catPage.clickOnChart(labels, event, aChartElement, this);
                     }
@@ -174,9 +175,6 @@ class CatPage extends CollectionController_1.CollectionController {
             else {
                 $canvas.height(100);
             }
-            setTimeout(() => {
-                chart.resize();
-            }, 1000);
         }
     }
     renameCategory(event, container, newName) {

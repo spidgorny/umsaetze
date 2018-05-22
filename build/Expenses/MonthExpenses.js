@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const CategoryCount_1 = require("../Category/CategoryCount");
+const log = require('ololog');
 class MonthExpenses {
     constructor(expenses, month) {
         this.category = null;
@@ -50,6 +51,9 @@ class MonthExpenses {
                 let note = row.get('note');
                 keywords.each((key) => {
                     let found = note.indexOf(key.word);
+                    if (key.word == 'SVYETOSLAV PIDGORNYY') {
+                        log(note.length, key.word, found);
+                    }
                     if (found > -1) {
                         row.set('category', key.category, { silent: true });
                         anythingChanged = true;

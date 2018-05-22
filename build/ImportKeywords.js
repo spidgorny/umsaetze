@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const _ = require("underscore");
 const Keyword_1 = require("./Keyword/Keyword");
 const KeywordCollection_1 = require("./Keyword/KeywordCollection");
-const exceljs_1 = require("exceljs");
+const Excel = require("exceljs");
 class ImportKeywords {
     constructor() {
         this.keywordFile = 'keywords.xlsx';
@@ -84,7 +84,7 @@ class ImportKeywords {
     }
     readExcelFile() {
         return new Promise((resolve, reject) => {
-            const workbook = new exceljs_1.default.Workbook();
+            const workbook = new Excel.Workbook();
             workbook.xlsx.readFile(this.keywordFile)
                 .then(() => {
                 const sheet = workbook.getWorksheet(1);

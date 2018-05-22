@@ -5,11 +5,13 @@ const Jarvis = require("webpack-jarvis");
 // const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-	entry: [
-		"./src/main.ts",
-	],
+	mode: "development",
+	entry: {
+		bundle: "./src/main.ts",
+		vendor: ['jquery', 'handlebars', 'backbone', 'underscore', 'chart.js', 'toastr', 'xlsx', 'd3']
+	},
 	output: {
-		filename: "bundle.js",
+		filename: "[name].js",
 		path: path.resolve(__dirname, 'docs', 'web'),
 		publicPath: "http://localhost:8080/web/"
 	},
