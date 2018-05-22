@@ -1,7 +1,11 @@
 ---
 title: Umsaetze
 ---
-This is a tool to categorize your expenses as recorded by your bank. First you download the data from the bank in CSV format. Import it here and assign categories to each entry. This tool allows you to do all that without storing your data on any server - it's stored in your browser local storage and not transmitted over the network. So nobody can see your money business. Then you categorise expenses manually or also by defining automatic rules. In the end you will see how much is spent on each category in every month. This information is shown in a table as well as a pie chart. 
+This is a tool to categorize your expenses as recorded by your bank. First you download the data from the bank in CSV format. Import it here and assign categories to each entry. This tool allows you to do all that without storing your data on any server - it's stored in your browser local storage and not transmitted over the network. So nobody can see your money business. Then you categorise expenses manually or also by defining automatic rules. In the end you will see how much is spent on each category in every month. This information is shown in a table as well as a pie chart.
+
+<p style="text-align: center; margin: 0 auto;">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/7jc2SFGkB-M" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen align="center"></iframe>
+</p>
 
 This is like [Numbrs](https://www.centralway.com/en/) but without providing your bank account password to anybody.
 
