@@ -19,6 +19,7 @@ import {FileReaderJS} from 'filereader.js';
 import CategoryCollection from "../Category/CategoryCollection";
 import {TransactionFactory} from "../Expenses/TransactionFactory";
 import {FetchTransactions} from "./FetchTransactions";
+const log = require('ololog');
 
 const chance = new Chance();
 // console.log(chance);
@@ -70,53 +71,61 @@ export default class Sync extends CollectionController<Expenses> {
 		this.categories = this.router.categoryList;
 		this.tf = tf;
 
-		this.fetchTransactions = new FetchTransactions(this.model, this.tf);
+		// this.fetchTransactions = new FetchTransactions(this.model, this.tf);
 	}
 
 	render() {
-		if (this.template) {
-			this.$el.html(this.template({
-				memoryRows: this.model.size(),
-				lsRows: this.localStorage.findAll().length,
-			}));
-
-			//this.$('#Load').on('click', this.load.bind(this));
-			FileReaderJS.setupInput(document.getElementById('file-input-csv'), {
-				readAsDefault: 'Text',
-				on: {
-					load: this.load.bind(this),
-				}
-			});
-
-			// this.$('#LoadJSON').on('click', this.loadJSON.bind(this));
-			FileReaderJS.setupInput(document.getElementById('file-input-json'), {
-				readAsDefault: 'Text',
-				on: {
-					load: this.loadJSON.bind(this),
-				}
-			});
-
-			this.$el.find('#Refresh')
-				.off('click')
-				.on('click', this.refresh.bind(this));
-			this.$el.find('#Generate')
-				.off('click')
-				.on('click', this.generate.bind(this));
-			this.$el.find('#Save')
-				.off('click')
-				.on('click', this.save.bind(this));
-			this.$el.find('#Clear')
-				.off('click')
-				.on('click', this.clear.bind(this));
-			this.$el.find('#saveToLS')
-				.off('click')
-				.on('click', this.saveToLS.bind(this));
-
-			this.fetchTransactions.setDiv($('#FetchTransactions'));
-			this.fetchTransactions.render();
-		} else {
+		if (!this.template) {
 			this.$el.html('Loading ...');
+			return this;
 		}
+		this.$el.html(this.template({
+			memoryRows: this.model.size(),
+			lsRows: this.localStorage.findAll().length,
+		}));
+
+		//this.$('#Load').on('click', this.load.bind(this));
+		let fileInputCSV = document.getElementById('file-input-csv');
+		log('fileInputCSV', fileInputCSV);
+		FileReaderJS.setupInput(fileInputCSV, {
+			readAsDefault: 'Text',
+			on: {
+				beforestart: () => {
+					log('beforestart');
+				},
+				load: this.load.bind(this),
+				loadend: () => {
+					log('loadend');
+				}
+			}
+		});
+
+		// this.$('#LoadJSON').on('click', this.loadJSON.bind(this));
+		FileReaderJS.setupInput(document.getElementById('file-input-json'), {
+			readAsDefault: 'Text',
+			on: {
+				load: this.loadJSON.bind(this),
+			}
+		});
+
+		this.$el.find('#Refresh')
+			.off('click')
+			.on('click', this.refresh.bind(this));
+		this.$el.find('#Generate')
+			.off('click')
+			.on('click', this.generate.bind(this));
+		this.$el.find('#Save')
+			.off('click')
+			.on('click', this.save.bind(this));
+		this.$el.find('#Clear')
+			.off('click')
+			.on('click', this.clear.bind(this));
+		this.$el.find('#saveToLS')
+			.off('click')
+			.on('click', this.saveToLS.bind(this));
+
+		// this.fetchTransactions.setDiv($('#FetchTransactions'));
+		// this.fetchTransactions.render();
 		return this;
 	}
 
@@ -125,6 +134,11 @@ export default class Sync extends CollectionController<Expenses> {
 		this.render();
 	}
 
+	/**
+	 * Called by FileReaderJS when selecting CSV file
+	 * @param e
+	 * @param file
+	 */
 	load(e, file) {
 		console.log(e, file);
 		//console.log(e.target.result);

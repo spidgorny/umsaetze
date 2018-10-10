@@ -11,7 +11,7 @@ const backbone_localstorage_1 = require("backbone.localstorage");
 const $ = require("jquery");
 const _ = require("underscore");
 const filereader_js_1 = require("filereader.js");
-const FetchTransactions_1 = require("./FetchTransactions");
+const log = require('ololog');
 const chance = new Chance();
 console.log('FileReaderJS', filereader_js_1.FileReaderJS);
 const FileSaver = require('file-saver');
@@ -31,47 +31,51 @@ class Sync extends CollectionController_1.CollectionController {
         this.router = router;
         this.categories = this.router.categoryList;
         this.tf = tf;
-        this.fetchTransactions = new FetchTransactions_1.FetchTransactions(this.model, this.tf);
     }
     render() {
-        if (this.template) {
-            this.$el.html(this.template({
-                memoryRows: this.model.size(),
-                lsRows: this.localStorage.findAll().length,
-            }));
-            filereader_js_1.FileReaderJS.setupInput(document.getElementById('file-input-csv'), {
-                readAsDefault: 'Text',
-                on: {
-                    load: this.load.bind(this),
-                }
-            });
-            filereader_js_1.FileReaderJS.setupInput(document.getElementById('file-input-json'), {
-                readAsDefault: 'Text',
-                on: {
-                    load: this.loadJSON.bind(this),
-                }
-            });
-            this.$el.find('#Refresh')
-                .off('click')
-                .on('click', this.refresh.bind(this));
-            this.$el.find('#Generate')
-                .off('click')
-                .on('click', this.generate.bind(this));
-            this.$el.find('#Save')
-                .off('click')
-                .on('click', this.save.bind(this));
-            this.$el.find('#Clear')
-                .off('click')
-                .on('click', this.clear.bind(this));
-            this.$el.find('#saveToLS')
-                .off('click')
-                .on('click', this.saveToLS.bind(this));
-            this.fetchTransactions.setDiv($('#FetchTransactions'));
-            this.fetchTransactions.render();
-        }
-        else {
+        if (!this.template) {
             this.$el.html('Loading ...');
+            return this;
         }
+        this.$el.html(this.template({
+            memoryRows: this.model.size(),
+            lsRows: this.localStorage.findAll().length,
+        }));
+        let fileInputCSV = document.getElementById('file-input-csv');
+        log('fileInputCSV', fileInputCSV);
+        filereader_js_1.FileReaderJS.setupInput(fileInputCSV, {
+            readAsDefault: 'Text',
+            on: {
+                beforestart: () => {
+                    log('beforestart');
+                },
+                load: this.load.bind(this),
+                loadend: () => {
+                    log('loadend');
+                }
+            }
+        });
+        filereader_js_1.FileReaderJS.setupInput(document.getElementById('file-input-json'), {
+            readAsDefault: 'Text',
+            on: {
+                load: this.loadJSON.bind(this),
+            }
+        });
+        this.$el.find('#Refresh')
+            .off('click')
+            .on('click', this.refresh.bind(this));
+        this.$el.find('#Generate')
+            .off('click')
+            .on('click', this.generate.bind(this));
+        this.$el.find('#Save')
+            .off('click')
+            .on('click', this.save.bind(this));
+        this.$el.find('#Clear')
+            .off('click')
+            .on('click', this.clear.bind(this));
+        this.$el.find('#saveToLS')
+            .off('click')
+            .on('click', this.saveToLS.bind(this));
         return this;
     }
     refresh() {

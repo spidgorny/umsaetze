@@ -67,4 +67,7 @@ module.exports = {
 	externals: {
 		// "filereader.js": "FileReaderJS"
 	},
+	node: {
+		fs: 'empty'
+	}
 };
