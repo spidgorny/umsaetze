@@ -1,4 +1,12 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const main_1 = require("../main");
 const ParseCSV_1 = require("./ParseCSV");
@@ -11,9 +19,9 @@ const backbone_localstorage_1 = require("backbone.localstorage");
 const $ = require("jquery");
 const _ = require("underscore");
 const filereader_js_1 = require("filereader.js");
-const FetchTransactions_1 = require("./FetchTransactions");
+const promise_file_reader_1 = require("promise-file-reader");
+const log = require('ololog');
 const chance = new Chance();
-console.log('FileReaderJS', filereader_js_1.FileReaderJS);
 const FileSaver = require('file-saver');
 class Sync extends CollectionController_1.CollectionController {
     constructor(expenses, router, tf) {
@@ -31,47 +39,56 @@ class Sync extends CollectionController_1.CollectionController {
         this.router = router;
         this.categories = this.router.categoryList;
         this.tf = tf;
-        this.fetchTransactions = new FetchTransactions_1.FetchTransactions(this.model, this.tf);
     }
     render() {
-        if (this.template) {
-            this.$el.html(this.template({
-                memoryRows: this.model.size(),
-                lsRows: this.localStorage.findAll().length,
-            }));
-            filereader_js_1.FileReaderJS.setupInput(document.getElementById('file-input-csv'), {
-                readAsDefault: 'Text',
-                on: {
-                    load: this.load.bind(this),
-                }
-            });
-            filereader_js_1.FileReaderJS.setupInput(document.getElementById('file-input-json'), {
-                readAsDefault: 'Text',
-                on: {
-                    load: this.loadJSON.bind(this),
-                }
-            });
-            this.$el.find('#Refresh')
-                .off('click')
-                .on('click', this.refresh.bind(this));
-            this.$el.find('#Generate')
-                .off('click')
-                .on('click', this.generate.bind(this));
-            this.$el.find('#Save')
-                .off('click')
-                .on('click', this.save.bind(this));
-            this.$el.find('#Clear')
-                .off('click')
-                .on('click', this.clear.bind(this));
-            this.$el.find('#saveToLS')
-                .off('click')
-                .on('click', this.saveToLS.bind(this));
-            this.fetchTransactions.setDiv($('#FetchTransactions'));
-            this.fetchTransactions.render();
-        }
-        else {
+        if (!this.template) {
             this.$el.html('Loading ...');
+            return this;
         }
+        this.$el.html(this.template({
+            memoryRows: this.model.size(),
+            lsRows: this.localStorage.findAll().length,
+        }));
+        let fileInputCSV = document.getElementById('file-input-csv');
+        filereader_js_1.FileReaderJS.setupInput(fileInputCSV, {
+            readAsDefault: 'Text',
+            on: {
+                beforestart: () => {
+                    log('beforestart');
+                },
+                loadend: () => {
+                    log('loadend');
+                }
+            }
+        });
+        this.$el.find('#file-submit-csv').on('click', (e) => __awaiter(this, void 0, void 0, function* () {
+            e.preventDefault();
+            log('files', fileInputCSV.files);
+            const data = yield promise_file_reader_1.readAsText(fileInputCSV.files[0]);
+            console.log(data);
+            this.loadSelectedFile(data);
+        }));
+        filereader_js_1.FileReaderJS.setupInput(document.getElementById('file-input-json'), {
+            readAsDefault: 'Text',
+            on: {
+                load: this.loadJSON.bind(this),
+            }
+        });
+        this.$el.find('#Refresh')
+            .off('click')
+            .on('click', this.refresh.bind(this));
+        this.$el.find('#Generate')
+            .off('click')
+            .on('click', this.generate.bind(this));
+        this.$el.find('#Save')
+            .off('click')
+            .on('click', this.save.bind(this));
+        this.$el.find('#Clear')
+            .off('click')
+            .on('click', this.clear.bind(this));
+        this.$el.find('#saveToLS')
+            .off('click')
+            .on('click', this.saveToLS.bind(this));
         return this;
     }
     refresh() {
@@ -79,7 +96,7 @@ class Sync extends CollectionController_1.CollectionController {
         this.render();
     }
     load(e, file) {
-        console.log(e, file);
+        console.log('Sync.load', e, file);
         this.loadSelectedFile(e.target.result);
     }
     loadSelectedFile(data) {

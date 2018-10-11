@@ -8,6 +8,7 @@ import {CollectionController} from '../CollectionController';
 import {FileReaderJS} from 'filereader.js';
 import * as XLSX from 'xlsx';
 import CategoryCollection from "../Category/CategoryCollection";
+import {readAsArrayBuffer} from 'promise-file-reader';
 
 export class KeywordsView extends CollectionController<KeywordCollection> {
 
@@ -113,18 +114,30 @@ export class KeywordsView extends CollectionController<KeywordCollection> {
 
 	importExcel() {
 		console.log('importExcel');
-		let fileTag = document.getElementById('fileInput');
+		let fileTag = <HTMLInputElement>document.getElementById('fileInput');
+
+		// this is not working anymore
 		FileReaderJS.setupInput(fileTag, {
 			readAsDefault: 'ArrayBuffer',
 			on: {
-				load: this.loadExcel.bind(this),
+				load: (e) => {
+					const excelData = e.target.result;
+					this.loadExcel(excelData);
+				}
 			}
 		});
+
+		// change, not click to react on file selection
+		fileTag.addEventListener('change', async (e) => {
+			e.preventDefault();
+			const excelData = await readAsArrayBuffer(fileTag.files[0]);
+			this.loadExcel(excelData);
+		});
+
 		fileTag.click();
 	}
 
-	loadExcel(e, file) {
-		const excelData = e.target.result;
+	loadExcel(excelData) {
 		//console.log('loadExcel', excelData.length);
 		const excelDataArray = new Uint8Array(excelData);
 		const workbook = XLSX.read(excelDataArray, {

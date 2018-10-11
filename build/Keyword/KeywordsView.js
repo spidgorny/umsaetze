@@ -1,4 +1,12 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const $ = require("jquery");
 const _ = require("underscore");
@@ -8,6 +16,7 @@ const toastr = require("toastr");
 const CollectionController_1 = require("../CollectionController");
 const filereader_js_1 = require("filereader.js");
 const XLSX = require("xlsx");
+const promise_file_reader_1 = require("promise-file-reader");
 class KeywordsView extends CollectionController_1.CollectionController {
     constructor(keywords, categories) {
         super();
@@ -92,13 +101,20 @@ class KeywordsView extends CollectionController_1.CollectionController {
         filereader_js_1.FileReaderJS.setupInput(fileTag, {
             readAsDefault: 'ArrayBuffer',
             on: {
-                load: this.loadExcel.bind(this),
+                load: (e) => {
+                    const excelData = e.target.result;
+                    this.loadExcel(excelData);
+                }
             }
         });
+        fileTag.addEventListener('change', (e) => __awaiter(this, void 0, void 0, function* () {
+            e.preventDefault();
+            const excelData = yield promise_file_reader_1.readAsArrayBuffer(fileTag.files[0]);
+            this.loadExcel(excelData);
+        }));
         fileTag.click();
     }
-    loadExcel(e, file) {
-        const excelData = e.target.result;
+    loadExcel(excelData) {
         const excelDataArray = new Uint8Array(excelData);
         const workbook = XLSX.read(excelDataArray, {
             type: 'array'

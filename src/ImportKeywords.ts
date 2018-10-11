@@ -1,7 +1,7 @@
 import * as _ from 'underscore';
 import Keyword from "./Keyword/Keyword";
 import KeywordCollection from "./Keyword/KeywordCollection";
-import Excel from 'exceljs';
+import * as Excel from 'exceljs';
 
 export default class ImportKeywords {
 

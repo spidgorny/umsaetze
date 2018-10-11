@@ -19,19 +19,19 @@ import {FileReaderJS} from 'filereader.js';
 import CategoryCollection from "../Category/CategoryCollection";
 import {TransactionFactory} from "../Expenses/TransactionFactory";
 import {FetchTransactions} from "./FetchTransactions";
+import {readAsText} from 'promise-file-reader';
+const log = require('ololog');
 
 const chance = new Chance();
 // console.log(chance);
 
-console.log('FileReaderJS', FileReaderJS);
+// console.log('FileReaderJS', FileReaderJS);
 
 // console.log(detectFloat('3.141528'));
 // console.debug(detectFloat('3.141528'));
 //debug(detectFloat('3.141528'));
 
 const FileSaver = require('file-saver');
-
-// declare function saveAs(a: any, b: any);
 
 export default class Sync extends CollectionController<Expenses> {
 
@@ -70,53 +70,68 @@ export default class Sync extends CollectionController<Expenses> {
 		this.categories = this.router.categoryList;
 		this.tf = tf;
 
-		this.fetchTransactions = new FetchTransactions(this.model, this.tf);
+		// this.fetchTransactions = new FetchTransactions(this.model, this.tf);
 	}
 
 	render() {
-		if (this.template) {
-			this.$el.html(this.template({
-				memoryRows: this.model.size(),
-				lsRows: this.localStorage.findAll().length,
-			}));
-
-			//this.$('#Load').on('click', this.load.bind(this));
-			FileReaderJS.setupInput(document.getElementById('file-input-csv'), {
-				readAsDefault: 'Text',
-				on: {
-					load: this.load.bind(this),
-				}
-			});
-
-			// this.$('#LoadJSON').on('click', this.loadJSON.bind(this));
-			FileReaderJS.setupInput(document.getElementById('file-input-json'), {
-				readAsDefault: 'Text',
-				on: {
-					load: this.loadJSON.bind(this),
-				}
-			});
-
-			this.$el.find('#Refresh')
-				.off('click')
-				.on('click', this.refresh.bind(this));
-			this.$el.find('#Generate')
-				.off('click')
-				.on('click', this.generate.bind(this));
-			this.$el.find('#Save')
-				.off('click')
-				.on('click', this.save.bind(this));
-			this.$el.find('#Clear')
-				.off('click')
-				.on('click', this.clear.bind(this));
-			this.$el.find('#saveToLS')
-				.off('click')
-				.on('click', this.saveToLS.bind(this));
-
-			this.fetchTransactions.setDiv($('#FetchTransactions'));
-			this.fetchTransactions.render();
-		} else {
+		if (!this.template) {
 			this.$el.html('Loading ...');
+			return this;
 		}
+		this.$el.html(this.template({
+			memoryRows: this.model.size(),
+			lsRows: this.localStorage.findAll().length,
+		}));
+
+		//this.$('#Load').on('click', this.load.bind(this));
+		let fileInputCSV = <HTMLInputElement>document.getElementById('file-input-csv');
+		// log('fileInputCSV', fileInputCSV);
+		FileReaderJS.setupInput(fileInputCSV, {
+			readAsDefault: 'Text',
+			on: {
+				beforestart: () => {
+					log('beforestart');
+				},
+				// load: this.load.bind(this),
+				loadend: () => {
+					log('loadend');
+				}
+			}
+		});
+		this.$el.find('#file-submit-csv').on('click', async (e) => {
+			e.preventDefault();
+			log('files', fileInputCSV.files);
+			const data = await readAsText(fileInputCSV.files[0]);
+			console.log(data);
+			this.loadSelectedFile(data);
+		});
+
+		// this.$('#LoadJSON').on('click', this.loadJSON.bind(this));
+		FileReaderJS.setupInput(document.getElementById('file-input-json'), {
+			readAsDefault: 'Text',
+			on: {
+				load: this.loadJSON.bind(this),
+			}
+		});
+
+		this.$el.find('#Refresh')
+			.off('click')
+			.on('click', this.refresh.bind(this));
+		this.$el.find('#Generate')
+			.off('click')
+			.on('click', this.generate.bind(this));
+		this.$el.find('#Save')
+			.off('click')
+			.on('click', this.save.bind(this));
+		this.$el.find('#Clear')
+			.off('click')
+			.on('click', this.clear.bind(this));
+		this.$el.find('#saveToLS')
+			.off('click')
+			.on('click', this.saveToLS.bind(this));
+
+		// this.fetchTransactions.setDiv($('#FetchTransactions'));
+		// this.fetchTransactions.render();
 		return this;
 	}
 
@@ -125,8 +140,13 @@ export default class Sync extends CollectionController<Expenses> {
 		this.render();
 	}
 
+	/**
+	 * Called by FileReaderJS when selecting CSV file
+	 * @param e
+	 * @param file
+	 */
 	load(e, file) {
-		console.log(e, file);
+		console.log('Sync.load', e, file);
 		//console.log(e.target.result);
 		this.loadSelectedFile(e.target.result);
 	}
