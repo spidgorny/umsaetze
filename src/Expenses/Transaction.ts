@@ -138,7 +138,11 @@ export default class Transaction extends Backbone.Model {
 			// console.log('get visible', this.visible);
 			return this.visible;
 		} else {
-			return super.get(field);
+			const value = super.get(field);
+			if (field == 'category' && _.isObject(value)) {
+				return value.name;
+			}
+			return value;
 		}
 	}
 

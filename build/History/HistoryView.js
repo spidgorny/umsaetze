@@ -117,7 +117,13 @@ class HistoryView extends Backbone.View {
         let index = any._index;
         let model = this.collection.getSorted()[index];
         let id = model.get('id');
-        $(window).scrollTop($("*:contains('" + id + "'):last").offset().top);
+        const offset = $("*:contains('" + id + "'):last").offset();
+        if (offset) {
+            $(window).scrollTop(offset.top);
+        }
+        else {
+            console.error('offset of ', id, 'not found');
+        }
         document.location.hash = '#History/' + id;
     }
 }

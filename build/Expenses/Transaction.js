@@ -73,7 +73,11 @@ class Transaction extends Backbone.Model {
             return this.visible;
         }
         else {
-            return super.get(field);
+            const value = super.get(field);
+            if (field == 'category' && _.isObject(value)) {
+                return value.name;
+            }
+            return value;
         }
     }
     set(field, value, options) {
