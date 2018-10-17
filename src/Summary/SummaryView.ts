@@ -9,8 +9,9 @@ import Handlebars from 'handlebars';
 import Backbone = require('backbone');
 import * as _ from 'underscore';
 import * as $ from 'jquery';
+import Controller from "../Controller";
 
-export default class SummaryView extends Backbone.View<CategoryCollectionModel> {
+export default class SummaryView extends Controller<CategoryCollectionModel> {
 
 	/**
 	 * CategoryCollection
@@ -38,6 +39,11 @@ export default class SummaryView extends Backbone.View<CategoryCollectionModel> 
 
 	initialize() {
 
+	}
+
+	show() {
+		super.show();
+		this.render();
 	}
 
 	render() {

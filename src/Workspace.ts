@@ -44,7 +44,7 @@ export default class Workspace extends Backbone.Router {
 	summaryPage: SummaryView;
 	historyPage: HistoryView;
 
-	currentPage: Controller<any> | CollectionController<Expenses>;
+	currentPage: Controller<any> | CollectionController<Expenses> | SummaryView | HistoryView;
 
 	static instance: Workspace;
 
@@ -147,7 +147,7 @@ export default class Workspace extends Backbone.Router {
 		if (!this.syncPage) {
 			this.syncPage = new Sync(this.model, this, this.tf);
 		}
-		this.syncPage.render();
+		this.syncPage.show();
 		this.currentPage = this.syncPage;
 	}
 
@@ -158,7 +158,7 @@ export default class Workspace extends Backbone.Router {
 		if (!this.catPage) {
 			this.catPage = new CatPage(this.model, this.categoryList);
 		}
-		this.catPage.render();
+		this.catPage.show();
 		this.currentPage = this.catPage;
 	}
 
@@ -169,7 +169,7 @@ export default class Workspace extends Backbone.Router {
 		if (!this.keywordsPage) {
 			this.keywordsPage = new KeywordsView(this.keywords, this.categoryList);
 		}
-		this.keywordsPage.render();
+		this.keywordsPage.show();
 		this.currentPage = this.keywordsPage;
 	}
 
@@ -198,14 +198,14 @@ export default class Workspace extends Backbone.Router {
 		this.activateMenu();
 		this.hideCurrentPage();
 		if (!this.summaryPage) {
-			const categoryModel = new CategoryCollectionModel(this.categoryList);
+			// const categoryModel = new CategoryCollectionModel(this.categoryList);
 			this.summaryPage = new SummaryView({
 				collection: this.categoryList,
 			}, this.model);
 		}
 		$('#pieChart').hide();
 		$('#categories').hide();
-		this.summaryPage.render();
+		this.summaryPage.show();
 		this.currentPage = this.summaryPage;
 	}
 
@@ -220,7 +220,7 @@ export default class Workspace extends Backbone.Router {
 		}
 		$('#pieChart').hide();
 		$('#categories').hide();
-		this.historyPage.render();
+		this.historyPage.show();
 		this.currentPage = this.historyPage;
 	}
 

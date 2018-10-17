@@ -12,8 +12,9 @@ import {Chart} from 'chart.js';
 // import {Array as ArrayWithAverage} from '../Util/Array';
 import * as $ from 'jquery';
 import ArrayPlus from "../Util/ArrayPlus";
+import {CollectionController} from "../CollectionController";
 
-export default class HistoryView extends Backbone.View<Backbone.Model> {
+export default class HistoryView extends CollectionController<Expenses> {
 
 	collection: Expenses;
 
@@ -46,6 +47,11 @@ export default class HistoryView extends Backbone.View<Backbone.Model> {
 
 	initialize() {
 
+	}
+
+	show() {
+		super.show();
+		this.render();
 	}
 
 	render() {

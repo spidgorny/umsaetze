@@ -154,6 +154,7 @@ export default class AppView extends CollectionController<Expenses> {
 	}
 
 	show() {
+		super.show();
 		console.time('AppView.show');
 
 		// updated in the constructor once

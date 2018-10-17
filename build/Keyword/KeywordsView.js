@@ -24,6 +24,10 @@ class KeywordsView extends CollectionController_1.CollectionController {
         this.keywords = keywords;
         this.categories = categories;
     }
+    show() {
+        super.show();
+        this.render();
+    }
     render() {
         console.time('KeywordsView::render');
         if (this.template) {

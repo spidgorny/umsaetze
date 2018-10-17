@@ -73,7 +73,15 @@ export default class Sync extends CollectionController<Expenses> {
 		// this.fetchTransactions = new FetchTransactions(this.model, this.tf);
 	}
 
+	show() {
+		super.show();
+		this.render();
+	}
+
 	render() {
+		if (!this.visible) {
+			return this;
+		}
 		if (!this.template) {
 			this.$el.html('Loading ...');
 			return this;
@@ -306,7 +314,7 @@ export default class Sync extends CollectionController<Expenses> {
 	 * Required by Workspace
 	 */
 	hide() {
-
+		super.hide();
 	}
 
 }

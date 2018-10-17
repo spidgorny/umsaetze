@@ -2,12 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const MonthSelect_1 = require("../MonthSelect/MonthSelect");
 const SLTable_1 = require("../Util/SLTable");
-const Backbone = require("backbone");
 const _ = require("underscore");
 const chart_js_1 = require("chart.js");
 const $ = require("jquery");
 const ArrayPlus_1 = require("../Util/ArrayPlus");
-class HistoryView extends Backbone.View {
+const CollectionController_1 = require("../CollectionController");
+class HistoryView extends CollectionController_1.CollectionController {
     constructor(options) {
         super(options);
         this.collection = options.collection;
@@ -23,6 +23,10 @@ class HistoryView extends Backbone.View {
             '></canvas>');
     }
     initialize() {
+    }
+    show() {
+        super.show();
+        this.render();
     }
     render() {
         this.collection.setAllVisible();

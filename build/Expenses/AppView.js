@@ -75,6 +75,7 @@ class AppView extends CollectionController_1.CollectionController {
         this.monthChange();
     }
     show() {
+        super.show();
         console.time('AppView.show');
         this.ms.update(this.collection);
         this.render();

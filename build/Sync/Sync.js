@@ -40,7 +40,14 @@ class Sync extends CollectionController_1.CollectionController {
         this.categories = this.router.categoryList;
         this.tf = tf;
     }
+    show() {
+        super.show();
+        this.render();
+    }
     render() {
+        if (!this.visible) {
+            return this;
+        }
         if (!this.template) {
             this.$el.html('Loading ...');
             return this;
@@ -225,6 +232,7 @@ class Sync extends CollectionController_1.CollectionController {
         this.render();
     }
     hide() {
+        super.hide();
     }
 }
 exports.default = Sync;

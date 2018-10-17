@@ -17,6 +17,12 @@ export class CollectionController<T extends Expenses|CollectionArray>
 
 	$el: JQuery;
 
+	visible = false;
+
+	constructor(options?: any) {
+		super();
+	}
+
 	/**
 	 * It has no constructor
 	 * @param options
@@ -29,8 +35,13 @@ export class CollectionController<T extends Expenses|CollectionArray>
 		this.$el = el;
 	}
 
+	show() {
+		this.visible = true;
+	}
+
 	hide() {
 		this.$el.hide();
+		this.visible = false;
 	}
 
 	static $(selector: string) {

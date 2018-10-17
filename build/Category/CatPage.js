@@ -35,9 +35,17 @@ class CatPage extends CollectionController_1.CollectionController {
         this.template = html;
         this.render();
     }
+    show() {
+        super.show();
+        this.render();
+    }
     render() {
-        if (window.location.hash != '#CatPage')
-            return;
+        if (!this.visible) {
+            return this;
+        }
+        if (window.location.hash != '#CatPage') {
+            return this;
+        }
         if (this.template) {
             let categoryOptions = [];
             this.categoryList.each((category) => {

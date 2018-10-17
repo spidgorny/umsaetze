@@ -32,6 +32,11 @@ export class KeywordsView extends CollectionController<KeywordCollection> {
 		//console.log('new KeywordsView()', this.cid);
 	}
 
+	show() {
+		super.show();
+		this.render();
+	}
+
 	render() {
 		console.time('KeywordsView::render');
 		if (this.template) {

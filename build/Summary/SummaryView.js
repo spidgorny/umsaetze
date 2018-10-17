@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const SummaryLine_1 = require("./SummaryLine");
 const handlebars_1 = require("handlebars");
-const Backbone = require("backbone");
 const _ = require("underscore");
 const $ = require("jquery");
-class SummaryView extends Backbone.View {
+const Controller_1 = require("../Controller");
+class SummaryView extends Controller_1.default {
     constructor(options, expenses) {
         super(options);
         this.expenses = expenses;
@@ -18,6 +18,10 @@ class SummaryView extends Backbone.View {
         });
     }
     initialize() {
+    }
+    show() {
+        super.show();
+        this.render();
     }
     render() {
         if (!this.template) {

@@ -52,8 +52,18 @@ export class CatPage extends CollectionController<Expenses> {
 		this.render();
 	}
 
+	show() {
+		super.show();
+		this.render();
+	}
+
 	render() {
-		if (window.location.hash != '#CatPage') return;
+		if (!this.visible) {
+			return this;
+		}
+		if (window.location.hash != '#CatPage') {
+			return this;
+		}
 		// console.log('CatPage.render', this.template);
 		if (this.template) {
 			let categoryOptions = [];
