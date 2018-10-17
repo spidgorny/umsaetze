@@ -10,7 +10,7 @@ export default class ExpensesMock extends Expenses {
 
 	models: Transaction[] = [];
 
-	constructor(tf: TransactionFactory) {
+	constructor(tf?: TransactionFactory) {
 		super([], {}, new MockStorage(), tf);
 	}
 
