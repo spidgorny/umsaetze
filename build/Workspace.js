@@ -22,6 +22,8 @@ const $ = require("jquery");
 const MonthSelect_1 = require("./MonthSelect/MonthSelect");
 const TransactionFactory_1 = require("./Expenses/TransactionFactory");
 const backbone_localstorage_1 = require("backbone.localstorage");
+const _ = require("underscore");
+const Totals_1 = require("./Totals/Totals");
 const log = require('ololog');
 class Workspace extends Backbone.Router {
     constructor(options) {
@@ -34,8 +36,13 @@ class Workspace extends Backbone.Router {
             'Sync': 'Sync',
             'Keywords': 'Keywords',
             'Summary': 'Summary',
-            'History': 'History'
+            'History': 'History',
+            'Totals': '__not_a_function__',
         };
+        this.optionalParam = /\((.*?)\)/g;
+        this.namedParam = /(\(\?)?:\w+/g;
+        this.splatParam = /\*\w+/g;
+        this.escapeRegExp = /[\-{}\[\]+?.,\\\^$|#\s]/g;
         Workspace.instance = this;
         this._bindRoutes();
     }
@@ -58,6 +65,7 @@ class Workspace extends Backbone.Router {
             this.categoryList.setExpenses(this.model);
             this.keywords = new KeywordCollection_1.default();
             console.log('this.keywords', this.keywords.size());
+            this.Totals = new Totals_1.Totals(this.model);
         });
     }
     activateMenu() {
@@ -179,6 +187,70 @@ class Workspace extends Backbone.Router {
         $('#categories').hide();
         this.historyPage.show();
         this.currentPage = this.historyPage;
+    }
+    route(route, name, callback) {
+        if (!_.isRegExp(route))
+            route = this._routeToRegExp2(route);
+        if (_.isFunction(name)) {
+            callback = name;
+            name = '';
+        }
+        if (!callback)
+            callback = this[name];
+        Backbone.history.route(route, (fragment) => {
+            log('route callback', fragment);
+            this.fragment = fragment;
+            var args = this._extractParameters2(route, fragment);
+            if (this.execute(callback, args, name) !== false) {
+                this.trigger.apply(this, ['route:' + name].concat(args));
+                this.trigger('route', name, args);
+                Backbone.history.trigger('route', this, name, args);
+            }
+        });
+        return this;
+    }
+    _routeToRegExp2(route) {
+        route = route.replace(this.escapeRegExp, '\\$&')
+            .replace(this.optionalParam, '(?:$1)?')
+            .replace(this.namedParam, function (match, optional) {
+            return optional ? match : '([^/?]+)';
+        })
+            .replace(this.splatParam, '([^?]*?)');
+        return new RegExp('^' + route + '(?:\\?([\\s\\S]*))?$');
+    }
+    _extractParameters2(route, fragment) {
+        const params = route.exec(fragment).slice(1);
+        return _.map(params, function (param, i) {
+            if (i === params.length - 1)
+                return param || null;
+            return param ? decodeURIComponent(param) : null;
+        });
+    }
+    execute(callback, args, name) {
+        log('execute', callback, args, name);
+        console.log('fragment', this.fragment);
+        if (callback) {
+            return callback.apply(this, args);
+        }
+        else {
+            this.ShowPage(this.fragment);
+        }
+        return false;
+    }
+    ShowPage(fragment) {
+        if (!fragment) {
+            return;
+        }
+        console.warn(fragment);
+        this.activateMenu();
+        this.hideCurrentPage();
+        if (this[fragment]) {
+            this[fragment].show();
+            this.currentPage = this[fragment];
+        }
+        else {
+            throw new Error('undefined Workspace page: ' + fragment);
+        }
     }
 }
 exports.default = Workspace;

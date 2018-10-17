@@ -40,7 +40,9 @@ class Expenses extends Backbone.Collection {
         if (models.length) {
             _.each(models, (el) => {
                 let transaction = this.tf.make(el);
-                this.add(transaction);
+                this.add(transaction, {
+                    silent: true,
+                });
             });
             console.log('added objects', this.size());
         }

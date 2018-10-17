@@ -70,7 +70,9 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		if (models.length) {
 			_.each(models, (el) => {
 				let transaction = this.tf.make(el);
-				this.add(transaction);
+				this.add(transaction, {
+					silent: true,	// avoid event until all data is inserted = faster
+				});
 			});
 			//this.unserializeDate();
 			console.log('added objects', this.size());

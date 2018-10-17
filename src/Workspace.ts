@@ -16,6 +16,8 @@ import CategoryCollectionModel from "./Category/CategoryCollectionModel";
 import MonthSelect from "./MonthSelect/MonthSelect";
 import {TransactionFactory} from "./Expenses/TransactionFactory";
 import {LocalStorage} from 'backbone.localstorage';
+import * as _ from 'underscore';
+import {Totals} from "./Totals/Totals";
 
 const log = require('ololog');
 
@@ -29,7 +31,8 @@ export default class Workspace extends Backbone.Router {
 		'Sync': 'Sync',
 		'Keywords': 'Keywords',
 		'Summary': 'Summary',
-		'History': 'History'
+		'History': 'History',
+		'Totals': '__not_a_function__',
 	};
 
 	model: Expenses;
@@ -43,10 +46,13 @@ export default class Workspace extends Backbone.Router {
 	keywordsPage: KeywordsView;
 	summaryPage: SummaryView;
 	historyPage: HistoryView;
+	Totals: Totals;
 
 	currentPage: Controller<any> | CollectionController<Expenses> | SummaryView | HistoryView;
 
 	static instance: Workspace;
+
+	fragment: string;
 
 	static getInstance() {
 		return Workspace.instance;
@@ -79,6 +85,8 @@ export default class Workspace extends Backbone.Router {
 
 		this.keywords = new KeywordCollection();
 		console.log('this.keywords', this.keywords.size());
+
+		this.Totals = new Totals(this.model);
 	}
 
 	activateMenu() {
@@ -222,6 +230,106 @@ export default class Workspace extends Backbone.Router {
 		$('#categories').hide();
 		this.historyPage.show();
 		this.currentPage = this.historyPage;
+	}
+
+	/**
+	 * Copy/paste to call my own _extractParameters()
+	 * @param route
+	 * @param name
+	 * @param callback
+	 */
+	route(route: string | RegExp, name: string, callback?: Function): Backbone.Router {
+		if (!_.isRegExp(route)) route = this._routeToRegExp2(route);
+		if (_.isFunction(name)) {
+			callback = name;
+			name = '';
+		}
+		if (!callback) callback = this[name];
+		Backbone.history.route(route, (fragment) => {
+			log('route callback', fragment);
+			this.fragment = fragment;
+			var args = this._extractParameters2(route, fragment);
+			if (this.execute(callback, args, name) !== false) {
+				this.trigger.apply(this, ['route:' + name].concat(args));
+				this.trigger('route', name, args);
+				Backbone.history.trigger('route', this, name, args);
+			}
+		});
+		return this;
+	}
+
+	optionalParam = /\((.*?)\)/g;
+	namedParam    = /(\(\?)?:\w+/g;
+	splatParam    = /\*\w+/g;
+	escapeRegExp  = /[\-{}\[\]+?.,\\\^$|#\s]/g;
+
+	/**
+	 * Just copy/paste of the original
+	 * @param route
+	 * @private
+	 */
+	private _routeToRegExp2(route) {
+		route = route.replace(this.escapeRegExp, '\\$&')
+			.replace(this.optionalParam, '(?:$1)?')
+			.replace(this.namedParam, function(match, optional) {
+				return optional ? match : '([^/?]+)';
+			})
+			.replace(this.splatParam, '([^?]*?)');
+		return new RegExp('^' + route + '(?:\\?([\\s\\S]*))?$');
+	}
+
+	private _extractParameters2(route, fragment): string[] {
+		// below is copy/paste from the original private method
+		// damn the private methods
+		const params: string[] = route.exec(fragment).slice(1);
+		return _.map(params, function(param, i) {
+			// Don't decode the search params.
+			if (i === params.length - 1) return param || null;
+			return param ? decodeURIComponent(param) : null;
+		});
+	}
+
+	/**
+	 * I just want to get hold of 'fragment' to allow dynamic page routing
+	 * @param callback
+	 * @param args
+	 * @param name
+	 */
+	execute(callback, args, name): boolean
+	{
+		log('execute', callback, args, name);
+		console.log('fragment', this.fragment);
+
+		// original line
+		// super.execute(callback, args, name);
+
+		if (callback) {
+			return callback.apply(this, args);
+		} else {
+			this.ShowPage(this.fragment);
+		}
+		return false;
+	}
+
+	/**
+	 * Can open any page by fragment.
+	 * Is the default function for any route (but not called with any fragment)
+	 * @param fragment
+	 * @constructor
+	 */
+	ShowPage(fragment) {
+		if (!fragment) {
+			return;
+		}
+		console.warn(fragment);
+		this.activateMenu();
+		this.hideCurrentPage();
+		if (this[fragment]) {
+			this[fragment].show();
+			this.currentPage = this[fragment];
+		} else {
+			throw new Error('undefined Workspace page: '+fragment);
+		}
 	}
 
 }
