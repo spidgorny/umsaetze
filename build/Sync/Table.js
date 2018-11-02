@@ -1,7 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const Row_1 = require("./Row");
-const ArrayPlus_1 = require("../Util/ArrayPlus");
+const Row_1 = __importDefault(require("./Row"));
+const ArrayPlus_1 = __importDefault(require("../Util/ArrayPlus"));
 class Table extends ArrayPlus_1.default {
     constructor(rows) {
         super();

@@ -1,9 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const Number_1 = require("../Util/Number");
-const papaparse_1 = require("papaparse");
-const Table_1 = require("./Table");
-const Row_1 = require("./Row");
+const papaparse_1 = __importDefault(require("papaparse"));
+const Table_1 = __importDefault(require("./Table"));
+const Row_1 = __importDefault(require("./Row"));
 require("datejs");
 class ParseCSV {
     constructor(data) {

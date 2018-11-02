@@ -7,11 +7,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const Backbone = require("backbone");
 require("datejs");
-const _ = require("underscore");
-const $ = require("jquery");
+const underscore_1 = __importDefault(require("underscore"));
+const jquery_1 = __importDefault(require("jquery"));
+const Backbone = require("backbone");
 class Expenses extends Backbone.Collection {
     constructor(models = [], options = {}, ls, tf = null) {
         super(models, options);
@@ -19,7 +22,7 @@ class Expenses extends Backbone.Collection {
         if (ls) {
             this.localStorage = ls;
         }
-        else {
+        else if (typeof window !== 'undefined') {
             this.localStorage = window.localStorage;
         }
         this.listenTo(this, 'change', () => {
@@ -38,7 +41,7 @@ class Expenses extends Backbone.Collection {
         let models = this.localStorage.findAll();
         console.log('models from LS', models.length);
         if (models.length) {
-            _.each(models, (el) => {
+            underscore_1.default.each(models, (el) => {
                 let transaction = this.tf.make(el);
                 this.add(transaction, {
                     silent: true,
@@ -55,7 +58,7 @@ class Expenses extends Backbone.Collection {
             console.time('Expenses.fetch');
             let models = this.localStorage.findAll();
             console.log('models from LS', models.length);
-            $('#app').html(`<div class="progress" id="progress">
+            jquery_1.default('#app').html(`<div class="progress" id="progress">
   <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
     0%
   </div>
@@ -83,7 +86,7 @@ class Expenses extends Backbone.Collection {
                 let transaction = this.tf.make(el);
                 this.add(transaction);
                 const percent = Math.round(this.counter++ / numModels * 100) + '%';
-                $('#app #progress .progress-bar')
+                jquery_1.default('#app #progress .progress-bar')
                     .width(percent)
                     .text(percent);
             });
@@ -104,7 +107,7 @@ class Expenses extends Backbone.Collection {
     getDateFrom() {
         let visible = this.getVisible();
         let min = new Date().addYears(10).valueOf();
-        _.each(visible, (row) => {
+        underscore_1.default.each(visible, (row) => {
             let date = row.getDate().valueOf();
             if (date < min) {
                 min = date;
@@ -115,7 +118,7 @@ class Expenses extends Backbone.Collection {
     getDateTill() {
         let visible = this.getVisible();
         let min = new Date('1970-01-01').valueOf();
-        _.each(visible, (row) => {
+        underscore_1.default.each(visible, (row) => {
             let date = row.getDate().valueOf();
             if (date > min) {
                 min = date;
@@ -172,7 +175,7 @@ class Expenses extends Backbone.Collection {
         console.log('filterByMonth', selectedMonth.toString('yyyy-MM-dd'));
         if (selectedMonth) {
             let inThisMonth = this.whereMonth(selectedMonth);
-            let allOthers = _.difference(this.models, inThisMonth);
+            let allOthers = underscore_1.default.difference(this.models, inThisMonth);
             allOthers.forEach((row) => {
                 row.set('visible', false, { silent: true });
             });
@@ -214,7 +217,7 @@ class Expenses extends Backbone.Collection {
         console.timeEnd('Expenses.unserializeDate');
     }
     getVisible() {
-        return _(this.models).where({ visible: true });
+        return underscore_1.default(this.models).where({ visible: true });
     }
     getVisibleCount() {
         return this.getVisible().length;
@@ -262,7 +265,7 @@ class Expenses extends Backbone.Collection {
         if (selectedMonth) {
             let selectedMonthMinus1 = selectedMonth.clone().addMonths(-1);
             let prevMonth = this.whereMonth(selectedMonthMinus1);
-            let max = _.reduce(prevMonth, (acc, row) => {
+            let max = underscore_1.default.reduce(prevMonth, (acc, row) => {
                 return Math.max(acc, row.get('amount'));
             }, 0);
             let doAppend = false;
@@ -275,6 +278,26 @@ class Expenses extends Backbone.Collection {
                 }
             });
         }
+    }
+    groupByMonth() {
+        const perMonth = {};
+        let from = this.getEarliest().moveToFirstDayOfMonth();
+        let till = this.getLatest().moveToLastDayOfMonth();
+        for (let month = from.clone(); month.compareTo(till) == -1; month.addMonths(1)) {
+            let month1 = month.clone();
+            month1.addMonths(1).add({ minutes: -1 });
+            this.each((transaction) => {
+                let sameMonth = transaction.getDate().between(month, month1);
+                if (sameMonth) {
+                    const key = month.toUTCString();
+                    if (!(key in perMonth)) {
+                        perMonth[key] = [];
+                    }
+                    perMonth[key].push(transaction);
+                }
+            });
+        }
+        return perMonth;
     }
 }
 exports.default = Expenses;

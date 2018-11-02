@@ -40,6 +40,4 @@ export default class ExpensesMock extends Expenses {
 		console.log('visible', content.join(''));
 	}
 
-
-
 }

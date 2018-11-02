@@ -1,11 +1,21 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const MonthSelect_1 = require("../MonthSelect/MonthSelect");
-const SLTable_1 = require("../Util/SLTable");
-const _ = require("underscore");
+const MonthSelect_1 = __importDefault(require("../MonthSelect/MonthSelect"));
+const SLTable_1 = __importDefault(require("../Util/SLTable"));
+const _ = __importStar(require("underscore"));
 const chart_js_1 = require("chart.js");
-const $ = require("jquery");
-const ArrayPlus_1 = require("../Util/ArrayPlus");
+const $ = __importStar(require("jquery"));
+const ArrayPlus_1 = __importDefault(require("../Util/ArrayPlus"));
 const CollectionController_1 = require("../CollectionController");
 class HistoryView extends CollectionController_1.CollectionController {
     constructor(options) {

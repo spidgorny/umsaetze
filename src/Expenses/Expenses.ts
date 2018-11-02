@@ -1,17 +1,14 @@
 import Transaction from './Transaction';
-import Backbone = require('backbone');
-import CollectionFetchOptions = Backbone.CollectionFetchOptions;
-import KeywordCollection from '../Keyword/KeywordCollection';
-import Keyword from '../Keyword/Keyword';
 import CategoryCount from '../Category/CategoryCount';
 import MonthSelect from '../MonthSelect/MonthSelect';
 import {LocalStorage} from 'backbone.localstorage';
 import 'datejs';
-import * as _ from 'underscore';
-import * as $ from 'jquery';
+import _ from 'underscore';
+import $ from 'jquery';
 import {LocalStorageInterface} from "../test/helper/LocalStorageInterface";
 import {TransactionFactory} from "./TransactionFactory";
-import {asyncLoop, awaitLoop} from "../main";
+import Backbone = require('backbone');
+import CollectionFetchOptions = Backbone.CollectionFetchOptions;
 
 export default class Expenses extends Backbone.Collection<Transaction> {
 
@@ -43,7 +40,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 		super(models, options);
 		if (ls) {
 			this.localStorage = ls;
-		} else {
+		} else if (typeof window !== 'undefined') {
 			this.localStorage = window.localStorage;
 		}
 		this.listenTo(this, 'change', () => {
@@ -409,6 +406,27 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 				}
 			})
 		}
+	}
+
+	groupByMonth() {
+		const perMonth = {};
+		let from: Date = this.getEarliest().moveToFirstDayOfMonth();
+		let till: Date = this.getLatest().moveToLastDayOfMonth();
+		for (let month = from.clone(); month.compareTo(till) == -1; month.addMonths(1)) {
+			let month1 = month.clone();
+			month1.addMonths(1).add(<IDateJSLiteral>{minutes: -1});
+			this.each((transaction: Transaction) => {
+				let sameMonth = transaction.getDate().between(month, month1);
+				if (sameMonth) {
+					const key = month.toUTCString();
+					if (!(key in perMonth)) {
+						perMonth[key] = [];
+					}
+					perMonth[key].push(transaction);
+				}
+			});
+		}
+		return perMonth;
 	}
 
 }

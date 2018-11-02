@@ -4,9 +4,13 @@ import {CurrentMonth} from "../MonthSelect/CurrentMonth";
 import CategoryCount from "../Category/CategoryCount";
 import Keyword from "../Keyword/Keyword";
 import KeywordCollection from "../Keyword/KeywordCollection";
+import {Dictionary} from "../../node_modules/@types/underscore";
 
 const log = require('ololog');
 
+/**
+ * Represents only some expenses of the specific month
+ */
 export class MonthExpenses {
 
 	model: typeof Transaction;
@@ -110,4 +114,51 @@ export class MonthExpenses {
 		this.expenses.trigger(event);
 	}
 
+	/**
+	 * @deprecated types mismatch
+	 * @param callback
+	 * @param init
+	 */
+	reduce(callback: Function, init = null) {
+		// return _.reduce(this.expenses.models, callback, init);
+		// return this.expenses.models.reduce(callback, init);
+	}
+
+	getTotal() {
+		let total = 0;
+		// for (const transaction of this.expenses.models) {
+		// this is the only valid way to iterate
+		this.expenses.each(transaction => {
+			const amount = transaction.getAmount();
+			total += amount;
+		});
+		return total;
+	}
+
+	getPositiveTotal() {
+		let total = 0;
+		// for (const transaction of this.expenses.models) {
+		// this is the only valid way to iterate
+		this.expenses.each(transaction => {
+			const amount = transaction.getAmount();
+			if (amount > 0) {
+				total += amount;
+			}
+		});
+		return total;
+	}
+
+	getNegativeTotal() {
+		let total = 0;
+		// for (const transaction of this.expenses.models) {
+		// this is the only valid way to iterate
+		this.expenses.each(transaction => {
+			// console.log(transaction);
+			const amount = transaction.getAmount();
+			if (amount < 0) {
+				total += amount;
+			}
+		});
+		return total;
+	}
 }

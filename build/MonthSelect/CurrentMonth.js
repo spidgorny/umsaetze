@@ -7,16 +7,13 @@ class CurrentMonth {
     constructor(year, month = CurrentMonth.DEFAULT_MONTH) {
         this.earliest = new Date().moveToMonth(0, -1).moveToFirstDayOfMonth();
         this.latest = new Date();
-        this.monthNames = [
-            "January", "February", "March",
-            "April", "May", "June",
-            "July", "August", "September",
-            "October", "November", "December"
-        ];
         this._selectedYear = CurrentMonth.DEFAULT_YEAR;
         this._selectedMonth = CurrentMonth.DEFAULT_MONTH;
         this._selectedYear = year;
         this._selectedMonth = month;
+    }
+    static fromDate(date) {
+        return new CurrentMonth(date.getFullYear(), CurrentMonth.getShortMonthNameFor(date.getMonth() + 1));
     }
     get selectedYear() {
         return this._selectedYear;
@@ -73,7 +70,7 @@ class CurrentMonth {
     }
     getShortMonthName() {
     }
-    getShortMonthNameFor(index) {
+    static getShortMonthNameFor(index) {
         const longName = this.monthNames[index - 1] || this.monthNames[0];
         return longName.substr(0, 3);
     }
@@ -97,6 +94,12 @@ class CurrentMonth {
         return '/' + this.selectedYear.toString() + '/' + sMonth;
     }
 }
+CurrentMonth.monthNames = [
+    "January", "February", "March",
+    "April", "May", "June",
+    "July", "August", "September",
+    "October", "November", "December"
+];
 CurrentMonth.DEFAULT_YEAR = new Date().getFullYear();
 CurrentMonth.DEFAULT_MONTH = 'Feb';
 exports.CurrentMonth = CurrentMonth;

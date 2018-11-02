@@ -7,22 +7,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const AppView_1 = require("./Expenses/AppView");
-const Sync_1 = require("./Sync/Sync");
-const Expenses_1 = require("./Expenses/Expenses");
+const AppView_1 = __importDefault(require("./Expenses/AppView"));
+const Sync_1 = __importDefault(require("./Sync/Sync"));
+const Expenses_1 = __importDefault(require("./Expenses/Expenses"));
 const CatPage_1 = require("./Category/CatPage");
 const KeywordsView_1 = require("./Keyword/KeywordsView");
-const CategoryCollection_1 = require("./Category/CategoryCollection");
-const KeywordCollection_1 = require("./Keyword/KeywordCollection");
-const SummaryView_1 = require("./Summary/SummaryView");
-const HistoryView_1 = require("./History/HistoryView");
+const CategoryCollection_1 = __importDefault(require("./Category/CategoryCollection"));
+const KeywordCollection_1 = __importDefault(require("./Keyword/KeywordCollection"));
+const SummaryView_1 = __importDefault(require("./Summary/SummaryView"));
+const HistoryView_1 = __importDefault(require("./History/HistoryView"));
 const Backbone = require("backbone");
-const $ = require("jquery");
-const MonthSelect_1 = require("./MonthSelect/MonthSelect");
+const $ = __importStar(require("jquery"));
+const MonthSelect_1 = __importDefault(require("./MonthSelect/MonthSelect"));
 const TransactionFactory_1 = require("./Expenses/TransactionFactory");
 const backbone_localstorage_1 = require("backbone.localstorage");
-const _ = require("underscore");
+const _ = __importStar(require("underscore"));
 const Totals_1 = require("./Totals/Totals");
 const log = require('ololog');
 class Workspace extends Backbone.Router {

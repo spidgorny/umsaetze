@@ -1,8 +1,15 @@
 "use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const Backbone = require("backbone");
-const _ = require("underscore");
-const $ = require("jquery");
+const _ = __importStar(require("underscore"));
+const $ = __importStar(require("jquery"));
 const chart_js_1 = require("chart.js");
 const main_1 = require("../main");
 class CategoryView extends Backbone.View {

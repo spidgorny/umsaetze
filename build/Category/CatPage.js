@@ -1,13 +1,23 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const CategoryCount_1 = require("../Category/CategoryCount");
+const CategoryCount_1 = __importDefault(require("../Category/CategoryCount"));
 const CollectionController_1 = require("../CollectionController");
-const handlebars_1 = require("handlebars");
+const handlebars_1 = __importDefault(require("handlebars"));
 const Backbone = require("backbone");
-const $ = require("jquery");
-const _ = require("underscore");
+const $ = __importStar(require("jquery"));
+const _ = __importStar(require("underscore"));
 const chart_js_1 = require("chart.js");
-const toastr_1 = require("toastr");
+const toastr_1 = __importDefault(require("toastr"));
 require("../Util/Object");
 class CatPage extends CollectionController_1.CollectionController {
     constructor(expenses, categoryList) {

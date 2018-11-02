@@ -1,8 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const Expenses_1 = require("./Expenses");
-const Transaction_1 = require("./Transaction");
-const MockStorage_1 = require("../Util/MockStorage");
+const Expenses_1 = __importDefault(require("./Expenses"));
+const Transaction_1 = __importDefault(require("./Transaction"));
+const MockStorage_1 = __importDefault(require("../Util/MockStorage"));
 const fs = require('fs');
 class ExpensesMock extends Expenses_1.default {
     constructor(tf) {

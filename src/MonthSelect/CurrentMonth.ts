@@ -1,5 +1,6 @@
 import 'datejs';
 import {clamp} from "../Util/Number";
+
 require('../Util/Number');
 
 export class CurrentMonth {
@@ -12,7 +13,7 @@ export class CurrentMonth {
 	 * http://stackoverflow.com/questions/1643320/get-month-name-from-date
 	 * @type {[string,string,string,string,string,string,string,string,string,string,string,string]}
 	 */
-	monthNames = [
+	static monthNames = [
 		"January", "February", "March",
 		"April", "May", "June",
 		"July", "August", "September",
@@ -21,11 +22,18 @@ export class CurrentMonth {
 
 	private _selectedYear: number = CurrentMonth.DEFAULT_YEAR;
 
+	/**
+	 * @var String, it must be string
+ 	 */
 	private _selectedMonth: string = CurrentMonth.DEFAULT_MONTH;
 
 	public static readonly DEFAULT_YEAR = new Date().getFullYear();
 
 	public static readonly DEFAULT_MONTH = 'Feb';
+
+	static fromDate(date: Date) {
+		return new CurrentMonth(date.getFullYear(), CurrentMonth.getShortMonthNameFor(date.getMonth()+1));
+	}
 
 	constructor(year, month = CurrentMonth.DEFAULT_MONTH) {
 		this._selectedYear = year;
@@ -119,7 +127,11 @@ export class CurrentMonth {
 		// return MonthSelect.getMonthName().substr(0, 3);
 	}
 
-	getShortMonthNameFor(index) {
+	/**
+	 * Returns three letter month name used to initialize this class
+	 * @param index starts with 1 = Jan
+	 */
+	static getShortMonthNameFor(index) {
 		const longName = this.monthNames[index-1] || this.monthNames[0];
 		return longName.substr(0, 3);
 	}

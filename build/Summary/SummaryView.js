@@ -1,10 +1,20 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const SummaryLine_1 = require("./SummaryLine");
-const handlebars_1 = require("handlebars");
-const _ = require("underscore");
-const $ = require("jquery");
-const Controller_1 = require("../Controller");
+const SummaryLine_1 = __importDefault(require("./SummaryLine"));
+const handlebars_1 = __importDefault(require("handlebars"));
+const _ = __importStar(require("underscore"));
+const $ = __importStar(require("jquery"));
+const Controller_1 = __importDefault(require("../Controller"));
 class SummaryView extends Controller_1.default {
     constructor(options, expenses) {
         super(options);

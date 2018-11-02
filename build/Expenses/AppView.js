@@ -1,12 +1,22 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const ExpenseTable_1 = require("./ExpenseTable");
-const CategoryView_1 = require("./CategoryView");
+const ExpenseTable_1 = __importDefault(require("./ExpenseTable"));
+const CategoryView_1 = __importDefault(require("./CategoryView"));
 const main_1 = require("../main");
 const CollectionController_1 = require("../CollectionController");
-const $ = require("jquery");
-const _ = require("underscore");
-const CategoryCollectionModel_1 = require("../Category/CategoryCollectionModel");
+const $ = __importStar(require("jquery"));
+const _ = __importStar(require("underscore"));
+const CategoryCollectionModel_1 = __importDefault(require("../Category/CategoryCollectionModel"));
 const MonthExpenses_1 = require("./MonthExpenses");
 class AppView extends CollectionController_1.CollectionController {
     constructor(options, categoryList, keywords, monthSelect) {

@@ -7,15 +7,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const $ = require("jquery");
-const _ = require("underscore");
-const RecursiveArrayOfStrings_1 = require("../Util/RecursiveArrayOfStrings");
-const Keyword_1 = require("./Keyword");
-const toastr = require("toastr");
+const $ = __importStar(require("jquery"));
+const _ = __importStar(require("underscore"));
+const RecursiveArrayOfStrings_1 = __importDefault(require("../Util/RecursiveArrayOfStrings"));
+const Keyword_1 = __importDefault(require("./Keyword"));
+const toastr = __importStar(require("toastr"));
 const CollectionController_1 = require("../CollectionController");
 const filereader_js_1 = require("filereader.js");
-const XLSX = require("xlsx");
+const XLSX = __importStar(require("xlsx"));
 const promise_file_reader_1 = require("promise-file-reader");
 class KeywordsView extends CollectionController_1.CollectionController {
     constructor(keywords, categories) {

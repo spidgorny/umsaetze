@@ -1,6 +1,9 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const CategoryCount_1 = require("../Category/CategoryCount");
+const CategoryCount_1 = __importDefault(require("../Category/CategoryCount"));
 const log = require('ololog');
 class MonthExpenses {
     constructor(expenses, month) {
@@ -77,6 +80,36 @@ class MonthExpenses {
     }
     trigger(event) {
         this.expenses.trigger(event);
+    }
+    reduce(callback, init = null) {
+    }
+    getTotal() {
+        let total = 0;
+        this.expenses.each(transaction => {
+            const amount = transaction.getAmount();
+            total += amount;
+        });
+        return total;
+    }
+    getPositiveTotal() {
+        let total = 0;
+        this.expenses.each(transaction => {
+            const amount = transaction.getAmount();
+            if (amount > 0) {
+                total += amount;
+            }
+        });
+        return total;
+    }
+    getNegativeTotal() {
+        let total = 0;
+        this.expenses.each(transaction => {
+            const amount = transaction.getAmount();
+            if (amount < 0) {
+                total += amount;
+            }
+        });
+        return total;
     }
 }
 exports.MonthExpenses = MonthExpenses;

@@ -1,10 +1,20 @@
 "use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const main_1 = require("../main");
-const $ = require("jquery");
-const _ = require("underscore");
+const $ = __importStar(require("jquery"));
+const _ = __importStar(require("underscore"));
 const Backbone = require("backbone");
-const CategoryCount_1 = require("../Category/CategoryCount");
+const CategoryCount_1 = __importDefault(require("../Category/CategoryCount"));
 const CategoryPopup_1 = require("./CategoryPopup");
 class ExpenseTable extends Backbone.View {
     constructor(options, keywords, categoryList) {
