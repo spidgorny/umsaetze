@@ -7,6 +7,7 @@ const Expenses_1 = __importDefault(require("../Expenses/Expenses"));
 const underscore_1 = __importDefault(require("underscore"));
 const MonthExpenses_1 = require("../Expenses/MonthExpenses");
 const CurrentMonth_1 = require("../MonthSelect/CurrentMonth");
+const easy_table_1 = __importDefault(require("easy-table"));
 class Totals {
     constructor(expenses) {
         this.visible = false;
@@ -23,8 +24,9 @@ class Totals {
         console.time('groupByMonth');
         const perMonth = this.expenses.groupByMonth();
         console.timeEnd('groupByMonth');
-        console.log(Object.keys(perMonth));
-        console.log(underscore_1.default.mapObject(perMonth, (key, list) => list.length));
+        console.log(underscore_1.default.mapObject(perMonth, (list, key) => {
+            return list.length;
+        }));
         const totalPlus = {};
         const totalMinus = {};
         for (const month in perMonth) {
@@ -35,7 +37,20 @@ class Totals {
             totalPlus[month] = monthlyExpenses.getPositiveTotal();
             totalMinus[month] = monthlyExpenses.getNegativeTotal();
         }
-        console.log(totalPlus, totalMinus);
+        const t = new easy_table_1.default();
+        let runningTotal = 0;
+        Object.keys(totalPlus).map((month) => {
+            const plus = totalPlus[month];
+            const minus = totalMinus[month];
+            t.cell('Month', month);
+            t.cell('Income', plus.toFixed(2));
+            t.cell('Expenses', minus.toFixed(2));
+            t.cell('Remaining', (plus + minus).toFixed(2));
+            runningTotal += (plus + minus);
+            t.cell('Cumulative', runningTotal.toFixed(2));
+            t.newRow();
+        });
+        console.log(t.toString());
     }
 }
 exports.Totals = Totals;

@@ -32,7 +32,7 @@ export default class ParseCSV {
 	}
 
 	log(...line) {
-		this.logger.log(line.join(' '));
+		this.logger.log(line);
 	}
 
 	parseAndNormalize() {
@@ -47,6 +47,7 @@ export default class ParseCSV {
 			csv = csvObj.data;
 		} else {
 			csv = Table.fromText(this.data);
+			csv.logger = this.logger;
 		}
 		this.data = null;	// save RAM
 		this.log('rows after parse', csv.length);
@@ -76,7 +77,9 @@ export default class ParseCSV {
 		});
 		// console.log('slicing ', startIndex, 'first rows');
 		let sliced = data.slice(startIndex);
-		return new Table(sliced);
+		let table = new Table(sliced);
+		table.logger = this.logger;
+		return table;
 	}
 
 	/**
@@ -94,6 +97,7 @@ export default class ParseCSV {
 		this.log('rows after filterByCommon', data.length);
 
 		let dataWithHeader = new Table();
+		dataWithHeader.logger = this.logger;
 		data.forEach((row, i) => {
 			let header = common.getHeaderFromTypes(row, i);
 			if (i == 0) {

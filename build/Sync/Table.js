@@ -14,6 +14,11 @@ class Table extends ArrayPlus_1.default {
             });
         }
     }
+    log(...line) {
+        if (this.logger) {
+            this.logger.log(line);
+        }
+    }
     static fromText(text) {
         let self = new Table();
         let lines = self.tryBestSeparator(text);
@@ -31,9 +36,13 @@ class Table extends ArrayPlus_1.default {
             colsC.push(linesC[i].length);
             colsS.push(linesS[i].length);
         }
-        let sumC = colsC.reduce(function (a, b) { return a + b; });
-        let sumS = colsS.reduce(function (a, b) { return a + b; });
-        console.log(', => ', sumC, '; => ', sumS);
+        let sumC = colsC.reduce(function (a, b) {
+            return a + b;
+        });
+        let sumS = colsS.reduce(function (a, b) {
+            return a + b;
+        });
+        this.log(', => ', sumC, '; => ', sumS);
         let lines;
         if (sumC > sumS) {
             lines = linesC;
@@ -74,11 +83,11 @@ class Table extends ArrayPlus_1.default {
             if (startIndex == null
                 && row.length && row[0] != '') {
                 startIndex = i;
-                console.log('trim @', startIndex);
+                this.log('trim @', startIndex);
             }
         });
         let data = rev.slice(startIndex);
-        console.log('trim()', rev.length, startIndex, data.length);
+        this.log('trim()', rev.length, startIndex, data.length);
         data = data.reverse();
         return new Table(data);
     }
@@ -95,7 +104,7 @@ class Table extends ArrayPlus_1.default {
     }
     getRowTypesForSomeRows() {
         let typeSet = new Table();
-        console.log('getRowTypesForSomeRows', this.length);
+        this.log('getRowTypesForSomeRows', this.length);
         let iter = 0;
         this.forEach((row0, i) => {
             let row = new Row_1.default(row0);

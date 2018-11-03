@@ -4,8 +4,8 @@ class Logger {
     constructor(callback) {
         this.callback = callback;
     }
-    log(line) {
-        this.callback(line);
+    log(...line) {
+        this.callback(line.join(' '));
     }
 }
 exports.Logger = Logger;

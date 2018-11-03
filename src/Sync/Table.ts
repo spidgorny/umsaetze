@@ -1,15 +1,24 @@
 import Row from './Row';
 import ArrayPlus from '../Util/ArrayPlus';
+import {Logger} from "./Logger";
 
 export default class Table extends ArrayPlus {
+
+	logger: Logger;
 
 	constructor(rows?: Array<any>) {
 		super();
 		if (typeof rows === 'object') {
-			// console.log('ArrayPlus', rows);
+			// this.log('ArrayPlus', rows);
 			rows.forEach((el, i) => {
 				this[i] = new Row(el);
 			});
+		}
+	}
+
+	log(...line) {
+		if (this.logger) {
+			this.logger.log(line);
 		}
 	}
 
@@ -32,10 +41,14 @@ export default class Table extends ArrayPlus {
 			colsC.push(linesC[i].length);
 			colsS.push(linesS[i].length);
 		}
-		// console.log(colsC, colsS);
-		let sumC = colsC.reduce(function (a, b) { return a + b; });
-		let sumS = colsS.reduce(function (a, b) { return a + b; });
-		console.log(', => ', sumC, '; => ', sumS);
+		// this.log(colsC, colsS);
+		let sumC = colsC.reduce(function (a, b) {
+			return a + b;
+		});
+		let sumS = colsS.reduce(function (a, b) {
+			return a + b;
+		});
+		this.log(', => ', sumC, '; => ', sumS);
 		let lines;
 		if (sumC > sumS) {
 			lines = linesC;
@@ -52,7 +65,7 @@ export default class Table extends ArrayPlus {
 	 * @returns {Array[]}
 	 * @constructor
 	 */
-	static CSVToArray( strData, strDelimiter ) {
+	static CSVToArray(strData, strDelimiter) {
 		// Check to see if the delimiter is defined. If not,
 		// then default to comma.
 		strDelimiter = (strDelimiter || ",");
@@ -84,10 +97,10 @@ export default class Table extends ArrayPlus {
 
 		// Keep looping over the regular expression matches
 		// until we can no longer find a match.
-		while (arrMatches = objPattern.exec( strData )){
+		while (arrMatches = objPattern.exec(strData)) {
 
 			// Get the delimiter that was found.
-			let strMatchedDelimiter = arrMatches[ 1 ];
+			let strMatchedDelimiter = arrMatches[1];
 
 			// Check to see if the given delimiter has a length
 			// (is not the start of string) and if it matches
@@ -96,11 +109,11 @@ export default class Table extends ArrayPlus {
 			if (
 				strMatchedDelimiter.length &&
 				strMatchedDelimiter !== strDelimiter
-			){
+			) {
 
 				// Since we have reached a new row of data,
 				// add an empty row to our data array.
-				arrData.push( [] );
+				arrData.push([]);
 
 			}
 
@@ -109,30 +122,30 @@ export default class Table extends ArrayPlus {
 			// Now that we have our delimiter out of the way,
 			// let's check to see which kind of value we
 			// captured (quoted or unquoted).
-			if (arrMatches[ 2 ]){
+			if (arrMatches[2]) {
 
 				// We found a quoted value. When we capture
 				// this value, unescape any double quotes.
-				strMatchedValue = arrMatches[ 2 ].replace(
-					new RegExp( "\"\"", "g" ),
+				strMatchedValue = arrMatches[2].replace(
+					new RegExp("\"\"", "g"),
 					"\""
 				);
 
 			} else {
 
 				// We found a non-quoted value.
-				strMatchedValue = arrMatches[ 3 ];
+				strMatchedValue = arrMatches[3];
 
 			}
 
 
 			// Now that we have our value string, let's add
 			// it to the data array.
-			arrData[ arrData.length - 1 ].push( strMatchedValue );
+			arrData[arrData.length - 1].push(strMatchedValue);
 		}
 
 		// Return the parsed data.
-		return( arrData );
+		return (arrData);
 	}
 
 	/**
@@ -148,12 +161,12 @@ export default class Table extends ArrayPlus {
 			if (startIndex == null
 				&& row.length && row[0] != '') {
 				startIndex = i;
-				console.log('trim @', startIndex);
+				this.log('trim @', startIndex);
 			}
 		});
 		let data = rev.slice(startIndex);
-		console.log('trim()', rev.length, startIndex, data.length);
-		// console.log(data[0]);
+		this.log('trim()', rev.length, startIndex, data.length);
+		// this.log(data[0]);
 		data = data.reverse();
 		return new Table(data);
 	}
@@ -177,12 +190,12 @@ export default class Table extends ArrayPlus {
 
 	getRowTypesForSomeRows() {
 		let typeSet = new Table();
-		console.log('getRowTypesForSomeRows', this.length);
+		this.log('getRowTypesForSomeRows', this.length);
 		let iter = 0;
 		this.forEach((row0, i) => {
 			let row: Row = new Row(row0);
 			let types = row.getRowTypes();
-			//console.log(i, row, types);
+			//this.log(i, row, types);
 			typeSet.push(types);
 			iter++;
 			if (iter > 100) {
@@ -197,7 +210,7 @@ export default class Table extends ArrayPlus {
 			let countNull = row.filter(type => {
 				return type == 'null';
 			}).length;
-			// console.log(countNull, row);
+			// this.log(countNull, row);
 			return countNull < row.length / 2;
 		});
 		return new Table(notNull);

@@ -6,8 +6,8 @@ export class Logger {
 		this.callback = callback;
 	}
 
-	log(line) {
-		this.callback(line);
+	log(...line) {
+		this.callback(line.join(' '));
 	}
 
 

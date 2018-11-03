@@ -4,6 +4,7 @@ import MockStorage from "../Util/MockStorage";
 import {TransactionFactory} from "./TransactionFactory";
 import ParseCSV from "../Sync/ParseCSV";
 import {Logger} from "../Sync/Logger";
+
 const fs = require('fs');
 
 export default class ExpensesMock extends Expenses {
@@ -59,4 +60,7 @@ export default class ExpensesMock extends Expenses {
 		this.addAll(csv);
 	}
 
+	saveJSON(file: string) {
+		fs.writeFileSync(file, JSON.stringify(this.models, null, '\t'));
+	}
 }

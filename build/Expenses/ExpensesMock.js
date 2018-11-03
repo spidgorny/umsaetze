@@ -48,6 +48,9 @@ class ExpensesMock extends Expenses_1.default {
         let csv = parser.parseAndNormalize();
         this.addAll(csv);
     }
+    saveJSON(file) {
+        fs.writeFileSync(file, JSON.stringify(this.models, null, '\t'));
+    }
 }
 exports.default = ExpensesMock;
 //# sourceMappingURL=ExpensesMock.js.map
