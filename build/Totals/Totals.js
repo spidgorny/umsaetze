@@ -24,7 +24,6 @@ class Totals {
         const perMonth = this.expenses.groupByMonth();
         console.timeEnd('groupByMonth');
         console.log(Object.keys(perMonth));
-        console.log(Object.assign({}, ...Object.entries(perMonth).map(([key, list]) => list.length)));
         console.log(underscore_1.default.mapObject(perMonth, (key, list) => list.length));
         const totalPlus = {};
         const totalMinus = {};

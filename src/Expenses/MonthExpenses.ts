@@ -4,7 +4,6 @@ import {CurrentMonth} from "../MonthSelect/CurrentMonth";
 import CategoryCount from "../Category/CategoryCount";
 import Keyword from "../Keyword/Keyword";
 import KeywordCollection from "../Keyword/KeywordCollection";
-import {Dictionary} from "../../node_modules/@types/underscore";
 
 const log = require('ololog');
 

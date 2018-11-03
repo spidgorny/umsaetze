@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Expenses_1 = __importDefault(require("./Expenses"));
 const Transaction_1 = __importDefault(require("./Transaction"));
 const MockStorage_1 = __importDefault(require("../Util/MockStorage"));
+const ParseCSV_1 = __importDefault(require("../Sync/ParseCSV"));
+const Logger_1 = require("../Sync/Logger");
 const fs = require('fs');
 class ExpensesMock extends Expenses_1.default {
     constructor(tf) {
@@ -15,7 +17,10 @@ class ExpensesMock extends Expenses_1.default {
     load(file) {
         let json = fs.readFileSync(file);
         let data = JSON.parse(json);
-        data.forEach(row => {
+        this.addAll(data);
+    }
+    addAll(rows) {
+        rows.forEach(row => {
             this.models.push(new Transaction_1.default(row));
         });
     }
@@ -31,6 +36,17 @@ class ExpensesMock extends Expenses_1.default {
             content.push(model.get('visible') ? '+' : '-');
         });
         console.log('visible', content.join(''));
+    }
+    loadCSV(file) {
+        let data = fs.readFileSync(file);
+        let parser = new ParseCSV_1.default(data);
+        parser.logger = new Logger_1.Logger((line) => {
+        });
+        parser.progress = (step, much) => {
+            console.log(step, much);
+        };
+        let csv = parser.parseAndNormalize();
+        this.addAll(csv);
     }
 }
 exports.default = ExpensesMock;

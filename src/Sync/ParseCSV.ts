@@ -3,6 +3,7 @@ import Papa from 'papaparse';
 import Table from './Table';
 import Row from './Row';
 import 'datejs';
+import {Logger} from "./Logger";
 
 /**
  * http://stackoverflow.com/questions/3115982/how-to-check-if-two-arrays-are-equal-with-javascript
@@ -19,8 +20,19 @@ export default class ParseCSV {
 
 	data: string;
 
+	logger: Logger;
+
+	progress?: Function;
+
 	constructor(data?: string) {
 		this.data = data;
+		this.logger = new Logger((line) => {
+			console.log(line);
+		})
+	}
+
+	log(...line) {
+		this.logger.log(line.join(' '));
 	}
 
 	parseAndNormalize() {
@@ -37,16 +49,16 @@ export default class ParseCSV {
 			csv = Table.fromText(this.data);
 		}
 		this.data = null;	// save RAM
-		console.log('rows after parse', csv.length);
+		this.log('rows after parse', csv.length);
 		csv = csv.trim();
 		// csv = csv.trimAll(); // prevents analyzeCSV from working
-		console.log('rows after trim', csv.length);
+		this.log('rows after trim', csv.length);
 		csv = this.analyzeCSV(csv);
-		console.log('rows after analyze', csv.length);
+		this.log('rows after analyze', csv.length);
 		csv = this.normalizeCSV(csv);
-		console.log('rows after normalize', csv.length);
+		this.log('rows after normalize', csv.length);
 		csv = this.convertDataTypes(csv);
-		console.log('rows after convertDataTypes', csv.length);
+		this.log('rows after convertDataTypes', csv.length);
 		return csv;
 	}
 
@@ -77,9 +89,9 @@ export default class ParseCSV {
 		// console.log(typeSet, 'typeSet');
 		let aCommon = typeSet.mode();
 		let common = new Row(aCommon);
-		console.log(JSON.stringify(common), 'common');
+		this.log(JSON.stringify(common), 'common');
 		data = common.filterByCommon(data);
-		console.log('rows after filterByCommon', data.length);
+		this.log('rows after filterByCommon', data.length);
 
 		let dataWithHeader = new Table();
 		data.forEach((row, i) => {

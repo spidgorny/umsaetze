@@ -107,7 +107,7 @@ export class CurrentMonth {
 	}
 
 	getMonthNameFor(index) {
-		return this.getShortMonthNameFor(index);
+		return CurrentMonth.getShortMonthNameFor(index);
 	}
 
 	/**
@@ -151,7 +151,7 @@ export class CurrentMonth {
 			this.earliest.getMonth(),
 			this.latest.getMonth()
 		);
-		this._selectedMonth = this.getShortMonthNameFor(selectedMonthIndex);
+		this._selectedMonth = this.getMonthNameFor(selectedMonthIndex);
 
 		console.log('MonthSelect range',
 			this.earliest.toString('yyyy-MM-dd'),

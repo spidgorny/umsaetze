@@ -8,9 +8,16 @@ const papaparse_1 = __importDefault(require("papaparse"));
 const Table_1 = __importDefault(require("./Table"));
 const Row_1 = __importDefault(require("./Row"));
 require("datejs");
+const Logger_1 = require("./Logger");
 class ParseCSV {
     constructor(data) {
         this.data = data;
+        this.logger = new Logger_1.Logger((line) => {
+            console.log(line);
+        });
+    }
+    log(...line) {
+        this.logger.log(line.join(' '));
     }
     parseAndNormalize() {
         let csv;
@@ -27,15 +34,15 @@ class ParseCSV {
             csv = Table_1.default.fromText(this.data);
         }
         this.data = null;
-        console.log('rows after parse', csv.length);
+        this.log('rows after parse', csv.length);
         csv = csv.trim();
-        console.log('rows after trim', csv.length);
+        this.log('rows after trim', csv.length);
         csv = this.analyzeCSV(csv);
-        console.log('rows after analyze', csv.length);
+        this.log('rows after analyze', csv.length);
         csv = this.normalizeCSV(csv);
-        console.log('rows after normalize', csv.length);
+        this.log('rows after normalize', csv.length);
         csv = this.convertDataTypes(csv);
-        console.log('rows after convertDataTypes', csv.length);
+        this.log('rows after convertDataTypes', csv.length);
         return csv;
     }
     analyzeCSV(data) {
@@ -53,9 +60,9 @@ class ParseCSV {
         typeSet = typeSet.filterMostlyNull();
         let aCommon = typeSet.mode();
         let common = new Row_1.default(aCommon);
-        console.log(JSON.stringify(common), 'common');
+        this.log(JSON.stringify(common), 'common');
         data = common.filterByCommon(data);
-        console.log('rows after filterByCommon', data.length);
+        this.log('rows after filterByCommon', data.length);
         let dataWithHeader = new Table_1.default();
         data.forEach((row, i) => {
             let header = common.getHeaderFromTypes(row, i);

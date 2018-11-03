@@ -24,25 +24,25 @@ const MonthSelect_1 = __importDefault(require("../MonthSelect/MonthSelect"));
 const CollectionController_1 = require("../CollectionController");
 const toastr = __importStar(require("toastr"));
 const Chance = __importStar(require("chance"));
-const Backbone = require("backbone");
 const backbone_localstorage_1 = require("backbone.localstorage");
-const $ = __importStar(require("jquery"));
+const jquery_1 = __importDefault(require("jquery"));
 const _ = __importStar(require("underscore"));
 const filereader_js_1 = require("filereader.js");
 const promise_file_reader_1 = require("promise-file-reader");
+const Backbone = require("backbone");
 const log = require('ololog');
 const chance = new Chance();
 const FileSaver = require('file-saver');
 class Sync extends CollectionController_1.CollectionController {
     constructor(expenses, router, tf) {
         super();
-        this.$el = $('#app');
+        this.$el = jquery_1.default('#app');
         this.localStorage = new backbone_localstorage_1.LocalStorage("Expenses");
         this.model = expenses;
         this.listenTo(this.model, 'change', this.render);
         this.slowUpdateLoadingBar = _.throttle(this.updateLoadingBar, 128);
-        let $SyncPage = $('#SyncPage');
-        $.get($SyncPage.attr('href'), (html) => {
+        let $SyncPage = jquery_1.default('#SyncPage');
+        jquery_1.default.get($SyncPage.attr('href'), (html) => {
             this.template = _.template(html);
             this.render();
         });
@@ -144,7 +144,8 @@ class Sync extends CollectionController_1.CollectionController {
     startLoading() {
         console.log('startLoading');
         this.prevPercent = 0;
-        let template = _.template($('#loadingBarTemplate').html());
+        let templateString = jquery_1.default('#loadingBarTemplate').html();
+        let template = _.template(templateString);
         CollectionController_1.CollectionController.$('.panel-footer').html(template());
     }
     processRow(row, i, length) {
@@ -156,7 +157,7 @@ class Sync extends CollectionController_1.CollectionController {
     updateLoadingBar(i, length) {
         let percent = Math.round(100 * i / length);
         if (percent != this.prevPercent) {
-            $('.progress#loadingBar .progress-bar').width(percent + '%');
+            jquery_1.default('.progress#loadingBar .progress-bar').width(percent + '%');
             this.prevPercent = percent;
         }
     }

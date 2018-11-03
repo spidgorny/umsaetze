@@ -63,7 +63,7 @@ class CurrentMonth {
         return result;
     }
     getMonthNameFor(index) {
-        return this.getShortMonthNameFor(index);
+        return CurrentMonth.getShortMonthNameFor(index);
     }
     static getMonthName() {
         throw new Error('getMonthName called when selectedMonth is a string already');
@@ -79,7 +79,7 @@ class CurrentMonth {
         this.setLatest(latest);
         this._selectedYear = Number_1.clamp(this._selectedYear, this.earliest.getFullYear(), this.latest.getFullYear());
         let selectedMonthIndex = Number_1.clamp(this.getMonthIndex(), this.earliest.getMonth(), this.latest.getMonth());
-        this._selectedMonth = this.getShortMonthNameFor(selectedMonthIndex);
+        this._selectedMonth = this.getMonthNameFor(selectedMonthIndex);
         console.log('MonthSelect range', this.earliest.toString('yyyy-MM-dd'), this.latest.toString('yyyy-MM-dd'));
     }
     getURL() {

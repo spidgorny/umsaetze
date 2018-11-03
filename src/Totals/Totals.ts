@@ -1,6 +1,5 @@
 import Expenses from "../Expenses/Expenses";
 import _ from 'underscore';
-import Transaction from "../Expenses/Transaction";
 import {MonthExpenses} from "../Expenses/MonthExpenses";
 import {CurrentMonth} from "../MonthSelect/CurrentMonth";
 
@@ -31,7 +30,7 @@ export class Totals {
 		const perMonth = this.expenses.groupByMonth();
 		console.timeEnd('groupByMonth');
 		console.log(Object.keys(perMonth));
-		console.log(Object.assign({}, ...Object.entries(perMonth).map(([key, list]) => list.length)));
+		// console.log(Object.assign({}, ...Object.entries(perMonth).map(([key, list]) => list.length)));
 		console.log(_.mapObject(perMonth, (key, list) => list.length));
 
 		const totalPlus = {};

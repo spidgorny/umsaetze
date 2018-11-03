@@ -289,7 +289,7 @@ class Expenses extends Backbone.Collection {
             this.each((transaction) => {
                 let sameMonth = transaction.getDate().between(month, month1);
                 if (sameMonth) {
-                    const key = month.toUTCString();
+                    const key = month.getFullYear() + '-' + (month.getMonth() + 1);
                     if (!(key in perMonth)) {
                         perMonth[key] = [];
                     }

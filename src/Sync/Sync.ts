@@ -1,18 +1,16 @@
 import Expenses from '../Expenses/Expenses';
 import Transaction from '../Expenses/Transaction';
-import {asyncLoop, debug} from '../main';
-import PersistenceOptions = Backbone.PersistenceOptions;
+import {asyncLoop} from '../main';
 import Workspace from '../Workspace';
 import ParseCSV from './ParseCSV';
 import Table from "./Table";
 import MonthSelect from '../MonthSelect/MonthSelect';
 import {CollectionController} from '../CollectionController';
-import { saveAs } from  'file-saver';
+import {saveAs} from 'file-saver';
 import * as toastr from 'toastr';
 import * as Chance from 'chance';
-import Backbone = require('backbone');
 import {LocalStorage} from 'backbone.localstorage';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import * as _ from 'underscore';
 import CategoryCount from "../Category/CategoryCount";
 import {FileReaderJS} from 'filereader.js';
@@ -20,6 +18,9 @@ import CategoryCollection from "../Category/CategoryCollection";
 import {TransactionFactory} from "../Expenses/TransactionFactory";
 import {FetchTransactions} from "./FetchTransactions";
 import {readAsText} from 'promise-file-reader';
+import Backbone = require('backbone');
+import PersistenceOptions = Backbone.PersistenceOptions;
+
 const log = require('ololog');
 
 const chance = new Chance();
@@ -192,7 +193,8 @@ export default class Sync extends CollectionController<Expenses> {
 	startLoading() {
 		console.log('startLoading');
 		this.prevPercent = 0;
-		let template = _.template($('#loadingBarTemplate').html());
+		let templateString = $('#loadingBarTemplate').html();
+		let template = _.template(templateString);
 		CollectionController.$('.panel-footer').html(template());
 	}
 
