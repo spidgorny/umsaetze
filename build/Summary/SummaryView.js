@@ -13,16 +13,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const SummaryLine_1 = __importDefault(require("./SummaryLine"));
 const handlebars_1 = __importDefault(require("handlebars"));
 const _ = __importStar(require("underscore"));
-const $ = __importStar(require("jquery"));
+const jquery_1 = __importDefault(require("jquery"));
 const Controller_1 = __importDefault(require("../Controller"));
 class SummaryView extends Controller_1.default {
     constructor(options, expenses) {
         super(options);
         this.expenses = expenses;
-        this.setElement($('#app'));
-        let importTag = $('#SummaryPage');
+        this.setElement(jquery_1.default('#app'));
+        let importTag = jquery_1.default('#SummaryPage');
         let href = importTag.prop('href');
-        $.get(href).then((result) => {
+        jquery_1.default.get(href).then((result) => {
             this.template = handlebars_1.default.compile(result);
             this.render();
         });

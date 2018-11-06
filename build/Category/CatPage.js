@@ -13,24 +13,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const CategoryCount_1 = __importDefault(require("../Category/CategoryCount"));
 const CollectionController_1 = require("../CollectionController");
 const handlebars_1 = __importDefault(require("handlebars"));
-const Backbone = require("backbone");
-const $ = __importStar(require("jquery"));
+const jquery_1 = __importDefault(require("jquery"));
 const _ = __importStar(require("underscore"));
 const chart_js_1 = require("chart.js");
 const toastr_1 = __importDefault(require("toastr"));
 require("../Util/Object");
+const Backbone = require("backbone");
 class CatPage extends CollectionController_1.CollectionController {
     constructor(expenses, categoryList) {
         super();
-        this.$el = $('#app');
+        this.$el = jquery_1.default('#app');
         console.log('CatPage.constructor');
         this.collection = expenses;
         this.categoryList = categoryList;
-        let importTag = $('#CatPage');
+        let importTag = jquery_1.default('#CatPage');
         if (importTag.length) {
             let href = importTag.prop('href');
             console.log('importTag', importTag, href);
-            $.get(href).then((result) => {
+            jquery_1.default.get(href).then((result) => {
                 this.setTemplate(handlebars_1.default.compile(result));
             });
         }
@@ -77,7 +77,7 @@ class CatPage extends CollectionController_1.CollectionController {
                 categoryOptions: categoryOptions,
             }));
             CollectionController_1.CollectionController.$('#addCategoryForm').on('submit', this.addCategory.bind(this));
-            if ($(document).scrollTop() < 1) {
+            if (jquery_1.default(document).scrollTop() < 1) {
                 CollectionController_1.CollectionController.$('input[name="newName"]').focus();
             }
             this.$el.on('change', 'input[type="color"]', this.selectColor.bind(this));
@@ -93,7 +93,7 @@ class CatPage extends CollectionController_1.CollectionController {
     }
     addCategory(event) {
         event.preventDefault();
-        let $form = $(event.target);
+        let $form = jquery_1.default(event.target);
         let newName = $form.find('input').val();
         let categoryObject = new CategoryCount_1.default({
             catName: newName,
@@ -101,7 +101,7 @@ class CatPage extends CollectionController_1.CollectionController {
         this.categoryList.add(categoryObject);
     }
     selectColor(event) {
-        let $input = $(event.target);
+        let $input = jquery_1.default(event.target);
         let id = $input.closest('tr').attr('data-id');
         console.log('id', id);
         let category = this.categoryList.get(id);
@@ -112,14 +112,14 @@ class CatPage extends CollectionController_1.CollectionController {
     }
     deleteCategory(event) {
         let button = event.target;
-        let tr = $(button).closest('tr');
+        let tr = jquery_1.default(button).closest('tr');
         let id = tr.attr('data-id');
         this.categoryList.remove(id);
     }
     renderSparkLines() {
-        let $sparkline = $('.sparkline');
+        let $sparkline = jquery_1.default('.sparkline');
         $sparkline.each((index, self) => {
-            const $self = $(self);
+            const $self = jquery_1.default(self);
             const canvas = $self.get(0);
             let ctx = canvas.getContext("2d");
             let chartData = JSON.parse($self.attr('data-chart_values'));
@@ -179,14 +179,14 @@ class CatPage extends CollectionController_1.CollectionController {
             console.log(labels, aChartElement);
             let yearMonth = labels[first._index];
             let [year, month] = yearMonth.split('-');
-            let categoryID = $(event.target).closest('tr').attr('data-id');
+            let categoryID = jquery_1.default(event.target).closest('tr').attr('data-id');
             let category = catPage.categoryList.get(categoryID);
             console.log(yearMonth, year, month, category);
             Backbone.history.navigate('#/' + year + '/' + month + '/' + category.get('catName'));
         }
         else {
             console.log(this, event, event.target);
-            let $canvas = $(event.target);
+            let $canvas = jquery_1.default(event.target);
             if ($canvas.height() == 100) {
                 $canvas.height(300);
             }

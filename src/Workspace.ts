@@ -1,23 +1,22 @@
 import AppView from './Expenses/AppView';
 import Sync from './Sync/Sync';
 import Expenses from './Expenses/Expenses';
-import { CatPage } from './Category/CatPage';
-import { KeywordsView } from './Keyword/KeywordsView';
+import {CatPage} from './Category/CatPage';
+import {KeywordsView} from './Keyword/KeywordsView';
 import CategoryCollection from './Category/CategoryCollection';
-import RouterOptions = Backbone.RouterOptions;
 import KeywordCollection from './Keyword/KeywordCollection';
 import SummaryView from './Summary/SummaryView';
 import HistoryView from './History/HistoryView';
-import Backbone = require('backbone');
 import Controller from './Controller';
-import { CollectionController } from './CollectionController';
-import * as $ from 'jquery';
-import CategoryCollectionModel from "./Category/CategoryCollectionModel";
+import {CollectionController} from './CollectionController';
+import $ from 'jquery';
 import MonthSelect from "./MonthSelect/MonthSelect";
 import {TransactionFactory} from "./Expenses/TransactionFactory";
 import {LocalStorage} from 'backbone.localstorage';
 import * as _ from 'underscore';
 import {Totals} from "./Totals/Totals";
+import Backbone = require('backbone');
+import RouterOptions = Backbone.RouterOptions;
 
 const log = require('ololog');
 

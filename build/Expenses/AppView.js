@@ -14,7 +14,7 @@ const ExpenseTable_1 = __importDefault(require("./ExpenseTable"));
 const CategoryView_1 = __importDefault(require("./CategoryView"));
 const main_1 = require("../main");
 const CollectionController_1 = require("../CollectionController");
-const $ = __importStar(require("jquery"));
+const jquery_1 = __importDefault(require("jquery"));
 const _ = __importStar(require("underscore"));
 const CategoryCollectionModel_1 = __importDefault(require("../Category/CategoryCollectionModel"));
 const MonthExpenses_1 = require("./MonthExpenses");
@@ -23,7 +23,7 @@ class AppView extends CollectionController_1.CollectionController {
         super();
         this.q = '';
         this.collection = options.viewCollection;
-        this.setElement($('#app'));
+        this.setElement(jquery_1.default('#app'));
         this.setTemplate();
         this.categoryList = categoryList;
         this.keywords = keywords;
@@ -31,7 +31,7 @@ class AppView extends CollectionController_1.CollectionController {
         let monthExpenses = new MonthExpenses_1.MonthExpenses(this.collection, this.ms.currentMonth);
         this.table = new ExpenseTable_1.default({
             model: monthExpenses,
-            el: $('#expenseTable')
+            el: jquery_1.default('#expenseTable')
         }, this.keywords, this.categoryList);
         const categoryModel = new CategoryCollectionModel_1.default(this.categoryList);
         this.categoryView = new CategoryView_1.default({
@@ -41,7 +41,7 @@ class AppView extends CollectionController_1.CollectionController {
         this.listenTo(this.table, 'Category:change', this.categoryChanged.bind(this));
         this.collection.filterByMonth(this.ms.getSelected());
         this.listenTo(this.collection, 'change', this.render);
-        $('.custom-search-form input').on('keyup', _.debounce(this.onSearch.bind(this), 300));
+        jquery_1.default('.custom-search-form input').on('keyup', _.debounce(this.onSearch.bind(this), 300));
         this.on('all', () => {
             main_1.debug('AppView');
         });
@@ -59,10 +59,10 @@ class AppView extends CollectionController_1.CollectionController {
     }
     setTemplate() {
         if (!CollectionController_1.CollectionController.$('#expenseTable').length) {
-            let template = _.template($('#AppView').html());
+            let template = _.template(jquery_1.default('#AppView').html());
             this.$el.html(template());
             if (this.table) {
-                this.table.$el = $('#expenseTable');
+                this.table.$el = jquery_1.default('#expenseTable');
             }
         }
     }
@@ -80,7 +80,7 @@ class AppView extends CollectionController_1.CollectionController {
         console.timeEnd('AppView.categoryChanged');
     }
     onSearch(event) {
-        this.q = $(event.target).val().toString();
+        this.q = jquery_1.default(event.target).val().toString();
         console.log('Searching: ', this.q);
         this.monthChange();
     }

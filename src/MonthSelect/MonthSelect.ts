@@ -2,7 +2,7 @@ import Backbone = require('backbone');
 import Expenses from '../Expenses/Expenses';
 import {LocalStorage} from 'backbone.localstorage';
 import ExpensesMock from '../Expenses/ExpensesMock';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import {CurrentMonth} from "./CurrentMonth";
 
 export default class MonthSelect extends Backbone.View<any> {

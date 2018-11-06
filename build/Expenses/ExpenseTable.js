@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -6,27 +9,24 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const main_1 = require("../main");
-const $ = __importStar(require("jquery"));
+const jquery_1 = __importDefault(require("jquery"));
 const _ = __importStar(require("underscore"));
-const Backbone = require("backbone");
 const CategoryCount_1 = __importDefault(require("../Category/CategoryCount"));
 const CategoryPopup_1 = require("./CategoryPopup");
+const Backbone = require("backbone");
 class ExpenseTable extends Backbone.View {
     constructor(options, keywords, categoryList) {
         super(options);
-        this.template = _.template($('#rowTemplate').html());
+        this.template = _.template(jquery_1.default('#rowTemplate').html());
         this.CODE_FOR_NEW = '-new-';
         this.keywords = keywords;
         console.log('ExpenseTable.keywords', this.keywords);
-        let $expenseTable = $('#expenseTable');
+        let $expenseTable = jquery_1.default('#expenseTable');
         if (!$expenseTable.length) {
-            const template = _.template($('#AppView').html());
-            $('#app').html(template());
+            const template = _.template(jquery_1.default('#AppView').html());
+            jquery_1.default('#app').html(template());
         }
         this.setElement($expenseTable);
         this.on("all", () => {
@@ -50,9 +50,9 @@ class ExpenseTable extends Backbone.View {
         });
         console.log('rendering', rows.length, 'rows');
         this.$el.html(rows.join('\n'));
-        $('#dateFrom').html(this.model.getDateFrom().toString('yyyy-MM-dd'));
-        $('#dateTill').html(this.model.getDateTill().toString('yyyy-MM-dd'));
-        $('#numRows').html(this.model.getVisibleCount().toString() + '/' +
+        jquery_1.default('#dateFrom').html(this.model.getDateFrom().toString('yyyy-MM-dd'));
+        jquery_1.default('#dateTill').html(this.model.getDateTill().toString('yyyy-MM-dd'));
+        jquery_1.default('#numRows').html(this.model.getVisibleCount().toString() + '/' +
             this.model.expenses.size());
         this.$el
             .off('change')
@@ -85,15 +85,15 @@ class ExpenseTable extends Backbone.View {
         return table;
     }
     openSelect(event) {
-        let $select = $(event.target);
+        let $select = jquery_1.default(event.target);
         {
             let defVal = $select.find('option').html();
             $select.find('option').remove();
             let options = this.categoryList.getOptions();
-            $.each(options, (key, value) => {
+            jquery_1.default.each(options, (key, value) => {
                 if (value != defVal) {
                     $select
-                        .append($("<option></option>")
+                        .append(jquery_1.default("<option></option>")
                         .attr("value", value)
                         .text(value));
                 }
@@ -105,7 +105,7 @@ class ExpenseTable extends Backbone.View {
         let sOptions = [];
         let options = this.categoryList.getOptions();
         let wasSelected = false;
-        $.each(options, (key, value) => {
+        jquery_1.default.each(options, (key, value) => {
             if (_.isObject(value)) {
                 value = value.name;
             }
@@ -126,7 +126,7 @@ class ExpenseTable extends Backbone.View {
     }
     setCategory(event) {
         console.log('setCategory');
-        let $select = $(event.target);
+        let $select = jquery_1.default(event.target);
         let id = $select.closest('tr').attr('data-id');
         let transaction = this.model.get(id);
         if (transaction) {
@@ -147,7 +147,7 @@ class ExpenseTable extends Backbone.View {
         }
     }
     deleteRow(event) {
-        let button = $(event.target);
+        let button = jquery_1.default(event.target);
         let dataID = button.closest('tr').attr('data-id');
         console.log('deleteRow', dataID);
         this.model.remove(dataID);
@@ -156,7 +156,7 @@ class ExpenseTable extends Backbone.View {
         this.render();
     }
     onCheck(event) {
-        let checkbox = $(event.target);
+        let checkbox = jquery_1.default(event.target);
         let id = checkbox.closest('tr').attr('data-id');
         let transaction = this.model.get(id);
         if (transaction) {

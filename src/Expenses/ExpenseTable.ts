@@ -1,16 +1,14 @@
 ///<reference path="../../node_modules/@types/backbone/index.d.ts" />
-import Expenses from "./Expenses";
 import Transaction from "./Transaction";
 import CategoryCollection from "../Category/CategoryCollection";
 import KeywordCollection from "../Keyword/KeywordCollection";
-import Keyword from "../Keyword/Keyword";
 import {debug} from "../main";
-import * as $ from 'jquery';
+import $ from 'jquery';
 import * as _ from 'underscore';
-import Backbone = require('backbone');
 import CategoryCount from "../Category/CategoryCount";
 import {CategoryPopup} from "./CategoryPopup";
 import {MonthExpenses} from "./MonthExpenses";
+import Backbone = require('backbone');
 
 // elapse.configure({
 // 	debug: true

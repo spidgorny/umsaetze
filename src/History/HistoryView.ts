@@ -1,16 +1,12 @@
-import MyView from "./MyView";
 import Expenses from "../Expenses/Expenses";
 import MonthSelect from "../MonthSelect/MonthSelect";
 import Transaction from "../Expenses/Transaction";
 import {default as SLTable} from "../Util/SLTable";
-import Handlebars from 'handlebars';
-// import Backbone from 'backbone-es6/src/Backbone.js';
-import Backbone = require('backbone');
 import * as _ from 'underscore';
 import {Chart} from 'chart.js';
 // import datejs from 'datejs';
 // import {Array as ArrayWithAverage} from '../Util/Array';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import ArrayPlus from "../Util/ArrayPlus";
 import {CollectionController} from "../CollectionController";
 

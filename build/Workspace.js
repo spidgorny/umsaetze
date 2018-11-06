@@ -27,13 +27,13 @@ const CategoryCollection_1 = __importDefault(require("./Category/CategoryCollect
 const KeywordCollection_1 = __importDefault(require("./Keyword/KeywordCollection"));
 const SummaryView_1 = __importDefault(require("./Summary/SummaryView"));
 const HistoryView_1 = __importDefault(require("./History/HistoryView"));
-const Backbone = require("backbone");
-const $ = __importStar(require("jquery"));
+const jquery_1 = __importDefault(require("jquery"));
 const MonthSelect_1 = __importDefault(require("./MonthSelect/MonthSelect"));
 const TransactionFactory_1 = require("./Expenses/TransactionFactory");
 const backbone_localstorage_1 = require("backbone.localstorage");
 const _ = __importStar(require("underscore"));
 const Totals_1 = require("./Totals/Totals");
+const Backbone = require("backbone");
 const log = require('ololog');
 class Workspace extends Backbone.Router {
     constructor(options) {
@@ -83,10 +83,10 @@ class Workspace extends Backbone.Router {
     }
     activateMenu2() {
         let url = '#' + window.location.hash;
-        let element = $('ul.nav#side-menu a')
+        let element = jquery_1.default('ul.nav#side-menu a')
             .removeClass('active')
             .filter(function () {
-            let href = $(this).attr('href');
+            let href = jquery_1.default(this).attr('href');
             return href === url;
         })
             .addClass('active');
@@ -124,7 +124,7 @@ class Workspace extends Backbone.Router {
             this.appPage.hide();
         }
         else {
-            $('#MonthSelect').hide();
+            jquery_1.default('#MonthSelect').hide();
         }
         if (!this.syncPage) {
             this.syncPage = new Sync_1.default(this.model, this, this.tf);
@@ -179,8 +179,8 @@ class Workspace extends Backbone.Router {
                 collection: this.categoryList,
             }, this.model);
         }
-        $('#pieChart').hide();
-        $('#categories').hide();
+        jquery_1.default('#pieChart').hide();
+        jquery_1.default('#categories').hide();
         this.summaryPage.show();
         this.currentPage = this.summaryPage;
     }
@@ -193,8 +193,8 @@ class Workspace extends Backbone.Router {
                 collection: this.model
             });
         }
-        $('#pieChart').hide();
-        $('#categories').hide();
+        jquery_1.default('#pieChart').hide();
+        jquery_1.default('#categories').hide();
         this.historyPage.show();
         this.currentPage = this.historyPage;
     }

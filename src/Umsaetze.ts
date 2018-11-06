@@ -1,6 +1,6 @@
 import Workspace from './Workspace';
+import $ from "jquery";
 import Backbone = require('backbone');
-import * as $ from "jquery";
 // import {Tour} from 'bootstrap-tour';
 
 // console.log(Workspace);

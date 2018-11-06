@@ -4,12 +4,12 @@ import CategoryCollection from '../Category/CategoryCollection';
 import CategoryCount from '../Category/CategoryCount';
 import {CollectionController} from '../CollectionController';
 import Handlebars from 'handlebars';
-import Backbone = require('backbone');
-import * as $ from 'jquery';
+import $ from 'jquery';
 import * as _ from 'underscore';
 import {Chart} from 'chart.js';
 import toastr from 'toastr';
 import '../Util/Object';
+import Backbone = require('backbone');
 
 export class CatPage extends CollectionController<Expenses> {
 

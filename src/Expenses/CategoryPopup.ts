@@ -1,9 +1,8 @@
 import Keyword from "../Keyword/Keyword";
-import * as $ from "jquery";
+import $ from "jquery";
 import handlebars from 'handlebars';
 import CategoryCollection from "../Category/CategoryCollection";
 import KeywordCollection from "../Keyword/KeywordCollection";
-import Expenses from "./Expenses";
 import {MonthExpenses} from "./MonthExpenses";
 
 /**

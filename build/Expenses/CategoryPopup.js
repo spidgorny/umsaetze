@@ -2,16 +2,9 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const Keyword_1 = __importDefault(require("../Keyword/Keyword"));
-const $ = __importStar(require("jquery"));
+const jquery_1 = __importDefault(require("jquery"));
 const handlebars_1 = __importDefault(require("handlebars"));
 class CategoryPopup {
     constructor($el, expenses, categoryList, keywords) {
@@ -32,12 +25,12 @@ class CategoryPopup {
         if (text) {
             let $contextMenu = this.$el.find('#contextMenu');
             if (!$contextMenu.length) {
-                let template = handlebars_1.default.compile($('#categoryMenu').html());
+                let template = handlebars_1.default.compile(jquery_1.default('#categoryMenu').html());
                 let menuHTML = template({
                     catlist: this.categoryList.getOptions(),
                 });
-                $('body').append(menuHTML);
-                $contextMenu = $('#contextMenu');
+                jquery_1.default('body').append(menuHTML);
+                $contextMenu = jquery_1.default('#contextMenu');
                 console.log($contextMenu, event.clientX, event.clientY);
             }
             this.openMenu($contextMenu, event.clientX, event.clientY, this.applyFilter.bind(this, text));
@@ -53,7 +46,7 @@ class CategoryPopup {
         return '';
     }
     openMenu(menuSelector, clientX, clientY, callback) {
-        let $menu = $(menuSelector)
+        let $menu = jquery_1.default(menuSelector)
             .show()
             .css({
             position: "absolute",
@@ -62,22 +55,22 @@ class CategoryPopup {
         })
             .off('click')
             .on('click', 'a', function (e) {
-            let $selectedMenu = $(e.target);
+            let $selectedMenu = jquery_1.default(e.target);
             if ($selectedMenu.length) {
                 $menu.hide();
                 callback.call(this, $selectedMenu);
             }
         });
         setTimeout(function () {
-            $('body').click(function () {
-                $(menuSelector).hide();
-                $('body').off('click');
+            jquery_1.default('body').click(function () {
+                jquery_1.default(menuSelector).hide();
+                jquery_1.default('body').off('click');
             });
         }, 0);
     }
     static getMenuPosition(mouse, direction, scrollDir, menuSelector) {
-        let $win = $(window);
-        let win = $win[direction](), scroll = $win[scrollDir](), menu = $(menuSelector)[direction](), position = mouse + scroll;
+        let $win = jquery_1.default(window);
+        let win = $win[direction](), scroll = $win[scrollDir](), menu = jquery_1.default(menuSelector)[direction](), position = mouse + scroll;
         if (mouse + menu > win && menu < mouse)
             position -= menu;
         return position;

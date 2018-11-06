@@ -23,7 +23,7 @@ const ParseCSV_1 = __importDefault(require("./ParseCSV"));
 const MonthSelect_1 = __importDefault(require("../MonthSelect/MonthSelect"));
 const CollectionController_1 = require("../CollectionController");
 const toastr = __importStar(require("toastr"));
-const Chance = __importStar(require("chance"));
+const chance_1 = __importDefault(require("chance"));
 const backbone_localstorage_1 = require("backbone.localstorage");
 const jquery_1 = __importDefault(require("jquery"));
 const _ = __importStar(require("underscore"));
@@ -31,7 +31,7 @@ const filereader_js_1 = require("filereader.js");
 const promise_file_reader_1 = require("promise-file-reader");
 const Backbone = require("backbone");
 const log = require('ololog');
-const chance = new Chance();
+const chance = new chance_1.default();
 const FileSaver = require('file-saver');
 class Sync extends CollectionController_1.CollectionController {
     constructor(expenses, router, tf) {

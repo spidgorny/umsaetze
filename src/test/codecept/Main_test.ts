@@ -1,5 +1,5 @@
 /// <reference path="./steps.d.ts" />
-import * as expect from 'expect';
+import expect from 'expect';
 
 // const log = require('ololog');
 const log = console.log;

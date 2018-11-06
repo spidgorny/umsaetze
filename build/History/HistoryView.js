@@ -14,14 +14,14 @@ const MonthSelect_1 = __importDefault(require("../MonthSelect/MonthSelect"));
 const SLTable_1 = __importDefault(require("../Util/SLTable"));
 const _ = __importStar(require("underscore"));
 const chart_js_1 = require("chart.js");
-const $ = __importStar(require("jquery"));
+const jquery_1 = __importDefault(require("jquery"));
 const ArrayPlus_1 = __importDefault(require("../Util/ArrayPlus"));
 const CollectionController_1 = require("../CollectionController");
 class HistoryView extends CollectionController_1.CollectionController {
     constructor(options) {
         super(options);
         this.collection = options.collection;
-        this.setElement($('#app'));
+        this.setElement(jquery_1.default('#app'));
         this.ms = MonthSelect_1.default.getInstance();
         this.ms.update(this.collection);
         this.listenTo(this.ms, 'MonthSelect:change', this.monthChange.bind(this));
@@ -77,9 +77,9 @@ class HistoryView extends CollectionController_1.CollectionController {
         this.render();
     }
     renderSparkLines(labels, data, data2) {
-        let $sparkLine = $('.sparkline');
+        let $sparkLine = jquery_1.default('.sparkline');
         $sparkLine.each((index, self) => {
-            let $self = $(self);
+            let $self = jquery_1.default(self);
             let ctx = $self.get(0).getContext("2d");
             let datasets = {};
             datasets['strokeColor'] = $self.attr('data-chart_StrokeColor');
@@ -131,9 +131,9 @@ class HistoryView extends CollectionController_1.CollectionController {
         let index = any._index;
         let model = this.collection.getSorted()[index];
         let id = model.get('id');
-        const offset = $("*:contains('" + id + "'):last").offset();
+        const offset = jquery_1.default("*:contains('" + id + "'):last").offset();
         if (offset) {
-            $(window).scrollTop(offset.top);
+            jquery_1.default(window).scrollTop(offset.top);
         }
         else {
             console.error('offset of ', id, 'not found');

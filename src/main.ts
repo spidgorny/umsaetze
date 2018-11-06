@@ -1,5 +1,6 @@
-import * as $ from "jquery";
+import $ from "jquery";
 import {Umsaetze} from './Umsaetze';
+
 const Backbone = require('backbone');
 
 //console.log('Umsaetze', Umsaetze);

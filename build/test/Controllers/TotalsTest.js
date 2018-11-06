@@ -19,6 +19,13 @@ class TotalsTest extends TestFramework_1.default {
         console.log('Saving...');
         ex.saveJSON(__dirname + '/../../../src/test/data/2017-2018.json');
     }
+    loadFromCSVandSave2() {
+        const ex = new ExpensesMock_1.default();
+        console.log('Loading csv...');
+        ex.loadCSV(__dirname + '/../../../src/test/data/umsaetze-1090729-2018-11-06-13-43-57.csv');
+        console.log('Saving...');
+        ex.saveJSON(__dirname + '/../../../src/test/data/2017-2018.json');
+    }
     testRender() {
         const ex = new ExpensesMock_1.default();
         ex.load(__dirname + '/../../../src/test/data/2017-2018.json');

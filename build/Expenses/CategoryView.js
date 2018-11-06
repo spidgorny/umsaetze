@@ -6,21 +6,24 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const Backbone = require("backbone");
 const _ = __importStar(require("underscore"));
-const $ = __importStar(require("jquery"));
+const jquery_1 = __importDefault(require("jquery"));
 const chart_js_1 = require("chart.js");
 const main_1 = require("../main");
+const Backbone = require("backbone");
 class CategoryView extends Backbone.View {
     constructor(options, currentMonth, expenses) {
         super(options);
-        this.template = _.template($('#categoryTemplate').html());
+        this.template = _.template(jquery_1.default('#categoryTemplate').html());
         this.INCOME_CATEGORY = 'Income';
         this.categories = this.model.getCollection();
         this.categories.on('change', this.render.bind(this));
         this.currentMonth = currentMonth;
-        this.setElement($('#categories'));
+        this.setElement(jquery_1.default('#categories'));
         this.on("all", () => {
             main_1.debug("CategoryView");
         });
@@ -137,7 +140,7 @@ class CategoryView extends Backbone.View {
     }
     filterByCategory(event) {
         event.preventDefault();
-        let link = $(event.target);
+        let link = jquery_1.default(event.target);
         let id = link.attr('data-id');
         console.log('filterByCategory', id);
         let cat = this.model.get(id);
@@ -154,11 +157,11 @@ class CategoryView extends Backbone.View {
     }
     hide() {
         this.$el.hide();
-        $('#pieChart').hide();
+        jquery_1.default('#pieChart').hide();
     }
     show() {
         this.$el.show();
-        $('#pieChart').show();
+        jquery_1.default('#pieChart').show();
     }
 }
 exports.default = CategoryView;

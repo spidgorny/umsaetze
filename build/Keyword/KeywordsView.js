@@ -7,6 +7,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -14,11 +17,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const $ = __importStar(require("jquery"));
+const jquery_1 = __importDefault(require("jquery"));
 const _ = __importStar(require("underscore"));
 const RecursiveArrayOfStrings_1 = __importDefault(require("../Util/RecursiveArrayOfStrings"));
 const Keyword_1 = __importDefault(require("./Keyword"));
@@ -30,7 +30,7 @@ const promise_file_reader_1 = require("promise-file-reader");
 class KeywordsView extends CollectionController_1.CollectionController {
     constructor(keywords, categories) {
         super();
-        this.$el = $('#app');
+        this.$el = jquery_1.default('#app');
         this.keywords = keywords;
         this.categories = categories;
     }
@@ -45,7 +45,7 @@ class KeywordsView extends CollectionController_1.CollectionController {
         }
         else {
             this.$el.html('Loading template...');
-            let $link = $('#KeywordsTemplate');
+            let $link = jquery_1.default('#KeywordsTemplate');
             $link.load($link.attr('href'), (html) => {
                 this.template = _.template(html);
                 this.renderTemplate();
@@ -101,7 +101,7 @@ class KeywordsView extends CollectionController_1.CollectionController {
         this.render();
     }
     deleteRow(event) {
-        let button = $(event.target);
+        let button = jquery_1.default(event.target);
         let dataID = button.closest('tr').attr('data-id');
         this.keywords.remove(dataID, 'word');
         this.keywords.save();

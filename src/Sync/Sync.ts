@@ -8,7 +8,7 @@ import MonthSelect from '../MonthSelect/MonthSelect';
 import {CollectionController} from '../CollectionController';
 import {saveAs} from 'file-saver';
 import * as toastr from 'toastr';
-import * as Chance from 'chance';
+import Chance from 'chance';
 import {LocalStorage} from 'backbone.localstorage';
 import $ from 'jquery';
 import * as _ from 'underscore';

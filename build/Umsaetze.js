@@ -10,17 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const Workspace_1 = __importDefault(require("./Workspace"));
+const jquery_1 = __importDefault(require("jquery"));
 const Backbone = require("backbone");
-const $ = __importStar(require("jquery"));
 class Umsaetze {
     constructor() {
         this.router = new Workspace_1.default();
@@ -39,8 +32,8 @@ class Umsaetze {
         });
     }
     inlineEdit() {
-        $(document).on('click', '.inlineEdit span', (event) => {
-            let span = $(event.target);
+        jquery_1.default(document).on('click', '.inlineEdit span', (event) => {
+            let span = jquery_1.default(event.target);
             let container = span.parent();
             let input = container.find('input').show();
             span.hide();
@@ -48,7 +41,7 @@ class Umsaetze {
             input.keyup((event) => {
                 console.log(event.key);
                 if (event.keyCode === 13) {
-                    $(event.target).blur();
+                    jquery_1.default(event.target).blur();
                 }
             });
             input.blur((event) => {

@@ -1,14 +1,14 @@
 import CategoryCollection from "../Category/CategoryCollection";
 import CategoryCount from "../Category/CategoryCount";
 import Expenses from "./Expenses";
-// import elapse from 'elapse';
-import Backbone = require('backbone');
 import * as _ from 'underscore';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import {Chart} from 'chart.js';
 import {debug} from '../main';
 import CategoryCollectionModel from "../Category/CategoryCollectionModel";
 import {CurrentMonth} from "../MonthSelect/CurrentMonth";
+// import elapse from 'elapse';
+import Backbone = require('backbone');
 
 /**
  * Sidebar category pie-chart and list

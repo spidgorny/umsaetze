@@ -1,19 +1,15 @@
 "use strict";
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Backbone = require("backbone");
-const $ = __importStar(require("jquery"));
+const jquery_1 = __importDefault(require("jquery"));
 const CurrentMonth_1 = require("./CurrentMonth");
 class MonthSelect extends Backbone.View {
     constructor(storageProvider) {
         super();
-        this.$el = $('#MonthSelect');
+        this.$el = jquery_1.default('#MonthSelect');
         this.yearSelect = this.$('select');
         this.monthOptions = this.$('button');
         this.currentMonth = new CurrentMonth_1.CurrentMonth(parseInt(this.yearSelect.val() + '') || CurrentMonth_1.CurrentMonth.DEFAULT_YEAR);
@@ -58,7 +54,7 @@ class MonthSelect extends Backbone.View {
             let monthNumber = i + 1;
             let sDate = this.currentMonth.selectedYear + '-' + monthNumber + '-01';
             let firstOfMonth = new Date(sDate);
-            let $button = $(button);
+            let $button = jquery_1.default(button);
             let isAfter = firstOfMonth.isAfter(this.currentMonth.earliest);
             let isBefore = firstOfMonth.isBefore(this.currentMonth.latest);
             let isTheSame = firstOfMonth.equals(this.currentMonth.earliest);
@@ -91,7 +87,7 @@ class MonthSelect extends Backbone.View {
     }
     clickOnMonthAndNavigate(event) {
         this.monthOptions.removeClass('btn-success').addClass('btn-default');
-        let $button = $(event.target);
+        let $button = jquery_1.default(event.target);
         $button.removeClass('btn-default');
         $button.addClass('btn-success');
         let monthIndex = this.currentMonth.getMonthIndexFor($button.text());
@@ -100,7 +96,7 @@ class MonthSelect extends Backbone.View {
     clickOnMonth(event) {
         event.preventDefault();
         this.monthOptions.removeClass('btn-success').addClass('btn-default');
-        let $button = $(event.target);
+        let $button = jquery_1.default(event.target);
         $button.removeClass('btn-default');
         $button.addClass('btn-success');
         this.currentMonth.selectedMonth = $button.text();

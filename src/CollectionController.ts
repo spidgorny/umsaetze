@@ -4,7 +4,7 @@
 // import Backbone = require('backbone');
 import {Events} from "backbone";
 
-import * as JQuery from 'jquery';
+import JQuery from 'jquery';
 import Expenses from "./Expenses/Expenses";
 import CollectionArray from "./Util/CollectionArray";
 import {CustomEvents} from './Util/CustomEvents';
