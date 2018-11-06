@@ -8,9 +8,13 @@ const react_dom_1 = __importDefault(require("react-dom"));
 const react_table_1 = __importDefault(require("react-table"));
 const Totals_1 = require("./Totals");
 require("react-table/react-table.css");
+const Transaction_1 = __importDefault(require("../Expenses/Transaction"));
 class TotalPage extends react_1.default.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            details: null
+        };
         this.expenses = props.expenses;
         this.totals = new Totals_1.Totals(this.expenses);
     }
@@ -62,12 +66,50 @@ class TotalPage extends react_1.default.Component {
                 accessor: 'Cumulative'
             },
         ];
+        const detailColumns = [
+            {
+                Header: 'Amount',
+                id: 'amount',
+                accessor: (tr) => tr.getAmount(),
+            },
+            {
+                Header: 'Date',
+                id: 'date',
+                accessor: (tr) => tr.getDate().toString(),
+            },
+            {
+                Header: 'Note',
+                id: 'note',
+                accessor: (tr) => tr.get('note'),
+            },
+        ];
         return [
             react_1.default.createElement(react_table_1.default, { data: table, columns: columns, showPagination: false, getTdProps: this.clickOnMoney.bind(this) }),
             this.state.details
-                ? react_1.default.createElement(react_table_1.default, { data: this.state.details })
+                ? react_1.default.createElement(react_table_1.default, { data: this.state.details, columns: detailColumns, getTrProps: this.getTrProps.bind(this) })
                 : null
         ];
+    }
+    getTrProps(state, rowInfo, column) {
+        let bg = '';
+        if (rowInfo && 'original' in rowInfo) {
+            const tr = rowInfo.original;
+            if (tr instanceof Transaction_1.default) {
+                if (tr.getAmount() > 500) {
+                    if (tr.contains('Nintendo')) {
+                        bg = "green";
+                    }
+                }
+                if (tr.getAmount() < -500) {
+                    bg = "red";
+                }
+            }
+        }
+        return {
+            style: {
+                background: bg
+            }
+        };
     }
     clickOnMoney(state, rowInfo, column, instance) {
         return {
@@ -86,6 +128,26 @@ class TotalPage extends react_1.default.Component {
         };
     }
     loadDetails(colName, monthName, value) {
+        let oneMonth = this.expenses.whereMonth(new Date(monthName));
+        console.log(oneMonth.length);
+        if (colName == 'Income') {
+            oneMonth = oneMonth.filter((tr) => {
+                return tr.getAmount() > 0;
+            });
+        }
+        else if (colName == 'Expenses') {
+            oneMonth = oneMonth.filter((tr) => {
+                return tr.getAmount() < 0;
+            });
+        }
+        else {
+            oneMonth = [];
+        }
+        this.setState((state, props) => {
+            return Object.assign({}, state, {
+                details: oneMonth,
+            });
+        });
     }
 }
 exports.TotalPage = TotalPage;

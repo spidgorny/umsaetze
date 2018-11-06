@@ -85,7 +85,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	 * @param options
 	 */
 	async asyncFetch(options: CollectionFetchOptions = {}) {
-		console.time('Expenses.fetch');
+		console.time('Expenses.asyncFetch');
 		let models = this.localStorage.findAll();
 		console.log('models from LS', models.length);
 		$('#app').html(`<div class="progress" id="progress">
@@ -99,13 +99,14 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 				promList.push(
 					this.addElementUpdateProgress(el, models.length));
 			}
+			console.log('await Promise.all...');
 			await Promise.all(promList);
 			//this.unserializeDate();
 			console.log('added objects', this.size());
 			// this.trigger('change');
 		}
 		console.log('read', this.length);
-		console.timeEnd('Expenses.fetch');
+		console.timeEnd('Expenses.asyncFetch');
 	}
 
 	sleep (fn, par?: any) {
@@ -237,8 +238,8 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	 * @param selectedMonth
 	 */
 	filterByMonth(selectedMonth: Date) {
-		console.time('Expenses.filterByMonth');
-		console.log('filterByMonth', selectedMonth.toString('yyyy-MM-dd'));
+		// console.time('Expenses.filterByMonth');
+		// console.log('filterByMonth', selectedMonth.toString('yyyy-MM-dd'));
 		if (selectedMonth) {
 			let inThisMonth = this.whereMonth(selectedMonth);
 			let allOthers = _.difference(this.models, inThisMonth);
@@ -247,7 +248,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 			});
 			// this.saveAll();
 		}
-		console.timeEnd('Expenses.filterByMonth');
+		// console.timeEnd('Expenses.filterByMonth');
 	}
 
 	whereMonth(selectedMonth: Date) {

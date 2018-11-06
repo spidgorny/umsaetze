@@ -55,7 +55,7 @@ class Expenses extends Backbone.Collection {
     }
     asyncFetch(options = {}) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.time('Expenses.fetch');
+            console.time('Expenses.asyncFetch');
             let models = this.localStorage.findAll();
             console.log('models from LS', models.length);
             jquery_1.default('#app').html(`<div class="progress" id="progress">
@@ -68,11 +68,12 @@ class Expenses extends Backbone.Collection {
                 for (let el of models) {
                     promList.push(this.addElementUpdateProgress(el, models.length));
                 }
+                console.log('await Promise.all...');
                 yield Promise.all(promList);
                 console.log('added objects', this.size());
             }
             console.log('read', this.length);
-            console.timeEnd('Expenses.fetch');
+            console.timeEnd('Expenses.asyncFetch');
         });
     }
     sleep(fn, par) {
@@ -171,8 +172,6 @@ class Expenses extends Backbone.Collection {
         console.timeEnd('Expenses.filterVisible');
     }
     filterByMonth(selectedMonth) {
-        console.time('Expenses.filterByMonth');
-        console.log('filterByMonth', selectedMonth.toString('yyyy-MM-dd'));
         if (selectedMonth) {
             let inThisMonth = this.whereMonth(selectedMonth);
             let allOthers = underscore_1.default.difference(this.models, inThisMonth);
@@ -180,7 +179,6 @@ class Expenses extends Backbone.Collection {
                 row.set('visible', false, { silent: true });
             });
         }
-        console.timeEnd('Expenses.filterByMonth');
     }
     whereMonth(selectedMonth) {
         let filtered = [];
