@@ -8,15 +8,21 @@ const react_dom_1 = __importDefault(require("react-dom"));
 const react_table_1 = __importDefault(require("react-table"));
 const Totals_1 = require("./Totals");
 require("react-table/react-table.css");
-const Transaction_1 = __importDefault(require("../Expenses/Transaction"));
+const DetailTable_1 = require("./DetailTable");
+require('datejs');
 class TotalPage extends react_1.default.Component {
     constructor(props) {
         super(props);
         this.state = {
-            details: null
+            colName: null,
+            monthName: null,
         };
         this.expenses = props.expenses;
         this.totals = new Totals_1.Totals(this.expenses);
+        const { totalPlus, totalMinus } = this.totals.calculate();
+        this.totalPlus = totalPlus;
+        this.totalMinus = totalMinus;
+        this.table = this.prepareTable();
     }
     show() {
         console.log('TotalPage show');
@@ -27,13 +33,12 @@ class TotalPage extends react_1.default.Component {
         const domContainer = document.querySelector('#app');
         react_dom_1.default.unmountComponentAtNode(domContainer);
     }
-    render() {
-        const { totalPlus, totalMinus } = this.totals.calculate();
+    prepareTable() {
         const table = [];
         let runningTotal = 0;
-        Object.keys(totalPlus).map((month) => {
-            const plus = totalPlus[month];
-            const minus = totalMinus[month];
+        Object.keys(this.totalPlus).map((month) => {
+            const plus = this.totalPlus[month];
+            const minus = this.totalMinus[month];
             const row = {};
             row['Month'] = month;
             row['Income'] = plus.toFixed(2);
@@ -43,7 +48,9 @@ class TotalPage extends react_1.default.Component {
             row['Cumulative'] = runningTotal.toFixed(2);
             table.push(row);
         });
-        console.table(table);
+        return table;
+    }
+    render() {
         const columns = [
             {
                 Header: 'Month',
@@ -66,50 +73,10 @@ class TotalPage extends react_1.default.Component {
                 accessor: 'Cumulative'
             },
         ];
-        const detailColumns = [
-            {
-                Header: 'Amount',
-                id: 'amount',
-                accessor: (tr) => tr.getAmount(),
-            },
-            {
-                Header: 'Date',
-                id: 'date',
-                accessor: (tr) => tr.getDate().toString(),
-            },
-            {
-                Header: 'Note',
-                id: 'note',
-                accessor: (tr) => tr.get('note'),
-            },
-        ];
         return [
-            react_1.default.createElement(react_table_1.default, { data: table, columns: columns, showPagination: false, getTdProps: this.clickOnMoney.bind(this) }),
-            this.state.details
-                ? react_1.default.createElement(react_table_1.default, { data: this.state.details, columns: detailColumns, getTrProps: this.getTrProps.bind(this) })
-                : null
+            react_1.default.createElement(react_table_1.default, { data: this.table, columns: columns, showPagination: false, getTdProps: this.clickOnMoney.bind(this) }),
+            react_1.default.createElement(DetailTable_1.DetailTable, { totals: this.totals, colName: this.state.colName, monthName: this.state.monthName })
         ];
-    }
-    getTrProps(state, rowInfo, column) {
-        let bg = '';
-        if (rowInfo && 'original' in rowInfo) {
-            const tr = rowInfo.original;
-            if (tr instanceof Transaction_1.default) {
-                if (tr.getAmount() > 500) {
-                    if (tr.contains('Nintendo')) {
-                        bg = "green";
-                    }
-                }
-                if (tr.getAmount() < -500) {
-                    bg = "red";
-                }
-            }
-        }
-        return {
-            style: {
-                background: bg
-            }
-        };
     }
     clickOnMoney(state, rowInfo, column, instance) {
         return {
@@ -123,31 +90,11 @@ class TotalPage extends react_1.default.Component {
                 const monthName = rowInfo.original.Month;
                 const value = rowInfo.original[colName];
                 console.log(colName, monthName, value);
-                this.loadDetails(colName, monthName, value);
+                this.setState((state) => {
+                    return Object.assign({}, state, { colName, monthName });
+                });
             }
         };
-    }
-    loadDetails(colName, monthName, value) {
-        let oneMonth = this.expenses.whereMonth(new Date(monthName));
-        console.log(oneMonth.length);
-        if (colName == 'Income') {
-            oneMonth = oneMonth.filter((tr) => {
-                return tr.getAmount() > 0;
-            });
-        }
-        else if (colName == 'Expenses') {
-            oneMonth = oneMonth.filter((tr) => {
-                return tr.getAmount() < 0;
-            });
-        }
-        else {
-            oneMonth = [];
-        }
-        this.setState((state, props) => {
-            return Object.assign({}, state, {
-                details: oneMonth,
-            });
-        });
     }
 }
 exports.TotalPage = TotalPage;

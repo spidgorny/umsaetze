@@ -4,30 +4,44 @@ import ReactTable from 'react-table';
 import Expenses from "../Expenses/Expenses";
 import {Totals} from "./Totals";
 import 'react-table/react-table.css';
-import Transaction from "../Expenses/Transaction";
+import {DetailTable} from "./DetailTable";
+
+require('datejs');
 
 interface Props {
 	expenses: Expenses;
 }
 
 interface State {
-	details: any;
+	colName: string;
+	monthName: string;
 }
 
 export class TotalPage extends React.Component<Props, State> {
 
 	public readonly state: State = {
-		details: null
+		// details: null,
+		colName: null,
+		monthName: null,
 	};
 
 	expenses: Expenses;
 
 	totals: Totals;
 
+	totalPlus;
+	totalMinus;
+
+	table: any[];
+
 	constructor(props: any) {
 		super(props);
 		this.expenses = props.expenses;
 		this.totals = new Totals(this.expenses);
+		const {totalPlus, totalMinus} = this.totals.calculate();
+		this.totalPlus = totalPlus;
+		this.totalMinus = totalMinus;
+		this.table = this.prepareTable();
 	}
 
 	show() {
@@ -41,14 +55,12 @@ export class TotalPage extends React.Component<Props, State> {
 		ReactDOM.unmountComponentAtNode(domContainer);
 	}
 
-	render() {
-		const {totalPlus, totalMinus} = this.totals.calculate();
-
+	prepareTable() {
 		const table: any[] = [];
 		let runningTotal = 0;
-		Object.keys(totalPlus).map((month) => {
-			const plus = totalPlus[month];
-			const minus = totalMinus[month];
+		Object.keys(this.totalPlus).map((month) => {
+			const plus = this.totalPlus[month];
+			const minus = this.totalMinus[month];
 			const row = {};
 			row['Month'] = month;
 			row['Income'] = plus.toFixed(2);
@@ -58,8 +70,11 @@ export class TotalPage extends React.Component<Props, State> {
 			row['Cumulative'] = runningTotal.toFixed(2);
 			table.push(row);
 		});
-		console.table(table);
+		// console.table(table);
+		return table;
+	}
 
+	render() {
 		const columns = [
 			{
 				Header: 'Month',
@@ -83,58 +98,15 @@ export class TotalPage extends React.Component<Props, State> {
 			},
 		];
 
-		const detailColumns = [
-			{
-				Header: 'Amount',
-				id: 'amount',
-				accessor: (tr: Transaction) => tr.getAmount(),
-			},
-			{
-				Header: 'Date',
-				id: 'date',
-				accessor: (tr: Transaction) => tr.getDate().toString(),
-			},
-			{
-				Header: 'Note',
-				id: 'note',
-				accessor: (tr: Transaction) => tr.get('note'),
-			},
-		];
-
 		return [
-			<ReactTable data={table} columns={columns}
+			<ReactTable data={this.table} columns={columns}
 						showPagination={false}
 						getTdProps={this.clickOnMoney.bind(this)}/>,
-			this.state.details
-				? <ReactTable data={this.state.details}
-							  columns={detailColumns}
-							  getTrProps={this.getTrProps.bind(this)}
-				/>
-				: null
+			<DetailTable totals={this.totals}
+						 colName={this.state.colName}
+						 monthName={this.state.monthName}
+			/>
 		];
-	}
-
-	getTrProps(state, rowInfo, column) {
-		// console.log(state, rowInfo, column);
-		let bg = '';
-		if (rowInfo && 'original' in rowInfo) {
-			const tr = rowInfo.original;
-			if (tr instanceof Transaction) {
-				if (tr.getAmount() > 500) {
-					if (tr.contains('Nintendo')) {
-						bg = "green";
-					}
-				}
-				if (tr.getAmount() < -500) {
-					bg = "red";
-				}
-			}
-		}
-		return {
-			style: {
-				background: bg
-			}
-		};
 	}
 
 	clickOnMoney(state, rowInfo, column, instance) {
@@ -159,30 +131,12 @@ export class TotalPage extends React.Component<Props, State> {
 				const monthName = rowInfo.original.Month;
 				const value = rowInfo.original[colName];
 				console.log(colName, monthName, value);
-				this.loadDetails(colName, monthName, value);
+				//this.loadDetails(colName, monthName, value);
+				this.setState((state) => {
+					return {...state, colName, monthName};
+				})
 			}
 		};
-	}
-
-	loadDetails(colName: string, monthName: string, value: string) {
-		let oneMonth = this.expenses.whereMonth(new Date(monthName));
-		console.log(oneMonth.length);
-		if (colName == 'Income') {
-			oneMonth = oneMonth.filter((tr: Transaction) => {
-				return tr.getAmount() > 0;
-			})
-		} else if (colName == 'Expenses') {
-			oneMonth = oneMonth.filter((tr: Transaction) => {
-				return tr.getAmount() < 0;
-			})
-		} else {
-			oneMonth = [];
-		}
-		this.setState((state, props) => {
-			return Object.assign({}, state, {
-				details: oneMonth,
-			});
-		})
 	}
 
 }
