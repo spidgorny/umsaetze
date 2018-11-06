@@ -31,8 +31,8 @@ const filereader_js_1 = require("filereader.js");
 const promise_file_reader_1 = require("promise-file-reader");
 const Backbone = require("backbone");
 const log = require('ololog');
-const chance = new chance_1.default();
 const FileSaver = require('file-saver');
+const chance = new chance_1.default();
 class Sync extends CollectionController_1.CollectionController {
     constructor(expenses, router, tf) {
         super();
@@ -81,9 +81,11 @@ class Sync extends CollectionController_1.CollectionController {
         this.$el.find('#file-submit-csv').on('click', (e) => __awaiter(this, void 0, void 0, function* () {
             e.preventDefault();
             log('files', fileInputCSV.files);
-            const data = yield promise_file_reader_1.readAsText(fileInputCSV.files[0]);
-            console.log(data);
-            this.loadSelectedFile(data);
+            if (fileInputCSV.files.length) {
+                const data = yield promise_file_reader_1.readAsText(fileInputCSV.files[0]);
+                console.log(data);
+                this.loadSelectedFile(data);
+            }
         }));
         filereader_js_1.FileReaderJS.setupInput(document.getElementById('file-input-json'), {
             readAsDefault: 'Text',

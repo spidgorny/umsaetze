@@ -1,5 +1,5 @@
 import Backbone = require('backbone');
-import * as md5 from 'md5';
+import md5 from 'md5';
 import Expenses from "./Expenses";
 import {ModelSetOptions} from "backbone";
 import * as _ from 'underscore';

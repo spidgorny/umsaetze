@@ -15,7 +15,8 @@
 			// add path to @types
 			"node_modules/@types"
 		],
-		"esModuleInterop": true
+		"esModuleInterop": true,
+		"jsx": "react"
 	},
 	"include": [
 		"src/*.ts",

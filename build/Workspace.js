@@ -32,7 +32,7 @@ const MonthSelect_1 = __importDefault(require("./MonthSelect/MonthSelect"));
 const TransactionFactory_1 = require("./Expenses/TransactionFactory");
 const backbone_localstorage_1 = require("backbone.localstorage");
 const _ = __importStar(require("underscore"));
-const Totals_1 = require("./Totals/Totals");
+const TotalPage_1 = require("./Totals/TotalPage");
 const Backbone = require("backbone");
 const log = require('ololog');
 class Workspace extends Backbone.Router {
@@ -47,7 +47,7 @@ class Workspace extends Backbone.Router {
             'Keywords': 'Keywords',
             'Summary': 'Summary',
             'History': 'History',
-            'Totals': '__not_a_function__',
+            'TotalPage': '__not_a_function__',
         };
         this.optionalParam = /\((.*?)\)/g;
         this.namedParam = /(\(\?)?:\w+/g;
@@ -75,7 +75,9 @@ class Workspace extends Backbone.Router {
             this.categoryList.setExpenses(this.model);
             this.keywords = new KeywordCollection_1.default();
             console.log('this.keywords', this.keywords.size());
-            this.Totals = new Totals_1.Totals(this.model);
+            this.TotalPage = new TotalPage_1.TotalPage({
+                expenses: this.model
+            });
         });
     }
     activateMenu() {

@@ -22,17 +22,9 @@ import Backbone = require('backbone');
 import PersistenceOptions = Backbone.PersistenceOptions;
 
 const log = require('ololog');
+const FileSaver = require('file-saver');
 
 const chance = new Chance();
-// console.log(chance);
-
-// console.log('FileReaderJS', FileReaderJS);
-
-// console.log(detectFloat('3.141528'));
-// console.debug(detectFloat('3.141528'));
-//debug(detectFloat('3.141528'));
-
-const FileSaver = require('file-saver');
 
 export default class Sync extends CollectionController<Expenses> {
 
@@ -110,9 +102,11 @@ export default class Sync extends CollectionController<Expenses> {
 		this.$el.find('#file-submit-csv').on('click', async (e) => {
 			e.preventDefault();
 			log('files', fileInputCSV.files);
-			const data = await readAsText(fileInputCSV.files[0]);
-			console.log(data);
-			this.loadSelectedFile(data);
+			if (fileInputCSV.files.length) {
+				const data = await readAsText(fileInputCSV.files[0]);
+				console.log(data);
+				this.loadSelectedFile(data);
+			}
 		});
 
 		// this.$('#LoadJSON').on('click', this.loadJSON.bind(this));

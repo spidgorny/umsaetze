@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -8,7 +11,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Backbone = require("backbone");
-const md5 = __importStar(require("md5"));
+const md5_1 = __importDefault(require("md5"));
 const _ = __importStar(require("underscore"));
 class Transaction extends Backbone.Model {
     constructor(attributes, options) {
@@ -21,7 +24,7 @@ class Transaction extends Backbone.Model {
         };
         if (!this.get('id')) {
             const sDate = this.get('date');
-            this.set('id', md5(sDate + this.get('amount')));
+            this.set('id', md5_1.default(sDate + this.get('amount')));
         }
         if (!this.has('visible')) {
             this.set('visible', true);

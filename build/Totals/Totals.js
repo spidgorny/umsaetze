@@ -20,7 +20,7 @@ class Totals {
     hide() {
         this.visible = false;
     }
-    render() {
+    calculate() {
         console.time('groupByMonth');
         const perMonth = this.expenses.groupByMonth();
         console.timeEnd('groupByMonth');
@@ -38,6 +38,10 @@ class Totals {
             totalPlus[month] = monthlyExpenses.getPositiveTotal();
             totalMinus[month] = monthlyExpenses.getNegativeTotal();
         }
+        return { totalPlus, totalMinus };
+    }
+    render() {
+        const { totalPlus, totalMinus } = this.calculate();
         console.log(this.makeTable(totalPlus, totalMinus));
     }
     makeTable(totalPlus, totalMinus) {

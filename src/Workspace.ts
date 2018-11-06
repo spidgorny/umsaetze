@@ -14,7 +14,7 @@ import MonthSelect from "./MonthSelect/MonthSelect";
 import {TransactionFactory} from "./Expenses/TransactionFactory";
 import {LocalStorage} from 'backbone.localstorage';
 import * as _ from 'underscore';
-import {Totals} from "./Totals/Totals";
+import {TotalPage} from "./Totals/TotalPage";
 import Backbone = require('backbone');
 import RouterOptions = Backbone.RouterOptions;
 
@@ -31,7 +31,7 @@ export default class Workspace extends Backbone.Router {
 		'Keywords': 'Keywords',
 		'Summary': 'Summary',
 		'History': 'History',
-		'Totals': '__not_a_function__',
+		'TotalPage': '__not_a_function__',
 	};
 
 	model: Expenses;
@@ -45,7 +45,7 @@ export default class Workspace extends Backbone.Router {
 	keywordsPage: KeywordsView;
 	summaryPage: SummaryView;
 	historyPage: HistoryView;
-	Totals: Totals;
+	TotalPage: TotalPage;
 
 	currentPage: Controller<any> | CollectionController<Expenses> | SummaryView | HistoryView;
 
@@ -85,7 +85,9 @@ export default class Workspace extends Backbone.Router {
 		this.keywords = new KeywordCollection();
 		console.log('this.keywords', this.keywords.size());
 
-		this.Totals = new Totals(this.model);
+		this.TotalPage = new TotalPage({
+			expenses: this.model
+		});
 	}
 
 	activateMenu() {
