@@ -1,10 +1,13 @@
 import TestFramework from "../TestFramework";
 import {Totals} from "../../Totals/Totals";
 import ExpensesMock from "../../Expenses/ExpensesMock";
+import Expenses from "../../Expenses/Expenses";
+import Transaction from "../../Expenses/Transaction";
 
 class TotalsTest extends TestFramework {
 
 	run() {
+		this.testExpensesUnset();
 		this.testRender();
 	}
 
@@ -38,6 +41,18 @@ class TotalsTest extends TestFramework {
 		t.render();
 	}
 
+	private testExpensesUnset() {
+		const e = new Expenses();
+		const t = new Transaction({
+			amount: 10,
+		});
+		e.add(t);
+		// console.log(e.size());
+		this.assert(e.size() == 1);
+		e.remove(t);
+		// console.log(e.size());
+		this.assert(e.size() == 0);
+	}
 }
 
 new TotalsTest().run();

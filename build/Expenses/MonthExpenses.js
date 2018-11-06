@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const Transaction_1 = __importDefault(require("./Transaction"));
 const CategoryCount_1 = __importDefault(require("../Category/CategoryCount"));
 const log = require('ololog');
 class MonthExpenses {
@@ -39,6 +40,10 @@ class MonthExpenses {
     getVisibleCount() {
         return this.size();
     }
+    set(id, val) {
+        this.expenses.models[id] = val;
+        return this;
+    }
     get(id) {
         return this.expenses.get(id);
     }
@@ -54,9 +59,6 @@ class MonthExpenses {
                 let note = row.get('note');
                 keywords.each((key) => {
                     let found = note.indexOf(key.word);
-                    if (key.word == 'SVYETOSLAV PIDGORNYY') {
-                        log(note.length, key.word, found);
-                    }
                     if (found > -1) {
                         row.set('category', key.category, { silent: true });
                         anythingChanged = true;
@@ -110,6 +112,20 @@ class MonthExpenses {
             }
         });
         return total;
+    }
+    map(cb) {
+        for (let key in this.getSorted()) {
+            const el = this.get(key);
+            this.set(key, cb(el));
+        }
+    }
+    filter(cb) {
+        for (let el of this.getSorted()) {
+            console.assert(el instanceof Transaction_1.default);
+            if (!cb(el)) {
+                this.remove(el);
+            }
+        }
     }
 }
 exports.MonthExpenses = MonthExpenses;

@@ -6,8 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const TestFramework_1 = __importDefault(require("../TestFramework"));
 const Totals_1 = require("../../Totals/Totals");
 const ExpensesMock_1 = __importDefault(require("../../Expenses/ExpensesMock"));
+const Expenses_1 = __importDefault(require("../../Expenses/Expenses"));
+const Transaction_1 = __importDefault(require("../../Expenses/Transaction"));
 class TotalsTest extends TestFramework_1.default {
     run() {
+        this.testExpensesUnset();
         this.testRender();
     }
     loadFromCSVandSave() {
@@ -31,6 +34,16 @@ class TotalsTest extends TestFramework_1.default {
         ex.load(__dirname + '/../../../src/test/data/2017-2018.json');
         const t = new Totals_1.Totals(ex);
         t.render();
+    }
+    testExpensesUnset() {
+        const e = new Expenses_1.default();
+        const t = new Transaction_1.default({
+            amount: 10,
+        });
+        e.add(t);
+        this.assert(e.size() == 1);
+        e.remove(t);
+        this.assert(e.size() == 0);
     }
 }
 new TotalsTest().run();

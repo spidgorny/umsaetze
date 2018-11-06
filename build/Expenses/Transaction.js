@@ -100,6 +100,9 @@ class Transaction extends Backbone.Model {
         }
         return this;
     }
+    contains(substr) {
+        return this.get('note').toString().includes(substr);
+    }
 }
 exports.default = Transaction;
 //# sourceMappingURL=Transaction.js.map

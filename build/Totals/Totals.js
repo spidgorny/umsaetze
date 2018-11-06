@@ -27,16 +27,20 @@ class Totals {
         console.log(underscore_1.default.mapObject(perMonth, (list, key) => {
             return list.length;
         }));
-        const totalPlus = {};
-        const totalMinus = {};
+        const totalPlus = new Map();
+        const totalMinus = new Map();
         for (const month in perMonth) {
             const date = new Date(month);
             const cm = CurrentMonth_1.CurrentMonth.fromDate(date);
             let expenses = new Expenses_1.default(perMonth[month]);
             const monthlyExpenses = new MonthExpenses_1.MonthExpenses(expenses, cm);
+            monthlyExpenses.filter(this.filterOutliers.bind(this));
             totalPlus[month] = monthlyExpenses.getPositiveTotal();
             totalMinus[month] = monthlyExpenses.getNegativeTotal();
         }
+        console.log(this.makeTable(totalPlus, totalMinus));
+    }
+    makeTable(totalPlus, totalMinus) {
         const t = new easy_table_1.default();
         let runningTotal = 0;
         Object.keys(totalPlus).map((month) => {
@@ -50,7 +54,18 @@ class Totals {
             t.cell('Cumulative', runningTotal.toFixed(2));
             t.newRow();
         });
-        console.log(t.toString());
+        return t.toString();
+    }
+    filterOutliers(tr) {
+        if (tr.getAmount() > 500) {
+            if (!tr.contains('Nintendo')) {
+                return false;
+            }
+        }
+        if (tr.getAmount() < -500) {
+            return false;
+        }
+        return true;
     }
 }
 exports.Totals = Totals;

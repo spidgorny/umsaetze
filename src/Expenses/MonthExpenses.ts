@@ -61,6 +61,11 @@ export class MonthExpenses {
 		return this.size();
 	}
 
+	set(id, val) {
+		this.expenses.models[id] = val;
+		return this;
+	}
+
 	get(id) {
 		return this.expenses.get(id);
 	}
@@ -83,9 +88,6 @@ export class MonthExpenses {
 				// console.log(note.length, keywords.size());
 				keywords.each((key: Keyword) => {
 					let found = note.indexOf(key.word);
-					if (key.word == 'SVYETOSLAV PIDGORNYY') {
-						log(note.length, key.word, found);
-					}
 					if (found > -1) {
 						//console.log(note, 'contains', key.word, 'gets', key.category);
 						row.set('category', key.category, { silent: true });
@@ -160,4 +162,21 @@ export class MonthExpenses {
 		});
 		return total;
 	}
+
+	map(cb: Function) {
+		for (let key in this.getSorted()) {
+			const el = this.get(key);
+			this.set(key, cb(el));
+		}
+	}
+
+	filter(cb: Function) {
+		for (let el of this.getSorted()) {
+			console.assert(el instanceof Transaction);
+			if (!cb(el)) {
+				this.remove(el);
+			}
+		}
+	}
+
 }

@@ -161,4 +161,7 @@ export default class Transaction extends Backbone.Model {
 		return this;
 	}
 
+	contains(substr: string) {
+		return this.get('note').toString().includes(substr);
+	}
 }

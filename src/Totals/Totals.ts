@@ -37,18 +37,22 @@ export class Totals {
 			return list.length;
 		}));
 
-		const totalPlus = {};
-		const totalMinus = {};
+		const totalPlus: Map<string, number> = new Map();
+		const totalMinus: Map<string, number> = new Map();
 		for (const month in perMonth) {
 			const date = new Date(month);
 			const cm = CurrentMonth.fromDate(date);
 			let expenses = new Expenses(perMonth[month]);
 			const monthlyExpenses = new MonthExpenses(expenses, cm);
+			monthlyExpenses.filter(this.filterOutliers.bind(this));
 			totalPlus[month] = monthlyExpenses.getPositiveTotal();
 			totalMinus[month] = monthlyExpenses.getNegativeTotal();
 		}
 		//console.log(totalPlus, totalMinus);
+		console.log(this.makeTable(totalPlus, totalMinus));
+	}
 
+	makeTable(totalPlus: Map<string, number>, totalMinus: Map<string, number>) {
 		const t = new Table();
 
 		let runningTotal = 0;
@@ -64,7 +68,19 @@ export class Totals {
 			t.newRow();
 		});
 
-		console.log(t.toString())
+		return t.toString();
+	}
+
+	filterOutliers(tr: Transaction) {
+		if (tr.getAmount() > 500) {
+			if (!tr.contains('Nintendo')) {
+				return false;
+			}
+		}
+		if (tr.getAmount() < -500) {
+			return false;
+		}
+		return true;
 	}
 
 }
