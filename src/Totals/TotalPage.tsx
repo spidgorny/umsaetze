@@ -101,7 +101,8 @@ export class TotalPage extends React.Component<Props, State> {
 		return [
 			<ReactTable data={this.table} columns={columns}
 						showPagination={false}
-						getTdProps={this.clickOnMoney.bind(this)}/>,
+						getTdProps={this.clickOnMoney.bind(this)}
+			/>,
 			<DetailTable totals={this.totals}
 						 colName={this.state.colName}
 						 monthName={this.state.monthName}

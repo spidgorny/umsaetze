@@ -41,14 +41,14 @@ export class DetailTable extends React.Component<Props, State> {
 			{
 				Header: 'Amount',
 				id: 'amount',
-				accessor: (tr: Transaction) => tr.getAmount(),
+				accessor: (tr: Transaction) => tr.getAmount().toFixed(2)+'€',
 				width: 100,
 			},
 			{
 				Header: 'Date',
 				id: 'date',
 				accessor: (tr: Transaction) => tr.getDate().toString('yyyy-MM-dd'),
-				width: 150,
+				width: 100,
 			},
 			{
 				Header: 'Note',
@@ -60,7 +60,9 @@ export class DetailTable extends React.Component<Props, State> {
 		return oneMonth.length
 			? <ReactTable data={oneMonth}
 						  columns={detailColumns}
+						  showPagination={false}
 						  getTrProps={this.getTrProps.bind(this)}
+						  getTdProps={this.clickOnMoney.bind(this)}
 			/>
 			: null
 	}
@@ -68,24 +70,35 @@ export class DetailTable extends React.Component<Props, State> {
 	getTrProps(state, rowInfo, column) {
 		// console.log(state, rowInfo, column);
 		let bg = '';
+		let color = '';
 		if (rowInfo && 'original' in rowInfo) {
 			const tr = rowInfo.original;
 			if (tr instanceof Transaction) {
 				if (tr.getAmount() > 500) {
 					if (tr.contains('Nintendo')) {
 						bg = "green";
+						color = "white";
 					}
 				}
 				if (tr.getAmount() < -500) {
 					bg = "red";
+					color = "white";
 				}
 			}
 		}
 		return {
 			style: {
-				background: bg
+				background: bg,
+				color
 			}
 		};
 	}
 
+	clickOnMoney(state, rowInfo, column, instance) {
+		return column.id == 'amount' ? {
+			style: {
+				textAlign: 'right',
+			}
+		} : {};
+	}
 }

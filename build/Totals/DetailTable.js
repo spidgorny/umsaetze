@@ -34,14 +34,14 @@ class DetailTable extends react_1.default.Component {
             {
                 Header: 'Amount',
                 id: 'amount',
-                accessor: (tr) => tr.getAmount(),
+                accessor: (tr) => tr.getAmount().toFixed(2) + '€',
                 width: 100,
             },
             {
                 Header: 'Date',
                 id: 'date',
                 accessor: (tr) => tr.getDate().toString('yyyy-MM-dd'),
-                width: 150,
+                width: 100,
             },
             {
                 Header: 'Note',
@@ -50,29 +50,40 @@ class DetailTable extends react_1.default.Component {
             },
         ];
         return oneMonth.length
-            ? react_1.default.createElement(react_table_1.default, { data: oneMonth, columns: detailColumns, getTrProps: this.getTrProps.bind(this) })
+            ? react_1.default.createElement(react_table_1.default, { data: oneMonth, columns: detailColumns, showPagination: false, getTrProps: this.getTrProps.bind(this), getTdProps: this.clickOnMoney.bind(this) })
             : null;
     }
     getTrProps(state, rowInfo, column) {
         let bg = '';
+        let color = '';
         if (rowInfo && 'original' in rowInfo) {
             const tr = rowInfo.original;
             if (tr instanceof Transaction_1.default) {
                 if (tr.getAmount() > 500) {
                     if (tr.contains('Nintendo')) {
                         bg = "green";
+                        color = "white";
                     }
                 }
                 if (tr.getAmount() < -500) {
                     bg = "red";
+                    color = "white";
                 }
             }
         }
         return {
             style: {
-                background: bg
+                background: bg,
+                color
             }
         };
+    }
+    clickOnMoney(state, rowInfo, column, instance) {
+        return column.id == 'amount' ? {
+            style: {
+                textAlign: 'right',
+            }
+        } : {};
     }
 }
 exports.DetailTable = DetailTable;
