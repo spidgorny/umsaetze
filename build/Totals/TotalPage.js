@@ -62,7 +62,30 @@ class TotalPage extends react_1.default.Component {
                 accessor: 'Cumulative'
             },
         ];
-        return react_1.default.createElement(react_table_1.default, { data: table, columns: columns, showPagination: false });
+        return [
+            react_1.default.createElement(react_table_1.default, { data: table, columns: columns, showPagination: false, getTdProps: this.clickOnMoney.bind(this) }),
+            this.state.details
+                ? react_1.default.createElement(react_table_1.default, { data: this.state.details })
+                : null
+        ];
+    }
+    clickOnMoney(state, rowInfo, column, instance) {
+        return {
+            onClick: (e, handleOriginal) => {
+                console.log("It was in this column:", column);
+                console.log("It was in this row:", rowInfo);
+                if (handleOriginal) {
+                    handleOriginal();
+                }
+                const colName = column.id;
+                const monthName = rowInfo.original.Month;
+                const value = rowInfo.original[colName];
+                console.log(colName, monthName, value);
+                this.loadDetails(colName, monthName, value);
+            }
+        };
+    }
+    loadDetails(colName, monthName, value) {
     }
 }
 exports.TotalPage = TotalPage;
