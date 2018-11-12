@@ -19,6 +19,7 @@ class Expenses extends Backbone.Collection {
     constructor(models = [], options = {}, ls, tf = null) {
         super(models, options);
         this.counter = 0;
+        this.lastPercent = 0;
         if (ls) {
             this.localStorage = ls;
         }
@@ -83,13 +84,16 @@ class Expenses extends Backbone.Collection {
     }
     addElementUpdateProgress(el, numModels) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.sleep(() => {
+            return yield this.sleep(() => {
                 let transaction = this.tf.make(el);
                 this.add(transaction);
-                const percent = Math.round(this.counter++ / numModels * 100) + '%';
-                jquery_1.default('#app #progress .progress-bar')
-                    .width(percent)
-                    .text(percent);
+                const percent = Math.round(this.counter++ / numModels * 100);
+                if (percent > this.lastPercent + 5) {
+                    jquery_1.default('#app #progress .progress-bar')
+                        .width(percent + '%')
+                        .text(percent + '%');
+                    this.lastPercent = percent;
+                }
             });
         });
     }

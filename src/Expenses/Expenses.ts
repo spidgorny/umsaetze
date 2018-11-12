@@ -17,6 +17,7 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 	 * @type {number}
 	 */
 	counter = 0;
+	lastPercent = 0;
 
 	model: typeof Transaction;
 
@@ -111,20 +112,23 @@ export default class Expenses extends Backbone.Collection<Transaction> {
 
 	sleep (fn, par?: any) {
 		return new Promise((resolve) => {
-			// wait 3s before calling fn(par)
 			setTimeout(() => resolve(fn(par)), 0)
 		})
 	}
 
-	async addElementUpdateProgress(el, numModels) {
-		await this.sleep(() => {
+	async addElementUpdateProgress(el: any, numModels: number) {
+
+		return await this.sleep(() => {
 			let transaction = this.tf.make(el);
 			this.add(transaction);
 
-			const percent = Math.round(this.counter++ / numModels * 100) + '%';
-			$('#app #progress .progress-bar')
-				.width(percent)
-				.text(percent);
+			const percent = Math.round(this.counter++ / numModels * 100);
+			if (percent > this.lastPercent + 5) {
+				$('#app #progress .progress-bar')
+					.width(percent + '%')
+					.text(percent + '%');
+				this.lastPercent = percent;
+			}
 		});
 	}
 
